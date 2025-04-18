@@ -15,6 +15,8 @@
     <modules>
         <!--系统模块-API-->
         <module>system-api</module>
+        <!--系统模块-人员-->
+        <module>system-business-hr</module>
     </modules>
 
     <artifactId>bens-system</artifactId>
