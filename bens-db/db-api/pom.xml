@@ -5,27 +5,23 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.ibenbeni</groupId>
-        <artifactId>bens</artifactId>
+        <artifactId>bens-db</artifactId>
         <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <packaging>jar</packaging>
 
-    <artifactId>bens-rule</artifactId>
-    <description>规则模块-开发规则</description>
+    <artifactId>db-api</artifactId>
+    <description>DAO模块-API</description>
 
     <dependencies>
-        <!-- lombok -->
+        <!-- MybatisPlus-ORM框架 -->
+        <!-- 基础实体，分页参数和结果的创建，需要用到mp的注解和类 -->
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-
-        <!-- hutool工具 -->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>${mybatis-plus.version}</version>
         </dependency>
     </dependencies>
 

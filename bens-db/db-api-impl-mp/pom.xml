@@ -5,27 +5,22 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.ibenbeni</groupId>
-        <artifactId>bens</artifactId>
+        <artifactId>bens-db</artifactId>
         <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <packaging>jar</packaging>
 
-    <artifactId>bens-rule</artifactId>
-    <description>规则模块-开发规则</description>
+    <artifactId>db-api-impl-mp</artifactId>
+    <description>DAO模块-MybatisPlus</description>
 
     <dependencies>
-        <!-- lombok -->
+        <!--DAO模块-API-->
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-
-        <!-- hutool工具 -->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>db-api</artifactId>
+            <version>${revision}</version>
         </dependency>
     </dependencies>
 
