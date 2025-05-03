@@ -27,6 +27,7 @@
         <module>bens-cache</module>
         <!-- 文件模块 -->
         <module>bens-file</module>
+        <module>bens-log</module>
     </modules>
 
     <properties>
