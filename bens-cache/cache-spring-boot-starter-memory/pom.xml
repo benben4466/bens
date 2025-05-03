@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>cn.ibenbeni</groupId>
+        <artifactId>bens-cache</artifactId>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <packaging>jar</packaging>
+
+    <artifactId>cache-spring-boot-starter-memory</artifactId>
+    <description>缓存模块-内存实现-starter</description>
+
+    <dependencies>
+        <!-- 缓存模块-内存实现 -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>cache-api-impl-memory</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- SpringBoot的starter -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <!-- 注解处理器 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+
+</project>

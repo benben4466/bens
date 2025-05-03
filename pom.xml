@@ -19,6 +19,8 @@
         <module>bens-rule</module>
         <!-- DAO模块 -->
         <module>bens-db</module>
+        <!-- 缓存模块 -->
+        <module>bens-cache</module>
     </modules>
 
     <properties>
@@ -32,6 +34,7 @@
         <spring-boot.version>2.7.6</spring-boot.version>
         <lombok.versin>1.18.34</lombok.versin>
         <hutool.version>5.8.36</hutool.version>
+        <fastjson2.version>2.0.50</fastjson2.version>
         <mybatis-plus.version>3.5.6</mybatis-plus.version>
     </properties>
 
@@ -57,6 +60,13 @@
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
+            </dependency>
+
+            <!-- JSON解析器 -->
+            <dependency>
+                <groupId>com.alibaba.fastjson2</groupId>
+                <artifactId>fastjson2</artifactId>
+                <version>${fastjson2.version}</version>
             </dependency>
 
             <!-- MybatisPlus-ORM框架 -->
