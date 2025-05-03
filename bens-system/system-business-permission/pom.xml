@@ -5,33 +5,29 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.ibenbeni</groupId>
-        <artifactId>bens</artifactId>
+        <artifactId>bens-system</artifactId>
         <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <packaging>jar</packaging>
 
-    <artifactId>bens-rule</artifactId>
-    <description>规则模块-开发规则</description>
+    <artifactId>system-business-permission</artifactId>
+    <description>系统模块-权限</description>
 
     <dependencies>
-        <!-- lombok -->
+        <!--系统模块-API-->
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>system-api</artifactId>
+            <version>${revision}</version>
         </dependency>
 
-        <!-- hutool工具 -->
         <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
-        </dependency>
-
-        <!-- JSON解析器 -->
-        <dependency>
-            <groupId>com.alibaba.fastjson2</groupId>
-            <artifactId>fastjson2</artifactId>
+            <!--DAO模块-starter-->
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>db-spring-boot-starter</artifactId>
+            <version>${revision}</version>
         </dependency>
     </dependencies>
 

@@ -10,28 +10,26 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
-    <artifactId>bens-rule</artifactId>
-    <description>规则模块-开发规则</description>
+    <modules>
+        <!-- 认证模块-API -->
+        <module>auth-api</module>
+        <!-- 认证模块-实现 -->
+        <module>auth-api-impl</module>
+        <!-- 认证模块-starter -->
+        <module>auth-spring-boot-starter</module>
+    </modules>
+
+    <artifactId>bens-auth</artifactId>
+    <description>认证模块</description>
 
     <dependencies>
-        <!-- lombok -->
+        <!-- 规则模块-开发规则 -->
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-
-        <!-- hutool工具 -->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
-        </dependency>
-
-        <!-- JSON解析器 -->
-        <dependency>
-            <groupId>com.alibaba.fastjson2</groupId>
-            <artifactId>fastjson2</artifactId>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>bens-rule</artifactId>
+            <version>${revision}</version>
         </dependency>
     </dependencies>
 

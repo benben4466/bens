@@ -5,51 +5,45 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.ibenbeni</groupId>
-        <artifactId>bens-system</artifactId>
+        <artifactId>bens-auth</artifactId>
         <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <packaging>jar</packaging>
 
-    <artifactId>system-business-hr</artifactId>
-    <description>系统模块-人员模块</description>
+    <artifactId>auth-api-impl</artifactId>
+    <description>认证模块-实现</description>
 
     <dependencies>
-
-        <!--系统模块-API-->
+        <!-- 认证模块-API -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
-            <artifactId>system-api</artifactId>
+            <artifactId>auth-api</artifactId>
             <version>${revision}</version>
         </dependency>
 
-        <!--DAO模块-starter-->
+        <!--缓存模块-->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
-            <artifactId>db-spring-boot-starter</artifactId>
+            <artifactId>cache-api</artifactId>
             <version>${revision}</version>
         </dependency>
-
-        <!-- 缓存模块 -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
             <artifactId>cache-api-impl-memory</artifactId>
             <version>${revision}</version>
+            <optional>true</optional>
         </dependency>
 
-        <!-- 文件模块 -->
-        <!-- 用户头像相关的操作 -->
+        <!-- TODO 以下注解是临时的 -->
         <dependency>
-            <groupId>cn.ibenbeni</groupId>
-            <artifactId>file-api</artifactId>
-            <version>${revision}</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
         </dependency>
-
-        <!-- Spring Web模块 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
         </dependency>
     </dependencies>
 

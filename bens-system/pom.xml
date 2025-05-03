@@ -17,6 +17,8 @@
         <module>system-api</module>
         <!--系统模块-人员-->
         <module>system-business-hr</module>
+        <!--系统模块-权限-->
+        <module>system-business-permission</module>
     </modules>
 
     <artifactId>bens-system</artifactId>

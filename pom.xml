@@ -19,8 +19,14 @@
         <module>bens-rule</module>
         <!-- DAO模块 -->
         <module>bens-db</module>
+        <!-- 安全模块 -->
+        <module>bens-security</module>
+        <!-- 认证模块 -->
+        <module>bens-auth</module>
         <!-- 缓存模块 -->
         <module>bens-cache</module>
+        <!-- 文件模块 -->
+        <module>bens-file</module>
     </modules>
 
     <properties>

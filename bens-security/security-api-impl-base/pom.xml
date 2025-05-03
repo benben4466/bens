@@ -5,28 +5,21 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.ibenbeni</groupId>
-        <artifactId>bens-db</artifactId>
+        <artifactId>bens-security</artifactId>
         <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <packaging>jar</packaging>
 
-    <artifactId>db-api-impl-mp</artifactId>
-    <description>DAO模块-MybatisPlus</description>
+    <artifactId>security-api-impl-base</artifactId>
+    <description>安全模块-基础</description>
 
     <dependencies>
-        <!--DAO模块-API-->
+        <!-- 安全模块-API -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
-            <artifactId>db-api</artifactId>
-            <version>${revision}</version>
-        </dependency>
-
-        <!-- 认证模块-API -->
-        <dependency>
-            <groupId>cn.ibenbeni</groupId>
-            <artifactId>auth-api</artifactId>
+            <artifactId>security-api</artifactId>
             <version>${revision}</version>
         </dependency>
     </dependencies>
