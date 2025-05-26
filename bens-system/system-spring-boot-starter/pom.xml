@@ -12,45 +12,62 @@
 
     <packaging>jar</packaging>
 
-    <artifactId>system-business-hr</artifactId>
-    <description>系统模块-人员模块</description>
+    <artifactId>system-spring-boot-starter</artifactId>
+    <description>系统模块-Starter</description>
 
     <dependencies>
 
-        <!--系统模块-API-->
+        <!-- 基础核心业务业务模块 -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
-            <artifactId>system-api</artifactId>
+            <artifactId>system-business-hr</artifactId>
             <version>${revision}</version>
         </dependency>
 
-        <!--DAO模块-starter-->
+        <!-- 应用权限管理模块 -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
-            <artifactId>db-spring-boot-starter</artifactId>
+            <artifactId>system-business-permission</artifactId>
             <version>${revision}</version>
         </dependency>
 
-        <!-- 缓存模块 -->
+        <!-- 缓存配置 -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
             <artifactId>cache-sdk-memory</artifactId>
             <version>${revision}</version>
         </dependency>
 
-        <!-- 文件模块 -->
-        <!-- 用户头像相关的操作 -->
+        <!--将常用的模块集成在system中，主项目中保持简洁-->
+
+        <!--认证和鉴权模块-->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
-            <artifactId>file-api</artifactId>
+            <artifactId>auth-spring-boot-starter</artifactId>
             <version>${revision}</version>
         </dependency>
 
-        <!-- Spring Web模块 -->
+        <!-- 安全模块-Starter -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>security-spring-boot-starter</artifactId>
+            <version>${revision}</version>
         </dependency>
+
+        <!--数据源连接和dao框架-->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>db-spring-boot-starter</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- 日志模块-Starter -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>log-spring-boot-starter</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
     </dependencies>
 
 </project>

@@ -7,7 +7,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import cn.ibenbeni.bens.auth.api.password.PasswordEncryptionStrategy;
-import cn.ibenbeni.bens.auth.api.password.pojo.password.SaltedEncryptResult;
+import cn.ibenbeni.bens.auth.api.pojo.password.SaltedEncryptResult;
 import cn.ibenbeni.bens.cache.api.CacheOperatorApi;
 import cn.ibenbeni.bens.db.api.factory.PageResultFactory;
 import cn.ibenbeni.bens.db.api.pojo.entity.BaseEntity;
@@ -69,6 +69,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 //        if (this.isExistUserAccount(sysUserRequest.getAccount())) {
 //            throw new ClientException(BaseErrorCode.SERVICE_USER_EXISTED_ERROR);
 //        }
+        // TODO 账户唯一性校验：暂时使用代码实现，后期使用注解完成 start
+        if (this.isExistUserAccount(sysUserRequest.getAccount())) {
+            throw new ServiceException(SysUserExceptionEnum.USER_ACCOUNT_EXISTED);
+        }
+        // TODO 账户唯一性校验：暂时使用代码实现，后期使用注解完成 end
 
         SysUser sysUser = new SysUser();
         BeanUtil.copyProperties(sysUserRequest, sysUser);
@@ -110,7 +115,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public void batchDel(SysUserRequest sysUserRequest) {
         Set<Long> userIdList = sysUserRequest.getUserIdList();
-        LambdaQueryWrapper<SysUser> queryWrapper = Wrappers.lambdaQuery(SysUser.class).in(SysUser::getUserId, userIdList).eq(SysUser::getSuperAdminFlag, YesOrNotEnum.N.getCode());
+        LambdaQueryWrapper<SysUser> queryWrapper = Wrappers.lambdaQuery(SysUser.class)
+                .in(SysUser::getUserId, userIdList)
+                .eq(SysUser::getSuperAdminFlag, YesOrNotEnum.Y.getCode());
         long adminCount = this.count(queryWrapper);
         if (adminCount > 0) {
             throw new ServiceException(SysUserExceptionEnum.USER_CAN_NOT_DELETE_ADMIN);
@@ -304,6 +311,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public void resetPassword(Long userId, String newPassword) {
         SysUser sysUser = this.getById(userId);
+        if (sysUser == null) {
+            throw new ServiceException(SysUserExceptionEnum.SYS_USER_NOT_EXISTED);
+        }
+
         SaltedEncryptResult saltedEncryptResult = passwordEncryptionStrategy.encryptWithSalt(newPassword);
         sysUser.setPassword(saltedEncryptResult.getEncryptPassword());
         sysUser.setPasswordSalt(saltedEncryptResult.getPasswordSalt());
@@ -338,7 +349,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     private SysUser querySysUser(SysUserRequest sysUserRequest) {
         SysUser dbSysUser = this.getById(sysUserRequest.getUserId());
         if (ObjectUtil.isEmpty(dbSysUser)) {
-            throw new ServiceException(SysUserExceptionEnum.USER_CAN_NOT_DELETE_ADMIN);
+            throw new ServiceException(SysUserExceptionEnum.SYS_USER_NOT_EXISTED);
         }
         return dbSysUser;
     }
@@ -550,5 +561,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             }
         }
     }
+
+    // ---------------------------------------------临时方法------------------------------------------------------
 
 }

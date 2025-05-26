@@ -7,10 +7,7 @@ import cn.ibenbeni.bens.sys.api.expander.SysConfigExpander;
 import cn.ibenbeni.bens.sys.modular.user.entity.SysUser;
 import cn.ibenbeni.bens.sys.modular.user.pojo.request.SysUserRequest;
 import cn.ibenbeni.bens.sys.modular.user.service.SysUserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -56,10 +53,18 @@ public class SysUserController {
     /**
      * 编辑用户
      */
-    @PostMapping(value = "/sysUser/detail")
+    @PostMapping(value = "/sysUser/edit")
     public ResponseData<?> edit(@RequestBody SysUserRequest sysUserRequest) {
         sysUserService.edit(sysUserRequest);
         return new SuccessResponseData<>();
+    }
+
+    /**
+     * 查看用户详情
+     */
+    @GetMapping(value = "/sysUser/detail")
+    public ResponseData<SysUser> detail(SysUserRequest sysUserRequest) {
+        return new SuccessResponseData<>(sysUserService.detail(sysUserRequest));
     }
 
     /**
@@ -80,7 +85,7 @@ public class SysUserController {
     }
 
     /**
-     * 重置用户密码
+     * 重置用户密码为默认密码
      */
     @PostMapping(value = "/sysUser/resetPassword")
     public ResponseData<?> resetPassword(@RequestBody SysUserRequest sysUserRequest) {

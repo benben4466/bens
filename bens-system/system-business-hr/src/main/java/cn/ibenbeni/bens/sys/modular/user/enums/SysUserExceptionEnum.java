@@ -78,7 +78,14 @@ public enum SysUserExceptionEnum implements AbstractExceptionEnum {
     /**
      * 用户邮箱存在重复
      */
-    EMAIL_REPEAT(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + "10013", "用户邮箱存在重复");
+    EMAIL_REPEAT(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + "10013", "用户邮箱存在重复"),
+
+
+    // ------------------------------------------------------临时----------------------------------------------------
+    /**
+     * 用户账号重复
+     */
+    USER_ACCOUNT_EXISTED(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + "10014", "用户账号重复");
 
     /**
      * 错误编码

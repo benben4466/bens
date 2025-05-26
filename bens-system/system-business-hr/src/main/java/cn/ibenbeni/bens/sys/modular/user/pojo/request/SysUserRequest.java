@@ -8,6 +8,8 @@ import java.math.BigDecimal;
 import java.util.Set;
 
 /**
+ * 系统用户封装类
+ *
  * @author benben
  * @date 2025/4/19  下午1:35
  */
