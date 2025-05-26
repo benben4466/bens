@@ -1,4 +1,4 @@
-package cn.ibenbeni.bens.auth.api.password.pojo.password;
+package cn.ibenbeni.bens.auth.api.pojo.password;
 
 import lombok.Data;
 

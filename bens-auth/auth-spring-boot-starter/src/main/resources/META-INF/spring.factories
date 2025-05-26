@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  cn.ibenbeni.bens.auth.starter.AuthAutoConfiguration,\
+  cn.ibenbeni.bens.auth.starter.cache.AuthTokenMemoryCacheAutoConfiguration,\
+  cn.ibenbeni.bens.auth.starter.cache.AuthTokenRedisCacheAutoConfiguration

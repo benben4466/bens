@@ -16,7 +16,7 @@
         <!-- 认证模块-API -->
         <module>auth-api</module>
         <!-- 认证模块-实现 -->
-        <module>auth-api-impl</module>
+        <module>auth-sdk</module>
         <!-- 认证模块-starter -->
         <module>auth-spring-boot-starter</module>
     </modules>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>cn.ibenbeni</groupId>
+        <artifactId>bens-auth</artifactId>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <packaging>jar</packaging>
+
+    <artifactId>auth-sdk</artifactId>
+    <description>认证模块-实现</description>
+
+    <dependencies>
+        <!-- 认证模块-API -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>auth-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!--system业务模块的api-->
+        <!--登录和鉴权需要用到用户相关的接口-->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>system-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!--安全模块的api-->
+        <!--需要用到校验验证码的接口-->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>security-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!--日志api-->
+        <!--记录登录日志-->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>log-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!--缓存模块-->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>cache-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>cache-sdk-memory</artifactId>
+            <version>${revision}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>cache-sdk-redis</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- Sa-Token-权限认证框架 -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-spring-boot-starter</artifactId>
+            <version>${sa-token.version}</version>
+        </dependency>
+        <!-- Sa-Token 整合 RedisTemplate -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-redis-template</artifactId>
+            <version>${sa-token.version}</version>
+        </dependency>
+        <!-- 提供 Redis 连接池 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
+
+        <!-- TODO 以下注解是临时的 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

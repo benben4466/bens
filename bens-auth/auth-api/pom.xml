@@ -15,4 +15,30 @@
     <artifactId>auth-api</artifactId>
     <description>认证模块-API</description>
 
+    <dependencies>
+        <!--校验模块-API-->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>validator-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- Spring-Context模块 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+
+        <!--web-->
+        <!--LoginUserRemoteApi会用到web，用在提供feign接口时-->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>

@@ -19,8 +19,29 @@
         <!-- 认证模块-实现 -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
-            <artifactId>auth-api-impl</artifactId>
+            <artifactId>auth-sdk</artifactId>
             <version>${revision}</version>
+        </dependency>
+
+        <!--缓存配置-->
+        <!--在项目中进行配置是开启内存还是Redis缓存-->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>cache-sdk-memory</artifactId>
+            <version>${revision}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>cache-sdk-redis</artifactId>
+            <version>${revision}</version>
+            <optional>true</optional>
+        </dependency>
+
+        <!--properties自动提示装载-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
         </dependency>
     </dependencies>
 

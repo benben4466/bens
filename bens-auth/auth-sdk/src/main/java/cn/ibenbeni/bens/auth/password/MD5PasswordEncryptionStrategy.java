@@ -4,7 +4,7 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.SecureUtil;
 import cn.ibenbeni.bens.auth.api.constants.PasswordEncryptionConstants;
 import cn.ibenbeni.bens.auth.api.password.PasswordEncryptionStrategy;
-import cn.ibenbeni.bens.auth.api.password.pojo.password.SaltedEncryptResult;
+import cn.ibenbeni.bens.auth.api.pojo.password.SaltedEncryptResult;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 

@@ -1,6 +1,6 @@
 package cn.ibenbeni.bens.auth.api.password;
 
-import cn.ibenbeni.bens.auth.api.password.pojo.password.SaltedEncryptResult;
+import cn.ibenbeni.bens.auth.api.pojo.password.SaltedEncryptResult;
 import cn.ibenbeni.bens.rule.strategy.CustomStrategy;
 
 /**

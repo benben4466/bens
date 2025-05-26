@@ -6,7 +6,7 @@ package cn.ibenbeni.bens.auth.api.constants;
  * @author benben
  * @date 2025/5/3  下午4:09
  */
-public class PasswordEncryptionConstants {
+public interface PasswordEncryptionConstants {
 
     /**
      * MD5加密
