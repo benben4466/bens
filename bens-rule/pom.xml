@@ -22,10 +22,30 @@
             <artifactId>lombok</artifactId>
         </dependency>
 
+        <!-- spring boot基础依赖 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <!-- Mybatis-Plus的实体注解依赖，实体会放在api层 -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-annotation</artifactId>
+            <version>${mybatis-plus.version}</version>
+        </dependency>
+
+        <!-- jackson注解，枚举上加的 -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+        </dependency>
+
         <!-- hutool工具 -->
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
+            <version>${hutool.version}</version>
         </dependency>
 
         <!-- JSON解析器 -->
@@ -33,6 +53,25 @@
             <groupId>com.alibaba.fastjson2</groupId>
             <artifactId>fastjson2</artifactId>
         </dependency>
+
+        <!--web-->
+        <!--HttpServletContext获取http请求上下文会用到-->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- EasyCaptcha图形验证码 -->
+<!--        <dependency>-->
+<!--            <groupId>com.github.whvcse</groupId>-->
+<!--            <artifactId>easy-captcha</artifactId>-->
+<!--        </dependency>-->
+
     </dependencies>
 
 </project>
