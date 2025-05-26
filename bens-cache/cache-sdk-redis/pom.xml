@@ -5,33 +5,28 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.ibenbeni</groupId>
-        <artifactId>bens</artifactId>
+        <artifactId>bens-cache</artifactId>
         <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
-    <modules>
-        <!-- 缓存模块-API -->
-        <module>cache-api</module>
-        <!-- 缓存模块-内存实现 -->
-        <module>cache-sdk-memory</module>
-        <!-- 缓存模块-Redis实现 -->
-        <module>cache-sdk-redis</module>
-        <!-- 缓存模块-内存实现-starter -->
-        <module>cache-spring-boot-starter-memory</module>
-    </modules>
-
-    <artifactId>bens-cache</artifactId>
-    <description>缓存模块</description>
+    <artifactId>cache-sdk-redis</artifactId>
+    <description>缓存模块-Redis实现</description>
 
     <dependencies>
-        <!-- 规则模块-开发规则 -->
+        <!-- 缓存模块-API -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
-            <artifactId>bens-rule</artifactId>
+            <artifactId>cache-api</artifactId>
             <version>${revision}</version>
+        </dependency>
+
+        <!-- Redis连接 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
     </dependencies>
 

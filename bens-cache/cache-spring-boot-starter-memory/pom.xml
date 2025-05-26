@@ -19,7 +19,7 @@
         <!-- 缓存模块-内存实现 -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
-            <artifactId>cache-api-impl-memory</artifactId>
+            <artifactId>cache-sdk-memory</artifactId>
             <version>${revision}</version>
         </dependency>
 
