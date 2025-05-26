@@ -12,14 +12,21 @@
 
     <packaging>jar</packaging>
 
-    <artifactId>log-business</artifactId>
-    <description>日志模块-业务日志</description>
+    <artifactId>log-spring-boot-starter</artifactId>
+    <description>日志模块-Starter</description>
 
     <dependencies>
-        <!-- 日志模块-API -->
+        <!-- 日志模块-业务日志 -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
-            <artifactId>log-api</artifactId>
+            <artifactId>log-business</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- 日志模块-登陆日志 -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>log-business-login-log</artifactId>
             <version>${revision}</version>
         </dependency>
     </dependencies>

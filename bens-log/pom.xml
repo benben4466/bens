@@ -15,8 +15,12 @@
     <modules>
         <!-- 日志模块-API -->
         <module>log-api</module>
-        <!-- 日志模块-实现 -->
+        <!-- 日志模块-业务日志 -->
         <module>log-business</module>
+        <!-- 日志模块-登陆日志 -->
+        <module>log-business-login-log</module>
+        <!-- 日志模块-Starter -->
+        <module>log-spring-boot-starter</module>
     </modules>
 
     <artifactId>bens-log</artifactId>
