@@ -5,21 +5,21 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.ibenbeni</groupId>
-        <artifactId>bens-auth</artifactId>
+        <artifactId>bens-security</artifactId>
         <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <packaging>jar</packaging>
 
-    <artifactId>auth-api-impl</artifactId>
-    <description>认证模块-实现</description>
+    <artifactId>security-sdk-captcha</artifactId>
+    <description>校验模块-验证码</description>
 
     <dependencies>
-        <!-- 认证模块-API -->
+        <!--安全模块-API-->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
-            <artifactId>auth-api</artifactId>
+            <artifactId>security-api</artifactId>
             <version>${revision}</version>
         </dependency>
 
@@ -31,20 +31,17 @@
         </dependency>
         <dependency>
             <groupId>cn.ibenbeni</groupId>
-            <artifactId>cache-api-impl-memory</artifactId>
+            <artifactId>cache-sdk-memory</artifactId>
+            <version>${revision}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>cache-sdk-redis</artifactId>
             <version>${revision}</version>
             <optional>true</optional>
         </dependency>
 
-        <!-- TODO 以下注解是临时的 -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-autoconfigure</artifactId>
-        </dependency>
     </dependencies>
 
 </project>

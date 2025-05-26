@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>cn.ibenbeni</groupId>
+        <artifactId>bens-security</artifactId>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>security-spring-boot-starter</artifactId>
+    <description>安全模块-Starter</description>
+
+    <dependencies>
+        <!-- 安全模块-ThreadLocal清除器 -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>security-sdk-clear-threadlocal</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- 安全模块-验证码 -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>security-sdk-captcha</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!--缓存，可选依赖-->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>cache-sdk-memory</artifactId>
+            <version>${revision}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>cache-sdk-redis</artifactId>
+            <version>${revision}</version>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+
+</project>

@@ -5,33 +5,28 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.ibenbeni</groupId>
-        <artifactId>bens</artifactId>
+        <artifactId>bens-security</artifactId>
         <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
-    <modules>
-        <!-- 安全模块-API -->
-        <module>security-api</module>
-        <!-- 安全模块-验证码 -->
-        <module>security-sdk-captcha</module>
-        <!-- 安全模块-线程本地变量 -->
-        <module>security-sdk-clear-threadlocal</module>
-        <!-- 安全模块-Starter -->
-        <module>security-spring-boot-starter</module>
-    </modules>
-
-    <artifactId>bens-security</artifactId>
-    <description>安全模块</description>
+    <artifactId>security-sdk-clear-threadlocal</artifactId>
+    <description>安全模块-线程本地变量清除</description>
 
     <dependencies>
-        <!-- 规则模块-开发规则 -->
+        <!--安全模块-API-->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
-            <artifactId>bens-rule</artifactId>
+            <artifactId>security-api</artifactId>
             <version>${revision}</version>
+        </dependency>
+
+        <!--web模块-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
     </dependencies>
 

@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  cn.ibenbeni.bens.security.starter.ProjectSecurityAutoConfiguration,\
+  cn.ibenbeni.bens.security.starter.CaptchaAutoConfiguration
