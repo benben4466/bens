@@ -16,7 +16,7 @@
         <!--DAO模块-API-->
         <module>db-api</module>
         <!--DAO模块-MybatisPlus-->
-        <module>db-api-impl-mp</module>
+        <module>db-sdk-mp</module>
         <!--DAO模块-starter-->
         <module>db-spring-boot-starter</module>
     </modules>

@@ -26,7 +26,7 @@
         <!--DAO模块-MybatisPlus-->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
-            <artifactId>db-api-impl-mp</artifactId>
+            <artifactId>db-sdk-mp</artifactId>
             <version>${revision}</version>
         </dependency>
 

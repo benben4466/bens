@@ -1,6 +1,7 @@
 package cn.ibenbeni.bens.db.starter.mp;
 
 import cn.ibenbeni.bens.db.mp.fieldfill.CustomMetaObjectHandler;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
  * @author benben
  * @date 2025/4/19  下午1:06
  */
+@MapperScan("cn.ibenbeni.**.mapper")
 @Configuration
 public class MybatisPlusAutoConfiguration {
 
