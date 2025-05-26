@@ -1,0 +1,63 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: bens
+  jackson:
+    time-zone: GMT+8
+    locale: zh_CN
+    serialization:
+      indent_output: false
+  # 环境部分
+  mvc:
+    servlet:
+      path: /api
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/bens?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&nullCatalogMeansCurrent=true&allowPublicKeyRetrieval=true
+    username: root
+    password: abc123456
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 0
+    # password:
+  main:
+    banner-mode: log
+
+mybatis-plus:
+  # Mapper的XML文件扫描路径
+  mapper-locations: classpath*:cn/ibenbeni/**/mapping/*.xml
+  configuration:
+    # 数据库下划线转换驼峰
+    map-underscore-to-camel-case: true
+    # 一级缓存
+    cache-enabled: true
+    # 是否启用延迟加载 -> 在真正需要访问关联对象时，才去数据库中查询数据
+    lazy-loading-enabled: true
+    # 是否启用多个结果集的支持 -> 执行存储过程或批处理操作
+    multiple-result-sets-enabled: true
+  global-config:
+    banner: false
+    # 是否启用SQL Runner功能; SQL Runner功能指允许开发者直接通过字符串形式的SQL语句执行查询和更新操作
+    enable-sql-runner: true
+    db-config:
+      # 主键生成策略
+      id-type: assign_id
+      # 数据库下划线转换驼峰；与map-underscore-to-camel-case类似, 但它是专门针对表名和字段名的映射规则
+      table-underline: true
+      logic-delete-field: del_flag
+      logic-delete-value: Y
+      logic-not-delete-value: N
+
+# Sa-Token权限认证框架
+sa-token:
+  # 是否打印Banner信息
+  is-print: false
+  # Token名称
+  token-name: token
+
+bens:
+  security:
+    password: MD5
