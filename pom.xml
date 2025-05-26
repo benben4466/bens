@@ -28,6 +28,8 @@
         <!-- 文件模块 -->
         <module>bens-file</module>
         <module>bens-log</module>
+        <!-- 校验模块 -->
+        <module>bens-validator</module>
     </modules>
 
     <properties>
@@ -81,6 +83,7 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 
