@@ -62,3 +62,26 @@ CREATE TABLE `sys_role`
     `remark`          varchar(255) NULL DEFAULT NULL COMMENT '备注',
     PRIMARY KEY (`role_id`)
 ) COMMENT='系统角色';
+
+CREATE TABLE `sys_hr_organization`
+(
+    `org_id`         bigint         NOT NULL COMMENT '主键',
+    `org_parent_id`  bigint         NOT NULL COMMENT '父id，一级节点父id是-1',
+    `org_pids`       varchar(500)   NOT NULL COMMENT '父ids',
+    `org_name`       varchar(100)   NOT NULL COMMENT '组织名称',
+    `org_short_name` varchar(100) NULL DEFAULT NULL COMMENT '组织机构简称',
+    `org_code`       varchar(50)    NOT NULL COMMENT '组织编码',
+    `org_sort`       decimal(10, 2) NOT NULL COMMENT '排序',
+    `status_flag`    tinyint        NOT NULL DEFAULT 1 COMMENT '状态：1-启用，2-禁用',
+    `org_type`       tinyint NULL DEFAULT 1 COMMENT '组织机构类型：1-公司，2-部门',
+    `tax_no`         varchar(30) NULL DEFAULT NULL COMMENT '税号',
+    `remark`         varchar(255) NULL DEFAULT NULL COMMENT '描述',
+    `org_level`      int NULL DEFAULT NULL COMMENT '组织机构层级',
+    `expand_field`   json NULL COMMENT '拓展字段',
+    `del_flag`       char(1)        NOT NULL DEFAULT 'N' COMMENT '删除标记：Y-已删除，N-未删除',
+    `create_time`    datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+    `create_user`    bigint NULL DEFAULT NULL COMMENT '创建人',
+    `update_time`    datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+    `update_user`    bigint NULL DEFAULT NULL COMMENT '更新人',
+    PRIMARY KEY (`org_id`)
+) COMMENT = '组织机构信息';

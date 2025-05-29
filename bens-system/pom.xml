@@ -15,7 +15,7 @@
     <modules>
         <!--系统模块-API-->
         <module>system-api</module>
-        <!--系统模块-人员-->
+        <!--系统模块-基础核心业务模块-->
         <module>system-business-hr</module>
         <!--系统模块-权限-->
         <module>system-business-permission</module>

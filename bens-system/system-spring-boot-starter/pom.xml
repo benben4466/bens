@@ -17,7 +17,7 @@
 
     <dependencies>
 
-        <!-- 基础核心业务业务模块 -->
+        <!-- 基础核心业务模块 -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
             <artifactId>system-business-hr</artifactId>
