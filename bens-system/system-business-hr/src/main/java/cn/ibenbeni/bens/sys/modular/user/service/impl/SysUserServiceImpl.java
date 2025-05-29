@@ -112,6 +112,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         // 记录日志
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void batchDel(SysUserRequest sysUserRequest) {
         Set<Long> userIdList = sysUserRequest.getUserIdList();
