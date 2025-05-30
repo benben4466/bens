@@ -189,12 +189,12 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             removeRoleCallbackApi.validateHaveBind(roleIdList);
         }
 
+        this.removeBatchByIds(roleIdList);
+
         // 执行角色相关关联业务的删除操作
         for (RemoveRoleCallbackApi removeRoleCallbackApi : callbackApiMap.values()) {
             removeRoleCallbackApi.removeAction(roleIdList);
         }
-
-        this.removeBatchByIds(roleIdList);
     }
 
     /**
