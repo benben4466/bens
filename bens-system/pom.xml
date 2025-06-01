@@ -17,7 +17,7 @@
         <module>system-api</module>
         <!--系统模块-基础核心业务模块-->
         <module>system-business-hr</module>
-        <!--系统模块-权限-->
+        <!--系统模块-应用权限管理模块-->
         <module>system-business-permission</module>
         <module>system-spring-boot-starter</module>
     </modules>

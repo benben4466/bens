@@ -13,7 +13,7 @@
     <packaging>jar</packaging>
 
     <artifactId>system-business-permission</artifactId>
-    <description>系统模块-权限</description>
+    <description>系统模块-应用权限管理</description>
 
     <dependencies>
         <!--系统模块-API-->
@@ -28,6 +28,25 @@
             <groupId>cn.ibenbeni</groupId>
             <artifactId>db-spring-boot-starter</artifactId>
             <version>${revision}</version>
+        </dependency>
+
+        <!--缓存模块-->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>cache-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>cache-sdk-memory</artifactId>
+            <version>${revision}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>cache-sdk-redis</artifactId>
+            <version>${revision}</version>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 

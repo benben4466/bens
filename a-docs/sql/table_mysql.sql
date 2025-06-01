@@ -85,3 +85,42 @@ CREATE TABLE `sys_hr_organization`
     `update_user`    bigint NULL DEFAULT NULL COMMENT '更新人',
     PRIMARY KEY (`org_id`)
 ) COMMENT = '组织机构信息';
+
+CREATE TABLE `sys_menu`
+(
+    `menu_id`          bigint                                                   NOT NULL COMMENT '主键',
+    `menu_parent_id`   bigint                                                   NOT NULL COMMENT '父id，顶级节点的父id是-1',
+    `menu_pids`        varchar(1000)                                            NOT NULL COMMENT '父id集合，中括号包住，逗号分隔',
+    `menu_name`        varchar(100)                                             NOT NULL COMMENT '菜单的名称',
+    `menu_code`        varchar(50)                                              NOT NULL COMMENT '菜单编码',
+    `menu_type`        tinyint NULL DEFAULT NULL COMMENT '菜单类型：10-后台菜单，20-纯前台路由界面，30-内部链接，40-外部链接',
+    `menu_sort`        decimal(20, 2)                                           NOT NULL DEFAULT 100.00 COMMENT '排序',
+    `antdv_component`  varchar(255) NULL DEFAULT NULL COMMENT '前端组件名',
+    `antdv_router`     varchar(255) NULL DEFAULT NULL COMMENT '路由地址，浏览器显示的URL，例如/menu',
+    `antdv_icon`       varchar(255) NULL DEFAULT 'icon-default' COMMENT '图标编码',
+    `antdv_link_url`   varchar(255) NULL DEFAULT NULL COMMENT '外部链接地址',
+    `antdv_active_url` varchar(255) NULL DEFAULT NULL COMMENT '用于非菜单显示页面的重定向url设置',
+    `antdv_visible`    char(1) NULL DEFAULT 'Y' COMMENT '是否可见(分离版用)：Y-是，N-否',
+    `status_flag`      tinyint                                                  NOT NULL DEFAULT 1 COMMENT '状态：1-启用，2-禁用',
+    `remark`           varchar(255) NULL DEFAULT NULL COMMENT '备注',
+    `expand_field`     json NULL COMMENT '拓展字段',
+    `del_flag`         char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'N' COMMENT '删除标记：Y-已删除，N-未删除',
+    `create_time`      datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+    `create_user`      bigint NULL DEFAULT NULL COMMENT '创建人',
+    `update_time`      datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+    `update_user`      bigint NULL DEFAULT NULL COMMENT '更新人',
+    PRIMARY KEY (`menu_id`)
+) COMMENT = '系统菜单';
+
+CREATE TABLE `sys_menu_options`
+(
+    `menu_option_id` bigint       NOT NULL COMMENT '主键',
+    `menu_id`        bigint       NOT NULL COMMENT '菜单ID',
+    `option_name`    varchar(100) NOT NULL COMMENT '功能或操作的名称',
+    `option_code`    varchar(100) NOT NULL COMMENT '功能或操作的编码',
+    `create_time`    datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+    `create_user`    bigint NULL DEFAULT NULL COMMENT '创建人',
+    `update_time`    datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
+    `update_user`    bigint NULL DEFAULT NULL COMMENT '修改人',
+    PRIMARY KEY (`menu_option_id`)
+) COMMENT = '菜单下的功能操作';
