@@ -258,16 +258,12 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
     private void baseDelete(Set<Long> idSet) {
         Map<String, RemoveMenuCallbackApi> menuCallbackApiMap = SpringUtil.getBeansOfType(RemoveMenuCallbackApi.class);
-        // 校验是否有其他业务绑定了菜单信息
-        for (RemoveMenuCallbackApi removeMenuCallbackApi : menuCallbackApiMap.values()) {
-            removeMenuCallbackApi.validateHaveBind(idSet);
-        }
 
         this.removeBatchByIds(idSet);
 
         // 联动删除所有和菜单相关其他业务数据
         for (RemoveMenuCallbackApi removeMenuCallbackApi : menuCallbackApiMap.values()) {
-            removeMenuCallbackApi.removeAction(idSet);
+            removeMenuCallbackApi.removeMenuAction(idSet);
         }
     }
 

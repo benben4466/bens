@@ -186,14 +186,14 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         Map<String, RemoveRoleCallbackApi> callbackApiMap = SpringUtil.getBeansOfType(RemoveRoleCallbackApi.class);
         // 执行角色相关的校验
         for (RemoveRoleCallbackApi removeRoleCallbackApi : callbackApiMap.values()) {
-            removeRoleCallbackApi.validateHaveBind(roleIdList);
+            removeRoleCallbackApi.validateHaveRoleBind(roleIdList);
         }
 
         this.removeBatchByIds(roleIdList);
 
         // 执行角色相关关联业务的删除操作
         for (RemoveRoleCallbackApi removeRoleCallbackApi : callbackApiMap.values()) {
-            removeRoleCallbackApi.removeAction(roleIdList);
+            removeRoleCallbackApi.removeRoleAction(roleIdList);
         }
     }
 

@@ -163,14 +163,9 @@ public class SysMenuOptionsServiceImpl extends ServiceImpl<SysMenuOptionsMapper,
     }
 
     @Override
-    public void validateHaveBind(Object args) {
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public void removeAction(Object args) {
+    public void removeMenuAction(Set<Long> beRemovedMenuIdList) {
         LambdaQueryWrapper<SysMenuOptions> queryWrapper = Wrappers.lambdaQuery(SysMenuOptions.class)
-                .in(CollUtil.isNotEmpty((Set<Long>) args), SysMenuOptions::getMenuId, (Set<Long>) args);
+                .in(CollUtil.isNotEmpty(beRemovedMenuIdList), SysMenuOptions::getMenuId, beRemovedMenuIdList);
         this.remove(queryWrapper);
     }
 

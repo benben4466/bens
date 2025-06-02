@@ -227,7 +227,7 @@ public class HrOrganizationServiceImpl extends ServiceImpl<HrOrganizationMapper,
         Map<String, RemoveOrgCallbackApi> removeOrgCallbackApiMap = SpringUtil.getBeansOfType(RemoveOrgCallbackApi.class);
         // 校验是否有其他业务绑定了组织机构信息
         for (RemoveOrgCallbackApi removeOrgCallbackApi : removeOrgCallbackApiMap.values()) {
-            removeOrgCallbackApi.validateHaveBind(orgIdSet);
+            removeOrgCallbackApi.validateHaveOrgBind(orgIdSet);
         }
 
         // 删除组织机构
@@ -235,7 +235,7 @@ public class HrOrganizationServiceImpl extends ServiceImpl<HrOrganizationMapper,
 
         // 联动删除所有和本组织机构相关其他业务数据
         for (RemoveOrgCallbackApi removeOrgCallbackApi : removeOrgCallbackApiMap.values()) {
-            removeOrgCallbackApi.removeAction(orgIdSet);
+            removeOrgCallbackApi.removeOrgAction(orgIdSet);
         }
     }
 
