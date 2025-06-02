@@ -36,6 +36,13 @@
             <groupId>cn.ibenbeni</groupId>
             <artifactId>cache-sdk-memory</artifactId>
             <version>${revision}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>cache-sdk-redis</artifactId>
+            <version>${revision}</version>
+            <optional>true</optional>
         </dependency>
 
         <!-- 文件模块 -->

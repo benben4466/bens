@@ -6,4 +6,10 @@ package cn.ibenbeni.bens.sys.api;
  * @author benben
  */
 public interface SysRoleServiceApi {
+
+    /**
+     * 获取默认角色ID
+     */
+    Long getDefaultRoleId();
+
 }
