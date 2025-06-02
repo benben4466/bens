@@ -332,7 +332,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         // 校验是否有其他业务绑定了用户信息
         Map<String, RemoveUserCallbackApi> removeUserCallbackApiMap = SpringUtil.getBeansOfType(RemoveUserCallbackApi.class);
         for (RemoveUserCallbackApi removeUserCallbackApi : removeUserCallbackApiMap.values()) {
-            removeUserCallbackApi.validateHaveBind(userIdList);
+            removeUserCallbackApi.validateHaveUserBind(userIdList);
         }
 
         // 执行删除用户操作
@@ -340,7 +340,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
         // 执行删除用户关联业务的操作
         for (RemoveUserCallbackApi removeUserCallbackApi : removeUserCallbackApiMap.values()) {
-            removeUserCallbackApi.removeAction(userIdList);
+            removeUserCallbackApi.validateHaveUserBind(userIdList);
         }
     }
 
