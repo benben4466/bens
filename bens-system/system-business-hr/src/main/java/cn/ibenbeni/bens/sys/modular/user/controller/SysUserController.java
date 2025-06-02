@@ -6,6 +6,8 @@ import cn.ibenbeni.bens.rule.pojo.response.SuccessResponseData;
 import cn.ibenbeni.bens.sys.api.expander.SysConfigExpander;
 import cn.ibenbeni.bens.sys.modular.user.entity.SysUser;
 import cn.ibenbeni.bens.sys.modular.user.pojo.request.SysUserRequest;
+import cn.ibenbeni.bens.sys.modular.user.pojo.request.SysUserRoleRequest;
+import cn.ibenbeni.bens.sys.modular.user.service.SysUserRoleService;
 import cn.ibenbeni.bens.sys.modular.user.service.SysUserService;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +24,9 @@ public class SysUserController {
 
     @Resource
     private SysUserService sysUserService;
+
+    @Resource
+    private SysUserRoleService sysUserRoleService;
 
     /**
      * 添加用户
@@ -92,6 +97,16 @@ public class SysUserController {
         // 获取系统配置的默认密码
         String password = SysConfigExpander.getDefaultPassWord();
         sysUserService.resetPassword(sysUserRequest.getUserId(), password);
+        return new SuccessResponseData<>();
+    }
+
+    /**
+     * 绑定用户角色
+     * <p>组织架构-人员页面使用；用于绑定系统角色</p>
+     */
+    @PostMapping("/sysUser/bindRoles")
+    public ResponseData<?> bindRoles(@RequestBody SysUserRoleRequest sysUserRoleRequest) {
+        sysUserRoleService.bindRoles(sysUserRoleRequest);
         return new SuccessResponseData<>();
     }
 

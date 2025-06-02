@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 系统用户实例类
@@ -133,6 +134,13 @@ public class SysUser extends BaseBusinessEntity implements GetSortKey {
      */
     @TableField("user_sort")
     private BigDecimal userSort;
+
+    /**
+     * 获取用户角色ID列表
+     * <p>用在获取用户详情信息的响应</p>
+     */
+    @TableField(exist = false)
+    private List<Long> roleIdList;
 
     @Override
     public Object getSortKey() {

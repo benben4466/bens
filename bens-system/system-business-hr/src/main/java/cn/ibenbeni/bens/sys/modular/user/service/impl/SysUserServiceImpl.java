@@ -30,6 +30,7 @@ import cn.ibenbeni.bens.sys.modular.user.factory.SysUserCreateFactory;
 import cn.ibenbeni.bens.sys.modular.user.mapper.SysUserMapper;
 import cn.ibenbeni.bens.sys.modular.user.pojo.request.SysUserRequest;
 import cn.ibenbeni.bens.sys.modular.user.pojo.response.PersonalInfo;
+import cn.ibenbeni.bens.sys.modular.user.service.SysUserRoleService;
 import cn.ibenbeni.bens.sys.modular.user.service.SysUserService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
@@ -37,6 +38,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,6 +61,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Resource
     private SecurityConfigService securityConfigService;
+
+    @Lazy
+    @Resource
+    private SysUserRoleService sysUserRoleService;
 
     @Resource(name = "loginErrorCountCacheApi")
     private CacheOperatorApi<Integer> loginErrorCountCacheApi;
@@ -90,6 +96,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         // 设置用户默认头像
         sysUser.setAvatar(FileConstants.DEFAULT_AVATAR_FILE_PATH);
         this.save(sysUser);
+
+        // TODO 更新用户的任职信息
+
+        // 添加用户一个默认角色
+        sysUserRoleService.bindUserDefaultRole(sysUser.getUserId());
+
+        // TODO 增加用户证书的信息
 
         // 记录日志
         // 记录一个密码修改记录
@@ -163,6 +176,15 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         // 查询用户个人信息
         LambdaQueryWrapper<SysUser> queryWrapper = Wrappers.lambdaQuery(SysUser.class).eq(SysUser::getUserId, sysUserRequest.getUserId()).select(SysUser::getUserId, SysUser::getAvatar, SysUser::getAccount, SysUser::getUserSort, SysUser::getSuperAdminFlag, SysUser::getRealName, SysUser::getSex, SysUser::getBirthday, SysUser::getEmail, SysUser::getPhone, SysUser::getLastLoginIp, SysUser::getLoginCount, SysUser::getLastLoginTime, SysUser::getStatusFlag, BaseEntity::getCreateTime, BaseEntity::getUpdateTime);
         SysUser dbSysUser = this.getOne(queryWrapper);
+
+        // TODO 获取用户的组织机构信息
+
+        // 获取用户的角色信息
+        Set<Long> userRoleIdList = sysUserRoleService.getUserSystemRoleIdList(dbSysUser.getUserId());
+        dbSysUser.setRoleIdList(new ArrayList<>(userRoleIdList));
+
+        // TODO 获取用户证书信息
+
         return dbSysUser;
     }
 

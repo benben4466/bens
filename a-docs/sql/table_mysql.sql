@@ -124,3 +124,17 @@ CREATE TABLE `sys_menu_options`
     `update_user`    bigint NULL DEFAULT NULL COMMENT '修改人',
     PRIMARY KEY (`menu_option_id`)
 ) COMMENT = '菜单下的功能操作';
+
+CREATE TABLE `sys_user_role`
+(
+    `user_role_id` bigint  NOT NULL COMMENT '主键',
+    `user_id`      bigint  NOT NULL COMMENT '用户ID',
+    `role_id`      bigint  NOT NULL COMMENT '角色ID',
+    `role_type`    tinyint NOT NULL DEFAULT 10 COMMENT '角色类型：10-系统角色，15-业务角色，20-公司角色',
+    `role_org_id`  bigint NULL DEFAULT NULL COMMENT '用户所属机构ID',
+    `create_time`  datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+    `create_user`  bigint NULL DEFAULT NULL COMMENT '创建人',
+    `update_time`  datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
+    `update_user`  bigint NULL DEFAULT NULL COMMENT '修改人',
+    PRIMARY KEY (user_role_id)
+) COMMENT = '用户角色关联';

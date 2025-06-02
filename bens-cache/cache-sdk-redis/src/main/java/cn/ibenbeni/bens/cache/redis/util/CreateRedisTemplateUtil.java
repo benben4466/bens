@@ -14,8 +14,8 @@ public final class CreateRedisTemplateUtil {
     /**
      * 创建 RedisTemplate
      */
-    public static RedisTemplate<String, Integer> createObject(RedisConnectionFactory redisConnectionFactory) {
-        RedisTemplate<String, Integer> redisTemplate = new RedisTemplate<>();
+    public static <T> RedisTemplate<String, T> createObject(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, T> redisTemplate = new RedisTemplate<>();
         // 设置 RedisConnectionFactory
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         // 初始化 RedisTemplate

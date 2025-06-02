@@ -12,6 +12,7 @@ import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
 import cn.ibenbeni.bens.rule.enums.permission.DataScopeTypeEnum;
 import cn.ibenbeni.bens.rule.exception.base.ServiceException;
 import cn.ibenbeni.bens.sys.api.callback.RemoveRoleCallbackApi;
+import cn.ibenbeni.bens.sys.api.constants.SysConstants;
 import cn.ibenbeni.bens.sys.api.enums.role.RoleTypeEnum;
 import cn.ibenbeni.bens.sys.modular.role.entity.SysRole;
 import cn.ibenbeni.bens.sys.modular.role.enums.exception.SysRoleExceptionEnum;
@@ -221,6 +222,15 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         // 非超级管理员，直接拼好，角色类型和角色的公司id，只能查本公司的
         wrapper.eq(SysRole::getRoleType, RoleTypeEnum.COMPANY_ROLE.getCode());
         wrapper.eq(SysRole::getRoleCompanyId, LoginContext.me().getCurrentUserCompanyId());
+    }
+
+    @Override
+    public Long getDefaultRoleId() {
+        LambdaQueryWrapper<SysRole> queryWrapper = Wrappers.lambdaQuery(SysRole.class)
+                .eq(SysRole::getRoleCode, SysConstants.DEFAULT_ROLE_CODE)
+                .select(SysRole::getRoleId);
+        SysRole dbRole = this.getOne(queryWrapper, false);
+        return dbRole != null ? dbRole.getRoleId() : null;
     }
 
 }

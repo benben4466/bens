@@ -18,6 +18,11 @@ public interface SysConstants {
     String ADMIN_USER_ACCOUNT = "admin";
 
     /**
+     * 默认用户的初始角色编码
+     */
+    String DEFAULT_ROLE_CODE = "employee";
+
+    /**
      * 默认的sys模块的缓存超时时间
      */
     Long DEFAULT_SYS_CACHE_TIMEOUT_SECONDS = 3600L;
