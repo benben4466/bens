@@ -230,13 +230,13 @@ public class HrOrganizationServiceImpl extends ServiceImpl<HrOrganizationMapper,
             removeOrgCallbackApi.validateHaveBind(orgIdSet);
         }
 
+        // 删除组织机构
+        this.removeBatchByIds(orgIdSet);
+
         // 联动删除所有和本组织机构相关其他业务数据
         for (RemoveOrgCallbackApi removeOrgCallbackApi : removeOrgCallbackApiMap.values()) {
             removeOrgCallbackApi.removeAction(orgIdSet);
         }
-
-        // 删除组织机构
-        this.removeBatchByIds(orgIdSet);
     }
 
     private HrOrganization queryById(Long orgId) {
