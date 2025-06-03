@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  cn.ibenbeni.bens.sys.starter.cache.role.RoleMemoryCacheAutoConfiguration,\
+  cn.ibenbeni.bens.sys.starter.cache.role.RoleRedisCacheAutoConfiguration

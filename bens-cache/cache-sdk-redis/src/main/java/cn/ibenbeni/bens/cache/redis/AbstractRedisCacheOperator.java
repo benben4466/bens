@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
  * <p>Redis</p>
  *
  * @author benben
+ * @T 缓存的value的类型
  * @date 2025/5/22  下午9:27
  */
 public abstract class AbstractRedisCacheOperator<T> implements CacheOperatorApi<T> {
