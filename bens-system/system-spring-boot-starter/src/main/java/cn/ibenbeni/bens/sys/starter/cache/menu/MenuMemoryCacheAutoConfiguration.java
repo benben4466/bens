@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ConditionalOnMissingClass("org.springframework.data.redis.connection.RedisConnectionFactory")
-public class MenuCacheAutoConfiguration {
+public class MenuMemoryCacheAutoConfiguration {
 
     /**
      * 菜单编码的缓存
