@@ -138,3 +138,15 @@ CREATE TABLE `sys_user_role`
     `update_user`  bigint NULL DEFAULT NULL COMMENT '修改人',
     PRIMARY KEY (user_role_id)
 ) COMMENT = '用户角色关联';
+
+CREATE TABLE `sys_role_menu`
+(
+    `role_menu_id` bigint NOT NULL COMMENT '主键',
+    `role_id`      bigint NOT NULL COMMENT '角色ID',
+    `menu_id`      bigint NOT NULL COMMENT '菜单ID',
+    `create_time`  datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+    `create_user`  bigint NULL DEFAULT NULL COMMENT '创建人',
+    `update_time`  datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
+    `update_user`  bigint NULL DEFAULT NULL COMMENT '修改人',
+    PRIMARY KEY (`role_menu_id`)
+) COMMENT = '角色菜单关联';
