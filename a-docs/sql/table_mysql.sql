@@ -151,6 +151,18 @@ CREATE TABLE `sys_role_menu`
     PRIMARY KEY (`role_menu_id`)
 ) COMMENT = '角色菜单关联';
 
+CREATE TABLE `sys_role_data_scope`
+(
+    `role_data_scope_id` bigint NOT NULL COMMENT '主键',
+    `role_id`            bigint NOT NULL COMMENT '角色ID',
+    `organization_id`    bigint NOT NULL COMMENT '组织ID(角色所属组织)',
+    `create_time`        datetime NULL DEFAULT NULL COMMENT '创建时间',
+    `create_user`        bigint NULL DEFAULT NULL COMMENT '创建人',
+    `update_time`        datetime NULL DEFAULT NULL COMMENT '修改时间',
+    `update_user`        bigint NULL DEFAULT NULL COMMENT '修改人',
+    PRIMARY KEY (`role_data_scope_id`) USING BTREE
+) COMMENT = '角色数据范围';
+
 CREATE TABLE `sys_role_menu_options`
 (
     `role_menu_option_id` bigint NOT NULL COMMENT '主键',
