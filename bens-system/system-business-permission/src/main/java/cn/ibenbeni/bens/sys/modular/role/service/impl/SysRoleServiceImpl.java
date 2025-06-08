@@ -1,8 +1,11 @@
 package cn.ibenbeni.bens.sys.modular.role.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import cn.ibenbeni.bens.auth.api.context.LoginContext;
 import cn.ibenbeni.bens.db.api.factory.PageFactory;
@@ -14,10 +17,12 @@ import cn.ibenbeni.bens.rule.exception.base.ServiceException;
 import cn.ibenbeni.bens.sys.api.callback.RemoveRoleCallbackApi;
 import cn.ibenbeni.bens.sys.api.constants.SysConstants;
 import cn.ibenbeni.bens.sys.api.enums.role.RoleTypeEnum;
+import cn.ibenbeni.bens.sys.modular.menu.service.SysMenuOptionsService;
 import cn.ibenbeni.bens.sys.modular.role.entity.SysRole;
 import cn.ibenbeni.bens.sys.modular.role.enums.exception.SysRoleExceptionEnum;
 import cn.ibenbeni.bens.sys.modular.role.mapper.SysRoleMapper;
 import cn.ibenbeni.bens.sys.modular.role.pojo.request.SysRoleRequest;
+import cn.ibenbeni.bens.sys.modular.role.service.SysRoleMenuOptionsService;
 import cn.ibenbeni.bens.sys.modular.role.service.SysRoleService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
@@ -27,6 +32,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -38,6 +46,12 @@ import java.util.Set;
  */
 @Service
 public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> implements SysRoleService {
+
+    @Resource
+    private SysRoleMenuOptionsService sysRoleMenuOptionsService;
+
+    @Resource
+    private SysMenuOptionsService sysMenuOptionsService;
 
     @Override
     public void add(SysRoleRequest sysRoleRequest) {
@@ -259,6 +273,29 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                 .select(SysRole::getRoleId);
         SysRole dbRole = this.getOne(queryWrapper, false);
         return dbRole != null ? dbRole.getRoleId() : null;
+    }
+
+    @Override
+    public List<String> getRoleMenuOptionsByRoleId(String roleCode) {
+        if (StrUtil.isBlank(roleCode)) {
+            return new ArrayList<>();
+        }
+
+        LambdaQueryWrapper<SysRole> queryRoleWrapper = Wrappers.lambdaQuery(SysRole.class)
+                .eq(SysRole::getRoleCode, roleCode)
+                .select(SysRole::getRoleId);
+        SysRole dbRole = this.getOne(queryRoleWrapper, false);
+        if (dbRole == null) {
+            return new ArrayList<>();
+        }
+
+        // 获取角色的菜单功能ID集合
+        List<Long> roleBindMenuOptionsIdList = sysRoleMenuOptionsService.getRoleBindMenuOptionsIdList(ListUtil.list(false, dbRole.getRoleId()), true);
+        if (CollUtil.isEmpty(roleBindMenuOptionsIdList)) {
+            return new ArrayList<>();
+        }
+
+        return sysMenuOptionsService.getOptionsCodeList(roleBindMenuOptionsIdList);
     }
 
 }

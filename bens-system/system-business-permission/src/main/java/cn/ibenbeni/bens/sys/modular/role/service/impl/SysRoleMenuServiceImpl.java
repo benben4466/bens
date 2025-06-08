@@ -55,17 +55,20 @@ public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuMapper, SysRo
     }
 
     @Override
-    public List<Long> getRoleBindMenuIdList(List<Long> roleIdList) {
+    public List<Long> getRoleBindMenuIdList(List<Long> roleIdList, boolean prioritizeCaching) {
         ArrayList<Long> result = new ArrayList<>();
         if (CollUtil.isEmpty(roleIdList)) {
             return result;
         }
 
         for (Long roleId : roleIdList) {
-            List<Long> cacheMenuIdList = roleMenuCache.get(roleId.toString());
-            if (CollUtil.isNotEmpty(cacheMenuIdList)) {
-                result.addAll(cacheMenuIdList);
-                continue;
+
+            if (prioritizeCaching) {
+                List<Long> cacheMenuIdList = roleMenuCache.get(roleId.toString());
+                if (CollUtil.isNotEmpty(cacheMenuIdList)) {
+                    result.addAll(cacheMenuIdList);
+                    continue;
+                }
             }
 
             // 数据库查询并缓存

@@ -1,4 +1,4 @@
-package cn.ibenbeni.bens.sys.modular.role.cache;
+package cn.ibenbeni.bens.sys.modular.role.cache.rolemenu;
 
 import cn.ibenbeni.bens.cache.redis.AbstractRedisCacheOperator;
 import cn.ibenbeni.bens.sys.modular.role.constants.RoleConstants;
