@@ -12,10 +12,36 @@ import lombok.Getter;
  */
 @Getter
 public enum DataScopeTypeEnum {
+
+    /**
+     * 仅本人数据
+     */
+    SELF(10, "仅本人数据"),
+
+    /**
+     * 本部门数据
+     */
+    DEPT(20, "本部门数据"),
+
     /**
      * 本部门及以下数据
      */
     DEPT_WITH_CHILD(30, "本部门及以下数据"),
+
+    /**
+     * 本公司及以下数据
+     */
+    COMPANY_WITH_CHILD(31, "本公司及以下数据"),
+
+    /**
+     * 指定部门数据
+     */
+    DEFINE(40, "指定部门数据"),
+
+    /**
+     * 全部数据
+     */
+    ALL(50, "全部数据"),
     ;
 
     private final Integer code;
