@@ -2,7 +2,8 @@ package cn.ibenbeni.bens.sys.starter.cache.role;
 
 import cn.ibenbeni.bens.cache.api.CacheOperatorApi;
 import cn.ibenbeni.bens.cache.redis.util.CreateRedisTemplateUtil;
-import cn.ibenbeni.bens.sys.modular.role.cache.RoleMenuRedisCache;
+import cn.ibenbeni.bens.sys.modular.role.cache.rolemenu.RoleMenuRedisCache;
+import cn.ibenbeni.bens.sys.modular.role.cache.roleoptions.RoleMenuOptionsRedisCache;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +29,15 @@ public class RoleRedisCacheAutoConfiguration {
     public CacheOperatorApi<List<Long>> roleMenuCache(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, List<Long>> redisTemplate = CreateRedisTemplateUtil.createObject(redisConnectionFactory);
         return new RoleMenuRedisCache(redisTemplate);
+    }
+
+    /**
+     * 角色绑定菜单功能缓存
+     */
+    @Bean
+    public CacheOperatorApi<List<Long>> roleMenuOptionsCache(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, List<Long>> redisTemplate = CreateRedisTemplateUtil.createObject(redisConnectionFactory);
+        return new RoleMenuOptionsRedisCache(redisTemplate);
     }
 
 }

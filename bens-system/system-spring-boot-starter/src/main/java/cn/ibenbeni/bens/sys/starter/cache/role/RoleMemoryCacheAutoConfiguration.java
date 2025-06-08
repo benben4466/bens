@@ -4,7 +4,8 @@ import cn.hutool.cache.CacheUtil;
 import cn.hutool.cache.impl.TimedCache;
 import cn.ibenbeni.bens.cache.api.CacheOperatorApi;
 import cn.ibenbeni.bens.sys.api.constants.SysConstants;
-import cn.ibenbeni.bens.sys.modular.role.cache.RoleMenuMemoryCache;
+import cn.ibenbeni.bens.sys.modular.role.cache.rolemenu.RoleMenuMemoryCache;
+import cn.ibenbeni.bens.sys.modular.role.cache.roleoptions.RoleMenuOptionsMemoryCache;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +29,15 @@ public class RoleMemoryCacheAutoConfiguration {
     public CacheOperatorApi<List<Long>> roleMenuCache() {
         TimedCache<String, List<Long>> timedCache = CacheUtil.newTimedCache(1000 * SysConstants.DEFAULT_SYS_CACHE_TIMEOUT_SECONDS);
         return new RoleMenuMemoryCache(timedCache);
+    }
+
+    /**
+     * 角色绑定菜单功能缓存
+     */
+    @Bean
+    public CacheOperatorApi<List<Long>> roleMenuOptionsCache() {
+        TimedCache<String, List<Long>> timedCache = CacheUtil.newTimedCache(1000 * SysConstants.DEFAULT_SYS_CACHE_TIMEOUT_SECONDS);
+        return new RoleMenuOptionsMemoryCache(timedCache);
     }
 
 }

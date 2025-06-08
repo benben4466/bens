@@ -27,8 +27,9 @@ public interface SysRoleMenuService extends IService<SysRoleMenu>, RemoveRoleCal
     /**
      * 获取角色绑定的菜单ID集合，返回菜单ID的集合
      *
-     * @param roleIdList 角色ID集合
+     * @param roleIdList        角色ID集合
+     * @param prioritizeCaching 是否优先从缓存中获取数据
      */
-    List<Long> getRoleBindMenuIdList(List<Long> roleIdList);
+    List<Long> getRoleBindMenuIdList(List<Long> roleIdList, boolean prioritizeCaching);
 
 }
