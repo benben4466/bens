@@ -38,6 +38,7 @@ mybatis-plus:
     lazy-loading-enabled: true
     # 是否启用多个结果集的支持 -> 执行存储过程或批处理操作
     multiple-result-sets-enabled: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     banner: false
     # 是否启用SQL Runner功能; SQL Runner功能指允许开发者直接通过字符串形式的SQL语句执行查询和更新操作

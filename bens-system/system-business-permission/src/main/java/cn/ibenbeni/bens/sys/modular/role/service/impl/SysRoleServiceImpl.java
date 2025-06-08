@@ -20,6 +20,7 @@ import cn.ibenbeni.bens.sys.modular.role.mapper.SysRoleMapper;
 import cn.ibenbeni.bens.sys.modular.role.pojo.request.SysRoleRequest;
 import cn.ibenbeni.bens.sys.modular.role.service.SysRoleService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -148,6 +149,33 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
         Page<SysRole> sysRolePage = this.page(PageFactory.defaultPage(), queryWrapper);
         return PageResultFactory.createPageResult(sysRolePage);
+    }
+
+    @Override
+    public Integer getRoleDataScopeType(Long roleId) {
+        // 默认返回自己数据
+        if (roleId == null) {
+            return DataScopeTypeEnum.SELF.getCode();
+        }
+
+        SysRole dbRole = this.getById(roleId);
+        if (dbRole == null || dbRole.getDataScopeType() == null) {
+            return DataScopeTypeEnum.SELF.getCode();
+        }
+
+        return dbRole.getDataScopeType();
+    }
+
+    @Override
+    public void updateRoleDataScopeType(Long roleId, Integer dataScopeType) {
+        if (ObjectUtil.hasEmpty(roleId, dataScopeType)) {
+            return;
+        }
+
+        LambdaUpdateWrapper<SysRole> updateWrapper = Wrappers.lambdaUpdate(SysRole.class)
+                .eq(SysRole::getRoleId, roleId)
+                .set(SysRole::getDataScopeType, dataScopeType);
+        this.update(updateWrapper);
     }
 
     /**

@@ -27,9 +27,6 @@ public class PageFactory {
 
     /**
      * 默认分页，在使用时PageFactory.defaultPage会自动获取pageSize和pageNo参数
-     *
-     * @author fengshuonan
-     * @since 2020/3/30 16:42
      */
     public static <T> Page<T> defaultPage() {
 
@@ -55,9 +52,6 @@ public class PageFactory {
 
     /**
      * 从baseRequest中获取分页参数
-     *
-     * @author fengshuonan
-     * @since 2021/10/19 16:05
      */
     public static <T> Page<T> defaultPage(BaseRequest baseRequest) {
         int pageSize = 20;
