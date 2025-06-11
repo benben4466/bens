@@ -175,3 +175,16 @@ CREATE TABLE `sys_role_menu_options`
     `update_user`         bigint NULL DEFAULT NULL COMMENT '修改人',
     PRIMARY KEY (`role_menu_option_id`)
 ) COMMENT = '角色和菜单下的功能关联';
+
+CREATE TABLE `sys_role_limit`
+(
+    `role_limit_id` bigint  NOT NULL COMMENT '主键',
+    `role_id`       bigint  NOT NULL COMMENT '角色ID',
+    `limit_type`    tinyint NOT NULL COMMENT '角色限制类型：1-角色可分配的菜单，2-角色可分配的功能',
+    `business_id`   bigint  NOT NULL COMMENT '业务ID，为菜单ID或菜单功能ID',
+    `create_time`   datetime NULL DEFAULT NULL COMMENT '创建时间',
+    `create_user`   bigint NULL DEFAULT NULL COMMENT '创建人',
+    `update_time`   datetime NULL DEFAULT NULL COMMENT '修改时间',
+    `update_user`   bigint NULL DEFAULT NULL COMMENT '修改人',
+    PRIMARY KEY (`role_limit_id`)
+) COMMENT = '角色权限限制';
