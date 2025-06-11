@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 系统角色控制器
@@ -75,6 +76,15 @@ public class SysRoleController {
     @GetMapping("/sysRole/page")
     public ResponseData<PageResult<SysRole>> page(SysRoleRequest sysRoleRequest) {
         return new SuccessResponseData<>(sysRoleService.findPage(sysRoleRequest));
+    }
+
+    /**
+     * 获取所有角色列表
+     * <p>一般用在用户分配角色，响应所有的角色列表</p>
+     */
+    @GetMapping("/sysRole/list")
+    public ResponseData<List<SysRole>> list(SysRoleRequest sysRoleRequest) {
+        return new SuccessResponseData<>(sysRoleService.userAssignRoleList(sysRoleRequest));
     }
 
 }

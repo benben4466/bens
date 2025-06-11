@@ -4,6 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.ibenbeni.bens.auth.api.context.LoginContext;
 import cn.ibenbeni.bens.cache.api.CacheOperatorApi;
 import cn.ibenbeni.bens.rule.exception.base.ServiceException;
+import cn.ibenbeni.bens.sys.api.SysRoleLimitServiceApi;
 import cn.ibenbeni.bens.sys.api.SysRoleServiceApi;
 import cn.ibenbeni.bens.sys.api.constants.SysConstants;
 import cn.ibenbeni.bens.sys.api.enums.role.RoleTypeEnum;
@@ -40,6 +41,9 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
 
     @Resource
     private SysRoleServiceApi sysRoleServiceApi;
+
+    @Resource
+    private SysRoleLimitServiceApi sysRoleLimitServiceApi;
 
     @Resource
     private SysUserService sysUserService;
@@ -154,6 +158,19 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
         return this.list(queryWrapper).stream()
                 .map(SysUserRole::getUserId)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Set<Long> findUserRoleLimitScope(Long userId) {
+        // 获取用户的所有角色ID
+        List<Long> userRoleIdList = this.getUserRoleIdList(userId);
+        return sysRoleLimitServiceApi.getRoleBindLimitList(userRoleIdList);
+    }
+
+    @Override
+    public Set<Long> findCurrentUserRoleLimitScope() {
+        Long userId = LoginContext.me().getLoginUser().getUserId();
+        return this.findUserRoleLimitScope(userId);
     }
 
     @Override

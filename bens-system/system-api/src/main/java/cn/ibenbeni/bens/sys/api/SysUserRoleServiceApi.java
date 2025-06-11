@@ -27,4 +27,16 @@ public interface SysUserRoleServiceApi {
      */
     List<Long> findUserIdsByRoleId(Long roleId);
 
+    /**
+     * 获取用户的角色范围列表，角色范围指用户的角色可分配的权限列表
+     *
+     * @param userId 用户ID
+     */
+    Set<Long> findUserRoleLimitScope(Long userId);
+
+    /**
+     * 获取当前登录用户的角色范围列表，角色范围指用户的角色可分配的权限列表
+     */
+    Set<Long> findCurrentUserRoleLimitScope();
+
 }

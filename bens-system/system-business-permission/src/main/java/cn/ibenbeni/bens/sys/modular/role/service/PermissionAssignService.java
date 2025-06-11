@@ -1,5 +1,6 @@
 package cn.ibenbeni.bens.sys.modular.role.service;
 
+import cn.ibenbeni.bens.sys.modular.role.pojo.request.RoleBindPermissionRequest;
 import cn.ibenbeni.bens.sys.modular.role.pojo.response.RoleBindPermissionResponse;
 
 import java.util.Set;
@@ -11,6 +12,12 @@ import java.util.Set;
  * @time: 2025/6/8 下午5:05
  */
 public interface PermissionAssignService {
+
+    /**
+     * 获取角色绑定的权限列表
+     * <p>角色绑定的权限列表返回的是一个树形结构：第2层是应用下的菜单，第2层是菜单下的菜单功能</p>
+     */
+    RoleBindPermissionResponse getRoleBindPermission(RoleBindPermissionRequest roleBindPermissionRequest);
 
     /**
      * 构建一个权限树，包含了空的选择状态
@@ -30,5 +37,10 @@ public interface PermissionAssignService {
      * @param roleId 角色ID
      */
     Set<Long> getRoleBindMenusAndOptions(Long roleId);
+
+    /**
+     * 更新角色绑定菜单和菜单下的功能
+     */
+    void updateRoleBindPermission(RoleBindPermissionRequest roleBindPermissionRequest);
 
 }

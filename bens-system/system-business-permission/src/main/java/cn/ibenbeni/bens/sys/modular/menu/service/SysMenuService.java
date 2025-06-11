@@ -44,7 +44,7 @@ public interface SysMenuService extends IService<SysMenu> {
     /**
      * 获取所有的菜单信息，用在角色绑定权限界面
      *
-     * @param limitMenuIds 指定筛选的菜单的范围
+     * @param limitMenuIds 指定筛选的菜单的范围，若为空，则获取所有菜单
      */
     List<SysMenu> getTotalMenus(Set<Long> limitMenuIds);
 
@@ -72,6 +72,8 @@ public interface SysMenuService extends IService<SysMenu> {
 
     /**
      * 获取所有菜单的ID和父级ID的映射关系
+     * <p>key=menuId、Value=menuParentId</p>
+     *
      * @return 菜单ID和父级ID的映射关系
      */
     Map<Long, Long> getMenuIdParentIdMap();
