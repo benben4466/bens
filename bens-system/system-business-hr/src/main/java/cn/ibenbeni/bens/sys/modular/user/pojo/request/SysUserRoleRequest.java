@@ -37,4 +37,15 @@ public class SysUserRoleRequest extends BaseRequest {
      */
     private Set<Long> roleIdList;
 
+    //-------------------------------参数校验分组-------------------------------
+    // region 参数校验分组
+
+    /**
+     * 用户绑定角色
+     */
+    public interface bindRoles {
+    }
+
+    // endregion
+
 }

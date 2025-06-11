@@ -50,4 +50,63 @@ public class BaseRequest implements Serializable {
      */
     private String token;
 
+    // -----------------------------------------------------参数校验分组-------------------------------------------------
+    // region 参数校验分组
+
+    /**
+     * 新增
+     */
+    public interface add {
+    }
+
+    /**
+     * 删除
+     */
+    public interface delete {
+    }
+
+    /**
+     * 批量删除
+     */
+    public interface batchDelete {
+    }
+
+    /**
+     * 编辑
+     */
+    public interface edit {
+    }
+
+    /**
+     * 修改状态
+     */
+    public interface updateStatus {
+    }
+
+    /**
+     * 查询详情
+     */
+    public interface detail {
+    }
+
+    /**
+     * 查询所有
+     */
+    public interface list {
+    }
+
+    /**
+     * 分页
+     */
+    public interface page {
+    }
+
+    /**
+     * 导出
+     */
+    public interface export {
+    }
+
+    // endregion
+
 }

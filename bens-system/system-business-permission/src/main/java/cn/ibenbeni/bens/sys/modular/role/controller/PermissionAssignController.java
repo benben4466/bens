@@ -1,5 +1,6 @@
 package cn.ibenbeni.bens.sys.modular.role.controller;
 
+import cn.ibenbeni.bens.rule.pojo.request.BaseRequest;
 import cn.ibenbeni.bens.rule.pojo.response.ResponseData;
 import cn.ibenbeni.bens.rule.pojo.response.SuccessResponseData;
 import cn.ibenbeni.bens.sys.modular.role.entity.SysRole;
@@ -11,6 +12,7 @@ import cn.ibenbeni.bens.sys.modular.role.pojo.response.RoleBindPermissionRespons
 import cn.ibenbeni.bens.sys.modular.role.service.PermissionAssignService;
 import cn.ibenbeni.bens.sys.modular.role.service.SysRoleDataScopeService;
 import cn.ibenbeni.bens.sys.modular.role.service.SysRoleService;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -51,7 +53,7 @@ public class PermissionAssignController {
      * <p>角色绑定的权限列表返回的是一个树形结构：第1层是应用下的菜单，第2层是菜单下的菜单功能</p>
      */
     @GetMapping("/permission/getRoleBindPermission")
-    public ResponseData<RoleBindPermissionResponse> getRoleBindPermission(RoleBindPermissionRequest roleBindPermissionRequest) {
+    public ResponseData<RoleBindPermissionResponse> getRoleBindPermission(@Validated(BaseRequest.detail.class) RoleBindPermissionRequest roleBindPermissionRequest) {
         RoleBindPermissionResponse roleBindPermission = permissionAssignService.getRoleBindPermission(roleBindPermissionRequest);
         return new SuccessResponseData<>(roleBindPermission);
     }
@@ -61,7 +63,7 @@ public class PermissionAssignController {
      * <p>每点击一个权限直接调用一次接口，实时保存</p>
      */
     @PostMapping("/permission/updateRoleBindPermission")
-    public ResponseData<?> updateRoleBindPermission(@RequestBody RoleBindPermissionRequest roleBindPermissionRequest) {
+    public ResponseData<?> updateRoleBindPermission(@RequestBody @Validated(RoleBindPermissionRequest.roleBindPermission.class) RoleBindPermissionRequest roleBindPermissionRequest) {
         permissionAssignService.updateRoleBindPermission(roleBindPermissionRequest);
         return new SuccessResponseData<>();
     }
@@ -70,7 +72,7 @@ public class PermissionAssignController {
      * 获取角色的数据权限详情
      */
     @GetMapping("/permission/getRoleBindDataScope")
-    public ResponseData<RoleBindDataScopeResponse> getRoleBindDataScope(RoleBindDataScopeRequest roleBindDataScopeRequest) {
+    public ResponseData<RoleBindDataScopeResponse> getRoleBindDataScope(@Validated(BaseRequest.detail.class) RoleBindDataScopeRequest roleBindDataScopeRequest) {
         RoleBindDataScopeResponse roleBindDataScopeResponse = sysRoleDataScopeService.getRoleBindDataScope(roleBindDataScopeRequest);
         return new SuccessResponseData<>(roleBindDataScopeResponse);
     }
@@ -79,7 +81,7 @@ public class PermissionAssignController {
      * 角色绑定数据权限的配置
      */
     @PostMapping("/permission/updateRoleBindDataScope")
-    public ResponseData<?> updateRoleBindDataScope(@RequestBody RoleBindDataScopeRequest roleBindDataScopeRequest) {
+    public ResponseData<?> updateRoleBindDataScope(@RequestBody @Validated(RoleBindDataScopeRequest.roleBindDataScope.class) RoleBindDataScopeRequest roleBindDataScopeRequest) {
         sysRoleDataScopeService.updateRoleBindDataScope(roleBindDataScopeRequest);
         return new SuccessResponseData<>();
     }

@@ -1,12 +1,14 @@
 package cn.ibenbeni.bens.sys.modular.menu.controller;
 
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
+import cn.ibenbeni.bens.rule.pojo.request.BaseRequest;
 import cn.ibenbeni.bens.rule.pojo.response.ResponseData;
 import cn.ibenbeni.bens.rule.pojo.response.SuccessResponseData;
 import cn.ibenbeni.bens.sys.modular.menu.entity.SysMenuOptions;
 import cn.ibenbeni.bens.sys.modular.menu.pojo.request.SysMenuOptionsRequest;
 import cn.ibenbeni.bens.sys.modular.menu.service.SysMenuOptionsService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +34,7 @@ public class SysMenuOptionsController {
      * 添加菜单功能
      */
     @PostMapping("/sysMenuOptions/add")
-    public ResponseData<SysMenuOptions> add(@RequestBody SysMenuOptionsRequest sysMenuOptionsRequest) {
+    public ResponseData<SysMenuOptions> add(@RequestBody @Validated(BaseRequest.add.class) SysMenuOptionsRequest sysMenuOptionsRequest) {
         sysMenuOptionsService.add(sysMenuOptionsRequest);
         return new SuccessResponseData<>();
     }
@@ -41,7 +43,7 @@ public class SysMenuOptionsController {
      * 删除菜单功能
      */
     @PostMapping("/sysMenuOptions/delete")
-    public ResponseData<?> delete(@RequestBody SysMenuOptionsRequest sysMenuOptionsRequest) {
+    public ResponseData<?> delete(@RequestBody @Validated(BaseRequest.delete.class) SysMenuOptionsRequest sysMenuOptionsRequest) {
         sysMenuOptionsService.del(sysMenuOptionsRequest);
         return new SuccessResponseData<>();
     }
@@ -50,7 +52,7 @@ public class SysMenuOptionsController {
      * 编辑菜单功能
      */
     @PostMapping("/sysMenuOptions/edit")
-    public ResponseData<?> edit(@RequestBody SysMenuOptionsRequest sysMenuOptionsRequest) {
+    public ResponseData<?> edit(@RequestBody @Validated(BaseRequest.edit.class) SysMenuOptionsRequest sysMenuOptionsRequest) {
         sysMenuOptionsService.edit(sysMenuOptionsRequest);
         return new SuccessResponseData<>();
     }

@@ -4,6 +4,10 @@ import cn.ibenbeni.bens.rule.pojo.request.BaseRequest;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Set;
 
@@ -20,11 +24,13 @@ public class SysUserRequest extends BaseRequest {
     /**
      * 主键
      */
+    @NotNull(message = "主键不能为空", groups = {edit.class, delete.class, detail.class, updateStatus.class, resetPassword.class})
     private Long userId;
 
     /**
      * 姓名
      */
+    @NotBlank(message = "姓名不能为空", groups = {add.class, edit.class, updateInfo.class})
     private String realName;
 
     /**
@@ -35,16 +41,19 @@ public class SysUserRequest extends BaseRequest {
     /**
      * 账号
      */
+    @NotBlank(message = "账号不能为空", groups = {add.class, edit.class})
     private String account;
 
     /**
-     * 密码，加密方式为BCrypt
+     * 密码
      */
+    @NotBlank(message = "密码不能为空", groups = {add.class, updatePwd.class})
     private String password;
 
     /**
      * 新密码
      */
+    @NotBlank(message = "新密码不能为空", groups = {updatePwd.class})
     private String newPassword;
 
     /**
@@ -56,6 +65,7 @@ public class SysUserRequest extends BaseRequest {
     /**
      * 生日
      */
+    @NotBlank(message = "性别：M-男，F-女不能为空", groups = {add.class, edit.class, updateInfo.class})
     private String birthday;
 
     /**
@@ -66,6 +76,7 @@ public class SysUserRequest extends BaseRequest {
     /**
      * 邮箱
      */
+    @Email(message = "邮箱格式错误", groups = {updateInfo.class})
     private String email;
 
     /**
@@ -76,11 +87,13 @@ public class SysUserRequest extends BaseRequest {
     /**
      * 是否是超级管理员：Y-是，N-否
      */
+    @NotBlank(message = "是否是超级管理员：Y-是，N-否不能为空", groups = {add.class, edit.class})
     private String superAdminFlag;
 
     /**
      * 状态：1-正常，2-冻结，3-临时冻结
      */
+    @NotNull(message = "状态不能为空", groups = {add.class, edit.class, updateStatus.class})
     private Integer statusFlag;
 
     /**
@@ -89,12 +102,43 @@ public class SysUserRequest extends BaseRequest {
     private BigDecimal userSort = new BigDecimal(1000);
 
     //-------------------------------非实体字段-------------------------------
-    //-------------------------------非实体字段-------------------------------
-    //-------------------------------非实体字段-------------------------------
+    // region 非实体字段
 
     /**
      * 用户id集合，用在批量删除用户的参数
      */
+    @NotEmpty(message = "用户ID集合不能为空", groups = {batchDelete.class})
     private Set<Long> userIdList;
+
+    // endregion
+
+    //-------------------------------参数校验分组-------------------------------
+    // region 参数校验分组
+
+    /**
+     * 重置用户密码
+     */
+    public interface resetPassword {
+    }
+
+    /**
+     * 更新信息
+     */
+    public interface updateInfo {
+    }
+
+    /**
+     * 修改密码
+     */
+    public interface updatePwd {
+    }
+
+    /**
+     * 修改头像
+     */
+    public interface updateAvatar {
+    }
+
+    // endregion
 
 }
