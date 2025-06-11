@@ -18,6 +18,7 @@ import cn.ibenbeni.bens.sys.modular.role.service.SysRoleMenuOptionsService;
 import cn.ibenbeni.bens.sys.modular.role.service.SysRoleMenuService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -36,6 +37,7 @@ import java.util.stream.Collectors;
 @Service
 public class PermissionAssignServiceImpl implements PermissionAssignService {
 
+    @Lazy
     @Resource
     private SysUserRoleServiceApi sysUserRoleServiceApi;
 
