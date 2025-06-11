@@ -6,6 +6,7 @@ import cn.ibenbeni.bens.auth.api.pojo.auth.LoginResponse;
 import cn.ibenbeni.bens.rule.pojo.response.ResponseData;
 import cn.ibenbeni.bens.rule.pojo.response.SuccessResponseData;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,7 +30,7 @@ public class LoginController {
      * 系统登录接口
      */
     @PostMapping("/loginApi")
-    public ResponseData<LoginResponse> loginApi(@RequestBody LoginRequest loginRequest) {
+    public ResponseData<LoginResponse> loginApi(@RequestBody @Validated LoginRequest loginRequest) {
         LoginResponse loginResponse = authServiceApi.login(loginRequest);
         return new SuccessResponseData<>(loginResponse);
     }

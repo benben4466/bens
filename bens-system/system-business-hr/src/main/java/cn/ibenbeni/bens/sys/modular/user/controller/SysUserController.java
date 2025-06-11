@@ -1,6 +1,7 @@
 package cn.ibenbeni.bens.sys.modular.user.controller;
 
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
+import cn.ibenbeni.bens.rule.pojo.request.BaseRequest;
 import cn.ibenbeni.bens.rule.pojo.response.ResponseData;
 import cn.ibenbeni.bens.rule.pojo.response.SuccessResponseData;
 import cn.ibenbeni.bens.sys.api.expander.SysConfigExpander;
@@ -9,6 +10,7 @@ import cn.ibenbeni.bens.sys.modular.user.pojo.request.SysUserRequest;
 import cn.ibenbeni.bens.sys.modular.user.pojo.request.SysUserRoleRequest;
 import cn.ibenbeni.bens.sys.modular.user.service.SysUserRoleService;
 import cn.ibenbeni.bens.sys.modular.user.service.SysUserService;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -32,7 +34,7 @@ public class SysUserController {
      * 添加用户
      */
     @PostMapping(value = "/sysUser/add")
-    public ResponseData<SysUser> add(@RequestBody SysUserRequest sysUserRequest) {
+    public ResponseData<SysUser> add(@RequestBody @Validated(BaseRequest.add.class) SysUserRequest sysUserRequest) {
         sysUserService.add(sysUserRequest);
         return new SuccessResponseData<>();
     }
@@ -41,7 +43,7 @@ public class SysUserController {
      * 删除用户
      */
     @PostMapping(value = "/sysUser/delete")
-    public ResponseData<?> delete(@RequestBody SysUserRequest sysUserRequest) {
+    public ResponseData<?> delete(@RequestBody @Validated(BaseRequest.delete.class) SysUserRequest sysUserRequest) {
         sysUserService.del(sysUserRequest);
         return new SuccessResponseData<>();
     }
@@ -50,7 +52,7 @@ public class SysUserController {
      * 批量删除用户
      */
     @PostMapping(value = "/sysUser/batchDelete")
-    public ResponseData<?> batchDelete(@RequestBody SysUserRequest sysUserRequest) {
+    public ResponseData<?> batchDelete(@RequestBody @Validated(BaseRequest.batchDelete.class) SysUserRequest sysUserRequest) {
         sysUserService.batchDel(sysUserRequest);
         return new SuccessResponseData<>();
     }
@@ -59,7 +61,7 @@ public class SysUserController {
      * 编辑用户
      */
     @PostMapping(value = "/sysUser/edit")
-    public ResponseData<?> edit(@RequestBody SysUserRequest sysUserRequest) {
+    public ResponseData<?> edit(@RequestBody @Validated(BaseRequest.edit.class) SysUserRequest sysUserRequest) {
         sysUserService.edit(sysUserRequest);
         return new SuccessResponseData<>();
     }
@@ -68,7 +70,7 @@ public class SysUserController {
      * 查看用户详情
      */
     @GetMapping(value = "/sysUser/detail")
-    public ResponseData<SysUser> detail(SysUserRequest sysUserRequest) {
+    public ResponseData<SysUser> detail(@Validated(BaseRequest.detail.class) SysUserRequest sysUserRequest) {
         return new SuccessResponseData<>(sysUserService.detail(sysUserRequest));
     }
 
@@ -84,7 +86,7 @@ public class SysUserController {
      * 修改用户状态
      */
     @PostMapping(value = "/sysUser/updateStatus")
-    public ResponseData<?> updateStatus(@RequestBody SysUserRequest sysUserRequest) {
+    public ResponseData<?> updateStatus(@RequestBody @Validated(BaseRequest.updateStatus.class) SysUserRequest sysUserRequest) {
         sysUserService.updateStatus(sysUserRequest);
         return new SuccessResponseData<>();
     }
@@ -93,7 +95,7 @@ public class SysUserController {
      * 重置用户密码为默认密码
      */
     @PostMapping(value = "/sysUser/resetPassword")
-    public ResponseData<?> resetPassword(@RequestBody SysUserRequest sysUserRequest) {
+    public ResponseData<?> resetPassword(@RequestBody @Validated(SysUserRequest.resetPassword.class) SysUserRequest sysUserRequest) {
         // 获取系统配置的默认密码
         String password = SysConfigExpander.getDefaultPassWord();
         sysUserService.resetPassword(sysUserRequest.getUserId(), password);
@@ -105,7 +107,7 @@ public class SysUserController {
      * <p>组织架构-人员页面使用；用于绑定系统角色</p>
      */
     @PostMapping("/sysUser/bindRoles")
-    public ResponseData<?> bindRoles(@RequestBody SysUserRoleRequest sysUserRoleRequest) {
+    public ResponseData<?> bindRoles(@RequestBody @Validated(SysUserRoleRequest.bindRoles.class) SysUserRoleRequest sysUserRoleRequest) {
         sysUserRoleService.bindRoles(sysUserRoleRequest);
         return new SuccessResponseData<>();
     }

@@ -1,11 +1,13 @@
 package cn.ibenbeni.bens.sys.modular.role.controller;
 
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
+import cn.ibenbeni.bens.rule.pojo.request.BaseRequest;
 import cn.ibenbeni.bens.rule.pojo.response.ResponseData;
 import cn.ibenbeni.bens.rule.pojo.response.SuccessResponseData;
 import cn.ibenbeni.bens.sys.modular.role.entity.SysRole;
 import cn.ibenbeni.bens.sys.modular.role.pojo.request.SysRoleRequest;
 import cn.ibenbeni.bens.sys.modular.role.service.SysRoleService;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,7 +32,7 @@ public class SysRoleController {
      * 添加角色
      */
     @PostMapping(value = "/sysRole/add")
-    public ResponseData<SysRole> add(@RequestBody SysRoleRequest sysRoleRequest) {
+    public ResponseData<SysRole> add(@RequestBody @Validated(BaseRequest.add.class) SysRoleRequest sysRoleRequest) {
         sysRoleService.add(sysRoleRequest);
         return new SuccessResponseData<>();
     }
@@ -39,7 +41,7 @@ public class SysRoleController {
      * 删除角色
      */
     @PostMapping(value = "/sysRole/delete")
-    public ResponseData<?> delete(@RequestBody SysRoleRequest sysRoleRequest) {
+    public ResponseData<?> delete(@RequestBody @Validated(BaseRequest.delete.class) SysRoleRequest sysRoleRequest) {
         sysRoleService.del(sysRoleRequest);
         return new SuccessResponseData<>();
     }
@@ -48,7 +50,7 @@ public class SysRoleController {
      * 批量删除角色
      */
     @PostMapping("/sysRole/batchDelete")
-    public ResponseData<?> batchDelete(@RequestBody SysRoleRequest sysRoleRequest) {
+    public ResponseData<?> batchDelete(@RequestBody @Validated(BaseRequest.batchDelete.class) SysRoleRequest sysRoleRequest) {
         sysRoleService.batchDelete(sysRoleRequest);
         return new SuccessResponseData<>();
     }
@@ -57,7 +59,7 @@ public class SysRoleController {
      * 编辑角色
      */
     @PostMapping("/sysRole/edit")
-    public ResponseData<?> edit(@RequestBody SysRoleRequest sysRoleRequest) {
+    public ResponseData<?> edit(@RequestBody @Validated(BaseRequest.edit.class) SysRoleRequest sysRoleRequest) {
         sysRoleService.edit(sysRoleRequest);
         return new SuccessResponseData<>();
     }
@@ -66,7 +68,7 @@ public class SysRoleController {
      * 查看角色详情
      */
     @GetMapping("/sysRole/detail")
-    public ResponseData<SysRole> detail(SysRoleRequest sysRoleRequest) {
+    public ResponseData<SysRole> detail(@Validated(BaseRequest.detail.class) SysRoleRequest sysRoleRequest) {
         return new SuccessResponseData<>(sysRoleService.detail(sysRoleRequest));
     }
 
