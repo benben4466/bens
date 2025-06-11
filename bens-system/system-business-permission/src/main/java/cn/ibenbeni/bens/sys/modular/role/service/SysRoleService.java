@@ -6,6 +6,8 @@ import cn.ibenbeni.bens.sys.modular.role.entity.SysRole;
 import cn.ibenbeni.bens.sys.modular.role.pojo.request.SysRoleRequest;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * 系统角色-服务类
  *
@@ -55,5 +57,16 @@ public interface SysRoleService extends IService<SysRole>, SysRoleServiceApi {
      * @param dataScopeType 数据范围类型
      */
     void updateRoleDataScopeType(Long roleId, Integer dataScopeType);
+
+    /**
+     * 获取所有角色列表
+     * <p>用在权限分配界面，左侧的角色列表</p>
+     */
+    List<SysRole> permissionGetRoleList(SysRoleRequest sysRoleRequest);
+
+    /**
+     * 用户分配角色界面，获取角色列表
+     */
+    List<SysRole> userAssignRoleList(SysRoleRequest sysRoleRequest);
 
 }

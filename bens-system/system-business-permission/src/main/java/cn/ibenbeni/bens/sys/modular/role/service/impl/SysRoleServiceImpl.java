@@ -192,6 +192,31 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         this.update(updateWrapper);
     }
 
+    @Override
+    public List<SysRole> permissionGetRoleList(SysRoleRequest sysRoleRequest) {
+        LambdaQueryWrapper<SysRole> queryWrapper = this.createWrapper(sysRoleRequest);
+        queryWrapper.select(SysRole::getRoleId, SysRole::getRoleName);
+
+        // 过滤角色的权限信息
+        this.filterRolePermission(queryWrapper, sysRoleRequest);
+        return this.list(queryWrapper);
+    }
+
+    @Override
+    public List<SysRole> userAssignRoleList(SysRoleRequest sysRoleRequest) {
+        LambdaQueryWrapper<SysRole> queryWrapper = this.createWrapper(sysRoleRequest);
+
+        boolean superAdminFlag = LoginContext.me().getSuperAdminFlag();
+        // 超级管理员，直接返回所有系统角色，非超级管理员看不到角色信息绑定
+        if (superAdminFlag) {
+            queryWrapper.eq(SysRole::getRoleType, RoleTypeEnum.SYSTEM_ROLE.getCode());
+            queryWrapper.select(SysRole::getRoleId, SysRole::getRoleName, SysRole::getRoleType);
+            return this.list(queryWrapper);
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
     /**
      * 角色的类型校验，非系统管理员，只能添加公司级别的角色，并且只能添加当前登录本公司的角色
      */
@@ -296,6 +321,15 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         }
 
         return sysMenuOptionsService.getOptionsCodeList(roleBindMenuOptionsIdList);
+    }
+
+    /**
+     * 创建查询wrapper
+     */
+    private LambdaQueryWrapper<SysRole> createWrapper(SysRoleRequest sysRoleRequest) {
+        return Wrappers.lambdaQuery(SysRole.class)
+                .orderByAsc(SysRole::getRoleType)
+                .orderByAsc(SysRole::getRoleSort);
     }
 
 }
