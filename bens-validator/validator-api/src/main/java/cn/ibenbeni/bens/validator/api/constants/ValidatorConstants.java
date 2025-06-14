@@ -9,6 +9,11 @@ package cn.ibenbeni.bens.validator.api.constants;
 public interface ValidatorConstants {
 
     /**
+     * 校验器模块的名称
+     */
+    String VALIDATOR_MODULE_NAME = "bens-validator";
+
+    /**
      * 异常枚举的步进值
      */
     String VALIDATOR_EXCEPTION_STEP_CODE = "15";

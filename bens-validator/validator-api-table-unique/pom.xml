@@ -5,28 +5,21 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.ibenbeni</groupId>
-        <artifactId>bens</artifactId>
+        <artifactId>bens-validator</artifactId>
         <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
-    <modules>
-        <!-- 校验模块-API -->
-        <module>validator-api</module>
-        <!-- 校验模块-表相关 -->
-        <module>validator-api-table-unique</module>
-    </modules>
-
-    <artifactId>bens-validator</artifactId>
-    <description>校验模块</description>
+    <artifactId>validator-api-table-unique</artifactId>
+    <description>校验模块-表相关</description>
 
     <dependencies>
-        <!-- 规则模块-开发规则 -->
+        <!-- 校验模块-API -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
-            <artifactId>bens-rule</artifactId>
+            <artifactId>validator-api</artifactId>
             <version>${revision}</version>
         </dependency>
     </dependencies>
