@@ -65,12 +65,12 @@ public class SysUserRequest extends BaseRequest {
     /**
      * 生日
      */
-    @NotBlank(message = "性别：M-男，F-女不能为空", groups = {add.class, edit.class, updateInfo.class})
     private String birthday;
 
     /**
      * 性别：M-男，F-女
      */
+    @NotBlank(message = "性别：M-男，F-女不能为空", groups = {add.class, edit.class, updateInfo.class})
     private String sex;
 
     /**
