@@ -29,8 +29,8 @@ public class SimpleDict {
     private String name;
 
     /**
-     * 编码
+     * 值
      */
-    private String code;
+    private String value;
 
 }

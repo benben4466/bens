@@ -34,6 +34,8 @@
         <module>bens-event</module>
         <!-- 测试模块 -->
         <module>bens-test</module>
+        <!-- 字典模块 -->
+        <module>bens-dict</module>
     </modules>
 
     <properties>

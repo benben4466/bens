@@ -188,3 +188,37 @@ CREATE TABLE `sys_role_limit`
     `update_user`   bigint NULL DEFAULT NULL COMMENT '修改人',
     PRIMARY KEY (`role_limit_id`)
 ) COMMENT = '角色权限限制';
+
+CREATE TABLE `sys_dict_type`
+(
+    `dict_type_id`    bigint         NOT NULL COMMENT '主键',
+    `dict_type_name`  varchar(100)   NOT NULL COMMENT '字典类型名称',
+    `dict_type_code`  varchar(100)   NOT NULL COMMENT '字典类型编码',
+    `dict_type_class` tinyint        NOT NULL COMMENT '字典类型编码: 1=业务类型；2=系统类型',
+    `status_flag`     tinyint        NOT NULL DEFAULT 1 COMMENT '状态：1-启用，2-禁用',
+    `dict_type_sort`  decimal(10, 2) NOT NULL COMMENT '排序',
+    `remark`          varchar(255) NULL DEFAULT NULL COMMENT '备注',
+    `del_flag`        char(1)        NOT NULL DEFAULT 'N' COMMENT '删除标记：Y-已删除，N-未删除',
+    `create_time`     datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+    `create_user`     bigint NULL DEFAULT NULL COMMENT '创建人',
+    `update_time`     datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
+    `update_user`     bigint NULL DEFAULT NULL COMMENT '修改人',
+    PRIMARY KEY (`dict_type_id`)
+) COMMENT = '字典类型';
+
+CREATE TABLE `sys_dict`
+(
+    `dict_id`         bigint         NOT NULL COMMENT '主键',
+    `dict_type_id`    bigint         NOT NULL COMMENT '字典类型ID',
+    `dict_name`       varchar(255)   NOT NULL COMMENT '字典名称',
+    `dict_value`      varchar(255)   NOT NULL COMMENT '字典值',
+    `dict_short_name` varchar(255)            DEFAULT NULL COMMENT '字典简称名称',
+    `dict_sort`       decimal(10, 2) NOT NULL COMMENT '排序',
+    `status_flag`     tinyint        NOT NULL DEFAULT '1' COMMENT '状态：1-启用，2-禁用',
+    `del_flag`        char(1)        NOT NULL DEFAULT 'N' COMMENT '删除标记：Y-已删除，N-未删除',
+    `create_time`     datetime                DEFAULT NULL COMMENT '创建时间',
+    `create_user`     bigint                  DEFAULT NULL COMMENT '创建人',
+    `update_time`     datetime                DEFAULT NULL COMMENT '修改时间',
+    `update_user`     bigint                  DEFAULT NULL COMMENT '修改人',
+    PRIMARY KEY (`dict_id`)
+) COMMENT='字典';
