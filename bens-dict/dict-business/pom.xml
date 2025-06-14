@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>cn.ibenbeni</groupId>
+        <artifactId>bens-dict</artifactId>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <packaging>jar</packaging>
+
+    <artifactId>dict-business</artifactId>
+    <description>字典模块-业务</description>
+
+    <dependencies>
+        <!-- 字典模块-API -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>dict-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!--数据库DAO框架-->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>db-sdk-mp</artifactId>
+            <version>${revision}</version>
+        </dependency>
+    </dependencies>
+
+</project>
