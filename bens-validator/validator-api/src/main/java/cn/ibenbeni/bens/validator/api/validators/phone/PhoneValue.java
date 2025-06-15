@@ -13,6 +13,7 @@ import java.lang.annotation.*;
 @Documented
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
+@Repeatable(PhoneValue.List.class)
 @Constraint(validatedBy = PhoneValueValidator.class)
 public @interface PhoneValue {
 
@@ -41,11 +42,16 @@ public @interface PhoneValue {
     /**
      * 原因：Java 不允许直接在同一个字段上重复使用同一个注解。
      * <p>定义List作用：允许在同一个字段或参数上应用多个相同的校验注解。</p>
-     * <p>使用方法：
+     * <p>使用方法一：
      *      @PhoneValue.List({
      *          @PhoneValue(message="用户不能在Group1分组为空", groups={Group1.class})
      *          @PhoneValue(message="用户不能在Group2分组为空", groups={Group2.class})
      *      })
+     * </p>
+     * <p>使用方式二：
+     *     加入@Repeatable注解并指定注解容器后，使用方式：可直接在字段上加注解，不用@PhoneValue.List({})
+     *          @PhoneValue(message="用户不能在Group1分组为空", groups={Group1.class})
+     *          @PhoneValue(message="用户不能在Group2分组为空", groups={Group2.class})
      * </p>
      */
     @Target({ElementType.FIELD, ElementType.PARAMETER})
