@@ -18,4 +18,14 @@ public interface ValidatorConstants {
      */
     String VALIDATOR_EXCEPTION_STEP_CODE = "15";
 
+    /**
+     * 默认逻辑删除字段的字段名
+     */
+    String DEFAULT_LOGIC_DELETE_FIELD_NAME = "del_flag";
+
+    /**
+     * 默认逻辑删除字段的值
+     */
+    String DEFAULT_LOGIC_DELETE_FIELD_VALUE = "Y";
+
 }
