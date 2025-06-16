@@ -15,6 +15,10 @@
     <modules>
         <!-- 校验模块-API -->
         <module>validator-api</module>
+        <!-- 校验模块-表相关 -->
+        <module>validator-api-table-unique</module>
+        <!-- 校验模块-Starter -->
+        <module>validator-spring-boot-starter</module>
     </modules>
 
     <artifactId>bens-validator</artifactId>
