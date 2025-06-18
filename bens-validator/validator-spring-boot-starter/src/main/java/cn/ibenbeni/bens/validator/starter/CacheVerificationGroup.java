@@ -15,7 +15,7 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 public class CacheVerificationGroup extends LocalValidatorFactoryBean {
 
     /**
-     * 允许在验证过程中提供额外的提示信息
+     * 检查一个对象是否满足指定的约束条件
      * <p>validationHints中存储当前正在校验的分组的Class类型</p>
      *
      * @param target          需要进行验证的目标对象
