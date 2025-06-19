@@ -36,6 +36,8 @@
         <module>bens-test</module>
         <!-- 字典模块 -->
         <module>bens-dict</module>
+        <!-- 配置模块 -->
+        <module>bens-config</module>
     </modules>
 
     <properties>
