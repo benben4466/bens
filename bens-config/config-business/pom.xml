@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>cn.ibenbeni</groupId>
+        <artifactId>bens-config</artifactId>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <packaging>jar</packaging>
+
+    <artifactId>config-business</artifactId>
+    <description>配置模块-业务</description>
+
+    <dependencies>
+        <!-- 配置模块-API -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>config-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- 校验模块-表相关 -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>validator-api-table-unique</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- 缓存模块 -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>cache-sdk-memory</artifactId>
+            <version>${revision}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>cache-sdk-redis</artifactId>
+            <version>${revision}</version>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- DAO模块-MyBatisPlus -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>db-sdk-mp</artifactId>
+            <version>${revision}</version>
+        </dependency>
+    </dependencies>
+
+</project>
