@@ -7,6 +7,7 @@ import cn.ibenbeni.bens.config.api.exception.enums.ConfigExceptionEnum;
 import cn.ibenbeni.bens.config.modular.entity.SysConfigType;
 import cn.ibenbeni.bens.config.modular.mapper.SysConfigTypeMapper;
 import cn.ibenbeni.bens.config.modular.pojo.request.SysConfigTypeRequest;
+import cn.ibenbeni.bens.config.modular.service.SysConfigService;
 import cn.ibenbeni.bens.config.modular.service.SysConfigTypeService;
 import cn.ibenbeni.bens.db.api.factory.PageFactory;
 import cn.ibenbeni.bens.db.api.factory.PageResultFactory;
@@ -16,8 +17,11 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -29,12 +33,17 @@ import java.util.List;
 @Service
 public class SysConfigTypeServiceImpl extends ServiceImpl<SysConfigTypeMapper, SysConfigType> implements SysConfigTypeService {
 
+    @Lazy
+    @Resource
+    private SysConfigService sysConfigService;
+
     @Override
     public void add(SysConfigTypeRequest sysConfigTypeRequest) {
         SysConfigType sysConfigType = BeanUtil.toBean(sysConfigTypeRequest, SysConfigType.class);
         this.save(sysConfigType);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void del(SysConfigTypeRequest sysConfigTypeRequest) {
         SysConfigType dbSysConfigType = this.querySysConfigType(sysConfigTypeRequest);
@@ -44,6 +53,10 @@ public class SysConfigTypeServiceImpl extends ServiceImpl<SysConfigTypeMapper, S
             throw new ConfigException(ConfigExceptionEnum.CONFIG_SYS_CAN_NOT_DELETE);
         }
 
+        // 删除参数配置
+        sysConfigService.delByConfigTypeCode(dbSysConfigType.getConfigTypeCode());
+
+        // 删除参数配置类型
         this.removeById(dbSysConfigType);
     }
 
