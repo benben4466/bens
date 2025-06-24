@@ -19,6 +19,11 @@ public interface RuleConstants {
     String BUSINESS_ERROR_TYPE_CODE = "B";
 
     /**
+     * 第三方调用异常的错误码分类编号
+     */
+    String THIRD_ERROR_TYPE_CODE = "C";
+
+    /**
      * 请求成功的返回码
      */
     String SUCCESS_CODE = "00000";
@@ -42,5 +47,10 @@ public interface RuleConstants {
      * 中文的多语言类型编码
      */
     String CHINESE_TRAN_LANGUAGE_CODE = "chinese";
+
+    /**
+     * 服务默认部署的环境地址，不要改这个常量，改系统配置表中的配置 SYS_SERVER_DEPLOY_HOST
+     */
+    String DEFAULT_SERVER_DEPLOY_HOST = "http://localhost:8080";
 
 }

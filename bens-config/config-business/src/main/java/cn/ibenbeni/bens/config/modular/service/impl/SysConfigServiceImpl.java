@@ -1,6 +1,7 @@
 package cn.ibenbeni.bens.config.modular.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.ibenbeni.bens.cache.api.CacheOperatorApi;
@@ -158,6 +159,30 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
     @Override
     public void deleteConfig(String key) {
         configValueCache.remove(key);
+    }
+
+    @Override
+    public <T> T getConfigValueNullable(String configCode, Class<T> clazz) {
+        String configValue = configValueCache.get(configCode);
+        if (StrUtil.isNotBlank(configValue)) {
+            try {
+                return Convert.convert(clazz, configValue);
+            } catch (Exception ex) {
+                String format = StrUtil.format(ConfigExceptionEnum.CONVERT_ERROR.getUserTip(), configCode, configValue, clazz.toString());
+                log.warn(format);
+                return null;
+            }
+        } else {
+            String format = StrUtil.format(ConfigExceptionEnum.CONFIG_NOT_EXIST.getUserTip(), configCode);
+            log.warn(format);
+            return null;
+        }
+    }
+
+    @Override
+    public <T> T getSysConfigValueWithDefault(String configCode, Class<T> clazz, T defaultValue) {
+        T configValue = this.getConfigValueNullable(configCode, clazz);
+        return ObjectUtil.isNotEmpty(configValue) ? configValue : defaultValue;
     }
 
 }

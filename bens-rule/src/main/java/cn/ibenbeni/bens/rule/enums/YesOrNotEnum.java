@@ -43,9 +43,6 @@ public enum YesOrNotEnum implements ReadableEnum<YesOrNotEnum> {
 
     /**
      * 根据code获取枚举，用在接收前段传参
-     *
-     * @author fengshuonan
-     * @since 2022/9/7 17:58
      */
     // @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static YesOrNotEnum codeToEnum(Boolean boolFlag) {

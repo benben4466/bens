@@ -75,6 +75,13 @@
             <version>${revision}</version>
         </dependency>
 
+        <!-- 文件模块-Starter -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>file-spring-boot-starter</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
     </dependencies>
 
 </project>

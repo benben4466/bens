@@ -12,23 +12,22 @@
 
     <packaging>jar</packaging>
 
-    <artifactId>file-api</artifactId>
-    <description>文件模块-API</description>
+    <artifactId>file-spring-boot-starter</artifactId>
+    <description>文件模块-Starter</description>
 
     <dependencies>
-
-        <!-- 校验模块-API -->
+        <!-- 文件模块-业务 -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
-            <artifactId>validator-api</artifactId>
-            <version>${revision}</version>
+            <artifactId>file-business</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
 
-        <!-- 配置模块-API -->
+        <!-- 文件模块-本地存储实现 -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
-            <artifactId>config-api</artifactId>
-            <version>${revision}</version>
+            <artifactId>file-sdk-local</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
