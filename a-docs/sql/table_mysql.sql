@@ -257,3 +257,21 @@ CREATE TABLE `sys_config_type`
     PRIMARY KEY (`config_type_id`)
 ) COMMENT = '参数配置类型';
 
+CREATE TABLE `sys_file_info`
+(
+    `file_id`            bigint                                                   NOT NULL COMMENT '主键',
+    `file_location`      tinyint                                                  NOT NULL COMMENT '文件存储位置：1=本地存储；2=Minio；3=腾讯云COS；4=阿里云OSS；',
+    `file_bucket`        varchar(255)                                             NOT NULL COMMENT '文件存储桶（文件夹）',
+    `file_origin_name`   varchar(255)                                             NOT NULL COMMENT '文件原始名称（上传时候的文件全名）',
+    `file_suffix`        varchar(255) NULL DEFAULT NULL COMMENT '文件后缀，例如txt',
+    `file_object_name`   varchar(255) NULL DEFAULT NULL COMMENT '存储桶中文件名称(名称格式:主键ID+.后缀)',
+    `file_path`          varchar(255) NULL DEFAULT NULL COMMENT '文件存储路径',
+    `file_size_kb`       bigint NULL DEFAULT NULL COMMENT '文件大小(单位：KB)',
+    `readable_file_size` varchar(255) NULL DEFAULT NULL COMMENT '可读格式文件大小',
+    `del_flag`           char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'N' COMMENT '是否删除：Y-被删除，N-未删除',
+    `create_time`        datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+    `create_user`        bigint NULL DEFAULT NULL COMMENT '创建人',
+    `update_time`        datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
+    `update_user`        bigint NULL DEFAULT NULL COMMENT '修改人',
+    PRIMARY KEY (`file_id`)
+) COMMENT = '文件信息';

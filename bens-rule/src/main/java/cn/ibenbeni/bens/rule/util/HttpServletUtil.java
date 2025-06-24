@@ -9,6 +9,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 保存Http请求的上下文，在任何地方快速获取HttpServletRequest和HttpServletResponse
@@ -43,6 +44,18 @@ public final class HttpServletUtil {
             throw new ServiceException(ServletExceptionEnum.HTTP_CONTEXT_ERROR);
         }
         return requestAttributes.getRequest();
+    }
+
+    /**
+     * 获取当前请求的Response对象
+     */
+    public static HttpServletResponse getResponse() {
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (requestAttributes == null) {
+            throw new ServiceException(ServletExceptionEnum.HTTP_CONTEXT_ERROR);
+        } else {
+            return requestAttributes.getResponse();
+        }
     }
 
     /**
