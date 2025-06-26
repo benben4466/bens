@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  cn.ibenbeni.bens.ds.starter.DataSourceContainerAutoConfiguration
+org.springframework.context.ApplicationListener=\
+  cn.ibenbeni.bens.ds.sdk.listener.DataSourceInitListener

@@ -275,3 +275,23 @@ CREATE TABLE `sys_file_info`
     `update_user`        bigint NULL DEFAULT NULL COMMENT '修改人',
     PRIMARY KEY (`file_id`)
 ) COMMENT = '文件信息';
+
+CREATE TABLE `sys_database_info`
+(
+    `db_id`             bigint       NOT NULL COMMENT '主键',
+    `db_name`           varchar(255) NOT NULL COMMENT '数据库名称（英文名称）',
+    `jdbc_driver`       varchar(255) NOT NULL COMMENT 'jdbc的驱动类型',
+    `jdbc_url`          varchar(255) NOT NULL COMMENT 'jdbc的url',
+    `username`          varchar(255) NOT NULL COMMENT '数据库连接的账号',
+    `password`          varchar(255) NOT NULL COMMENT '数据库连接密码',
+    `schema_name`       varchar(255) NULL DEFAULT NULL COMMENT '数据库的schema名称，每种数据库的schema意义都不同',
+    `status_flag`       tinyint NULL DEFAULT NULL COMMENT '数据源状态：1-正常，2-无法连接',
+    `error_description` varchar(500) NULL DEFAULT NULL COMMENT '连接失败原因',
+    `remarks`           varchar(255) NULL DEFAULT NULL COMMENT '备注，摘要',
+    `del_flag`          char(1)      NOT NULL DEFAULT 'N' COMMENT '是否删除，Y-被删除，N-未删除',
+    `create_time`       datetime NULL DEFAULT NULL COMMENT '创建时间',
+    `create_user`       bigint NULL DEFAULT NULL COMMENT '创建人',
+    `update_time`       datetime NULL DEFAULT NULL COMMENT '修改时间',
+    `update_user`       bigint NULL DEFAULT NULL COMMENT '修改人',
+    PRIMARY KEY (`db_id`) USING BTREE
+) COMMENT = '多数据源信息';

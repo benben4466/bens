@@ -36,12 +36,12 @@ public enum DbTypeEnum {
     /**
      * validateQuery所使用的语句
      */
-    private final String validateQuery;
+    private final String connectionTestQuery;
 
     DbTypeEnum(String urlWords, String xmlDatabaseId, String validateQuery) {
         this.urlWords = urlWords;
         this.xmlDatabaseId = xmlDatabaseId;
-        this.validateQuery = validateQuery;
+        this.connectionTestQuery = validateQuery;
     }
 
     /**
