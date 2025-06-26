@@ -38,6 +38,8 @@
         <module>bens-dict</module>
         <!-- 配置模块 -->
         <module>bens-config</module>
+        <!-- 多数据源模块 -->
+        <module>bens-ds-container</module>
     </modules>
 
     <properties>
