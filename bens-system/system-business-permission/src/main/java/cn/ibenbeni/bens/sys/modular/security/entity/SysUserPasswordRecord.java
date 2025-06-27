@@ -4,6 +4,7 @@ import cn.ibenbeni.bens.db.api.pojo.entity.BaseEntity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,6 +16,7 @@ import java.util.Date;
  * @author benben
  * @date 2025/5/3  下午4:21
  */
+@TableName(value = "sys_user_password_record", autoResultMap = true)
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class SysUserPasswordRecord extends BaseEntity {
