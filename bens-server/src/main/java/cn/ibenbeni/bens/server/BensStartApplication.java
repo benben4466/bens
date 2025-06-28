@@ -1,4 +1,4 @@
-package cn.ibenbeni.bens.test;
+package cn.ibenbeni.bens.server;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
