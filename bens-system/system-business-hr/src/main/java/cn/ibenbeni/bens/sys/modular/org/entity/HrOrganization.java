@@ -2,10 +2,7 @@ package cn.ibenbeni.bens.sys.modular.org.entity;
 
 import cn.ibenbeni.bens.db.api.pojo.entity.BaseExpandFieldEntity;
 import cn.ibenbeni.bens.rule.tree.factory.base.AbstractTreeNode;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -97,6 +94,12 @@ public class HrOrganization extends BaseExpandFieldEntity implements AbstractTre
      */
     @TableField("org_level")
     private Integer orgLevel;
+
+    /**
+     * 租户ID
+     */
+    @TableField(value = "tenant_id", fill = FieldFill.INSERT)
+    private Long tenantId;
 
     //-------------------------------非实体字段-------------------------------
     //-------------------------------非实体字段-------------------------------

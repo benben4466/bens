@@ -1,10 +1,7 @@
 package cn.ibenbeni.bens.dict.modular.entity;
 
 import cn.ibenbeni.bens.db.api.pojo.entity.BaseBusinessEntity;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -65,6 +62,12 @@ public class SysDict extends BaseBusinessEntity {
      */
     @TableField("status_flag")
     private Integer statusFlag;
+
+    /**
+     * 租户ID
+     */
+    @TableField(value = "tenant_id", fill = FieldFill.INSERT)
+    private Long tenantId;
 
     // -----------------------------------------------------非实体字段-------------------------------------------------
     // region 非实体字段

@@ -6,6 +6,7 @@ import cn.ibenbeni.bens.db.api.constants.DbFieldConstants;
 import cn.ibenbeni.bens.db.api.util.EntityFieldUtil;
 import cn.ibenbeni.bens.rule.enums.StatusEnum;
 import cn.ibenbeni.bens.rule.enums.YesOrNotEnum;
+import cn.ibenbeni.bens.tenant.api.context.TenantContextHolder;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
@@ -36,6 +37,8 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
             setDelFlagDefaultValue(metaObject);
             // 设置状态字段 默认1-启用
             setStatusDefaultValue(metaObject);
+            // 填充租户ID
+            this.setValue(metaObject, DbFieldConstants.TENANT_ID, this.getTenantId());
         } catch (ReflectionException ex) {
             log.warn("CustomMetaObjectHandler处理过程中无相关字段，不做处理");
         }
@@ -126,6 +129,18 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
             return 1L;
         } catch (Exception ex) {
             //如果获取不到就返回-1
+            return -1L;
+        }
+    }
+
+    /**
+     * 获取租户ID
+     */
+    protected Long getTenantId() {
+        try {
+            return TenantContextHolder.getRequiredTenantId();
+        } catch (Exception ex) {
+            // 默认返回-1
             return -1L;
         }
     }

@@ -295,3 +295,18 @@ CREATE TABLE `sys_database_info`
     `update_user`       bigint NULL DEFAULT NULL COMMENT '修改人',
     PRIMARY KEY (`db_id`) USING BTREE
 ) COMMENT = '多数据源信息';
+
+-- 2025-06-27
+ALTER TABLE sys_user ADD `tenant_id` bigint NULL DEFAULT NULL COMMENT '租户ID';
+ALTER TABLE sys_user_role ADD `tenant_id` bigint NULL DEFAULT NULL COMMENT '租户ID';
+ALTER TABLE sys_user_password_record ADD `tenant_id` bigint NULL DEFAULT NULL COMMENT '租户ID';
+ALTER TABLE sys_role ADD `tenant_id` bigint NULL DEFAULT NULL COMMENT '租户ID';
+ALTER TABLE sys_hr_organization ADD `tenant_id` bigint NULL DEFAULT NULL COMMENT '租户ID';
+ALTER TABLE sys_menu ADD `tenant_id` bigint NULL DEFAULT NULL COMMENT '租户ID';
+ALTER TABLE sys_menu_options ADD `tenant_id` bigint NULL DEFAULT NULL COMMENT '租户ID';
+ALTER TABLE sys_role_menu ADD `tenant_id` bigint NULL DEFAULT NULL COMMENT '租户ID';
+ALTER TABLE sys_role_data_scope ADD `tenant_id` bigint NULL DEFAULT NULL COMMENT '租户ID';
+ALTER TABLE sys_role_menu_options ADD `tenant_id` bigint NULL DEFAULT NULL COMMENT '租户ID';
+ALTER TABLE sys_role_limit ADD `tenant_id` bigint NULL DEFAULT NULL COMMENT '租户ID';
+ALTER TABLE sys_dict_type ADD `tenant_id` bigint NULL DEFAULT NULL COMMENT '租户ID';
+ALTER TABLE sys_dict ADD `tenant_id` bigint NULL DEFAULT NULL COMMENT '租户ID';

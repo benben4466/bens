@@ -3,10 +3,7 @@ package cn.ibenbeni.bens.sys.modular.menu.entity;
 import cn.hutool.core.util.ObjectUtil;
 import cn.ibenbeni.bens.db.api.pojo.entity.BaseExpandFieldEntity;
 import cn.ibenbeni.bens.rule.tree.buildpids.BasePidBuildModel;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -119,6 +116,12 @@ public class SysMenu extends BaseExpandFieldEntity implements BasePidBuildModel 
      */
     @TableField("remark")
     private String remark;
+
+    /**
+     * 租户ID
+     */
+    @TableField(value = "tenant_id", fill = FieldFill.INSERT)
+    private Long tenantId;
 
     /**
      * 当前菜单的子菜单
