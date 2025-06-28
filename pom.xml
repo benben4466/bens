@@ -13,6 +13,8 @@
     <description>Bens开源核心包</description>
 
     <modules>
+        <!-- 启动模块 -->
+        <module>bens-server</module>
         <!-- 系统模块 -->
         <module>bens-system</module>
         <!-- 规则模块-开发规则 -->
