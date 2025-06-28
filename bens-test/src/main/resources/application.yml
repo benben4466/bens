@@ -62,3 +62,9 @@ sa-token:
 bens:
   security:
     password: MD5
+  tenant:
+    enable: true
+    ignoreTables:
+      - sys_file_info
+      - sys_config_type
+      - sys_config

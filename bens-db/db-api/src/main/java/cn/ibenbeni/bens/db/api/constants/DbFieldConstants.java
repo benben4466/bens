@@ -39,4 +39,9 @@ public interface DbFieldConstants {
      */
     String STATUS_FLAG = "statusFlag";
 
+    /**
+     * 租户ID
+     */
+    String TENANT_ID = "tenantId";
+
 }

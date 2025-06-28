@@ -1,10 +1,7 @@
 package cn.ibenbeni.bens.sys.modular.menu.entity;
 
 import cn.ibenbeni.bens.db.api.pojo.entity.BaseEntity;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -42,5 +39,11 @@ public class SysMenuOptions extends BaseEntity {
      */
     @TableField("option_code")
     private String optionCode;
+
+    /**
+     * 租户ID
+     */
+    @TableField(value = "tenant_id", fill = FieldFill.INSERT)
+    private Long tenantId;
 
 }

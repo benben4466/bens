@@ -1,0 +1,16 @@
+package cn.ibenbeni.bens.rule.constants;
+
+/**
+ * Web过滤器排序常量
+ *
+ * @author: benben
+ * @time: 2025/6/27 下午4:48
+ */
+public interface WebFilterOrderConstants {
+
+    /**
+     * 租户上下文过滤器
+     */
+    int TENANT_CONTEXT_FILTER = 120;
+
+}

@@ -40,6 +40,8 @@
         <module>bens-config</module>
         <!-- 多数据源模块 -->
         <module>bens-ds-container</module>
+        <!-- 租户模块 -->
+        <module>bens-tenant</module>
     </modules>
 
     <properties>
