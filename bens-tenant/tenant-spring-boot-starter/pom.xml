@@ -19,7 +19,7 @@
         <!-- 租户模块-DB实现 -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
-            <artifactId>tenant-db-mp</artifactId>
+            <artifactId>tenant-sdk</artifactId>
             <version>${revision}</version>
         </dependency>
 

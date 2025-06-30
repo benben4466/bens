@@ -10,10 +10,8 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <packaging>jar</packaging>
-
-    <artifactId>tenant-db-mp</artifactId>
-    <description>租户模块-DB实现</description>
+    <artifactId>tenant-sdk</artifactId>
+    <description>租户模块-SDK</description>
 
     <dependencies>
         <!-- 租户模块-API -->
@@ -28,6 +26,13 @@
             <groupId>cn.ibenbeni</groupId>
             <artifactId>db-sdk-mp</artifactId>
             <version>${revision}</version>
+        </dependency>
+
+        <!-- Spring Web -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 

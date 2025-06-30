@@ -4,7 +4,7 @@ import cn.ibenbeni.bens.db.mp.util.MyBatisPlusUtils;
 import cn.ibenbeni.bens.rule.constants.WebFilterOrderConstants;
 import cn.ibenbeni.bens.tenant.api.prop.TenantProp;
 import cn.ibenbeni.bens.tenant.db.TenantInterceptor;
-import cn.ibenbeni.bens.tenant.modular.web.TenantContextWebFilter;
+import cn.ibenbeni.bens.tenant.web.TenantContextWebFilter;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerInterceptor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

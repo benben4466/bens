@@ -1,4 +1,4 @@
-package cn.ibenbeni.bens.tenant.modular.web;
+package cn.ibenbeni.bens.tenant.web;
 
 import cn.ibenbeni.bens.rule.util.WebUtils;
 import cn.ibenbeni.bens.tenant.api.context.TenantContextHolder;
