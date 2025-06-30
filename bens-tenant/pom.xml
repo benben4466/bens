@@ -15,8 +15,8 @@
     <modules>
         <!-- 租户模块-API -->
         <module>tenant-api</module>
-        <!-- 租户模块-DB实现 -->
-        <module>tenant-db-mp</module>
+        <!-- 租户模块-SDK实现 -->
+        <module>tenant-sdk</module>
         <!-- 租户模块-业务 -->
         <module>tenant-business</module>
         <!-- 租户模块-Starter -->
