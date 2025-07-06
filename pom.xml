@@ -42,6 +42,8 @@
         <module>bens-ds-container</module>
         <!-- 租户模块 -->
         <module>bens-tenant</module>
+        <!-- Excel模块 -->
+        <module>bens-excel</module>
     </modules>
 
     <properties>
@@ -56,6 +58,7 @@
         <lombok.versin>1.18.34</lombok.versin>
         <hutool.version>5.8.36</hutool.version>
         <fastjson2.version>2.0.50</fastjson2.version>
+        <easyexcel.version>4.0.3</easyexcel.version>
         <mybatis-plus.version>3.5.6</mybatis-plus.version>
         <sa-token.version>1.43.0</sa-token.version>
     </properties>
@@ -91,6 +94,14 @@
                 <version>${fastjson2.version}</version>
             </dependency>
 
+            <!-- EasyExcel -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>easyexcel</artifactId>
+                <version>${easyexcel.version}</version>
+            </dependency>
+
+            <!-- DAO框架 -->
             <!-- MybatisPlus-ORM框架 -->
             <dependency>
                 <groupId>com.baomidou</groupId>
