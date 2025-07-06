@@ -7,7 +7,7 @@ import cn.ibenbeni.bens.sys.modular.role.action.RoleAssignOperateAction;
 import cn.ibenbeni.bens.sys.modular.role.action.RoleBindLimitAction;
 import cn.ibenbeni.bens.sys.modular.role.entity.SysRoleLimit;
 import cn.ibenbeni.bens.sys.modular.role.entity.SysRoleMenuOptions;
-import cn.ibenbeni.bens.sys.modular.role.enums.PermissionNodeTypeEnum;
+import cn.ibenbeni.bens.sys.api.enums.role.PermissionNodeTypeEnum;
 import cn.ibenbeni.bens.sys.modular.role.enums.RoleLimitTypeEnum;
 import cn.ibenbeni.bens.sys.modular.role.pojo.request.RoleBindPermissionRequest;
 import cn.ibenbeni.bens.sys.modular.role.service.SysRoleLimitService;

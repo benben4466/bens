@@ -1,4 +1,4 @@
-package cn.ibenbeni.bens.sys.modular.role.pojo.response;
+package cn.ibenbeni.bens.sys.api.pojo.role;
 
 import cn.ibenbeni.bens.rule.tree.factory.base.AbstractTreeNode;
 import lombok.Data;

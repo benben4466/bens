@@ -15,48 +15,13 @@ public class BaseRequest implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 查询开始时间
-     */
-    private String searchBeginTime;
-
-    /**
-     * 查询结束时间
-     */
-    private String searchEndTime;
-
-    /**
-     * 分页：每页大小（默认20）
-     */
-    private Integer pageSize;
-
-    /**
-     * 分页：第几页（从1开始）
-     */
-    private Integer pageNo;
-
-    /**
-     * 唯一请求号
-     */
-    private String requestNo;
-
-    /**
-     * 业务节点id
-     */
-    private String spanId;
-
-    /**
-     * 当前登录用户的token
-     */
-    private String token;
-
     // -----------------------------------------------------参数校验分组-------------------------------------------------
     // region 参数校验分组
 
     /**
      * 新增
      */
-    public interface add {
+    public interface create {
     }
 
     /**
@@ -72,21 +37,15 @@ public class BaseRequest implements Serializable {
     }
 
     /**
-     * 编辑
+     * 更新
      */
-    public interface edit {
-    }
-
-    /**
-     * 修改状态
-     */
-    public interface updateStatus {
+    public interface update {
     }
 
     /**
      * 查询详情
      */
-    public interface detail {
+    public interface get {
     }
 
     /**

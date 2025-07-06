@@ -1,19 +1,22 @@
 package cn.ibenbeni.bens.sys.modular.user.controller;
 
+import cn.ibenbeni.bens.db.api.pojo.page.PageParam;
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
+import cn.ibenbeni.bens.easyexcel.util.ExcelUtils;
 import cn.ibenbeni.bens.rule.pojo.request.BaseRequest;
 import cn.ibenbeni.bens.rule.pojo.response.ResponseData;
 import cn.ibenbeni.bens.rule.pojo.response.SuccessResponseData;
-import cn.ibenbeni.bens.sys.api.expander.SysConfigExpander;
-import cn.ibenbeni.bens.sys.modular.user.entity.SysUser;
-import cn.ibenbeni.bens.sys.modular.user.pojo.request.SysUserRequest;
-import cn.ibenbeni.bens.sys.modular.user.pojo.request.SysUserRoleRequest;
-import cn.ibenbeni.bens.sys.modular.user.service.SysUserRoleService;
+import cn.ibenbeni.bens.sys.modular.user.convert.UserConvert;
+import cn.ibenbeni.bens.sys.modular.user.entity.SysUserDO;
+import cn.ibenbeni.bens.sys.modular.user.pojo.vo.*;
 import cn.ibenbeni.bens.sys.modular.user.service.SysUserService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * 系统用户控制器
@@ -27,89 +30,93 @@ public class SysUserController {
     @Resource
     private SysUserService sysUserService;
 
-    @Resource
-    private SysUserRoleService sysUserRoleService;
-
     /**
-     * 添加用户
+     * 新增用户
      */
-    @PostMapping(value = "/sysUser/add")
-    public ResponseData<SysUser> add(@RequestBody @Validated(BaseRequest.add.class) SysUserRequest sysUserRequest) {
-        sysUserService.add(sysUserRequest);
-        return new SuccessResponseData<>();
+    @PostMapping(value = "/system/user/create")
+    public ResponseData<Long> createUser(@RequestBody @Validated(BaseRequest.create.class) UserSaveReqVO reqVO) {
+        return new SuccessResponseData<>(sysUserService.createUser(reqVO));
     }
 
     /**
      * 删除用户
      */
-    @PostMapping(value = "/sysUser/delete")
-    public ResponseData<?> delete(@RequestBody @Validated(BaseRequest.delete.class) SysUserRequest sysUserRequest) {
-        sysUserService.del(sysUserRequest);
-        return new SuccessResponseData<>();
+    @DeleteMapping("/system/user/delete")
+    public ResponseData<Boolean> deleteUser(@RequestParam("id") Long id) {
+        sysUserService.deleteUser(id);
+        return new SuccessResponseData<>(true);
     }
 
     /**
      * 批量删除用户
      */
-    @PostMapping(value = "/sysUser/batchDelete")
-    public ResponseData<?> batchDelete(@RequestBody @Validated(BaseRequest.batchDelete.class) SysUserRequest sysUserRequest) {
-        sysUserService.batchDel(sysUserRequest);
-        return new SuccessResponseData<>();
+    @DeleteMapping("/system/user/delete-list")
+    public ResponseData<Boolean> deleteUserList(@RequestParam("ids") List<Long> ids) {
+        sysUserService.deleteUserList(ids);
+        return new SuccessResponseData<>(true);
     }
 
     /**
-     * 编辑用户
+     * 修改用户
      */
-    @PostMapping(value = "/sysUser/edit")
-    public ResponseData<?> edit(@RequestBody @Validated(BaseRequest.edit.class) SysUserRequest sysUserRequest) {
-        sysUserService.edit(sysUserRequest);
-        return new SuccessResponseData<>();
+    @PutMapping(value = "/system/user/update")
+    public ResponseData<Boolean> updateUser(@RequestBody @Validated(BaseRequest.update.class) UserSaveReqVO reqVO) {
+        sysUserService.updateUser(reqVO);
+        return new SuccessResponseData<>(true);
     }
 
     /**
-     * 查看用户详情
+     * 重置用户密码
      */
-    @GetMapping(value = "/sysUser/detail")
-    public ResponseData<SysUser> detail(@Validated(BaseRequest.detail.class) SysUserRequest sysUserRequest) {
-        return new SuccessResponseData<>(sysUserService.detail(sysUserRequest));
+    @PutMapping("/system/user/update-password")
+    public ResponseData<Boolean> updateUserPassword(@RequestBody UserUpdatePasswordReqVO reqVO) {
+        sysUserService.updateUserPassword(reqVO.getUserId(), reqVO.getNewPassword());
+        return new SuccessResponseData<>(true);
     }
 
     /**
-     * 获取列表-用户信息（带分页）
+     * 重置用户密码
      */
-    @GetMapping(value = "/sysUser/page")
-    public ResponseData<PageResult<SysUser>> page(SysUserRequest sysUserRequest) {
-        return new SuccessResponseData<>(sysUserService.findPage(sysUserRequest));
+    @PutMapping("/system/user/update-status")
+    public ResponseData<Boolean> updateUserStatus(@RequestBody UserUpdateStatusReqVO reqVO) {
+        sysUserService.updateUserStatus(reqVO.getUserId(), reqVO.getStatusFlag());
+        return new SuccessResponseData<>(true);
     }
 
     /**
-     * 修改用户状态
+     * 获得用户详情
+     *
+     * @param id 用户ID
      */
-    @PostMapping(value = "/sysUser/updateStatus")
-    public ResponseData<?> updateStatus(@RequestBody @Validated(BaseRequest.updateStatus.class) SysUserRequest sysUserRequest) {
-        sysUserService.updateStatus(sysUserRequest);
-        return new SuccessResponseData<>();
+    @GetMapping("/system/user/get")
+    public ResponseData<UserRespVO> getUser(@RequestParam("id") Long id) {
+        UserRespVO respVO = UserConvert.convert(sysUserService.getUserById(id));
+        return new SuccessResponseData<>(respVO);
     }
 
     /**
-     * 重置用户密码为默认密码
+     * 获得用户分页列表
      */
-    @PostMapping(value = "/sysUser/resetPassword")
-    public ResponseData<?> resetPassword(@RequestBody @Validated(SysUserRequest.resetPassword.class) SysUserRequest sysUserRequest) {
-        // 获取系统配置的默认密码
-        String password = SysConfigExpander.getDefaultPassWord();
-        sysUserService.resetPassword(sysUserRequest.getUserId(), password);
-        return new SuccessResponseData<>();
+    @GetMapping("/system/user/page")
+    public ResponseData<PageResult<UserRespVO>> getUserPage(UserPageReqVO reqVO) {
+        PageResult<SysUserDO> userPage = sysUserService.getUserPage(reqVO);
+        PageResult<UserRespVO> pageResult = new PageResult<>();
+        pageResult.setPageNo(userPage.getPageNo());
+        pageResult.setPageSize(userPage.getPageSize());
+        pageResult.setTotalPage(userPage.getTotalPage());
+        pageResult.setTotalRows(userPage.getTotalRows());
+        pageResult.setRows(UserConvert.convertList(userPage.getRows()));
+        return new SuccessResponseData<>(pageResult);
     }
 
     /**
-     * 绑定用户角色
-     * <p>组织架构-人员页面使用；用于绑定系统角色</p>
+     * 导出用户
      */
-    @PostMapping("/sysUser/bindRoles")
-    public ResponseData<?> bindRoles(@RequestBody @Validated(SysUserRoleRequest.bindRoles.class) SysUserRoleRequest sysUserRoleRequest) {
-        sysUserRoleService.bindRoles(sysUserRoleRequest);
-        return new SuccessResponseData<>();
+    @GetMapping("/system/user/export-excel")
+    public void exportUserList(UserPageReqVO exportReqVO, HttpServletResponse response) throws IOException {
+        exportReqVO.setPageSize(PageParam.PAGE_SIZE_NONE); // 不分页
+        List<SysUserDO> list = sysUserService.getUserPage(exportReqVO).getRows();
+        ExcelUtils.write(response, "用户数据.xls", "数据", UserRespVO.class, UserConvert.convertList(list));
     }
 
 }

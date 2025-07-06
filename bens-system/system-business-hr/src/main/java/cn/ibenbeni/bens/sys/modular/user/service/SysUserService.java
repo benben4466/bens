@@ -1,108 +1,113 @@
 package cn.ibenbeni.bens.sys.modular.user.service;
 
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
-import cn.ibenbeni.bens.rule.pojo.dict.SimpleDict;
 import cn.ibenbeni.bens.sys.api.SysUserServiceApi;
-import cn.ibenbeni.bens.sys.modular.user.entity.SysUser;
-import cn.ibenbeni.bens.sys.modular.user.pojo.request.SysUserRequest;
-import cn.ibenbeni.bens.sys.modular.user.pojo.response.PersonalInfo;
+import cn.ibenbeni.bens.sys.modular.user.entity.SysUserDO;
+import cn.ibenbeni.bens.sys.modular.user.pojo.vo.UserPageReqVO;
+import cn.ibenbeni.bens.sys.modular.user.pojo.vo.UserSaveReqVO;
+import cn.ibenbeni.bens.sys.modular.user.pojo.vo.profile.UserProfileUpdatePasswordReqVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 系统用户 服务类
  *
  * @author benben
  */
-public interface SysUserService extends IService<SysUser>, SysUserServiceApi {
+public interface SysUserService extends IService<SysUserDO>, SysUserServiceApi {
 
     /**
-     * 新增
+     * 创建用户
      *
-     * @param sysUserRequest 请求参数
+     * @return 用户ID
      */
-    void add(SysUserRequest sysUserRequest);
+    Long createUser(UserSaveReqVO createReqVO);
 
     /**
-     * 删除
+     * 删除用户
      *
-     * @param sysUserRequest 请求参数
+     * @param id 用户ID
      */
-    void del(SysUserRequest sysUserRequest);
+    void deleteUser(Long id);
 
     /**
      * 批量删除用户
      *
-     * @param sysUserRequest 请求参数
+     * @param idList 用户ID列表
      */
-    void batchDel(SysUserRequest sysUserRequest);
+    void deleteUserList(List<Long> idList);
 
     /**
-     * 编辑
-     *
-     * @param sysUserRequest 请求参数
+     * 修改用户
      */
-    void edit(SysUserRequest sysUserRequest);
+    void updateUser(UserSaveReqVO updateReqVO);
 
     /**
-     * 查询详情
+     * 修改用户密码
      *
-     * @param sysUserRequest 请求参数
+     * @param id    用户ID
+     * @param reqVO 修改密码参数
      */
-    SysUser detail(SysUserRequest sysUserRequest);
+    void updateUserPassword(Long id, UserProfileUpdatePasswordReqVO reqVO);
 
     /**
-     * 获取列表
+     * 修改用户密码
      *
-     * @param sysUserRequest 请求参数
-     * @return List  返回结果
+     * @param id       用户ID
+     * @param password 修改密码参数
      */
-    List<SysUser> findList(SysUserRequest sysUserRequest);
-
-    /**
-     * 获取列表（带分页）
-     *
-     * @param sysUserRequest 请求参数
-     * @return PageResult<SysUser> 返回结果
-     */
-    PageResult<SysUser> findPage(SysUserRequest sysUserRequest);
+    void updateUserPassword(Long id, String password);
 
     /**
      * 修改用户状态
-     */
-    void updateStatus(SysUserRequest sysUserRequest);
-
-    /**
-     * 获取当前用户的个人信息详情
-     */
-    PersonalInfo getPersonalInfo();
-
-    /**
-     * 更新用户信息（一般用于更新个人信息）
      *
-     * @param sysUserRequest 请求参数封装
+     * @param id     用户ID
+     * @param status 用户状态
      */
-    void editInfo(SysUserRequest sysUserRequest);
+    void updateUserStatus(Long id, Integer status);
 
     /**
-     * 修改个人头像
+     * 获取用户信息
+     *
+     * @param id 用户ID
+     * @return 用户信息
      */
-    void editAvatar(SysUserRequest sysUserRequest);
+    SysUserDO getUserById(Long id);
 
     /**
-     * 修改个人密码
+     * 根据用户账号查询用户信息
+     *
+     * @param account 用户账号
+     * @return 用户信息
      */
-    void editPassword(SysUserRequest sysUserRequest);
+    SysUserDO getUserByAccount(String account);
 
     /**
-     * 批量获取用户名称
+     * 获得用户列表
+     *
+     * @param idSet 用户ID集合
+     * @return 用户列表
      */
-    List<SimpleDict> batchGetName(SysUserRequest sysUserRequest);
+    List<SysUserDO> getUserList(Set<Long> idSet);
 
     /**
-     * 重置用户密码
+     * 获得用户分页列表
+     *
+     * @param reqVO 分页条件
+     * @return 用户分页列表
      */
-    void resetPassword(Long userId, String newPassword);
+    PageResult<SysUserDO> getUserPage(UserPageReqVO reqVO);
+
+    /**
+     * 判断密码是否匹配
+     *
+     * @param encryptBefore 未加密密码
+     * @param passwordSalt  密码盐
+     * @param encryptAfter  已加密密码
+     * @return 是否匹配
+     */
+    boolean isPasswordMatch(String encryptBefore, String passwordSalt, String encryptAfter);
 
 }

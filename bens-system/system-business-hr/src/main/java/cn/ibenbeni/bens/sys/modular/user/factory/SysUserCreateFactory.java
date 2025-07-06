@@ -2,7 +2,7 @@ package cn.ibenbeni.bens.sys.modular.user.factory;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.ibenbeni.bens.sys.modular.user.entity.SysUser;
+import cn.ibenbeni.bens.sys.modular.user.entity.SysUserDO;
 import cn.ibenbeni.bens.sys.modular.user.pojo.request.SysUserRequest;
 
 /**
@@ -16,7 +16,7 @@ public class SysUserCreateFactory {
     /**
      * 编辑用户时候的用户信息填充
      */
-    public static void fillUpdateInfo(SysUserRequest sysUserRequest, SysUser sysUser) {
+    public static void fillUpdateInfo(SysUserRequest sysUserRequest, SysUserDO sysUser) {
         // 姓名
         sysUser.setRealName(sysUserRequest.getRealName());
 

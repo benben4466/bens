@@ -1,5 +1,7 @@
 package cn.ibenbeni.bens.sys.modular.user.constants;
 
+import java.math.BigDecimal;
+
 /**
  * 用户相关的常量
  *
@@ -17,5 +19,10 @@ public interface UserConstants {
      * 修改用户绑定角色的事件
      */
     String UPDATE_USER_ROLE_EVENT = "UPDATE_USER_ROLE_EVENT";
+
+    /**
+     * 默认用户排序
+     */
+    BigDecimal DEFAULT_USER_SORT = BigDecimal.valueOf(99);
 
 }

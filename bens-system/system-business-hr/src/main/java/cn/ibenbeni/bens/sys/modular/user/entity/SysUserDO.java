@@ -3,8 +3,7 @@ package cn.ibenbeni.bens.sys.modular.user.entity;
 import cn.ibenbeni.bens.db.api.pojo.entity.BaseBusinessEntity;
 import cn.ibenbeni.bens.rule.util.sort.GetSortKey;
 import com.baomidou.mybatisplus.annotation.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -18,8 +17,11 @@ import java.util.List;
  */
 @TableName(value = "sys_user", autoResultMap = true)
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class SysUser extends BaseBusinessEntity implements GetSortKey {
+public class SysUserDO extends BaseBusinessEntity implements GetSortKey {
 
     /**
      * 主键

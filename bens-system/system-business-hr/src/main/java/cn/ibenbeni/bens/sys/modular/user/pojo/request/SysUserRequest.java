@@ -24,13 +24,13 @@ public class SysUserRequest extends BaseRequest {
     /**
      * 主键
      */
-    @NotNull(message = "主键不能为空", groups = {edit.class, delete.class, detail.class, updateStatus.class, resetPassword.class})
+    @NotNull(message = "主键不能为空")
     private Long userId;
 
     /**
      * 姓名
      */
-    @NotBlank(message = "姓名不能为空", groups = {add.class, edit.class, updateInfo.class})
+    @NotBlank(message = "姓名不能为空")
     private String realName;
 
     /**

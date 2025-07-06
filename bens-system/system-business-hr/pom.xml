@@ -31,6 +31,13 @@
             <version>${revision}</version>
         </dependency>
 
+        <!-- Excel模块-Starter -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>excel-sdk-easyexcel</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
         <!-- 缓存模块 -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>

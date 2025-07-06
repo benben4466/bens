@@ -60,6 +60,7 @@
         <fastjson2.version>2.0.50</fastjson2.version>
         <easyexcel.version>4.0.3</easyexcel.version>
         <mybatis-plus.version>3.5.6</mybatis-plus.version>
+        <mybatis-plus-join.version>1.4.13</mybatis-plus-join.version>
         <sa-token.version>1.43.0</sa-token.version>
     </properties>
 
@@ -106,6 +107,13 @@
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <!-- MyBatis-Plus 联表查询 -->
+            <dependency>
+                <groupId>com.github.yulichang</groupId>
+                <artifactId>mybatis-plus-join-boot-starter</artifactId>
+                <version>${mybatis-plus-join.version}</version>
             </dependency>
 
             <!-- Sa-Token-权限认证框架 -->
