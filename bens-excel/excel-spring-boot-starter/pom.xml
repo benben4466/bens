@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>cn.ibenbeni</groupId>
+        <artifactId>bens-excel</artifactId>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <packaging>jar</packaging>
+
+    <artifactId>excel-spring-boot-starter</artifactId>
+    <description>Excel模块-Starter</description>
+
+    <dependencies>
+        <!-- Excel模块-EasyExcel实现 -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>excel-sdk-easyexcel</artifactId>
+            <version>${revision}</version>
+        </dependency>
+    </dependencies>
+
+</project>
