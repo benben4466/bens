@@ -2,11 +2,10 @@ package cn.ibenbeni.bens.rule.util;
 
 import cn.hutool.core.collection.CollUtil;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.function.BinaryOperator;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -35,6 +34,59 @@ public class CollectionUtils {
                 .map(func)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
+    }
+
+    public static <T, K> Map<K, T> convertMap(Collection<T> from, Function<T, K> keyFunc) {
+        if (CollUtil.isEmpty(from)) {
+            return new HashMap<>();
+        }
+        return convertMap(from, keyFunc, Function.identity());
+    }
+
+    public static <T, K, V> Map<K, V> convertMap(Collection<T> from, Function<T, K> keyFunc, Function<T, V> valueFunc) {
+        if (CollUtil.isEmpty(from)) {
+            return new HashMap<>();
+        }
+        return convertMap(from, keyFunc, valueFunc, (v1, v2) -> v1);
+    }
+
+    public static <T, K, V> Map<K, V> convertMap(Collection<T> from, Function<T, K> keyFunc, Function<T, V> valueFunc, BinaryOperator<V> mergeFunc) {
+        if (CollUtil.isEmpty(from)) {
+            return new HashMap<>();
+        }
+        return convertMap(from, keyFunc, valueFunc, mergeFunc, HashMap::new);
+    }
+
+    /**
+     * 将集合转换成Map
+     *
+     * @param from      待转换集合
+     * @param keyFunc   获取Key的方法
+     * @param valueFunc 获取Value的方法
+     * @param mergeFunc key相同时, 合并Value的方法
+     * @param supplier  创建Map的实现类
+     * @param <T>       待转换元素类型
+     * @param <K>       目标Key类型
+     * @param <V>       目标Value类型
+     * @return 目标Map
+     */
+    public static <T, K, V> Map<K, V> convertMap(Collection<T> from, Function<T, K> keyFunc, Function<T, V> valueFunc, BinaryOperator<V> mergeFunc, Supplier<? extends Map<K, V>> supplier) {
+        if (CollUtil.isEmpty(from)) {
+            return new HashMap<>();
+        }
+
+        return from.stream()
+                .collect(Collectors.toMap(keyFunc, valueFunc, mergeFunc, supplier));
+    }
+
+    public static <T, R> Set<R> convertSet(Collection<T> from, Function<T, R> func) {
+        if (CollUtil.isEmpty(from)) {
+            return new HashSet<>();
+        }
+        return from.stream()
+                .map(func)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
     }
 
 }

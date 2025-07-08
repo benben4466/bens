@@ -56,6 +56,10 @@ public interface BaseMapperX<T> extends MPJBaseMapper<T> {
         return selectList(new LambdaQueryWrapper<T>().eq(field, value));
     }
 
+    default List<T> selectList(SFunction<T, ?> field, Collection<?> values) {
+        return selectList(new LambdaQueryWrapper<T>().in(field, values));
+    }
+
     default PageResult<T> selectPage(PageParam pageParam, @Param("ew") Wrapper<T> queryWrapper) {
         return this.selectPage(pageParam, null, queryWrapper);
     }
@@ -78,6 +82,16 @@ public interface BaseMapperX<T> extends MPJBaseMapper<T> {
 
         // 转换返回
         return PageResultFactory.createPageResult(mpPage);
+    }
+
+    /**
+     * 根据一个字段查询数量
+     *
+     * @param field 字段名称函数
+     * @param value 字段值
+     */
+    default Long selectCount(SFunction<T, ?> field, Object value) {
+        return selectCount(new LambdaQueryWrapper<T>().eq(field, value));
     }
 
 }
