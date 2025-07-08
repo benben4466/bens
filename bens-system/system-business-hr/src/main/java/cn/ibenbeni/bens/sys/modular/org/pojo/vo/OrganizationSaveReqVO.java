@@ -1,6 +1,7 @@
 package cn.ibenbeni.bens.sys.modular.org.pojo.vo;
 
 import cn.ibenbeni.bens.rule.pojo.request.BaseRequest;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -22,6 +23,7 @@ public class OrganizationSaveReqVO extends BaseRequest {
     /**
      * 机构ID
      */
+    @Schema(description = "组织ID", example = "10")
     @NotNull(message = "组织ID不能为空", groups = {update.class})
     private Long orgId;
 
@@ -30,12 +32,14 @@ public class OrganizationSaveReqVO extends BaseRequest {
      * <p>一级节点父ID是-1</p>
      * <p>若未选择，前端默认-1</p>
      */
-    @NotNull(message = "父部门ID不能为空", groups = {create.class, update.class})
+    @Schema(description = "父组织ID", example = "9")
+    @NotNull(message = "父组织ID不能为空", groups = {create.class, update.class})
     private Long orgParentId;
 
     /**
      * 组织名称
      */
+    @Schema(description = "组织名称", example = "笨笨组织", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "组织名称不能为空", groups = {create.class, update.class})
     @Size(max = 30, message = "组织名称长度不能超过30个字符", groups = {create.class, update.class})
     private String orgName;
@@ -43,17 +47,20 @@ public class OrganizationSaveReqVO extends BaseRequest {
     /**
      * 组织机构简称
      */
+    @Schema(description = "组织简称", example = "笨笨")
     private String orgShortName;
 
     /**
      * 组织编码
      */
+    @Schema(description = "组织编码", example = "benben_org" , requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "组织编码不能为空", groups = {create.class, update.class})
     private String orgCode;
 
     /**
      * 排序
      */
+    @Schema(description = "组织显示排序", example = "0", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "组织排序不能为空", groups = {create.class, update.class})
     private BigDecimal orgSort;
 
@@ -61,39 +68,46 @@ public class OrganizationSaveReqVO extends BaseRequest {
      * 组织机构类型
      * <p>类型编码: {@link cn.ibenbeni.bens.sys.api.enums.menu.OrganizationTypeEnum}</p>
      */
+    @Schema(description = "组织类型", example = "1")
     @NotNull(message = "组织机构类型不能为空", groups = {create.class, update.class})
     private Integer orgType;
 
     /**
      * 税号
      */
+    @Schema(description = "组织税号", example = "91110108551385082Q")
     private String taxNo;
 
     /**
      * 联系人
      */
+    @Schema(description = "组织联系人", example = "笨")
     private String contacts;
 
     /**
      * 联系人号码
      */
+    @Schema(description = "组织联系人号码", example = "12312345671")
     private String contactsPhone;
 
     /**
      * 联系人邮箱
      */
+    @Schema(description = "组织联系人邮箱", example = "ibenbeni@163.com")
     private String contactsEmail;
 
     /**
      * 状态
      * <p>1-启用，2-禁用</p>
      */
+    @Schema(description = "组织状态", example = "1" , requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "组织状态不能为空", groups = {create.class, update.class})
     private Integer statusFlag;
 
     /**
      * 描述
      */
+    @Schema(description = "组织描述", example = "我是好人")
     private String remark;
 
 }
