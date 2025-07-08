@@ -3,6 +3,7 @@ package cn.ibenbeni.bens.db.api.pojo.entity;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.Version;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -18,6 +19,13 @@ import lombok.EqualsAndHashCode;
 public class BaseBusinessEntity extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
+
+    /**
+     * 乐观锁
+     */
+    @Version
+    @TableField(value = "version_flag", fill = FieldFill.INSERT)
+    private Long versionFlag;
 
     /**
      * 删除标记：Y-已删除，N-未删除
