@@ -2,6 +2,7 @@ package cn.ibenbeni.bens.db.starter.mp;
 
 import cn.ibenbeni.bens.db.mp.fieldfill.CustomMetaObjectHandler;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
@@ -31,8 +32,33 @@ public class MybatisPlusAutoConfiguration {
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
-        interceptor.addInnerInterceptor(new PaginationInnerInterceptor());
+        // 注意：多租户插件需在分页插件之前
+
+        // 添加多租户插件（若开启）BensTenantAutoConfiguration内添加
+
+        // 添加分页插件
+        interceptor.addInnerInterceptor(this.paginationInnerInterceptor());
+
+        // 添加乐观锁插件
+        interceptor.addInnerInterceptor(this.optimisticLockerInnerInterceptor());
+
         return interceptor;
+    }
+
+    /**
+     * Mybatis-Plus 分页插件
+     */
+    @Bean
+    public PaginationInnerInterceptor paginationInnerInterceptor() {
+        return new PaginationInnerInterceptor();
+    }
+
+    /**
+     * Mybatis-Plus 乐观锁插件
+     */
+    @Bean
+    public OptimisticLockerInnerInterceptor optimisticLockerInnerInterceptor() {
+        return new OptimisticLockerInnerInterceptor();
     }
 
 }

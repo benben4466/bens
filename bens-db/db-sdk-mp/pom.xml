@@ -37,9 +37,16 @@
             <version>${revision}</version>
         </dependency>
 
+        <!-- MybatisPlus分页插件 -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-jsqlparser-4.9</artifactId>
+        </dependency>
+
+        <!-- MyBatis 联表查询 -->
         <dependency>
             <groupId>com.github.yulichang</groupId>
-            <artifactId>mybatis-plus-join-boot-starter</artifactId> <!-- MyBatis 联表查询 -->
+            <artifactId>mybatis-plus-join-boot-starter</artifactId>
         </dependency>
     </dependencies>
 
