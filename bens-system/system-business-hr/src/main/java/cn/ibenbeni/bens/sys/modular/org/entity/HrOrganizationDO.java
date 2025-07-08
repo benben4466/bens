@@ -18,7 +18,9 @@ import java.util.List;
 @TableName(value = "sys_hr_organization", autoResultMap = true)
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class HrOrganization extends BaseExpandFieldEntity implements AbstractTreeNode<HrOrganization> {
+public class HrOrganizationDO extends BaseExpandFieldEntity implements AbstractTreeNode<HrOrganizationDO> {
+
+    // region 表实体字段
 
     /**
      * 主键
@@ -32,12 +34,6 @@ public class HrOrganization extends BaseExpandFieldEntity implements AbstractTre
      */
     @TableField("org_parent_id")
     private Long orgParentId;
-
-    /**
-     * 父ID集合
-     */
-    @TableField("org_pids")
-    private String orgPids;
 
     /**
      * 组织名称
@@ -64,15 +60,8 @@ public class HrOrganization extends BaseExpandFieldEntity implements AbstractTre
     private BigDecimal orgSort;
 
     /**
-     * 状态
-     * <p>1-启用，2-禁用</p>
-     */
-    @TableField("status_flag")
-    private Integer statusFlag;
-
-    /**
      * 组织机构类型
-     * <p>1-公司，2-部门</p>
+     * <p>类型编码: {@link cn.ibenbeni.bens.sys.api.enums.menu.OrganizationTypeEnum}</p>
      */
     @TableField("org_type")
     private Integer orgType;
@@ -84,16 +73,35 @@ public class HrOrganization extends BaseExpandFieldEntity implements AbstractTre
     private String taxNo;
 
     /**
+     * 联系人
+     */
+    @TableField("contacts")
+    private String contacts;
+
+    /**
+     * 联系人号码
+     */
+    @TableField("contacts_phone")
+    private String contactsPhone;
+
+    /**
+     * 联系人邮箱
+     */
+    @TableField("contacts_email")
+    private String contactsEmail;
+
+    /**
+     * 状态
+     * <p>{@link cn.ibenbeni.bens.rule.enums.StatusEnum}</p>
+     */
+    @TableField("status_flag")
+    private Integer statusFlag;
+
+    /**
      * 描述
      */
     @TableField("remark")
     private String remark;
-
-    /**
-     * 组织机构层级
-     */
-    @TableField("org_level")
-    private Integer orgLevel;
 
     /**
      * 租户ID
@@ -101,27 +109,18 @@ public class HrOrganization extends BaseExpandFieldEntity implements AbstractTre
     @TableField(value = "tenant_id", fill = FieldFill.INSERT)
     private Long tenantId;
 
+    // endregion
+
     //-------------------------------非实体字段-------------------------------
-    //-------------------------------非实体字段-------------------------------
-    //-------------------------------非实体字段-------------------------------
+    // region 非实体字段
 
     /**
      * 子节点的集合
      */
     @TableField(exist = false)
-    private List<HrOrganization> children;
+    private List<HrOrganizationDO> children;
 
-    /**
-     * 父级ID的名称
-     */
-    @TableField(exist = false)
-    private String parentOrgName;
-
-    /**
-     * 组织机构所属公司的名称
-     */
-    @TableField(exist = false)
-    private String companyName;
+    // endregion
 
     @Override
     public String getNodeId() {
@@ -140,7 +139,7 @@ public class HrOrganization extends BaseExpandFieldEntity implements AbstractTre
     }
 
     @Override
-    public void setChildrenNodes(List<HrOrganization> childrenNodes) {
+    public void setChildrenNodes(List<HrOrganizationDO> childrenNodes) {
         this.children = childrenNodes;
     }
 

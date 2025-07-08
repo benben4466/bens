@@ -1,5 +1,9 @@
 package cn.ibenbeni.bens.sys.modular.user.pojo.vo;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -9,6 +13,9 @@ import java.util.Date;
  * @author: benben
  * @time: 2025/7/6 下午2:56
  */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserRespVO {
 
     /**

@@ -3,8 +3,7 @@ package cn.ibenbeni.bens.sys.modular.org.factory;
 import cn.hutool.extra.spring.SpringUtil;
 import cn.ibenbeni.bens.rule.constants.SymbolConstant;
 import cn.ibenbeni.bens.rule.constants.TreeConstants;
-import cn.ibenbeni.bens.sys.api.OrganizationServiceApi;
-import cn.ibenbeni.bens.sys.modular.org.entity.HrOrganization;
+import cn.ibenbeni.bens.sys.modular.org.entity.HrOrganizationDO;
 import cn.ibenbeni.bens.sys.modular.org.pojo.request.HrOrganizationRequest;
 import cn.ibenbeni.bens.sys.modular.org.service.HrOrganizationService;
 
@@ -22,10 +21,10 @@ public final class OrganizationFactory {
      * <p>非顶级节点，则pids为 父节点的pids + [pid] + ,</p>
      * <p>非顶级节点示例：[-1],[1671418869810540546],[1671419890196623362], 后期可便于修改为同一个部门属于两个上级部门</p>
      */
-    public static void fillParentIds(HrOrganization hrOrganization) {
+    public static void fillParentIds(HrOrganizationDO hrOrganizationDO) {
         // 若父节点为顶级节点
-        if (TreeConstants.DEFAULT_PARENT_ID.equals(hrOrganization.getOrgParentId())) {
-            hrOrganization.setOrgPids(SymbolConstant.LEFT_SQUARE_BRACKETS + TreeConstants.DEFAULT_PARENT_ID + SymbolConstant.RIGHT_SQUARE_BRACKETS + SymbolConstant.COMMA);
+        if (TreeConstants.DEFAULT_PARENT_ID.equals(hrOrganizationDO.getOrgParentId())) {
+            hrOrganizationDO.setOrgPids(SymbolConstant.LEFT_SQUARE_BRACKETS + TreeConstants.DEFAULT_PARENT_ID + SymbolConstant.RIGHT_SQUARE_BRACKETS + SymbolConstant.COMMA);
         }
         // 非顶级节点
         else {
@@ -33,11 +32,11 @@ public final class OrganizationFactory {
 
             // 获取父组织机构
             HrOrganizationRequest hrOrganizationRequest = new HrOrganizationRequest();
-            hrOrganizationRequest.setOrgId(hrOrganization.getOrgParentId());
-            HrOrganization dbHrOrganization = hrOrganizationService.detail(hrOrganizationRequest);
+            hrOrganizationRequest.setOrgId(hrOrganizationDO.getOrgParentId());
+            HrOrganizationDO dbHrOrganizationDO = hrOrganizationService.detail(hrOrganizationRequest);
 
             // 设置当前节点父节点ID集合
-            hrOrganization.setOrgPids(dbHrOrganization.getOrgPids() + SymbolConstant.LEFT_SQUARE_BRACKETS + hrOrganization.getOrgParentId() + SymbolConstant.RIGHT_SQUARE_BRACKETS + SymbolConstant.COMMA);
+            hrOrganizationDO.setOrgPids(dbHrOrganizationDO.getOrgPids() + SymbolConstant.LEFT_SQUARE_BRACKETS + hrOrganizationDO.getOrgParentId() + SymbolConstant.RIGHT_SQUARE_BRACKETS + SymbolConstant.COMMA);
         }
     }
 
