@@ -79,3 +79,21 @@ CREATE TABLE `sys_user_org`
     `tenant_id`   bigint      NULL     DEFAULT NULL COMMENT '租户ID',
     PRIMARY KEY (`user_org_id`)
 ) COMMENT = '用户组织机构关联';
+
+CREATE TABLE `sys_post`
+(
+    `position_id`   bigint         NOT NULL COMMENT '主键',
+    `position_name` varchar(100)   NOT NULL COMMENT '职位名称',
+    `position_code` varchar(100)   NOT NULL COMMENT '职位编码',
+    `position_sort` decimal(10, 2) NOT NULL COMMENT '排序',
+    `status_flag`   tinyint        NOT NULL DEFAULT 1 COMMENT '状态,1=启用，2=禁用',
+    `remark`        varchar(255)   NULL     DEFAULT NULL COMMENT '备注',
+    `version_flag`  bigint         NULL     DEFAULT NULL COMMENT '乐观锁',
+    `del_flag`      char(1)        NOT NULL DEFAULT 'N' COMMENT '删除标记,Y=已删除，N=未删除',
+    `create_time`   datetime(0)    NULL     DEFAULT NULL COMMENT '创建时间',
+    `create_user`   bigint         NULL     DEFAULT NULL COMMENT '创建人',
+    `update_time`   datetime(0)    NULL     DEFAULT NULL COMMENT '更新时间',
+    `update_user`   bigint         NULL     DEFAULT NULL COMMENT '更新人',
+    `tenant_id`     bigint         NULL     DEFAULT NULL COMMENT '租户号',
+    PRIMARY KEY (`position_id`)
+) COMMENT = '职位信息';
