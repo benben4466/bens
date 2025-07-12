@@ -89,6 +89,17 @@ public class SysUserOrgServiceImpl extends ServiceImpl<SysUserOrgMapper, SysUser
 
     @Override
     public void validateHaveOrgBind(Set<Long> beRemovedOrgIdList) {
+        if (CollUtil.isEmpty(beRemovedOrgIdList)) {
+            return;
+        }
+
+        // 组织下存在绑定的用户不允许删除
+        for (Long orgId : beRemovedOrgIdList) {
+            Long count = sysUserOrgMapper.selectCountByOrgId(orgId);
+            if (count > 0) {
+                throw new SysException(SysUserOrgExceptionEnum.ORG_REMOVE_ERROR);
+            }
+        }
     }
 
     @Override
@@ -103,6 +114,26 @@ public class SysUserOrgServiceImpl extends ServiceImpl<SysUserOrgMapper, SysUser
     @Override
     public void removeUserAction(Set<Long> beRemovedUserIdList) {
         sysUserOrgMapper.deleteByUserIds(beRemovedUserIdList);
+    }
+
+    @Override
+    public void validateHavePositionBind(Set<Long> beRemovedPositionIdList) {
+        if (CollUtil.isEmpty(beRemovedPositionIdList)) {
+            return;
+        }
+
+        // 组织下存在绑定的用户不允许删除
+        for (Long positionId : beRemovedPositionIdList) {
+            Long count = sysUserOrgMapper.selectCountByPositionId(positionId);
+            if (count > 0) {
+                throw new SysException(SysUserOrgExceptionEnum.POSITION_REMOVE_ERROR);
+            }
+        }
+    }
+
+    @Override
+    public void removePositionAction(Set<Long> beRemovedPositionIdList) {
+        sysUserOrgMapper.deleteByPositionIds(beRemovedPositionIdList);
     }
 
     // endregion

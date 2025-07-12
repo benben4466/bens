@@ -38,6 +38,16 @@ public enum SysUserOrgExceptionEnum implements AbstractExceptionEnum {
      */
     PARAM_MISSING(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + "10006", "用户组织关系参数缺失"),
 
+    /**
+     * 组织下存在关联的用户,不允许删除
+     */
+    ORG_REMOVE_ERROR(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + "10006", "组织下存在关联用户,不允许删除"),
+
+    /**
+     * 该职位下存在关联用户,不允许删除
+     */
+    POSITION_REMOVE_ERROR(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + "10006", "该职位下存在关联用户,不允许删除"),
+
     ;
 
     /**

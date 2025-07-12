@@ -29,17 +29,29 @@ public interface SysUserOrgMapper extends BaseMapperX<SysUserOrgDO> {
         );
     }
 
+    default Long selectCountByOrgId(Long orgId) {
+        return selectCount(new LambdaQueryWrapperX<SysUserOrgDO>()
+                .eq(SysUserOrgDO::getOrgId, orgId)
+        );
+    }
+
+    default Long selectCountByPositionId(Long positionId) {
+        return selectCount(new LambdaQueryWrapperX<SysUserOrgDO>()
+                .eq(SysUserOrgDO::getPositionId, positionId)
+        );
+    }
+
     /**
      * 判断用户是否已任职
      *
      * @param userId 用户ID
-     * @param postId 职位ID
+     * @param positionId 职位ID
      * @return 是否已任职
      */
-    default Boolean userPositionExisted(Long userId, Long postId) {
+    default Boolean userPositionExisted(Long userId, Long positionId) {
         return selectCount(new LambdaQueryWrapperX<SysUserOrgDO>()
                 .eq(SysUserOrgDO::getUserId, userId)
-                .eq(SysUserOrgDO::getPositionId, postId)
+                .eq(SysUserOrgDO::getPositionId, positionId)
         ) > 0;
     }
 
@@ -52,6 +64,12 @@ public interface SysUserOrgMapper extends BaseMapperX<SysUserOrgDO> {
     default int deleteByOrgIds(Set<Long> orgIds) {
         return delete(new LambdaQueryWrapperX<SysUserOrgDO>()
                 .in(SysUserOrgDO::getOrgId, orgIds)
+        );
+    }
+
+    default int deleteByPositionIds(Set<Long> positionIds) {
+        return delete(new LambdaQueryWrapperX<SysUserOrgDO>()
+                .in(SysUserOrgDO::getPositionId, positionIds)
         );
     }
 
