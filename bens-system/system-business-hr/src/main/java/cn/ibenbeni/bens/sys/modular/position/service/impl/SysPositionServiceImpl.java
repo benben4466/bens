@@ -3,9 +3,11 @@ package cn.ibenbeni.bens.sys.modular.position.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.extra.spring.SpringUtil;
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
 import cn.ibenbeni.bens.rule.enums.StatusEnum;
 import cn.ibenbeni.bens.rule.util.CollectionUtils;
+import cn.ibenbeni.bens.sys.api.callback.RemovePositionCallbackApi;
 import cn.ibenbeni.bens.sys.api.exception.SysException;
 import cn.ibenbeni.bens.sys.api.exception.enums.PositionExceptionEnum;
 import cn.ibenbeni.bens.sys.modular.position.entity.SysPositionDO;
@@ -56,12 +58,12 @@ public class SysPositionServiceImpl extends ServiceImpl<SysPositionMapper, SysPo
         // 校验职位是否存在
         this.validatePositionExist(positionId);
 
-        this.removeById(positionId);
+        this.baseRemovePosition(CollUtil.set(false, positionId));
     }
 
     @Override
     public void deletePositionList(Set<Long> positionIdSet) {
-        this.removeByIds(positionIdSet);
+        this.baseRemovePosition(positionIdSet);
     }
 
     @Override
@@ -176,6 +178,22 @@ public class SysPositionServiceImpl extends ServiceImpl<SysPositionMapper, SysPo
         this.validatePositionNameUnique(positionId, positionName);
         // 校验职位编码唯一
         this.validatePositionCodeUnique(positionId, positionCode);
+    }
+
+    private void baseRemovePosition(Set<Long> positionIdSet) {
+        Map<String, RemovePositionCallbackApi> apiMap = SpringUtil.getBeansOfType(RemovePositionCallbackApi.class);
+
+        // 校验是否有其他业务绑了职位信息
+        for (RemovePositionCallbackApi callbackApi : apiMap.values()) {
+            callbackApi.validateHavePositionBind(positionIdSet);
+        }
+
+        this.removeBatchByIds(positionIdSet);
+
+        // 删除回调
+        for (RemovePositionCallbackApi callbackApi : apiMap.values()) {
+            callbackApi.removePositionAction(positionIdSet);
+        }
     }
 
 
