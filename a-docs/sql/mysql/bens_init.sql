@@ -63,3 +63,19 @@ CREATE TABLE `sys_hr_organization`
     `tenant_id`      bigint         NULL     DEFAULT NULL COMMENT '租户ID',
     PRIMARY KEY (`org_id`)
 ) COMMENT = '组织机构信息';
+
+CREATE TABLE `sys_user_org`
+(
+    `user_org_id` bigint      NOT NULL COMMENT '主键',
+    `user_id`     bigint      NOT NULL COMMENT '用户主键',
+    `org_id`      bigint      NOT NULL COMMENT '组织主键',
+    `position_id` bigint      NULL     DEFAULT NULL COMMENT '职位ID',
+    `main_flag`   char(1)     NOT NULL DEFAULT 'N' COMMENT '是否是主部门, Y=是; N=不是;',
+    `status_flag` tinyint     NOT NULL DEFAULT 1 COMMENT '是否启用',
+    `create_time` datetime(0) NULL     DEFAULT NULL COMMENT '创建时间',
+    `create_user` bigint      NULL     DEFAULT NULL COMMENT '创建人',
+    `update_time` datetime(0) NULL     DEFAULT NULL COMMENT '更新时间',
+    `update_user` bigint      NULL     DEFAULT NULL COMMENT '更新人',
+    `tenant_id`   bigint      NULL     DEFAULT NULL COMMENT '租户ID',
+    PRIMARY KEY (`user_org_id`)
+) COMMENT = '用户组织机构关联';
