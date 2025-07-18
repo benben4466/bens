@@ -7,7 +7,6 @@ import lombok.Getter;
 
 /**
  * 菜单类型
- * <p>10-后台菜单，20-纯前台路由界面，30-内部链接，40-外部链接，50-应用设计</p>
  *
  * @author: benben
  * @time: 2025/6/1 下午3:18
@@ -15,30 +14,12 @@ import lombok.Getter;
 @Getter
 public enum MenuTypeEnum implements ReadableEnum<MenuTypeEnum> {
 
-    /**
-     * 后台菜单
-     */
-    BACKEND_MENU(10, "后台菜单"),
+    DIRECTORY(1, "目录"),
 
-    /**
-     * 纯前台路由界面
-     */
-    FRONT_VUE(20, "纯前台路由界面"),
+    MENU(2, "菜单"),
 
-    /**
-     * 内部链接
-     */
-    INNER_URL(30, "内部链接"),
+    BUTTON(3, "按钮"),
 
-    /**
-     * 外部链接
-     */
-    OUT_URL(40, "外部链接"),
-
-    /**
-     * 应用设计菜单，基于应用设计生成的低代码界面
-     */
-    APP_DESIGN(50, "应用设计"),
     ;
 
     private final Integer code;

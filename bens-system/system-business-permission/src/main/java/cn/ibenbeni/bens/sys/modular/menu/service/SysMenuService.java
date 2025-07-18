@@ -1,11 +1,11 @@
 package cn.ibenbeni.bens.sys.modular.menu.service;
 
-import cn.ibenbeni.bens.sys.modular.menu.entity.SysMenu;
-import cn.ibenbeni.bens.sys.modular.menu.pojo.request.SysMenuRequest;
+import cn.ibenbeni.bens.sys.modular.menu.entity.SysMenuDO;
+import cn.ibenbeni.bens.sys.modular.menu.pojo.request.SysMenuListReq;
+import cn.ibenbeni.bens.sys.modular.menu.pojo.request.SysMenuSaveReq;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -14,68 +14,64 @@ import java.util.Set;
  * @author: benben
  * @time: 2025/6/1 上午10:51
  */
-public interface SysMenuService extends IService<SysMenu> {
+public interface SysMenuService extends IService<SysMenuDO> {
 
     /**
-     * 新增
-     */
-    void add(SysMenuRequest sysMenuRequest);
-
-    /**
-     * 删除
-     */
-    void del(SysMenuRequest sysMenuRequest);
-
-    /**
-     * 编辑
-     */
-    void edit(SysMenuRequest sysMenuRequest);
-
-    /**
-     * 查询详情
-     */
-    SysMenu detail(SysMenuRequest sysMenuRequest);
-
-    /**
-     * 获取所有的菜单信息，用在角色绑定权限界面
-     */
-    List<SysMenu> getTotalMenus();
-
-    /**
-     * 获取所有的菜单信息，用在角色绑定权限界面
+     * 创建菜单
      *
-     * @param limitMenuIds 指定筛选的菜单的范围，若为空，则获取所有菜单
+     * @return 菜单ID
      */
-    List<SysMenu> getTotalMenus(Set<Long> limitMenuIds);
+    Long createMenu(SysMenuSaveReq req);
 
     /**
-     * 调整菜单上下级结构和菜单的顺序
+     * 删除菜单
      */
-    void updateMenuTree(SysMenuRequest sysMenuRequest);
+    void deleteMenu(Long menuId);
 
     /**
-     * 获取所有菜单id
-     * <p>一般用在项目启动，管理员自动绑定所有菜单</p>
+     * 批量删除菜单
      */
-    List<SysMenu> getTotalMenuList();
+    void deleteMenu(Set<Long> idSet);
 
     /**
-     * 获取菜单对应的菜单编码，以及菜单ID、父级ID，菜单名称、菜单图标、菜单是否隐藏、菜单激活地址、菜单路由、组件路径、排序信息
-     * <p>用在用户登录后，获取用户首页信息接口</p>
+     * 更新菜单
      */
-    List<SysMenu> getIndexMenuInfoList(List<Long> menuIdList);
+    void updateMenu(SysMenuSaveReq req);
 
     /**
-     * 通过菜单ID，获取菜单的编码集合
-     */
-    List<String> getMenuCodeList(List<Long> menuIdList);
-
-    /**
-     * 获取所有菜单的ID和父级ID的映射关系
-     * <p>key=menuId、Value=menuParentId</p>
+     * 获取菜单
      *
-     * @return 菜单ID和父级ID的映射关系
+     * @param menuId 菜单ID
      */
-    Map<Long, Long> getMenuIdParentIdMap();
+    SysMenuDO getMenu(Long menuId);
+
+    /**
+     * 获取所有菜单列表
+     */
+    List<SysMenuDO> getMenuList();
+
+    /**
+     * 获取菜单列表
+     *
+     * @param menuIdSet 指定菜单ID集合
+     */
+    List<SysMenuDO> getMenuList(Set<Long> menuIdSet);
+
+    /**
+     * 获取菜单列表
+     */
+    List<SysMenuDO> getMenuList(SysMenuListReq req);
+
+    /**
+     * 过滤掉关闭的菜单及其子菜单
+     *
+     * @param list 菜单列表
+     */
+    List<SysMenuDO> filterDisableMenus(List<SysMenuDO> list);
+
+    /**
+     * 获取权限对应的菜单编号数组
+     */
+    List<Long> getMenuIdListByPermission(String permissionCode);
 
 }

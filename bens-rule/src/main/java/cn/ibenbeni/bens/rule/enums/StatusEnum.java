@@ -1,6 +1,7 @@
 package cn.ibenbeni.bens.rule.enums;
 
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.ibenbeni.bens.rule.base.ReadableEnum;
 import lombok.Getter;
@@ -38,7 +39,6 @@ public enum StatusEnum implements ReadableEnum<StatusEnum> {
     /**
      * 根据code获取枚举
      */
-    // @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static StatusEnum codeToEnum(Integer code) {
         if (null != code) {
             for (StatusEnum item : StatusEnum.values()) {
@@ -48,6 +48,10 @@ public enum StatusEnum implements ReadableEnum<StatusEnum> {
             }
         }
         return null;
+    }
+
+    public static boolean isDisable(Integer code) {
+        return ObjUtil.equals(DISABLE.code, code);
     }
 
     @Override

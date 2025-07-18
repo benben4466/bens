@@ -41,6 +41,10 @@ public interface BaseMapperX<T> extends MPJBaseMapper<T> {
         return selectOne(new LambdaQueryWrapper<T>().eq(field, value));
     }
 
+    default T selectOne(SFunction<T, ?> field1, Object value1, SFunction<T, ?> field2, Object value2) {
+        return selectOne(new LambdaQueryWrapper<T>().eq(field1, value1).eq(field2, value2));
+    }
+
     /**
      * 根据实体字段条件，查询多条记录 (单参数相等字段查询)
      *

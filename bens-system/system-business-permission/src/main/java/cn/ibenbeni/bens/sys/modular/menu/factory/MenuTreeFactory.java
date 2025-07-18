@@ -1,7 +1,7 @@
 package cn.ibenbeni.bens.sys.modular.menu.factory;
 
 import cn.hutool.core.util.ObjectUtil;
-import cn.ibenbeni.bens.sys.modular.menu.entity.SysMenu;
+import cn.ibenbeni.bens.sys.modular.menu.entity.SysMenuDO;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -21,7 +21,7 @@ public class MenuTreeFactory {
      * @param tree       被更新的菜单树
      * @param baseNumber 初值，整棵树基于这个初值进行计算顺序，可以传最小传1，如果传0，则当1处理
      */
-    public static void updateSort(List<SysMenu> tree, Integer baseNumber) {
+    public static void updateSort(List<SysMenuDO> tree, Integer baseNumber) {
         if (baseNumber == null || baseNumber == 0) {
             baseNumber = 1;
         }
@@ -33,14 +33,14 @@ public class MenuTreeFactory {
         // 以此类推...
         BigDecimal newBaseNumber = new BigDecimal(baseNumber * 100);
 
-        for (SysMenu sysMenu : tree) {
+        for (SysMenuDO sysMenuDO : tree) {
 
             // 树形基础值 + 1
             newBaseNumber = newBaseNumber.add(new BigDecimal(1));
-            sysMenu.setMenuSort(newBaseNumber);
+            sysMenuDO.setMenuSort(newBaseNumber);
 
             // 递归修改子树
-            List<SysMenu> children = sysMenu.getChildren();
+            List<SysMenuDO> children = sysMenuDO.getChildren();
             if (children != null && children.size() > 0) {
                 updateSort(children, newBaseNumber.intValue());
             }
@@ -53,17 +53,17 @@ public class MenuTreeFactory {
      * @param parentMenuId 父节点ID
      * @param menuTreeList 菜单树
      */
-    public static void fillParentId(Long parentMenuId, List<SysMenu> menuTreeList) {
+    public static void fillParentId(Long parentMenuId, List<SysMenuDO> menuTreeList) {
         if (ObjectUtil.isEmpty(menuTreeList)) {
             return;
         }
 
-        for (SysMenu sysMenu : menuTreeList) {
+        for (SysMenuDO sysMenuDO : menuTreeList) {
 
-            sysMenu.setMenuParentId(parentMenuId);
+            sysMenuDO.setMenuParentId(parentMenuId);
             // 递归填充
-            if (ObjectUtil.isNotEmpty(sysMenu.getChildren())) {
-                fillParentId(sysMenu.getMenuId(), sysMenu.getChildren());
+            if (ObjectUtil.isNotEmpty(sysMenuDO.getChildren())) {
+                fillParentId(sysMenuDO.getMenuId(), sysMenuDO.getChildren());
             }
         }
     }
@@ -71,15 +71,15 @@ public class MenuTreeFactory {
     /**
      * 将指定的树形结构，平行展开，添加到指定的参数totalMenuList
      */
-    public static void collectTreeTasks(List<SysMenu> sysMenuTree, List<SysMenu> totalMenuList) {
-        if (ObjectUtil.isEmpty(sysMenuTree)) {
+    public static void collectTreeTasks(List<SysMenuDO> sysMenuDOTree, List<SysMenuDO> totalMenuList) {
+        if (ObjectUtil.isEmpty(sysMenuDOTree)) {
             return;
         }
 
-        for (SysMenu sysMenu : sysMenuTree) {
-            totalMenuList.add(sysMenu);
-            if (ObjectUtil.isNotEmpty(sysMenu.getChildren())) {
-                collectTreeTasks(sysMenu.getChildren(), totalMenuList);
+        for (SysMenuDO sysMenuDO : sysMenuDOTree) {
+            totalMenuList.add(sysMenuDO);
+            if (ObjectUtil.isNotEmpty(sysMenuDO.getChildren())) {
+                collectTreeTasks(sysMenuDO.getChildren(), totalMenuList);
             }
         }
     }

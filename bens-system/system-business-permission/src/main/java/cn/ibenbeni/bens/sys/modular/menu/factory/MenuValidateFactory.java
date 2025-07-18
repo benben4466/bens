@@ -1,15 +1,12 @@
 package cn.ibenbeni.bens.sys.modular.menu.factory;
 
-import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.extra.spring.SpringUtil;
-import cn.ibenbeni.bens.rule.exception.base.ServiceException;
+import cn.ibenbeni.bens.rule.constants.TreeConstants;
 import cn.ibenbeni.bens.sys.api.enums.menu.MenuTypeEnum;
-import cn.ibenbeni.bens.sys.modular.menu.entity.SysMenu;
+import cn.ibenbeni.bens.sys.api.exception.SysException;
+import cn.ibenbeni.bens.sys.modular.menu.entity.SysMenuDO;
 import cn.ibenbeni.bens.sys.modular.menu.enums.exception.SysMenuExceptionEnum;
-import cn.ibenbeni.bens.sys.modular.menu.pojo.request.SysMenuRequest;
-import cn.ibenbeni.bens.sys.modular.menu.service.SysMenuService;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import cn.ibenbeni.bens.sys.modular.menu.mapper.SysMenuMapper;
 
 /**
  * 菜单参数校验
@@ -20,61 +17,59 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 public class MenuValidateFactory {
 
     /**
-     * 校验新增菜单时候的参数合法性
+     * 校验父菜单是否合法
+     *
+     * @param parentMenuId 父菜单ID
+     * @param childMenuId  子菜单ID
      */
-    public static void validateAddMenuParam(SysMenuRequest sysMenuRequest) {
-        SysMenuService sysMenuService = SpringUtil.getBean(SysMenuService.class);
-
-        // 1.校验菜单编码不能重复，全局唯一，因为菜单编码涉及到权限分配，如果不唯一则会权限分配错乱
-        LambdaQueryWrapper<SysMenu> queryWrapper = Wrappers.lambdaQuery(SysMenu.class)
-                .eq(SysMenu::getMenuCode, sysMenuRequest.getMenuCode());
-
-        // 如果是编辑菜单，则排除当前这个菜单的查询
-        if (sysMenuRequest.getMenuId() != null) {
-            queryWrapper.ne(SysMenu::getMenuId, sysMenuRequest.getMenuId());
+    public static void validateParentMenu(Long parentMenuId, Long childMenuId) {
+        if (parentMenuId == null || TreeConstants.DEFAULT_PARENT_ID.equals(parentMenuId)) {
+            return;
         }
 
-        long alreadyCount = sysMenuService.count(queryWrapper);
-        if (alreadyCount > 0) {
-            throw new ServiceException(SysMenuExceptionEnum.MENU_CODE_REPEAT);
+        // 不能设置自己为自己的父菜单
+        if (parentMenuId.equals(childMenuId)) {
+            throw new SysException(SysMenuExceptionEnum.MENU_PARENT_ERROR);
         }
 
-        // 2.校验vue组件相关的配置是否必填
-        // 2.1 如果是后台菜单，校验路由地址、是否隐藏参数
-        if (MenuTypeEnum.BACKEND_MENU.getKey().equals(sysMenuRequest.getMenuType())) {
-            if (ObjectUtil.isEmpty(sysMenuRequest.getAntdvRouter())) {
-                throw new ServiceException(SysMenuExceptionEnum.URL_CANT_EMPTY);
-            }
-            if (ObjectUtil.isEmpty(sysMenuRequest.getAntdvVisible())) {
-                throw new ServiceException(SysMenuExceptionEnum.HIDDEN_FLAG_CANT_EMPTY);
-            }
+        SysMenuMapper sysMenuMapper = SpringUtil.getBean(SysMenuMapper.class);
+        SysMenuDO parentMenu = sysMenuMapper.selectById(parentMenuId);
+        // 校验父菜单是否存在
+        if (parentMenu == null) {
+            throw new SysException(SysMenuExceptionEnum.MENU_PARENT_NOT_EXISTED);
         }
 
-        // 2.2 如果是纯前端路由，则判断路由地址和组件代码路径
-        else if (MenuTypeEnum.FRONT_VUE.getKey().equals(sysMenuRequest.getMenuType())) {
-            if (ObjectUtil.isEmpty(sysMenuRequest.getAntdvRouter())) {
-                throw new ServiceException(SysMenuExceptionEnum.URL_CANT_EMPTY);
-            }
-            if (ObjectUtil.isEmpty(sysMenuRequest.getAntdvComponent())) {
-                throw new ServiceException(SysMenuExceptionEnum.COMPONENT_PATH_CANT_EMPTY);
-            }
+        // 菜单类型是目录或菜单类型，才允许添加子菜单
+        if (!MenuTypeEnum.DIRECTORY.getCode().equals(parentMenu.getMenuType())
+                && !MenuTypeEnum.MENU.getCode().equals(parentMenu.getMenuType())) {
+            throw new SysException(SysMenuExceptionEnum.MENU_PARENT_NOT_DIR_OR_MENU);
         }
 
-        // 2.3 如果是内部链接，判断路由地址和连接地址
-        else if (MenuTypeEnum.INNER_URL.getKey().equals(sysMenuRequest.getMenuType())) {
-            if (ObjectUtil.isEmpty(sysMenuRequest.getAntdvRouter())) {
-                throw new ServiceException(SysMenuExceptionEnum.URL_CANT_EMPTY);
-            }
-            if (ObjectUtil.isEmpty(sysMenuRequest.getAntdvComponent())) {
-                throw new ServiceException(SysMenuExceptionEnum.COMPONENT_PATH_CANT_EMPTY);
-            }
+    }
+
+    /**
+     * 校验菜单名称
+     * <p>1.相同父菜单ID下，是否存在相同的菜单名称</p>
+     *
+     * @param parentMenuId  父菜单ID
+     * @param childMenuId   子菜单ID
+     * @param childMenuName 子菜单名称
+     */
+    public static void validateMenuName(Long parentMenuId, Long childMenuId, String childMenuName) {
+        SysMenuMapper sysMenuMapper = SpringUtil.getBean(SysMenuMapper.class);
+        SysMenuDO menu = sysMenuMapper.selectByParentIdAndName(parentMenuId, childMenuName);
+        if (menu == null) {
+            return;
         }
 
-        // 2.4 如果是外部链接，则判断外部链接地址
-        else if (MenuTypeEnum.OUT_URL.getKey().equals(sysMenuRequest.getMenuType())) {
-            if (ObjectUtil.isEmpty(sysMenuRequest.getAntdvRouter())) {
-                throw new ServiceException(SysMenuExceptionEnum.URL_CANT_EMPTY);
-            }
+        // 菜单ID为空，默认重复
+        if (childMenuId == null) {
+            throw new SysException(SysMenuExceptionEnum.MENU_NAME_DUPLICATE);
+        }
+
+        // ID不相等, 说明菜单名称重复
+        if (!menu.getMenuId().equals(childMenuId)) {
+            throw new SysException(SysMenuExceptionEnum.MENU_NAME_DUPLICATE);
         }
     }
 

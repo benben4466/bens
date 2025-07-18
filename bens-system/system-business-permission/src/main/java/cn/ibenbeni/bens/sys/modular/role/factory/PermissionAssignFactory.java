@@ -4,7 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
 import cn.ibenbeni.bens.rule.tree.factory.DefaultTreeBuildFactory;
-import cn.ibenbeni.bens.sys.modular.menu.entity.SysMenu;
+import cn.ibenbeni.bens.sys.modular.menu.entity.SysMenuDO;
 import cn.ibenbeni.bens.sys.modular.menu.entity.SysMenuOptions;
 import cn.ibenbeni.bens.sys.modular.role.enums.PermissionNodeTypeEnum;
 import cn.ibenbeni.bens.sys.modular.role.pojo.response.RoleBindPermissionItem;
@@ -73,26 +73,26 @@ public class PermissionAssignFactory {
      * 创建权限绑定的菜单列表
      * <p>菜单必须是最子节点，也就是叶子节点</p>
      *
-     * @param sysMenus 待构建菜单列表
+     * @param sysMenuDOS 待构建菜单列表
      */
-    public static List<RoleBindPermissionItem> createPermissionMenus(List<SysMenu> sysMenus) {
-        if (CollUtil.isEmpty(sysMenus)) {
+    public static List<RoleBindPermissionItem> createPermissionMenus(List<SysMenuDO> sysMenuDOS) {
+        if (CollUtil.isEmpty(sysMenuDOS)) {
             return new ArrayList<>();
         }
 
         // 搜集所有的父级菜单ID
-        Set<Long> totalParentMenuId = sysMenus.stream()
-                .map(SysMenu::getMenuParentId)
+        Set<Long> totalParentMenuId = sysMenuDOS.stream()
+                .map(SysMenuDO::getMenuParentId)
                 .collect(Collectors.toSet());
 
         // 通过父级菜单，筛选出来所有的叶子节点（如果菜单不存在父级菜单里，则代表是叶子节点）
-        LinkedHashSet<SysMenu> leafMenus = sysMenus.stream()
+        LinkedHashSet<SysMenuDO> leafMenus = sysMenuDOS.stream()
                 .filter(item -> !totalParentMenuId.contains(item.getMenuId()))
                 .collect(Collectors.toCollection(LinkedHashSet::new));
 
         // 叶子节点转化为RoleBindPermissionItem结构
         List<RoleBindPermissionItem> roleBindPermissionItems = new ArrayList<>();
-        for (SysMenu leafMenu : leafMenus) {
+        for (SysMenuDO leafMenu : leafMenus) {
             RoleBindPermissionItem roleBindPermissionItem = new RoleBindPermissionItem(
                     leafMenu.getMenuId(),
                     -1L,

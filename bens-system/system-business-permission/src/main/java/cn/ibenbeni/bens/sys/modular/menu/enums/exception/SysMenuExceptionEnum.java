@@ -16,7 +16,7 @@ public enum SysMenuExceptionEnum implements AbstractExceptionEnum {
     /**
      * 查询结果不存在
      */
-    SYS_MENU_NOT_EXISTED(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + "10001", "查询结果不存在"),
+    MENU_NOT_EXISTED(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + "10001", "查询结果不存在"),
 
     /**
      * 菜单编码全局唯一，不能重复，请更换编码
@@ -47,6 +47,31 @@ public enum SysMenuExceptionEnum implements AbstractExceptionEnum {
      * 参数不能为空
      */
     PARAM_EMPTY(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + "10007", "参数不能为空"),
+
+    /**
+     * 不能设置自己为父菜单
+     */
+    MENU_PARENT_ERROR(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + "10008", "不能设置自己为父菜单"),
+
+    /**
+     * 父菜单不存在
+     */
+    MENU_PARENT_NOT_EXISTED(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + "10009", "父菜单不存在"),
+
+    /**
+     * 父菜单的类型必须是目录或者菜单
+     */
+    MENU_PARENT_NOT_DIR_OR_MENU(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + "10010", "父菜单的类型必须是目录或者菜单"),
+
+    /**
+     * 已经存在该名字的菜单
+     */
+    MENU_NAME_DUPLICATE(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + "10011", "已经存在该名字的菜单"),
+
+    /**
+     * 存在子菜单,无法删除
+     */
+    MENU_CHILDREN_EXISTED(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + "10012", "存在子菜单,无法删除"),
 
     ;
 

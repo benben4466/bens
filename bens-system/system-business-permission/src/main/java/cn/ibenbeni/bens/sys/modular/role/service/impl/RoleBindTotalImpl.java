@@ -1,6 +1,6 @@
 package cn.ibenbeni.bens.sys.modular.role.service.impl;
 
-import cn.ibenbeni.bens.sys.modular.menu.entity.SysMenu;
+import cn.ibenbeni.bens.sys.modular.menu.entity.SysMenuDO;
 import cn.ibenbeni.bens.sys.modular.menu.entity.SysMenuOptions;
 import cn.ibenbeni.bens.sys.modular.menu.service.SysMenuOptionsService;
 import cn.ibenbeni.bens.sys.modular.menu.service.SysMenuService;
@@ -72,9 +72,9 @@ public class RoleBindTotalImpl implements RoleAssignOperateAction, RoleBindLimit
         }
 
         // 2.1 绑定菜单数据
-        List<SysMenu> totalMenus = sysMenuService.getTotalMenus(roleLimitMenuIdsAndOptionIds);
+        List<SysMenuDO> totalMenus = sysMenuService.getTotalMenus(roleLimitMenuIdsAndOptionIds);
         List<SysRoleMenu> sysRoleMenuList = new ArrayList<>();
-        for (SysMenu menuItem : totalMenus) {
+        for (SysMenuDO menuItem : totalMenus) {
             SysRoleMenu sysRoleMenu = new SysRoleMenu();
             sysRoleMenu.setRoleId(roleId);
             sysRoleMenu.setMenuId(menuItem.getMenuId());
@@ -117,8 +117,8 @@ public class RoleBindTotalImpl implements RoleAssignOperateAction, RoleBindLimit
         // 若是选择状态，则绑定所有选项
         List<SysRoleLimit> sysRoleLimitList = new ArrayList<>();
         // 1 菜单
-        List<SysMenu> totalMenus = sysMenuService.getTotalMenus();
-        for (SysMenu menuItem : totalMenus) {
+        List<SysMenuDO> totalMenus = sysMenuService.getTotalMenus();
+        for (SysMenuDO menuItem : totalMenus) {
             SysRoleLimit sysRoleLimit = new SysRoleLimit();
             sysRoleLimit.setRoleId(roleId);
             sysRoleLimit.setBusinessId(menuItem.getMenuId());
