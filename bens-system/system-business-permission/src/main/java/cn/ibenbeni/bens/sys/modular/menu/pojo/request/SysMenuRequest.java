@@ -1,7 +1,7 @@
 package cn.ibenbeni.bens.sys.modular.menu.pojo.request;
 
 import cn.ibenbeni.bens.rule.pojo.request.BaseRequest;
-import cn.ibenbeni.bens.sys.modular.menu.entity.SysMenu;
+import cn.ibenbeni.bens.sys.modular.menu.entity.SysMenuDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -113,7 +113,7 @@ public class SysMenuRequest extends BaseRequest {
      * 用于批量操作
      */
     @NotEmpty(message = "指定应用的所有菜单集合不能为空", groups = {updateMenuTree.class})
-    private List<SysMenu> updateMenuTree;
+    private List<SysMenuDO> updateMenuTree;
 
     // -----------------------------------------------------参数校验分组-------------------------------------------------
     // region 参数校验分组

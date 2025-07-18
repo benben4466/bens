@@ -2,7 +2,7 @@ package cn.ibenbeni.bens.sys.modular.role.service;
 
 import cn.ibenbeni.bens.sys.api.callback.RemoveMenuCallbackApi;
 import cn.ibenbeni.bens.sys.api.callback.RemoveRoleCallbackApi;
-import cn.ibenbeni.bens.sys.modular.menu.entity.SysMenu;
+import cn.ibenbeni.bens.sys.modular.menu.entity.SysMenuDO;
 import cn.ibenbeni.bens.sys.modular.role.entity.SysRoleMenu;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -22,7 +22,7 @@ public interface SysRoleMenuService extends IService<SysRoleMenu>, RemoveRoleCal
      * @param roleId   角色ID
      * @param menuList 被绑定菜单集合
      */
-    void bindRoleMenus(Long roleId, List<SysMenu> menuList);
+    void bindRoleMenus(Long roleId, List<SysMenuDO> menuList);
 
     /**
      * 获取角色绑定的菜单ID集合，返回菜单ID的集合

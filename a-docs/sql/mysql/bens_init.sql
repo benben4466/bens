@@ -97,3 +97,30 @@ CREATE TABLE `sys_post`
     `tenant_id`     bigint         NULL     DEFAULT NULL COMMENT '租户号',
     PRIMARY KEY (`position_id`)
 ) COMMENT = '职位信息';
+
+CREATE TABLE `sys_menu`
+(
+    `menu_id`           bigint                                                   NOT NULL COMMENT '主键',
+    `menu_parent_id`    bigint                                                   NOT NULL COMMENT '父id，顶级节点的父id是-1',
+    `menu_name`         varchar(100)                                             NOT NULL COMMENT '菜单的名称',
+    `permission_code`   varchar(50)                                              NOT NULL COMMENT '权限编码',
+    `menu_type`         tinyint                                                  NULL     DEFAULT NULL COMMENT '菜单类型',
+    `menu_sort`         decimal(20, 2)                                           NOT NULL DEFAULT 100.00 COMMENT '排序',
+    `component_path`    varchar(255)                                             NULL     DEFAULT NULL COMMENT '组件地址',
+    `component_router`  varchar(255)                                             NULL     DEFAULT NULL COMMENT '路由地址，浏览器显示的URL，例如/menu',
+    `component_icon`    varchar(255)                                             NULL     DEFAULT 'icon-default' COMMENT '图标编码',
+    `component_visible` char(1)                                                  NULL     DEFAULT 'Y' COMMENT '是否可见(Y=是;N=否)',
+    `keep_alive`        char(1)                                                  NOT NULL DEFAULT 1 COMMENT '是否缓存',
+    `always_show`       char(1)                                                  NOT NULL DEFAULT 1 COMMENT '是否总是显示',
+    `status_flag`       tinyint                                                  NOT NULL DEFAULT 1 COMMENT '状态(1=启用;2=禁用)',
+    `remark`            varchar(255)                                             NULL     DEFAULT NULL COMMENT '备注',
+    `expand_field`      json                                                     NULL COMMENT '拓展字段',
+    `version_flag`      bigint                                                   NULL     DEFAULT NULL COMMENT '乐观锁',
+    `del_flag`          char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'N' COMMENT '删除标记(Y=已删除;N=未删除)',
+    `create_time`       datetime(0)                                              NULL     DEFAULT NULL COMMENT '创建时间',
+    `create_user`       bigint                                                   NULL     DEFAULT NULL COMMENT '创建人',
+    `update_time`       datetime(0)                                              NULL     DEFAULT NULL COMMENT '更新时间',
+    `update_user`       bigint                                                   NULL     DEFAULT NULL COMMENT '更新人',
+    `tenant_id`         bigint                                                   NULL     DEFAULT NULL COMMENT '租户号',
+    PRIMARY KEY (`menu_id`)
+) COMMENT = '系统菜单';

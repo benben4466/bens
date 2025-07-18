@@ -1,10 +1,11 @@
 package cn.ibenbeni.bens.sys.modular.menu.mapper;
 
-import cn.ibenbeni.bens.sys.modular.menu.entity.SysMenu;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Param;
+import cn.ibenbeni.bens.db.api.pojo.query.LambdaQueryWrapperX;
+import cn.ibenbeni.bens.db.mp.mapper.BaseMapperX;
+import cn.ibenbeni.bens.sys.modular.menu.entity.SysMenuDO;
+import cn.ibenbeni.bens.sys.modular.menu.pojo.request.SysMenuListReq;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * 系统菜单Mapper接口
@@ -12,15 +13,32 @@ import java.util.Set;
  * @author: benben
  * @time: 2025/6/1 上午10:50
  */
-public interface SysMenuMapper extends BaseMapper<SysMenu> {
+public interface SysMenuMapper extends BaseMapperX<SysMenuDO> {
 
     /**
-     * 根据菜单ID获取子菜单ID集合，不含orgId
-     * <p>自动忽略顶级父节点，即忽略-1</p>
+     * 根据父级菜单ID和菜单名称查询
      *
-     * @param menuId 菜单ID
-     * @return 父机构ID集合
+     * @param parentId 父级菜单ID
+     * @param menuName 菜单名称
+     * @return 菜单
      */
-    Set<Long> getChildIdsByMenuId(@Param("menuId") Long menuId);
+    default SysMenuDO selectByParentIdAndName(Long parentId, String menuName) {
+        return selectOne(SysMenuDO::getMenuParentId, parentId, SysMenuDO::getMenuName, menuName);
+    }
+
+    default Long selectCountByParentId(Long parentId) {
+        return selectCount(SysMenuDO::getMenuParentId, parentId);
+    }
+
+    default List<SysMenuDO> selectListByPermission(String permissionCode) {
+        return selectList(SysMenuDO::getPermissionCode, permissionCode);
+    }
+
+    default List<SysMenuDO> selectList(SysMenuListReq req) {
+        return selectList(new LambdaQueryWrapperX<SysMenuDO>()
+                .likeIfPresent(SysMenuDO::getMenuName, req.getMenuName())
+                .eqIfPresent(SysMenuDO::getStatusFlag, req.getStatusFlag())
+        );
+    }
 
 }

@@ -1,33 +1,27 @@
 package cn.ibenbeni.bens.sys.modular.menu.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.extra.spring.SpringUtil;
-import cn.ibenbeni.bens.cache.api.CacheOperatorApi;
-import cn.ibenbeni.bens.rule.constants.SymbolConstant;
 import cn.ibenbeni.bens.rule.constants.TreeConstants;
-import cn.ibenbeni.bens.rule.exception.base.ServiceException;
-import cn.ibenbeni.bens.rule.tree.buildpids.PidStructureBuildUtil;
+import cn.ibenbeni.bens.rule.enums.StatusEnum;
+import cn.ibenbeni.bens.rule.util.CollectionUtils;
 import cn.ibenbeni.bens.sys.api.callback.RemoveMenuCallbackApi;
-import cn.ibenbeni.bens.sys.api.constants.SysConstants;
-import cn.ibenbeni.bens.sys.modular.menu.entity.SysMenu;
+import cn.ibenbeni.bens.sys.api.enums.menu.MenuTypeEnum;
+import cn.ibenbeni.bens.sys.api.exception.SysException;
+import cn.ibenbeni.bens.sys.modular.menu.entity.SysMenuDO;
 import cn.ibenbeni.bens.sys.modular.menu.enums.exception.SysMenuExceptionEnum;
-import cn.ibenbeni.bens.sys.modular.menu.factory.MenuTreeFactory;
 import cn.ibenbeni.bens.sys.modular.menu.factory.MenuValidateFactory;
 import cn.ibenbeni.bens.sys.modular.menu.mapper.SysMenuMapper;
-import cn.ibenbeni.bens.sys.modular.menu.pojo.request.SysMenuRequest;
+import cn.ibenbeni.bens.sys.modular.menu.pojo.request.SysMenuListReq;
+import cn.ibenbeni.bens.sys.modular.menu.pojo.request.SysMenuSaveReq;
 import cn.ibenbeni.bens.sys.modular.menu.service.SysMenuService;
-import cn.ibenbeni.bens.sys.modular.menu.util.MenuOrderFixUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * 系统菜单业务实现层
@@ -36,223 +30,142 @@ import java.util.stream.Collectors;
  * @time: 2025/6/1 上午10:57
  */
 @Service
-public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> implements SysMenuService {
+public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenuDO> implements SysMenuService {
+
+    // region 属性
 
     @Resource
     private SysMenuMapper sysMenuMapper;
 
-    @Resource(name = "menuCodeCache")
-    private CacheOperatorApi<String> menuCodeCache;
+    // endregion
+
+    // region 公共方法
 
     @Override
-    public void add(SysMenuRequest sysMenuRequest) {
-        // 校验参数合法性
-        MenuValidateFactory.validateAddMenuParam(sysMenuRequest);
+    public Long createMenu(SysMenuSaveReq req) {
+        // 校验父菜单
+        MenuValidateFactory.validateParentMenu(req.getMenuParentId(), null);
+        // 校验菜单名称
+        MenuValidateFactory.validateMenuName(req.getMenuParentId(), null, req.getMenuName());
 
-        SysMenu sysMenu = BeanUtil.toBean(sysMenuRequest, SysMenu.class);
-        sysMenu.setMenuPids(this.createPids(sysMenuRequest.getMenuParentId()));
-
-        this.save(sysMenu);
-
-        // TODO 记录日志
+        SysMenuDO menu = BeanUtil.toBean(req, SysMenuDO.class);
+        // 初始化通用属性，防止误添加（针对按钮）
+        this.initMenuCommonProperty(menu);
+        this.save(menu);
+        return menu.getMenuId();
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void del(SysMenuRequest sysMenuRequest) {
-        SysMenu dbSysMenu = this.detail(sysMenuRequest);
-        if (dbSysMenu == null) {
-            throw new ServiceException(SysMenuExceptionEnum.SYS_MENU_NOT_EXISTED);
+    public void deleteMenu(Long menuId) {
+        // 校验删除菜单是否存在
+        if (sysMenuMapper.selectById(menuId) == null) {
+            throw new SysException(SysMenuExceptionEnum.MENU_NOT_EXISTED);
         }
 
-        // 本菜单下所以子菜单
-        Set<Long> totalMenuIdSet = sysMenuMapper.getChildIdsByMenuId(sysMenuRequest.getMenuId());
-        totalMenuIdSet.add(sysMenuRequest.getMenuId());
+        // 校验是否存在子菜单
+        if (sysMenuMapper.selectCountByParentId(menuId) > 0) {
+            throw new SysException(SysMenuExceptionEnum.MENU_CHILDREN_EXISTED);
+        }
 
-        this.baseDelete(totalMenuIdSet);
-
-        // TODO 记录日志
-        // TODO 发布菜单删除事件
+        this.baseDelete(CollUtil.set(false, menuId));
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public void edit(SysMenuRequest sysMenuRequest) {
-        // 无法修改上下级结构（使用拖拽接口比修改接口更方便）
-        sysMenuRequest.setMenuParentId(null);
-
-        // 校验参数合法性
-        MenuValidateFactory.validateAddMenuParam(sysMenuRequest);
-
-        SysMenu dbSysMenu = this.querySysMenu(sysMenuRequest);
-        BeanUtil.copyProperties(sysMenuRequest, dbSysMenu);
-
-        this.updateById(dbSysMenu);
-
-        // TODO 记录日志
-        // TODO 发布菜单删除事件
-    }
-
-    @Override
-    public SysMenu detail(SysMenuRequest sysMenuRequest) {
-        LambdaQueryWrapper<SysMenu> queryWrapper = Wrappers.lambdaQuery(SysMenu.class)
-                .eq(SysMenu::getMenuId, sysMenuRequest.getMenuId())
-                .select(SysMenu::getMenuName, SysMenu::getMenuCode, SysMenu::getMenuSort,
-                        SysMenu::getMenuType, SysMenu::getAntdvComponent, SysMenu::getAntdvRouter, SysMenu::getAntdvVisible,
-                        SysMenu::getAntdvActiveUrl, SysMenu::getAntdvLinkUrl, SysMenu::getAntdvIcon, SysMenu::getMenuParentId);
-        SysMenu dbSysMenu = this.getOne(queryWrapper, false);
-        if (ObjectUtil.isNotEmpty(dbSysMenu) && ObjectUtil.isNotEmpty(dbSysMenu.getMenuParentId())) {
-            if (dbSysMenu.getMenuParentId().equals(TreeConstants.DEFAULT_PARENT_ID)) {
-                dbSysMenu.setMenuParentName("根节点");
-            } else {
-                SysMenu parentMenu = this.getById(dbSysMenu.getMenuParentId());
-                dbSysMenu.setMenuParentName(parentMenu.getMenuName());
+    public void deleteMenu(Set<Long> idSet) {
+        // 校验是否存在子菜单
+        idSet.forEach(menuId -> {
+            if (sysMenuMapper.selectCountByParentId(menuId) > 0) {
+                throw new SysException(SysMenuExceptionEnum.MENU_CHILDREN_EXISTED);
             }
+        });
+
+        this.baseDelete(idSet);
+    }
+
+    @Override
+    public void updateMenu(SysMenuSaveReq req) {
+        // 校验删除菜单是否存在
+        SysMenuDO menu = sysMenuMapper.selectById(req.getMenuId());
+        if (menu == null) {
+            throw new SysException(SysMenuExceptionEnum.MENU_NOT_EXISTED);
         }
+        // 校验父菜单
+        MenuValidateFactory.validateParentMenu(req.getMenuParentId(), req.getMenuId());
+        // 校验菜单名称
+        MenuValidateFactory.validateMenuName(req.getMenuParentId(), req.getMenuId(), req.getMenuName());
 
-        return dbSysMenu;
+        BeanUtil.copyProperties(req, menu);
+        this.initMenuCommonProperty(menu);
+        this.updateById(menu);
     }
 
     @Override
-    public List<SysMenu> getTotalMenus() {
-        return this.getTotalMenus(null);
+    public SysMenuDO getMenu(Long menuId) {
+        return getById(menuId);
     }
 
     @Override
-    public List<SysMenu> getTotalMenus(Set<Long> limitMenuIds) {
-        LambdaQueryWrapper<SysMenu> queryWrapper = Wrappers.lambdaQuery(SysMenu.class)
-                .select(SysMenu::getMenuId, SysMenu::getMenuName, SysMenu::getMenuParentId, SysMenu::getMenuSort)
-                .orderByAsc(SysMenu::getMenuSort);
-        if (ObjectUtil.isNotEmpty(limitMenuIds)) {
-            queryWrapper.in(SysMenu::getMenuId, limitMenuIds);
-        }
-
-        List<SysMenu> list = this.list(queryWrapper);
-
-        // 对菜单进行再次排序，因为有的菜单是101，有的菜单是10101，需要将位数小的补0，再次排序；101补为 10100
-        // 如：组织架构是101，它的子菜单人员是 10101；权限控制是102， 它的子菜单角色是10201；如果不补0，排序后是101、102、10101、10201
-        //    排序混乱，则给101等补充0，后排序：10100、10101、10200、10201，同一级别下在一起，而不是显示混乱
-        MenuOrderFixUtil.fixOrder(list);
-        return list;
-    }
-
-    @Transactional(rollbackFor = Exception.class)
-    @Override
-    public void updateMenuTree(SysMenuRequest sysMenuRequest) {
-        // 更新树节点的菜单顺序
-        MenuTreeFactory.updateSort(sysMenuRequest.getUpdateMenuTree(), 1);
-
-        // 填充树节点的parentId字段
-        MenuTreeFactory.fillParentId(-1L, sysMenuRequest.getUpdateMenuTree());
-
-        // 填充树节点的parentId字段
-        MenuTreeFactory.fillParentId(-1L, sysMenuRequest.getUpdateMenuTree());
-
-        // 平行展开树形结构，准备从新整理pids；如101、10101、102、10201展开
-        ArrayList<SysMenu> totalMenuList = new ArrayList<>();
-        MenuTreeFactory.collectTreeTasks(sysMenuRequest.getUpdateMenuTree(), totalMenuList);
-
-        // 从新整理上下级结构，整理id和pid关系
-        PidStructureBuildUtil.createPidStructure(totalMenuList);
-
-        // 更新菜单的sort字段、pid字段和pids字段这3个字段
-        this.updateBatchById(totalMenuList);
+    public List<SysMenuDO> getMenuList() {
+        return list();
     }
 
     @Override
-    public List<SysMenu> getTotalMenuList() {
-        LambdaQueryWrapper<SysMenu> queryWrapper = Wrappers.lambdaQuery(SysMenu.class)
-                .select(SysMenu::getMenuId)
-                .orderByAsc(SysMenu::getMenuSort);
-        return this.list(queryWrapper);
-    }
-
-    @Override
-    public List<SysMenu> getIndexMenuInfoList(List<Long> menuIdList) {
-        if (ObjectUtil.isEmpty(menuIdList)) {
+    public List<SysMenuDO> getMenuList(Set<Long> menuIdSet) {
+        if (CollUtil.isEmpty(menuIdSet)) {
             return new ArrayList<>();
         }
-
-        LambdaQueryWrapper<SysMenu> queryWrapper = Wrappers.lambdaQuery(SysMenu.class)
-                .in(SysMenu::getMenuId, menuIdList)
-                .select(SysMenu::getMenuId, SysMenu::getMenuParentId, SysMenu::getMenuPids, SysMenu::getMenuCode,
-                        SysMenu::getMenuName, SysMenu::getMenuType, SysMenu::getAntdvIcon, SysMenu::getAntdvVisible,
-                        SysMenu::getAntdvActiveUrl, SysMenu::getAntdvRouter, SysMenu::getAntdvComponent, SysMenu::getMenuSort)
-                .orderByAsc(SysMenu::getMenuSort);
-        return this.list(queryWrapper);
+        return listByIds(menuIdSet);
     }
 
     @Override
-    public List<String> getMenuCodeList(List<Long> menuIdList) {
-        List<String> result = new ArrayList<>();
-        if (ObjectUtil.isEmpty(menuIdList)) {
-            return result;
-        }
-
-        for (Long menuId : menuIdList) {
-            String menuIdKey = menuId.toString();
-
-            // 先从缓存查询，是否有菜单编码
-            String menuCode = menuCodeCache.get(menuIdKey);
-            if (StrUtil.isNotBlank(menuCode)) {
-                result.add(menuCode);
-                continue;
-            }
-
-            // 查询库中的菜单编码
-            LambdaQueryWrapper<SysMenu> queryWrapper = Wrappers.lambdaQuery(SysMenu.class)
-                    .eq(SysMenu::getMenuId, menuId)
-                    .select(SysMenu::getMenuCode);
-            SysMenu dbSysMenu = this.getOne(queryWrapper, false);
-            if (dbSysMenu == null) {
-                continue;
-            }
-
-            String menuCodeQueryResult = dbSysMenu.getMenuCode();
-            if (ObjectUtil.isNotEmpty(menuCodeQueryResult)) {
-                result.add(menuCodeQueryResult);
-                // 添加到缓存一份
-                menuCodeCache.put(menuIdKey, menuCodeQueryResult, SysConstants.DEFAULT_SYS_CACHE_TIMEOUT_SECONDS);
-            }
-        }
-
-        return result;
+    public List<SysMenuDO> getMenuList(SysMenuListReq req) {
+        return sysMenuMapper.selectList(req);
     }
 
     @Override
-    public Map<Long, Long> getMenuIdParentIdMap() {
-        LambdaQueryWrapper<SysMenu> queryWrapper = Wrappers.lambdaQuery(SysMenu.class)
-                .select(SysMenu::getMenuId, SysMenu::getMenuParentId);
-        List<SysMenu> list = this.list(queryWrapper);
-        if (ObjectUtil.isEmpty(list)) {
-            return new HashMap<>();
+    public List<SysMenuDO> filterDisableMenus(List<SysMenuDO> list) {
+        if (CollUtil.isEmpty(list)) {
+            return new ArrayList<>();
         }
+        Map<Long, SysMenuDO> menuMap = CollectionUtils.convertMap(list, SysMenuDO::getMenuId);
 
-        return list.stream()
-                .collect(Collectors.toMap(SysMenu::getMenuId, SysMenu::getMenuParentId));
+        // 遍历菜单集合
+        List<SysMenuDO> enabledMenus = new ArrayList<>();
+        Set<Long> disabledMenuCache = new HashSet<>(); // 存下递归搜索过被禁用的菜单，防止重复的搜索
+
+        for (SysMenuDO menu : list) {
+            if (this.isMenuDisabled(menu, menuMap, disabledMenuCache)) {
+                continue;
+            }
+            enabledMenus.add(menu);
+        }
+        return enabledMenus;
     }
+
+    @Override
+    public List<Long> getMenuIdListByPermission(String permissionCode) {
+        List<SysMenuDO> menuList = sysMenuMapper.selectListByPermission(permissionCode);
+        return CollectionUtils.convertList(menuList, SysMenuDO::getMenuId);
+    }
+
+    // endregion
+
+    // region 私有方法
 
     /**
-     * 创建Pids的值
-     * <p>如果pid是顶级节点，pids = 【[-1],】</p>
-     * <p>如果pid不是顶级节点，pids = 【父菜单的pids,[pid],】</p>
-     *
-     * @param menuParentId 父节点ID
+     * 初始化菜单通用属性
      */
-    private String createPids(Long menuParentId) {
-        // 父节点是顶级节点
-        if (TreeConstants.DEFAULT_PARENT_ID.equals(menuParentId)) {
-            return SymbolConstant.LEFT_SQUARE_BRACKETS + TreeConstants.DEFAULT_PARENT_ID + SymbolConstant.RIGHT_SQUARE_BRACKETS + SymbolConstant.COMMA;
-        } else {
-            // 非顶级节点
-            LambdaQueryWrapper<SysMenu> queryWrapper = Wrappers.lambdaQuery(SysMenu.class)
-                    .eq(SysMenu::getMenuId, menuParentId)
-                    .select(SysMenu::getMenuPids);
-            SysMenu parentMenu = this.getOne(queryWrapper, false);
-            if (parentMenu == null) {
-                return SymbolConstant.LEFT_SQUARE_BRACKETS + TreeConstants.DEFAULT_PARENT_ID + SymbolConstant.RIGHT_SQUARE_BRACKETS + SymbolConstant.COMMA;
-            } else {
-                return parentMenu.getMenuPids() + SymbolConstant.LEFT_SQUARE_BRACKETS + menuParentId + SymbolConstant.RIGHT_SQUARE_BRACKETS + SymbolConstant.COMMA;
-            }
+    private void initMenuCommonProperty(SysMenuDO menu) {
+        // 若菜单是按钮，则清除component、icon等属性
+        if (MenuTypeEnum.BUTTON.getCode().equals(menu.getMenuType())) {
+            menu.setComponentIcon(null);
+            menu.setComponentPath(null);
+            menu.setComponentRouter(null);
+            menu.setComponentVisible(null);
+            menu.setKeepAlive(null);
+            menu.setAlwaysShow(null);
         }
     }
 
@@ -267,12 +180,41 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         }
     }
 
-    private SysMenu querySysMenu(SysMenuRequest sysMenuRequest) {
-        SysMenu sysMenu = this.getById(sysMenuRequest.getMenuId());
-        if (ObjectUtil.isEmpty(sysMenu)) {
-            throw new ServiceException(SysMenuExceptionEnum.SYS_MENU_NOT_EXISTED);
+    /**
+     * 判断菜单是否被禁用
+     *
+     * @param menu              菜单
+     * @param menuMap           所有比对菜单集合
+     * @param disabledMenuCache 被禁用的菜单ID缓存
+     * @return 是否禁用
+     */
+    private boolean isMenuDisabled(SysMenuDO menu, Map<Long, SysMenuDO> menuMap, Set<Long> disabledMenuCache) {
+        // 已存在被禁用缓存中，则直接返回
+        if (disabledMenuCache.contains(menu.getMenuId())) {
+            return true;
         }
-        return sysMenu;
+
+        // 校验菜单被禁用
+        if (StatusEnum.isDisable(menu.getStatusFlag())) {
+            disabledMenuCache.add(menu.getMenuId());
+            return true;
+        }
+
+        // 菜单是根级菜单，则直接返回
+        if (TreeConstants.DEFAULT_PARENT_ID.equals(menu.getMenuParentId())) {
+            return false;
+        }
+
+        // 递归判断父级菜单是否被禁用
+        SysMenuDO parent = menuMap.get(menu.getMenuParentId());
+        if (parent == null || this.isMenuDisabled(parent, menuMap, disabledMenuCache)) {
+            disabledMenuCache.add(menu.getMenuId());
+            return true;
+        }
+
+        return false;
     }
+
+    // endregion
 
 }

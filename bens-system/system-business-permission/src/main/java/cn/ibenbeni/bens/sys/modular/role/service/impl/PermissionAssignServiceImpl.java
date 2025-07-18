@@ -4,7 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import cn.ibenbeni.bens.sys.api.SysUserRoleServiceApi;
-import cn.ibenbeni.bens.sys.modular.menu.entity.SysMenu;
+import cn.ibenbeni.bens.sys.modular.menu.entity.SysMenuDO;
 import cn.ibenbeni.bens.sys.modular.menu.entity.SysMenuOptions;
 import cn.ibenbeni.bens.sys.modular.menu.service.SysMenuOptionsService;
 import cn.ibenbeni.bens.sys.modular.menu.service.SysMenuService;
@@ -77,9 +77,9 @@ public class PermissionAssignServiceImpl implements PermissionAssignService {
     public RoleBindPermissionResponse createSelectTreeStructure(Set<Long> limitMenuIdsAndOptionIds) {
 
         // 获取菜单ID集合
-        List<SysMenu> sysMenus = sysMenuService.getTotalMenus(limitMenuIdsAndOptionIds);
+        List<SysMenuDO> sysMenuDOS = sysMenuService.getTotalMenus(limitMenuIdsAndOptionIds);
         // 组装所有的叶子节点菜单【初始化菜单】
-        List<RoleBindPermissionItem> totalResultMenus = PermissionAssignFactory.createPermissionMenus(sysMenus);
+        List<RoleBindPermissionItem> totalResultMenus = PermissionAssignFactory.createPermissionMenus(sysMenuDOS);
 
         // 获取所有的菜单上的功能
         Set<Long> menuIds = totalResultMenus.stream()

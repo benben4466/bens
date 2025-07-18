@@ -3,7 +3,7 @@ package cn.ibenbeni.bens.sys.modular.role.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.ibenbeni.bens.cache.api.CacheOperatorApi;
-import cn.ibenbeni.bens.sys.modular.menu.entity.SysMenu;
+import cn.ibenbeni.bens.sys.modular.menu.entity.SysMenuDO;
 import cn.ibenbeni.bens.sys.modular.role.entity.SysRoleMenu;
 import cn.ibenbeni.bens.sys.modular.role.mapper.SysRoleMenuMapper;
 import cn.ibenbeni.bens.sys.modular.role.service.SysRoleMenuService;
@@ -33,7 +33,7 @@ public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuMapper, SysRo
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void bindRoleMenus(Long roleId, List<SysMenu> menuList) {
+    public void bindRoleMenus(Long roleId, List<SysMenuDO> menuList) {
         if (ObjectUtil.hasEmpty(roleId, menuList)) {
             return;
         }
@@ -45,7 +45,7 @@ public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuMapper, SysRo
 
         // 绑定角色菜单
         List<SysRoleMenu> saveList = new ArrayList<>();
-        for (SysMenu menu : menuList) {
+        for (SysMenuDO menu : menuList) {
             SysRoleMenu sysRoleMenu = new SysRoleMenu();
             sysRoleMenu.setRoleId(roleId);
             sysRoleMenu.setMenuId(menu.getMenuId());

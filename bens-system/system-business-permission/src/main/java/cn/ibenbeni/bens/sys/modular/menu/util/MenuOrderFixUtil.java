@@ -1,7 +1,7 @@
 package cn.ibenbeni.bens.sys.modular.menu.util;
 
 import cn.hutool.core.util.ObjectUtil;
-import cn.ibenbeni.bens.sys.modular.menu.entity.SysMenu;
+import cn.ibenbeni.bens.sys.modular.menu.entity.SysMenuDO;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
@@ -19,15 +19,15 @@ public final class MenuOrderFixUtil {
     /**
      * 修复菜单排序
      */
-    public static void fixOrder(List<SysMenu> sysMenus) {
-        if (ObjectUtil.isEmpty(sysMenus)) {
+    public static void fixOrder(List<SysMenuDO> sysMenuDOS) {
+        if (ObjectUtil.isEmpty(sysMenuDOS)) {
             return;
         }
 
         // 找到最大的数字位数
         int maxDigitCount = 0;
-        for (SysMenu sysMenu : sysMenus) {
-            BigDecimal menuSort = sysMenu.getMenuSort();
+        for (SysMenuDO sysMenuDO : sysMenuDOS) {
+            BigDecimal menuSort = sysMenuDO.getMenuSort();
             if (menuSort == null) {
                 continue;
             }
@@ -38,8 +38,8 @@ public final class MenuOrderFixUtil {
         }
 
         // 补充位数
-        for (SysMenu sysMenu : sysMenus) {
-            BigDecimal menuSort = sysMenu.getMenuSort();
+        for (SysMenuDO sysMenuDO : sysMenuDOS) {
+            BigDecimal menuSort = sysMenuDO.getMenuSort();
             if (menuSort == null) {
                 menuSort = new BigDecimal(0);
             }
@@ -47,10 +47,10 @@ public final class MenuOrderFixUtil {
             if (digitCount < maxDigitCount) {
                 menuSort = menuSort.multiply(BigDecimal.valueOf(Math.pow(10, maxDigitCount - digitCount)));
             }
-            sysMenu.setMenuSort(menuSort);
+            sysMenuDO.setMenuSort(menuSort);
         }
 
-        sysMenus.sort(Comparator.comparing(SysMenu::getMenuSort));
+        sysMenuDOS.sort(Comparator.comparing(SysMenuDO::getMenuSort));
     }
 
     /**
