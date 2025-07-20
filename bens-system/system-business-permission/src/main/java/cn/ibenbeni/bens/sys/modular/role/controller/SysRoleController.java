@@ -1,20 +1,33 @@
 package cn.ibenbeni.bens.sys.modular.role.controller;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
+import cn.ibenbeni.bens.db.api.pojo.page.PageParam;
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
-import cn.ibenbeni.bens.rule.pojo.request.BaseRequest;
+import cn.ibenbeni.bens.db.api.util.DbUtil;
+import cn.ibenbeni.bens.easyexcel.util.ExcelUtils;
+import cn.ibenbeni.bens.rule.enums.StatusEnum;
 import cn.ibenbeni.bens.rule.pojo.response.ResponseData;
 import cn.ibenbeni.bens.rule.pojo.response.SuccessResponseData;
-import cn.ibenbeni.bens.sys.modular.role.entity.SysRole;
-import cn.ibenbeni.bens.sys.modular.role.pojo.request.SysRoleRequest;
+import cn.ibenbeni.bens.rule.util.BeanUtils;
+import cn.ibenbeni.bens.sys.modular.role.entity.SysRoleDO;
+import cn.ibenbeni.bens.sys.modular.role.pojo.request.RolePageReq;
+import cn.ibenbeni.bens.sys.modular.role.pojo.request.RoleSaveReq;
+import cn.ibenbeni.bens.sys.modular.role.pojo.response.RoleResp;
 import cn.ibenbeni.bens.sys.modular.role.service.SysRoleService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 系统角色控制器
@@ -23,70 +36,69 @@ import java.util.List;
  * @date 2025/5/25  下午4:06
  */
 @RestController
+@Tag(name = "管理后台 - 角色")
 public class SysRoleController {
 
     @Resource
     private SysRoleService sysRoleService;
 
-    /**
-     * 添加角色
-     */
-    @PostMapping(value = "/sysRole/add")
-    public ResponseData<SysRole> add(@RequestBody @Validated(BaseRequest.add.class) SysRoleRequest sysRoleRequest) {
-        sysRoleService.add(sysRoleRequest);
+    @Operation(summary = "创建角色")
+    @PostMapping("/system/role/create")
+    public ResponseData<Long> createRole(@Valid @RequestBody RoleSaveReq req) {
+        return new SuccessResponseData<>(sysRoleService.createRole(req, null));
+    }
+
+    @Operation(summary = "删除角色")
+    @Parameter(name = "id", description = "角色ID", example = "10", required = true)
+    @DeleteMapping("/system/role/delete")
+    public ResponseData<Boolean> deleteRole(@RequestParam("id") Long id) {
+        sysRoleService.deleteRole(id);
         return new SuccessResponseData<>();
     }
 
-    /**
-     * 删除角色
-     */
-    @PostMapping(value = "/sysRole/delete")
-    public ResponseData<?> delete(@RequestBody @Validated(BaseRequest.delete.class) SysRoleRequest sysRoleRequest) {
-        sysRoleService.del(sysRoleRequest);
+    @Operation(summary = "批量删除角色")
+    @Parameter(name = "ids", description = "角色ID列表", required = true)
+    @DeleteMapping("/system/role/delete-list")
+    public ResponseData<Boolean> deleteRole(@RequestParam("ids") Set<Long> ids) {
+        sysRoleService.deleteRole(ids);
         return new SuccessResponseData<>();
     }
 
-    /**
-     * 批量删除角色
-     */
-    @PostMapping("/sysRole/batchDelete")
-    public ResponseData<?> batchDelete(@RequestBody @Validated(BaseRequest.batchDelete.class) SysRoleRequest sysRoleRequest) {
-        sysRoleService.batchDelete(sysRoleRequest);
+    @Operation(summary = "修改角色")
+    @PutMapping("/system/role/update")
+    public ResponseData<Boolean> updateRole(@Valid @RequestBody RoleSaveReq req) {
+        sysRoleService.updateRole(req);
         return new SuccessResponseData<>();
     }
 
-    /**
-     * 编辑角色
-     */
-    @PostMapping("/sysRole/edit")
-    public ResponseData<?> edit(@RequestBody @Validated(BaseRequest.edit.class) SysRoleRequest sysRoleRequest) {
-        sysRoleService.edit(sysRoleRequest);
-        return new SuccessResponseData<>();
+    @Operation(summary = "获得角色信息")
+    @GetMapping("/system/role/get")
+    public ResponseData<RoleResp> getRole(@RequestParam("id") Long id) {
+        SysRoleDO role = sysRoleService.getRole(id);
+        return new SuccessResponseData<>(BeanUtil.toBean(role, RoleResp.class));
     }
 
-    /**
-     * 查看角色详情
-     */
-    @GetMapping("/sysRole/detail")
-    public ResponseData<SysRole> detail(@Validated(BaseRequest.detail.class) SysRoleRequest sysRoleRequest) {
-        return new SuccessResponseData<>(sysRoleService.detail(sysRoleRequest));
+    @Operation(summary = "获取角色精简信息列表", description = "只包含被开启的角色，主要用于前端的下拉选项")
+    @GetMapping("/system/role/simple-list")
+    public ResponseData<List<RoleResp>> getSimpleRoleList() {
+        List<SysRoleDO> list = sysRoleService.getRoleListByStatus(CollUtil.set(false, StatusEnum.ENABLE.getCode()));
+        list.sort(Comparator.comparing(SysRoleDO::getRoleSort));
+        return new SuccessResponseData<>(BeanUtils.toBean(list, RoleResp.class));
     }
 
-    /**
-     * 分页查询-角色列表
-     */
-    @GetMapping("/sysRole/page")
-    public ResponseData<PageResult<SysRole>> page(SysRoleRequest sysRoleRequest) {
-        return new SuccessResponseData<>(sysRoleService.findPage(sysRoleRequest));
+    @Operation(summary = "获得角色分页")
+    @GetMapping("/system/role/page")
+    public ResponseData<PageResult<RoleResp>> getRolePage(RolePageReq req) {
+        PageResult<SysRoleDO> pageResult = sysRoleService.getRolePage(req);
+        return new SuccessResponseData<>(DbUtil.toBean(pageResult, RoleResp.class));
     }
 
-    /**
-     * 获取所有角色列表
-     * <p>一般用在用户分配角色，响应所有的角色列表</p>
-     */
-    @GetMapping("/sysRole/list")
-    public ResponseData<List<SysRole>> list(SysRoleRequest sysRoleRequest) {
-        return new SuccessResponseData<>(sysRoleService.userAssignRoleList(sysRoleRequest));
+    @Operation(summary = "导出角色 Excel")
+    @GetMapping("/system/role/export-excel")
+    public void export(HttpServletResponse response, @Validated RolePageReq pageReq) throws IOException {
+        pageReq.setPageSize(PageParam.PAGE_SIZE_NONE);
+        List<SysRoleDO> list = sysRoleService.getRolePage(pageReq).getRows();
+        ExcelUtils.write(response, "角色数据.xls", "数据", RoleResp.class, BeanUtils.toBean(list, RoleResp.class));
     }
 
 }

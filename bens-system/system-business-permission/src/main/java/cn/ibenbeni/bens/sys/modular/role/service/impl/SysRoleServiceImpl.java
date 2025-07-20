@@ -2,32 +2,23 @@ package cn.ibenbeni.bens.sys.modular.role.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
-import cn.ibenbeni.bens.auth.api.context.LoginContext;
-import cn.ibenbeni.bens.db.api.factory.PageFactory;
-import cn.ibenbeni.bens.db.api.factory.PageResultFactory;
-import cn.ibenbeni.bens.db.api.pojo.entity.BaseEntity;
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
+import cn.ibenbeni.bens.rule.enums.StatusEnum;
 import cn.ibenbeni.bens.rule.enums.permission.DataScopeTypeEnum;
-import cn.ibenbeni.bens.rule.exception.base.ServiceException;
+import cn.ibenbeni.bens.rule.util.CollectionUtils;
 import cn.ibenbeni.bens.sys.api.callback.RemoveRoleCallbackApi;
-import cn.ibenbeni.bens.sys.api.constants.SysConstants;
+import cn.ibenbeni.bens.sys.api.enums.role.RoleCodeEnum;
 import cn.ibenbeni.bens.sys.api.enums.role.RoleTypeEnum;
-import cn.ibenbeni.bens.sys.modular.menu.service.SysMenuOptionsService;
-import cn.ibenbeni.bens.sys.modular.role.entity.SysRole;
+import cn.ibenbeni.bens.sys.api.exception.SysException;
+import cn.ibenbeni.bens.sys.modular.role.entity.SysRoleDO;
 import cn.ibenbeni.bens.sys.modular.role.enums.exception.SysRoleExceptionEnum;
 import cn.ibenbeni.bens.sys.modular.role.mapper.SysRoleMapper;
-import cn.ibenbeni.bens.sys.modular.role.pojo.request.SysRoleRequest;
-import cn.ibenbeni.bens.sys.modular.role.service.SysRoleMenuOptionsService;
+import cn.ibenbeni.bens.sys.modular.role.pojo.request.RolePageReq;
+import cn.ibenbeni.bens.sys.modular.role.pojo.request.RoleSaveReq;
 import cn.ibenbeni.bens.sys.modular.role.service.SysRoleService;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,204 +36,183 @@ import java.util.Set;
  * @date 2025/5/3  下午10:49
  */
 @Service
-public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> implements SysRoleService {
+public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRoleDO> implements SysRoleService {
+
+    // region 属性
 
     @Resource
-    private SysRoleMenuOptionsService sysRoleMenuOptionsService;
+    private SysRoleMapper sysRoleMapper;
 
-    @Resource
-    private SysMenuOptionsService sysMenuOptionsService;
+    // endregion
+
+
+    // region 公共方法
 
     @Override
-    public void add(SysRoleRequest sysRoleRequest) {
-        // 权限检查，针对非管理员
-        this.rolePermissionValidate(sysRoleRequest);
+    public Long createRole(RoleSaveReq req, Integer roleType) {
+        // 校验角色参数
+        validateRoleDuplicate(null, req.getRoleName(), req.getRoleCode());
 
-        SysRole sysRole = new SysRole();
-        BeanUtil.copyProperties(sysRoleRequest, sysRole);
-
-        // 设置角色默认的数据范围，默认查看全部
-        sysRole.setDataScopeType(DataScopeTypeEnum.DEPT_WITH_CHILD.getCode());
-
-        this.save(sysRole);
-        // TODO 添加日志
+        SysRoleDO role = BeanUtil.toBean(req, SysRoleDO.class);
+        role.setRoleType(ObjectUtil.defaultIfNull(roleType, RoleTypeEnum.CUSTOM.getCode()));
+        role.setStatusFlag(ObjectUtil.defaultIfNull(req.getStatusFlag(), StatusEnum.ENABLE.getCode()));
+        role.setDataScopeType(DataScopeTypeEnum.SELF.getCode());
+        save(role);
+        return role.getRoleId();
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void del(SysRoleRequest sysRoleRequest) {
-        SysRole dbSysRole = this.querySysRole(sysRoleRequest);
+    public void deleteRole(Long roleId) {
+        // 校验是否可以删除
+        validateRoleForUpdate(roleId);
 
-        // 系统角色不能删除
-        if (RoleTypeEnum.SYSTEM_ROLE.getCode().equals(dbSysRole.getRoleType())) {
-            throw new ServiceException(SysRoleExceptionEnum.SYSTEM_ROLE_CANT_DELETE);
-        }
-
-        // 非管理员，只能删除自己公司的角色
-        if (!LoginContext.me().getSuperAdminFlag()) {
-            Long currentUserCompanyId = LoginContext.me().getCurrentUserCompanyId();
-            if (currentUserCompanyId == null || !currentUserCompanyId.equals(dbSysRole.getRoleCompanyId())) {
-                throw new ServiceException(SysRoleExceptionEnum.DEL_PERMISSION_ERROR);
-            }
-        }
-
-        // 删除角色
-        this.baseDelete(CollectionUtil.set(false, dbSysRole.getRoleId()));
-
-        // 记录日志
+        // 删除
+        baseDelete(CollUtil.set(false, roleId));
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void batchDelete(SysRoleRequest sysRoleRequest) {
-        // 校验被删除的角色中是否有管理员角色
-        LambdaQueryWrapper<SysRole> queryWrapper = Wrappers.lambdaQuery(SysRole.class)
-                .in(SysRole::getRoleId, sysRoleRequest.getRoleIdList())
-                .eq(SysRole::getRoleType, RoleTypeEnum.SYSTEM_ROLE.getCode());
-        long haveSystemFlagCount = this.count(queryWrapper);
-        if (haveSystemFlagCount > 0) {
-            throw new ServiceException(SysRoleExceptionEnum.SYSTEM_ROLE_CANT_DELETE);
-        }
+    public void deleteRole(Set<Long> roleIdSet) {
+        // 校验是否可以删除
+        roleIdSet.forEach(this::validateRoleForUpdate);
 
-        // 如果当前用户是非管理员，则只能删除自己公司的角色
-        if (!LoginContext.me().getSuperAdminFlag()) {
-            LambdaQueryWrapper<SysRole> tempWrapper = Wrappers.lambdaQuery(SysRole.class)
-                    .in(SysRole::getRoleId, sysRoleRequest.getRoleIdList())
-                    .ne(SysRole::getRoleCompanyId, LoginContext.me().getCurrentUserCompanyId());
-            long notMeCreateCount = this.count(tempWrapper);
-            if (notMeCreateCount > 0) {
-                throw new ServiceException(SysRoleExceptionEnum.DEL_PERMISSION_ERROR);
-            }
-        }
-
-        // 执行删除角色
-        this.baseDelete(sysRoleRequest.getRoleIdList());
-
-        // 添加日志
+        baseDelete(roleIdSet);
     }
 
     @Override
-    public void edit(SysRoleRequest sysRoleRequest) {
-        // 权限检查，针对非管理员
-        this.rolePermissionValidate(sysRoleRequest);
+    public void updateRole(RoleSaveReq req) {
+        // 校验是否可以更新
+        validateRoleForUpdate(req.getRoleId());
+        // 校验角色参数唯一性
+        validateRoleDuplicate(req.getRoleId(), req.getRoleName(), req.getRoleCode());
 
-        SysRole dbSysRole = this.querySysRole(sysRoleRequest);
-        // 添加日志
-
-        // 不允许修改角色编码
-        if (!dbSysRole.getRoleCode().equals(sysRoleRequest.getRoleCode())) {
-            throw new ServiceException(SysRoleExceptionEnum.SUPER_ADMIN_ROLE_CODE_ERROR);
-        }
-
-        BeanUtil.copyProperties(sysRoleRequest, dbSysRole);
-
-        // 如果是编辑角色，改为了基础类型，则需要将公司id清空
-        if (RoleTypeEnum.SYSTEM_ROLE.getCode().equals(sysRoleRequest.getRoleType())) {
-            dbSysRole.setRoleCompanyId(null);
-        }
-
-        this.updateById(dbSysRole);
-
-        // 记录日志
+        SysRoleDO role = getById(req.getRoleId());
+        BeanUtil.copyProperties(role, req);
+        updateById(role);
     }
 
     @Override
-    public SysRole detail(SysRoleRequest sysRoleRequest) {
-        return this.querySysRole(sysRoleRequest);
+    public void updateRoleDataScope(Long roleId, Integer dataScopeType, Set<Long> dataScopeDeptIds) {
+        // 校验是否可以更新
+        validateRoleForUpdate(roleId);
+
+        // 填充值
+        SysRoleDO updateObj = new SysRoleDO();
+        updateObj.setRoleId(roleId);
+        updateObj.setDataScopeType(dataScopeType);
+        updateObj.setDataScopeDeptIds(dataScopeDeptIds);
+
+        updateById(updateObj);
     }
 
     @Override
-    public PageResult<SysRole> findPage(SysRoleRequest sysRoleRequest) {
-        LambdaQueryWrapper<SysRole> queryWrapper = Wrappers.lambdaQuery(SysRole.class)
-                .orderByAsc(SysRole::getRoleType)
-                .orderByAsc(SysRole::getRoleSort);
-        queryWrapper.select(SysRole::getRoleName, SysRole::getRoleCode, SysRole::getRoleSort, SysRole::getRoleId, BaseEntity::getCreateTime, SysRole::getRoleType, SysRole::getRoleCompanyId);
-
-        // 非管理员用户只能查看自己创建的角色
-        this.filterRolePermission(queryWrapper, sysRoleRequest);
-
-        Page<SysRole> sysRolePage = this.page(PageFactory.defaultPage(), queryWrapper);
-        return PageResultFactory.createPageResult(sysRolePage);
+    public SysRoleDO getRole(Long roleId) {
+        return getById(roleId);
     }
 
     @Override
-    public Integer getRoleDataScopeType(Long roleId) {
-        // 默认返回自己数据
-        if (roleId == null) {
-            return DataScopeTypeEnum.SELF.getCode();
+    public List<SysRoleDO> getRoleList(Set<Long> roleIdSet) {
+        if (CollUtil.isEmpty(roleIdSet)) {
+            return new ArrayList<>();
         }
-
-        SysRole dbRole = this.getById(roleId);
-        if (dbRole == null || dbRole.getDataScopeType() == null) {
-            return DataScopeTypeEnum.SELF.getCode();
-        }
-
-        return dbRole.getDataScopeType();
+        return listByIds(roleIdSet);
     }
 
     @Override
-    public void updateRoleDataScopeType(Long roleId, Integer dataScopeType) {
-        if (ObjectUtil.hasEmpty(roleId, dataScopeType)) {
+    public List<SysRoleDO> getRoleListByStatus(Set<Integer> statusSet) {
+        if (CollUtil.isEmpty(statusSet)) {
+            return new ArrayList<>();
+        }
+        return sysRoleMapper.selectListByStatus(statusSet);
+    }
+
+    @Override
+    public List<SysRoleDO> getRoleList() {
+        return list();
+    }
+
+    @Override
+    public PageResult<SysRoleDO> getRolePage(RolePageReq pageReq) {
+        return sysRoleMapper.selectPage(pageReq);
+    }
+
+    @Override
+    public boolean hasAnySuperAdmin(Set<Long> roleIdSet) {
+        if (CollUtil.isEmpty(roleIdSet)) {
+            return false;
+        }
+        return roleIdSet.stream().anyMatch(roleId -> {
+            SysRoleDO role = getRole(roleId);
+            return role != null && RoleCodeEnum.isSuperAdmin(role.getRoleCode());
+        });
+    }
+
+    @Override
+    public void validateRole(Set<Long> roleIdSet) {
+        if (CollUtil.isEmpty(roleIdSet)) {
             return;
         }
-
-        LambdaUpdateWrapper<SysRole> updateWrapper = Wrappers.lambdaUpdate(SysRole.class)
-                .eq(SysRole::getRoleId, roleId)
-                .set(SysRole::getDataScopeType, dataScopeType);
-        this.update(updateWrapper);
+        List<SysRoleDO> roleList = listByIds(roleIdSet);
+        Map<Long, SysRoleDO> roleMap = CollectionUtils.convertMap(roleList, SysRoleDO::getRoleId);
+        roleIdSet.forEach(roleId -> {
+            SysRoleDO role = roleMap.get(roleId);
+            if (role == null) {
+                throw new SysException(SysRoleExceptionEnum.SYS_ROLE_NOT_EXISTED);
+            }
+            if (StatusEnum.DISABLE.getCode().equals(role.getStatusFlag())) {
+                throw new SysException(SysRoleExceptionEnum.ROLE_DISABLED, role.getRoleName());
+            }
+        });
     }
 
-    @Override
-    public List<SysRole> permissionGetRoleList(SysRoleRequest sysRoleRequest) {
-        LambdaQueryWrapper<SysRole> queryWrapper = this.createWrapper(sysRoleRequest);
-        queryWrapper.select(SysRole::getRoleId, SysRole::getRoleName);
+    // endregion
 
-        // 过滤角色的权限信息
-        this.filterRolePermission(queryWrapper, sysRoleRequest);
-        return this.list(queryWrapper);
-    }
+    // region 私有方法
 
-    @Override
-    public List<SysRole> userAssignRoleList(SysRoleRequest sysRoleRequest) {
-        LambdaQueryWrapper<SysRole> queryWrapper = this.createWrapper(sysRoleRequest);
+    /**
+     * 校验角色的唯一字段是否重复
+     *
+     * <p>1.是否存在相同名字的角色；2.是否存在相同编码的角色</p>
+     *
+     * @param roleId   角色ID
+     * @param roleName 角色名称
+     * @param roleCode 角色编码
+     */
+    private void validateRoleDuplicate(Long roleId, String roleName, String roleCode) {
+        // 不允许创建超级管理员
+        if (RoleCodeEnum.isSuperAdmin(roleName)) {
+            throw new SysException(SysRoleExceptionEnum.ROLE_ADMIN_CODE_ERROR);
+        }
 
-        boolean superAdminFlag = LoginContext.me().getSuperAdminFlag();
-        // 超级管理员，直接返回所有系统角色，非超级管理员看不到角色信息绑定
-        if (superAdminFlag) {
-            queryWrapper.eq(SysRole::getRoleType, RoleTypeEnum.SYSTEM_ROLE.getCode());
-            queryWrapper.select(SysRole::getRoleId, SysRole::getRoleName, SysRole::getRoleType);
-            return this.list(queryWrapper);
-        } else {
-            return new ArrayList<>();
+        // 校验名称已使用
+        SysRoleDO role = sysRoleMapper.selectByName(roleName);
+        if (role != null && ObjectUtil.notEqual(role.getRoleId(), roleId)) {
+            throw new SysException(SysRoleExceptionEnum.ROLE_NAME_DUPLICATE, roleName);
+        }
+
+        // 校验角色编码已使用
+        if (StrUtil.isBlank(roleCode)) {
+            throw new SysException(SysRoleExceptionEnum.ROLE_CODE_LACK);
+        }
+        role = sysRoleMapper.selectByCode(roleCode);
+        if (role != null && ObjectUtil.notEqual(role.getRoleId(), roleId)) {
+            throw new SysException(SysRoleExceptionEnum.ROLE_CODE_DUPLICATE, roleCode);
         }
     }
 
     /**
-     * 角色的类型校验，非系统管理员，只能添加公司级别的角色，并且只能添加当前登录本公司的角色
+     * 校验角色是否可以被更新
      */
-    private void rolePermissionValidate(SysRoleRequest sysRoleRequest) {
-        boolean superAdminFlag = LoginContext.me().getSuperAdminFlag();
-        if (superAdminFlag) {
-            return;
+    void validateRoleForUpdate(Long roleId) {
+        SysRoleDO role = getById(roleId);
+        if (role == null) {
+            throw new SysException(SysRoleExceptionEnum.SYS_ROLE_NOT_EXISTED);
         }
-
-        // 非管理员，只能添加公司级别的角色
-        if (!RoleTypeEnum.COMPANY_ROLE.getCode().equals(sysRoleRequest.getRoleType())) {
-            throw new ServiceException(SysRoleExceptionEnum.ROLE_TYPE_ERROR);
+        // 内置角色不允许修改/删除
+        if (RoleTypeEnum.SYSTEM.getCode().equals(role.getRoleType())) {
+            throw new SysException(SysRoleExceptionEnum.ROLE_CAN_NOT_UPDATE_SYSTEM_TYPE_ROLE);
         }
-
-        // 非管理员，只能添加本公司的角色
-        if (!LoginContext.me().getCurrentUserCompanyId().equals(sysRoleRequest.getRoleCompanyId())) {
-            throw new ServiceException(SysRoleExceptionEnum.ROLE_COMPANY_ERROR);
-        }
-    }
-
-    private SysRole querySysRole(SysRoleRequest sysRoleRequest) {
-        SysRole dbSysRole = this.getById(sysRoleRequest.getRoleId());
-        if (ObjectUtil.isEmpty(dbSysRole)) {
-            throw new ServiceException(SysRoleExceptionEnum.SYS_ROLE_NOT_EXISTED);
-        }
-        return dbSysRole;
     }
 
     /**
@@ -257,7 +227,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             removeRoleCallbackApi.validateHaveRoleBind(roleIdList);
         }
 
-        this.removeBatchByIds(roleIdList);
+        removeBatchByIds(roleIdList);
 
         // 执行角色相关关联业务的删除操作
         for (RemoveRoleCallbackApi removeRoleCallbackApi : callbackApiMap.values()) {
@@ -265,71 +235,6 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         }
     }
 
-    /**
-     * 过滤角色的权限展示
-     * <p>非管理员只能看到自己的角色和自己创建的角色</p>
-     * <p>用在权限界面，获取左侧角色列表</p>
-     */
-    private void filterRolePermission(LambdaQueryWrapper<SysRole> wrapper, SysRoleRequest sysRoleRequest) {
-        // 超级管理员，直接略过
-        boolean superAdminFlag = LoginContext.me().getSuperAdminFlag();
-        if (superAdminFlag) {
-            // 根据角色类型填充参数
-            if (ObjectUtil.isNotEmpty(sysRoleRequest.getRoleType())) {
-                wrapper.eq(SysRole::getRoleType, sysRoleRequest.getRoleType());
-            }
-
-            // 根据角色的所属公司ID填充参数
-            if (ObjectUtil.isNotEmpty(sysRoleRequest.getRoleCompanyId())) {
-                wrapper.eq(SysRole::getRoleCompanyId, sysRoleRequest.getRoleCompanyId());
-            }
-            return;
-        }
-
-        // 非超级管理员，直接拼好，角色类型和角色的公司id，只能查本公司的
-        wrapper.eq(SysRole::getRoleType, RoleTypeEnum.COMPANY_ROLE.getCode());
-        wrapper.eq(SysRole::getRoleCompanyId, LoginContext.me().getCurrentUserCompanyId());
-    }
-
-    @Override
-    public Long getDefaultRoleId() {
-        LambdaQueryWrapper<SysRole> queryWrapper = Wrappers.lambdaQuery(SysRole.class)
-                .eq(SysRole::getRoleCode, SysConstants.DEFAULT_ROLE_CODE)
-                .select(SysRole::getRoleId);
-        SysRole dbRole = this.getOne(queryWrapper, false);
-        return dbRole != null ? dbRole.getRoleId() : null;
-    }
-
-    @Override
-    public List<String> getRoleMenuOptionsByRoleId(String roleCode) {
-        if (StrUtil.isBlank(roleCode)) {
-            return new ArrayList<>();
-        }
-
-        LambdaQueryWrapper<SysRole> queryRoleWrapper = Wrappers.lambdaQuery(SysRole.class)
-                .eq(SysRole::getRoleCode, roleCode)
-                .select(SysRole::getRoleId);
-        SysRole dbRole = this.getOne(queryRoleWrapper, false);
-        if (dbRole == null) {
-            return new ArrayList<>();
-        }
-
-        // 获取角色的菜单功能ID集合
-        List<Long> roleBindMenuOptionsIdList = sysRoleMenuOptionsService.getRoleBindMenuOptionsIdList(ListUtil.list(false, dbRole.getRoleId()), true);
-        if (CollUtil.isEmpty(roleBindMenuOptionsIdList)) {
-            return new ArrayList<>();
-        }
-
-        return sysMenuOptionsService.getOptionsCodeList(roleBindMenuOptionsIdList);
-    }
-
-    /**
-     * 创建查询wrapper
-     */
-    private LambdaQueryWrapper<SysRole> createWrapper(SysRoleRequest sysRoleRequest) {
-        return Wrappers.lambdaQuery(SysRole.class)
-                .orderByAsc(SysRole::getRoleType)
-                .orderByAsc(SysRole::getRoleSort);
-    }
+    // endregion
 
 }

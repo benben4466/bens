@@ -23,10 +23,17 @@
             <version>${revision}</version>
         </dependency>
 
+        <!-- DAO模块-starter -->
         <dependency>
-            <!--DAO模块-starter-->
             <groupId>cn.ibenbeni</groupId>
             <artifactId>db-spring-boot-starter</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- Excel模块-EasyExcel实现 -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>excel-sdk-easyexcel</artifactId>
             <version>${revision}</version>
         </dependency>
 

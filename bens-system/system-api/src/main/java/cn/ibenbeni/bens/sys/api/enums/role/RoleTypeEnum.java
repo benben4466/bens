@@ -14,20 +14,11 @@ import lombok.Getter;
 @Getter
 public enum RoleTypeEnum implements ReadableEnum<RoleTypeEnum> {
 
-    /**
-     * 系统角色
-     */
-    SYSTEM_ROLE(10, "系统角色"),
+    SYSTEM(10, "内置角色"),
 
-    /**
-     * 业务角色
-     */
-    BUSINESS_ROLE(15, "业务角色"),
+    CUSTOM(20, "自定义角色"),
 
-    /**
-     * 公司角色
-     */
-    COMPANY_ROLE(20, "公司角色");
+    ;
 
     private final Integer code;
 

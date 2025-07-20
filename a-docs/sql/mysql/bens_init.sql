@@ -124,3 +124,25 @@ CREATE TABLE `sys_menu`
     `tenant_id`         bigint                                                   NULL     DEFAULT NULL COMMENT '租户号',
     PRIMARY KEY (`menu_id`)
 ) COMMENT = '系统菜单';
+
+CREATE TABLE `sys_role`
+(
+    `role_id`             bigint         NOT NULL COMMENT '主键',
+    `role_name`           varchar(100)   NOT NULL COMMENT '角色名称',
+    `role_code`           varchar(100)   NOT NULL COMMENT '角色编码',
+    `role_sort`           decimal(10, 2) NOT NULL DEFAULT 999 COMMENT '显示顺序',
+    `data_scope_type`     tinyint        NOT NULL DEFAULT 10 COMMENT '数据范围类型(10=仅本人数据，20=本部门数据，30=本部门及以下数据，40=指定部门数据，50=全部数据)',
+    `data_scope_dept_ids` varchar(500)   NOT NULL DEFAULT '' COMMENT '数据范围(指定部门数组)',
+    `role_type`           tinyint        NOT NULL COMMENT '角色类型',
+    `status_flag`         tinyint        NOT NULL DEFAULT 1 COMMENT '状态(1=启用，2=禁用)',
+    `remark`              varchar(255)   NULL     DEFAULT NULL COMMENT '备注',
+    `expand_field`        json           NULL COMMENT '拓展字段',
+    `version_flag`        bigint         NULL     DEFAULT NULL COMMENT '乐观锁',
+    `del_flag`            char(1)        NOT NULL DEFAULT 'N' COMMENT '删除标记(Y=已删除，N=未删除)',
+    `create_time`         datetime(0)    NULL     DEFAULT NULL COMMENT '创建时间',
+    `create_user`         bigint         NULL     DEFAULT NULL COMMENT '创建人',
+    `update_time`         datetime(0)    NULL     DEFAULT NULL COMMENT '更新时间',
+    `update_user`         bigint         NULL     DEFAULT NULL COMMENT '更新人',
+    `tenant_id`           bigint         NULL     DEFAULT NULL COMMENT '租户号',
+    PRIMARY KEY (`role_id`)
+) COMMENT ='系统角色';
