@@ -4,9 +4,10 @@ import cn.ibenbeni.bens.sys.api.SysUserRoleServiceApi;
 import cn.ibenbeni.bens.sys.api.callback.RemoveRoleCallbackApi;
 import cn.ibenbeni.bens.sys.api.callback.RemoveUserCallbackApi;
 import cn.ibenbeni.bens.sys.modular.user.entity.SysUserRoleDO;
-import cn.ibenbeni.bens.sys.modular.user.pojo.request.UserRoleBindReq;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Set;
 
@@ -22,42 +23,42 @@ public interface SysUserRoleService extends IService<SysUserRoleDO>, SysUserRole
      * 绑定用户角色
      * <p>组织架构-人员页面使用；用于绑定系统角色</p>
      */
-    void bindRole(UserRoleBindReq bindReq);
+    void bindRole(@NotNull Long userId, @NotNull Long roleId);
 
     /**
      * 删除指定用户ID下的角色用户关联
      *
      * @param userId 用户ID
      */
-    void deleteListByUserId(Long userId);
+    void deleteListByUserId(@NotNull Long userId);
 
     /**
      * 根据角色ID删除角色用户关联
      *
      * @param roleId 角色ID
      */
-    void deleteListByRoleId(Long roleId);
+    void deleteListByRoleId(@NotNull Long roleId);
 
     /**
      * 删除指定用户ID下，角色ID列表的关联
      *
-     * @param userId  用户ID
+     * @param userId    用户ID
      * @param roleIdSet 角色ID列表
      */
-    void deleteListByUserIdAndRoleIdIds(Long userId, Set<Long> roleIdSet);
+    void deleteListByUserIdAndRoleIdIds(@NotNull Long userId, @NotEmpty Set<Long> roleIdSet);
 
     /**
      * 根据用户ID查询角色用户关联
      *
      * @param userId 用户ID
      */
-    List<SysUserRoleDO> selectListByUserId(Long userId);
+    List<SysUserRoleDO> getListByUserId(@NotNull Long userId);
 
     /**
      * 根据角色ID列表查询角色用户关联
      *
      * @param roleIdSet 角色ID集合
      */
-    List<SysUserRoleDO> selectListByRoleIds(Set<Long> roleIdSet);
+    List<SysUserRoleDO> getListByRoleIds(@NotEmpty Set<Long> roleIdSet);
 
 }

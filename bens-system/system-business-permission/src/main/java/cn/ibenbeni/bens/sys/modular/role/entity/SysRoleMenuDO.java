@@ -2,8 +2,7 @@ package cn.ibenbeni.bens.sys.modular.role.entity;
 
 import cn.ibenbeni.bens.db.api.pojo.entity.BaseEntity;
 import com.baomidou.mybatisplus.annotation.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 /**
  * 角色菜单关联实例类
@@ -13,8 +12,11 @@ import lombok.EqualsAndHashCode;
  */
 @TableName(value = "sys_role_menu", autoResultMap = true)
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class SysRoleMenu extends BaseEntity {
+public class SysRoleMenuDO extends BaseEntity {
 
     /**
      * 主键

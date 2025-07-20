@@ -1,9 +1,7 @@
 package cn.ibenbeni.bens.sys.modular.user.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.ibenbeni.bens.sys.modular.user.entity.SysUserRoleDO;
 import cn.ibenbeni.bens.sys.modular.user.mapper.SysUserRoleMapper;
-import cn.ibenbeni.bens.sys.modular.user.pojo.request.UserRoleBindReq;
 import cn.ibenbeni.bens.sys.modular.user.service.SysUserRoleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
@@ -32,8 +30,11 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
     // region 公共方法
 
     @Override
-    public void bindRole(UserRoleBindReq bindReq) {
-        SysUserRoleDO userRole = BeanUtil.toBean(bindReq, SysUserRoleDO.class);
+    public void bindRole(Long userId, Long roleId) {
+        SysUserRoleDO userRole = SysUserRoleDO.builder()
+                .userId(userId)
+                .roleId(roleId)
+                .build();
         this.save(userRole);
     }
 
@@ -54,12 +55,12 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
     }
 
     @Override
-    public List<SysUserRoleDO> selectListByUserId(Long userId) {
+    public List<SysUserRoleDO> getListByUserId(Long userId) {
         return sysUserRoleMapper.selectListByUserId(userId);
     }
 
     @Override
-    public List<SysUserRoleDO> selectListByRoleIds(Set<Long> roleIdSet) {
+    public List<SysUserRoleDO> getListByRoleIds(Set<Long> roleIdSet) {
         return sysUserRoleMapper.selectListByRoleIds(roleIdSet);
     }
 

@@ -8,9 +8,8 @@ import cn.ibenbeni.bens.sys.modular.menu.service.SysMenuService;
 import cn.ibenbeni.bens.sys.modular.role.action.RoleAssignOperateAction;
 import cn.ibenbeni.bens.sys.modular.role.action.RoleBindLimitAction;
 import cn.ibenbeni.bens.sys.modular.role.entity.SysRoleLimit;
-import cn.ibenbeni.bens.sys.modular.role.entity.SysRoleMenu;
+import cn.ibenbeni.bens.sys.modular.role.entity.SysRoleMenuDO;
 import cn.ibenbeni.bens.sys.modular.role.entity.SysRoleMenuOptions;
-import cn.ibenbeni.bens.sys.api.enums.role.PermissionNodeTypeEnum;
 import cn.ibenbeni.bens.sys.modular.role.enums.RoleLimitTypeEnum;
 import cn.ibenbeni.bens.sys.modular.role.factory.MenuPathCalcFactory;
 import cn.ibenbeni.bens.sys.modular.role.pojo.request.RoleBindPermissionRequest;
@@ -73,17 +72,17 @@ public class RoleBindMenuImpl implements RoleAssignOperateAction, RoleBindLimitA
         Set<Long> needToDelete = MenuPathCalcFactory.getMenuParentIds(menuId, menuIdParentIdMap);
 
         // 1 清除旧菜单和角色关联数据
-        LambdaQueryWrapper<SysRoleMenu> sysRoleMenuLambdaQueryWrapper = Wrappers.lambdaQuery(SysRoleMenu.class)
-                .eq(SysRoleMenu::getRoleId, roleId)
-                .in(SysRoleMenu::getMenuId, needToDelete);
+        LambdaQueryWrapper<SysRoleMenuDO> sysRoleMenuLambdaQueryWrapper = Wrappers.lambdaQuery(SysRoleMenuDO.class)
+                .eq(SysRoleMenuDO::getRoleId, roleId)
+                .in(SysRoleMenuDO::getMenuId, needToDelete);
         sysRoleMenuService.remove(sysRoleMenuLambdaQueryWrapper);
 
         // 1.2 如果是选中，则执行菜单和角色的绑定
         if (roleBindPermissionRequest.getChecked()) {
-            SysRoleMenu sysRoleMenu = new SysRoleMenu();
-            sysRoleMenu.setRoleId(roleId);
-            sysRoleMenu.setMenuId(menuId);
-            sysRoleMenuService.save(sysRoleMenu);
+            SysRoleMenuDO sysRoleMenuDO = new SysRoleMenuDO();
+            sysRoleMenuDO.setRoleId(roleId);
+            sysRoleMenuDO.setMenuId(menuId);
+            sysRoleMenuService.save(sysRoleMenuDO);
         }
 
         // 2 查询菜单下的所有菜单功能

@@ -1,23 +1,13 @@
 package cn.ibenbeni.bens.sys.modular.role.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.ibenbeni.bens.cache.api.CacheOperatorApi;
-import cn.ibenbeni.bens.sys.modular.menu.entity.SysMenuDO;
-import cn.ibenbeni.bens.sys.modular.role.entity.SysRoleMenu;
+import cn.ibenbeni.bens.sys.modular.role.entity.SysRoleMenuDO;
 import cn.ibenbeni.bens.sys.modular.role.mapper.SysRoleMenuMapper;
 import cn.ibenbeni.bens.sys.modular.role.service.SysRoleMenuService;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * 角色菜单关联服务实现类
@@ -26,75 +16,62 @@ import java.util.stream.Collectors;
  * @time: 2025/6/3 下午9:20
  */
 @Service
-public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuMapper, SysRoleMenu> implements SysRoleMenuService {
+public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuMapper, SysRoleMenuDO> implements SysRoleMenuService {
 
-    @Resource(name = "roleMenuCache")
-    private CacheOperatorApi<List<Long>> roleMenuCache;
+    // region 属性
 
-    @Transactional(rollbackFor = Exception.class)
+    private SysRoleMenuMapper sysRoleMenuMapper;
+
+    // endregion
+
+    // region 公共方法
+
     @Override
-    public void bindRoleMenus(Long roleId, List<SysMenuDO> menuList) {
-        if (ObjectUtil.hasEmpty(roleId, menuList)) {
-            return;
-        }
-
-        // 清空角色旧绑定关系
-        LambdaQueryWrapper<SysRoleMenu> removeWrapper = Wrappers.lambdaQuery(SysRoleMenu.class)
-                .eq(SysRoleMenu::getRoleId, roleId);
-        this.remove(removeWrapper);
-
-        // 绑定角色菜单
-        List<SysRoleMenu> saveList = new ArrayList<>();
-        for (SysMenuDO menu : menuList) {
-            SysRoleMenu sysRoleMenu = new SysRoleMenu();
-            sysRoleMenu.setRoleId(roleId);
-            sysRoleMenu.setMenuId(menu.getMenuId());
-            saveList.add(sysRoleMenu);
-        }
-        this.saveBatch(saveList);
+    public void bindRoleMenus(Long roleId, Long menuId) {
+        SysRoleMenuDO roleMenu = SysRoleMenuDO.builder()
+                .roleId(roleId)
+                .menuId(menuId)
+                .build();
+        save(roleMenu);
     }
 
     @Override
-    public List<Long> getRoleBindMenuIdList(List<Long> roleIdList, boolean prioritizeCaching) {
-        ArrayList<Long> result = new ArrayList<>();
-        if (CollUtil.isEmpty(roleIdList)) {
-            return result;
-        }
-
-        for (Long roleId : roleIdList) {
-
-            if (prioritizeCaching) {
-                List<Long> cacheMenuIdList = roleMenuCache.get(roleId.toString());
-                if (CollUtil.isNotEmpty(cacheMenuIdList)) {
-                    result.addAll(cacheMenuIdList);
-                    continue;
-                }
-            }
-
-            // 数据库查询并缓存
-            LambdaQueryWrapper<SysRoleMenu> queryWrapper = Wrappers.lambdaQuery(SysRoleMenu.class)
-                    .in(SysRoleMenu::getRoleId, roleIdList)
-                    .select(SysRoleMenu::getMenuId);
-            List<SysRoleMenu> sysRoleMenuList = this.list(queryWrapper);
-            if (CollUtil.isEmpty(sysRoleMenuList)) {
-                continue;
-            }
-            List<Long> menuIdListQueryResult = sysRoleMenuList.stream()
-                    .map(SysRoleMenu::getMenuId)
-                    .collect(Collectors.toList());
-            result.addAll(menuIdListQueryResult);
-
-            // 缓存
-            roleMenuCache.put(roleId.toString(), menuIdListQueryResult);
-        }
-        return result;
+    public List<SysRoleMenuDO> getListByRoleId(Long roleId) {
+        return sysRoleMenuMapper.selectListByRoleId(roleId);
     }
+
+    @Override
+    public List<SysRoleMenuDO> getListByRoleId(Set<Long> roleIdSet) {
+        return sysRoleMenuMapper.selectListByRoleId(roleIdSet);
+    }
+
+    @Override
+    public List<SysRoleMenuDO> getListByMenuId(Long menuId) {
+        return sysRoleMenuMapper.selectListByMenuId(menuId);
+    }
+
+    @Override
+    public void deleteListByRoleId(Long roleId) {
+        sysRoleMenuMapper.deleteListByRoleId(roleId);
+    }
+
+    @Override
+    public void deleteListByMenuId(Long menuId) {
+        sysRoleMenuMapper.deleteListByMenuId(menuId);
+    }
+
+    @Override
+    public void deleteListByRoleIdAndMenuIds(Long roleId, Set<Long> menuIdSet) {
+        sysRoleMenuMapper.deleteListByRoleIdAndMenuIds(roleId, menuIdSet);
+    }
+
+    // endregion
+
+    // region 删除回调方法
 
     @Override
     public void removeMenuAction(Set<Long> beRemovedMenuIdList) {
-        LambdaQueryWrapper<SysRoleMenu> queryWrapper = Wrappers.lambdaQuery(SysRoleMenu.class)
-                .in(SysRoleMenu::getMenuId, beRemovedMenuIdList);
-        this.remove(queryWrapper);
+        sysRoleMenuMapper.deleteListByMenuId(beRemovedMenuIdList);
     }
 
     @Override
@@ -103,9 +80,13 @@ public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuMapper, SysRo
 
     @Override
     public void removeRoleAction(Set<Long> beRemovedRoleIdList) {
-        LambdaQueryWrapper<SysRoleMenu> queryWrapper = Wrappers.lambdaQuery(SysRoleMenu.class)
-                .in(SysRoleMenu::getRoleId, beRemovedRoleIdList);
-        this.remove(queryWrapper);
+        sysRoleMenuMapper.deleteListByRoleId(beRemovedRoleIdList);
     }
+
+    // endregion
+
+    // region 私有方法
+
+    // endregion
 
 }

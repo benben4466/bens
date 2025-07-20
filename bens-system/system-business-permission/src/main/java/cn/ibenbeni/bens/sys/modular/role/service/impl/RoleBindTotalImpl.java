@@ -7,9 +7,8 @@ import cn.ibenbeni.bens.sys.modular.menu.service.SysMenuService;
 import cn.ibenbeni.bens.sys.modular.role.action.RoleAssignOperateAction;
 import cn.ibenbeni.bens.sys.modular.role.action.RoleBindLimitAction;
 import cn.ibenbeni.bens.sys.modular.role.entity.SysRoleLimit;
-import cn.ibenbeni.bens.sys.modular.role.entity.SysRoleMenu;
+import cn.ibenbeni.bens.sys.modular.role.entity.SysRoleMenuDO;
 import cn.ibenbeni.bens.sys.modular.role.entity.SysRoleMenuOptions;
-import cn.ibenbeni.bens.sys.api.enums.role.PermissionNodeTypeEnum;
 import cn.ibenbeni.bens.sys.modular.role.enums.RoleLimitTypeEnum;
 import cn.ibenbeni.bens.sys.modular.role.pojo.request.RoleBindPermissionRequest;
 import cn.ibenbeni.bens.sys.modular.role.service.SysRoleLimitService;
@@ -58,8 +57,8 @@ public class RoleBindTotalImpl implements RoleAssignOperateAction, RoleBindLimit
         Long roleId = roleBindPermissionRequest.getRoleId();
 
         // 1 清空角色绑定的所有菜单和菜单功能
-        LambdaQueryWrapper<SysRoleMenu> sysRoleMenuLambdaQueryWrapper = Wrappers.lambdaQuery(SysRoleMenu.class)
-                .eq(SysRoleMenu::getRoleId, roleId);
+        LambdaQueryWrapper<SysRoleMenuDO> sysRoleMenuLambdaQueryWrapper = Wrappers.lambdaQuery(SysRoleMenuDO.class)
+                .eq(SysRoleMenuDO::getRoleId, roleId);
         sysRoleMenuService.remove(sysRoleMenuLambdaQueryWrapper);
 
         LambdaQueryWrapper<SysRoleMenuOptions> sysRoleMenuOptionsLambdaQueryWrapper = Wrappers.lambdaQuery(SysRoleMenuOptions.class)
@@ -73,14 +72,14 @@ public class RoleBindTotalImpl implements RoleAssignOperateAction, RoleBindLimit
 
         // 2.1 绑定菜单数据
         List<SysMenuDO> totalMenus = sysMenuService.getTotalMenus(roleLimitMenuIdsAndOptionIds);
-        List<SysRoleMenu> sysRoleMenuList = new ArrayList<>();
+        List<SysRoleMenuDO> sysRoleMenuDOList = new ArrayList<>();
         for (SysMenuDO menuItem : totalMenus) {
-            SysRoleMenu sysRoleMenu = new SysRoleMenu();
-            sysRoleMenu.setRoleId(roleId);
-            sysRoleMenu.setMenuId(menuItem.getMenuId());
-            sysRoleMenuList.add(sysRoleMenu);
+            SysRoleMenuDO sysRoleMenuDO = new SysRoleMenuDO();
+            sysRoleMenuDO.setRoleId(roleId);
+            sysRoleMenuDO.setMenuId(menuItem.getMenuId());
+            sysRoleMenuDOList.add(sysRoleMenuDO);
         }
-        sysRoleMenuService.saveBatch(sysRoleMenuList);
+        sysRoleMenuService.saveBatch(sysRoleMenuDOList);
 
         // 2.2 绑定菜单功能数据
         List<SysMenuOptions> sysMenuOptionsList = sysMenuOptionsService.getTotalMenuOptionsList(roleLimitMenuIdsAndOptionIds);
