@@ -3,9 +3,12 @@ package cn.ibenbeni.bens.sys.modular.user.service;
 import cn.ibenbeni.bens.sys.api.SysUserRoleServiceApi;
 import cn.ibenbeni.bens.sys.api.callback.RemoveRoleCallbackApi;
 import cn.ibenbeni.bens.sys.api.callback.RemoveUserCallbackApi;
-import cn.ibenbeni.bens.sys.modular.user.entity.SysUserRole;
-import cn.ibenbeni.bens.sys.modular.user.pojo.request.SysUserRoleRequest;
+import cn.ibenbeni.bens.sys.modular.user.entity.SysUserRoleDO;
+import cn.ibenbeni.bens.sys.modular.user.pojo.request.UserRoleBindReq;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * 用户角色关联服务类
@@ -13,22 +16,48 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author: benben
  * @time: 2025/6/2 下午2:20
  */
-public interface SysUserRoleService extends IService<SysUserRole>, SysUserRoleServiceApi, RemoveUserCallbackApi, RemoveRoleCallbackApi {
+public interface SysUserRoleService extends IService<SysUserRoleDO>, SysUserRoleServiceApi, RemoveUserCallbackApi, RemoveRoleCallbackApi {
 
     /**
      * 绑定用户角色
      * <p>组织架构-人员页面使用；用于绑定系统角色</p>
      */
-    void bindRoles(SysUserRoleRequest sysUserRoleRequest);
+    void bindRole(UserRoleBindReq bindReq);
 
     /**
-     * 给用户添加默认的角色
+     * 删除指定用户ID下的角色用户关联
+     *
+     * @param userId 用户ID
      */
-    void bindUserDefaultRole(Long userId);
+    void deleteListByUserId(Long userId);
 
     /**
-     * 获取用户是否绑定的对应的角色
+     * 根据角色ID删除角色用户关联
+     *
+     * @param roleId 角色ID
      */
-    SysUserRole getPointUserRole(Long userId, Long roleId, Long orgId);
+    void deleteListByRoleId(Long roleId);
+
+    /**
+     * 删除指定用户ID下，角色ID列表的关联
+     *
+     * @param userId  用户ID
+     * @param roleIdSet 角色ID列表
+     */
+    void deleteListByUserIdAndRoleIdIds(Long userId, Set<Long> roleIdSet);
+
+    /**
+     * 根据用户ID查询角色用户关联
+     *
+     * @param userId 用户ID
+     */
+    List<SysUserRoleDO> selectListByUserId(Long userId);
+
+    /**
+     * 根据角色ID列表查询角色用户关联
+     *
+     * @param roleIdSet 角色ID集合
+     */
+    List<SysUserRoleDO> selectListByRoleIds(Set<Long> roleIdSet);
 
 }

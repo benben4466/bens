@@ -3,7 +3,7 @@ package cn.ibenbeni.bens.sys.starter.cache.user;
 import cn.ibenbeni.bens.cache.api.CacheOperatorApi;
 import cn.ibenbeni.bens.cache.redis.util.CreateRedisTemplateUtil;
 import cn.ibenbeni.bens.sys.modular.user.cache.userrole.UserRoleRedisCache;
-import cn.ibenbeni.bens.sys.modular.user.entity.SysUserRole;
+import cn.ibenbeni.bens.sys.modular.user.entity.SysUserRoleDO;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,8 +26,8 @@ public class UserRedisCacheAutoConfiguration {
      * 用户绑定角色的缓存
      */
     @Bean
-    public CacheOperatorApi<List<SysUserRole>> userRoleCache(RedisConnectionFactory redisConnectionFactory) {
-        RedisTemplate<String, List<SysUserRole>> redisTemplate = CreateRedisTemplateUtil.createObject(redisConnectionFactory);
+    public CacheOperatorApi<List<SysUserRoleDO>> userRoleCache(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, List<SysUserRoleDO>> redisTemplate = CreateRedisTemplateUtil.createObject(redisConnectionFactory);
         return new UserRoleRedisCache(redisTemplate);
     }
 
