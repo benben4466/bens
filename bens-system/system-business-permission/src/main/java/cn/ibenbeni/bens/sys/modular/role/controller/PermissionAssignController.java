@@ -3,7 +3,7 @@ package cn.ibenbeni.bens.sys.modular.role.controller;
 import cn.ibenbeni.bens.rule.pojo.request.BaseRequest;
 import cn.ibenbeni.bens.rule.pojo.response.ResponseData;
 import cn.ibenbeni.bens.rule.pojo.response.SuccessResponseData;
-import cn.ibenbeni.bens.sys.modular.role.entity.SysRole;
+import cn.ibenbeni.bens.sys.modular.role.entity.SysRoleDO;
 import cn.ibenbeni.bens.sys.modular.role.pojo.request.RoleBindDataScopeRequest;
 import cn.ibenbeni.bens.sys.modular.role.pojo.request.RoleBindPermissionRequest;
 import cn.ibenbeni.bens.sys.modular.role.pojo.request.SysRoleRequest;
@@ -44,7 +44,7 @@ public class PermissionAssignController {
      * <p>用在权限分配界面，左侧的角色列表</p>
      */
     @GetMapping("/permission/getRoleList")
-    public ResponseData<List<SysRole>> getRoleList(SysRoleRequest sysRoleRequest) {
+    public ResponseData<List<SysRoleDO>> getRoleList(SysRoleRequest sysRoleRequest) {
         return new SuccessResponseData<>(sysRoleService.permissionGetRoleList(sysRoleRequest));
     }
 

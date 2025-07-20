@@ -2,10 +2,12 @@ package cn.ibenbeni.bens.sys.modular.role.entity;
 
 import cn.ibenbeni.bens.db.api.pojo.entity.BaseExpandFieldEntity;
 import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 /**
  * 系统角色实例类
@@ -16,7 +18,7 @@ import java.math.BigDecimal;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName(value = "sys_role", autoResultMap = true)
-public class SysRole extends BaseExpandFieldEntity {
+public class SysRoleDO extends BaseExpandFieldEntity {
 
     /**
      * 主键ID
@@ -44,10 +46,17 @@ public class SysRole extends BaseExpandFieldEntity {
 
     /**
      * 数据范围类型
-     * <p>10-仅本人数据，20-本部门数据，30-本部门及以下数据，31-本公司及以下数据，40-指定部门数据，50-全部数据</p>
+     * <p>10-仅本人数据，20-本部门数据，30-本部门及以下数据，40-指定部门数据，50-全部数据</p>
      */
     @TableField("data_scope_type")
     private Integer dataScopeType;
+
+    /**
+     * 数据权限部门ID集合(数据范围类型:指定部门数据时使用)
+     * <p>JSON数组</p>
+     */
+    @TableField(value = "data_scope_dept_ids", typeHandler = JacksonTypeHandler.class)
+    private Set<Long> dataScopeDeptIds;
 
     /**
      * 状态：1-启用，2-禁用
@@ -57,16 +66,10 @@ public class SysRole extends BaseExpandFieldEntity {
 
     /**
      * 角色类型
-     * <p>10-系统角色，15-业务角色，20-公司角色</p>
+     * <p>枚举值：{@link cn.ibenbeni.bens.sys.api.enums.role.RoleTypeEnum}</p>
      */
     @TableField("role_type")
     private Integer roleType;
-
-    /**
-     * 角色所属公司id，当角色类型为20时传此值
-     */
-    @TableField(value = "role_company_id", updateStrategy = FieldStrategy.ALWAYS, insertStrategy = FieldStrategy.ALWAYS)
-    private Long roleCompanyId;
 
     /**
      * 备注
