@@ -9,7 +9,7 @@ import cn.ibenbeni.bens.sys.modular.role.pojo.request.RoleBindPermissionRequest;
 import cn.ibenbeni.bens.sys.modular.role.pojo.request.SysRoleRequest;
 import cn.ibenbeni.bens.sys.modular.role.pojo.response.RoleBindDataScopeResponse;
 import cn.ibenbeni.bens.sys.modular.role.pojo.response.RoleBindPermissionResponse;
-import cn.ibenbeni.bens.sys.modular.role.service.PermissionAssignService;
+import cn.ibenbeni.bens.sys.modular.permission.service.PermissionService;
 import cn.ibenbeni.bens.sys.modular.role.service.SysRoleDataScopeService;
 import cn.ibenbeni.bens.sys.modular.role.service.SysRoleService;
 import org.springframework.validation.annotation.Validated;
@@ -37,7 +37,7 @@ public class PermissionAssignController {
     private SysRoleDataScopeService sysRoleDataScopeService;
 
     @Resource
-    private PermissionAssignService permissionAssignService;
+    private PermissionService permissionService;
 
     /**
      * 获取所有角色列表
@@ -54,7 +54,7 @@ public class PermissionAssignController {
      */
     @GetMapping("/permission/getRoleBindPermission")
     public ResponseData<RoleBindPermissionResponse> getRoleBindPermission(@Validated(BaseRequest.detail.class) RoleBindPermissionRequest roleBindPermissionRequest) {
-        RoleBindPermissionResponse roleBindPermission = permissionAssignService.getRoleBindPermission(roleBindPermissionRequest);
+        RoleBindPermissionResponse roleBindPermission = permissionService.getRoleBindPermission(roleBindPermissionRequest);
         return new SuccessResponseData<>(roleBindPermission);
     }
 
@@ -64,7 +64,7 @@ public class PermissionAssignController {
      */
     @PostMapping("/permission/updateRoleBindPermission")
     public ResponseData<?> updateRoleBindPermission(@RequestBody @Validated(RoleBindPermissionRequest.roleBindPermission.class) RoleBindPermissionRequest roleBindPermissionRequest) {
-        permissionAssignService.updateRoleBindPermission(roleBindPermissionRequest);
+        permissionService.updateRoleBindPermission(roleBindPermissionRequest);
         return new SuccessResponseData<>();
     }
 

@@ -10,7 +10,7 @@ import cn.ibenbeni.bens.sys.modular.role.factory.PermissionAssignFactory;
 import cn.ibenbeni.bens.sys.modular.role.mapper.SysRoleLimitMapper;
 import cn.ibenbeni.bens.sys.modular.role.pojo.request.RoleBindPermissionRequest;
 import cn.ibenbeni.bens.sys.modular.role.pojo.response.RoleBindPermissionResponse;
-import cn.ibenbeni.bens.sys.modular.role.service.PermissionAssignService;
+import cn.ibenbeni.bens.sys.modular.permission.service.PermissionService;
 import cn.ibenbeni.bens.sys.modular.role.service.SysRoleLimitService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -32,12 +32,12 @@ import java.util.stream.Collectors;
 public class SysRoleLimitServiceImpl extends ServiceImpl<SysRoleLimitMapper, SysRoleLimit> implements SysRoleLimitService {
 
     @Resource
-    private PermissionAssignService permissionAssignService;
+    private PermissionService permissionService;
 
     @Override
     public RoleBindPermissionResponse getRoleLimit(RoleBindPermissionRequest roleBindPermissionRequest) {
         // 1.整理出来一个总的相应的结构树，选择状态为空
-        RoleBindPermissionResponse selectTreeStructure = permissionAssignService.createSelectTreeStructure();
+        RoleBindPermissionResponse selectTreeStructure = permissionService.createSelectTreeStructure();
 
         // 2.获取角色限制所对应的菜单和功能列表
         Set<Long> roleBindLimitList = this.getRoleBindLimitList(roleBindPermissionRequest.getRoleId());
