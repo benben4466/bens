@@ -5,8 +5,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 /**
  * 用户角色关联实例类
@@ -16,8 +15,11 @@ import lombok.EqualsAndHashCode;
  */
 @TableName(value = "sys_user_role", autoResultMap = true)
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class SysUserRole extends BaseEntity {
+public class SysUserRoleDO extends BaseEntity {
 
     /**
      * 主键
@@ -38,16 +40,9 @@ public class SysUserRole extends BaseEntity {
     private Long roleId;
 
     /**
-     * 角色类型
-     * <p>10-系统角色，15-业务角色，20-公司角色</p>
+     * 租户ID
      */
-    @TableField("role_type")
-    private Integer roleType;
-
-    /**
-     * 用户所属机构id
-     */
-    @TableField(value = "role_org_id")
-    private Long roleOrgId;
+    @TableField("tenant_id")
+    private Long tenantId;
 
 }

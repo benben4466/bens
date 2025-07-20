@@ -3,7 +3,7 @@ package cn.ibenbeni.bens.sys.modular.user.cache.userrole;
 import cn.hutool.cache.impl.TimedCache;
 import cn.ibenbeni.bens.cache.memory.AbstractMemoryCacheOperator;
 import cn.ibenbeni.bens.sys.modular.user.constants.UserConstants;
-import cn.ibenbeni.bens.sys.modular.user.entity.SysUserRole;
+import cn.ibenbeni.bens.sys.modular.user.entity.SysUserRoleDO;
 
 import java.util.List;
 
@@ -13,9 +13,9 @@ import java.util.List;
  * @author: benben
  * @time: 2025/6/2 下午3:55
  */
-public class UserRoleMemoryCache extends AbstractMemoryCacheOperator<List<SysUserRole>> {
+public class UserRoleMemoryCache extends AbstractMemoryCacheOperator<List<SysUserRoleDO>> {
 
-    public UserRoleMemoryCache(TimedCache<String, List<SysUserRole>> timedCache) {
+    public UserRoleMemoryCache(TimedCache<String, List<SysUserRoleDO>> timedCache) {
         super(timedCache);
     }
 
