@@ -29,7 +29,7 @@ public class SysConfigTypeController {
      * 新增
      */
     @PostMapping("/sysConfigType/add")
-    public ResponseData<SysConfigType> add(@RequestBody @Validated(BaseRequest.add.class) SysConfigTypeRequest sysConfigTypeRequest) {
+    public ResponseData<SysConfigType> add(@RequestBody @Validated SysConfigTypeRequest sysConfigTypeRequest) {
         sysConfigTypeService.add(sysConfigTypeRequest);
         return new SuccessResponseData<>();
     }
@@ -38,7 +38,7 @@ public class SysConfigTypeController {
      * 删除
      */
     @PostMapping("/sysConfigType/delete")
-    public ResponseData<SysConfigType> del(@RequestBody @Validated(BaseRequest.delete.class) SysConfigTypeRequest sysConfigTypeRequest) {
+    public ResponseData<SysConfigType> del(@RequestBody @Validated SysConfigTypeRequest sysConfigTypeRequest) {
         sysConfigTypeService.del(sysConfigTypeRequest);
         return new SuccessResponseData<>();
     }
@@ -47,7 +47,7 @@ public class SysConfigTypeController {
      * 编辑
      */
     @PostMapping("/sysConfigType/edit")
-    public ResponseData<SysConfigType> edit(@RequestBody @Validated(BaseRequest.edit.class) SysConfigTypeRequest sysConfigTypeRequest) {
+    public ResponseData<SysConfigType> edit(@RequestBody @Validated SysConfigTypeRequest sysConfigTypeRequest) {
         sysConfigTypeService.edit(sysConfigTypeRequest);
         return new SuccessResponseData<>();
     }
@@ -56,7 +56,7 @@ public class SysConfigTypeController {
      * 查看详情
      */
     @GetMapping("/sysConfigType/detail")
-    public ResponseData<SysConfigType> detail(@Validated(BaseRequest.detail.class) SysConfigTypeRequest sysConfigTypeRequest) {
+    public ResponseData<SysConfigType> detail(@Validated SysConfigTypeRequest sysConfigTypeRequest) {
         return new SuccessResponseData<>(sysConfigTypeService.detail(sysConfigTypeRequest));
     }
 

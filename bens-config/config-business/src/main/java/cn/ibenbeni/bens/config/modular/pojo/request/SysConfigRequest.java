@@ -2,7 +2,6 @@ package cn.ibenbeni.bens.config.modular.pojo.request;
 
 import cn.ibenbeni.bens.rule.pojo.request.BaseRequest;
 import cn.ibenbeni.bens.validator.api.validators.flag.FlagValue;
-import cn.ibenbeni.bens.validator.api.validators.unique.TableUniqueValue;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -25,53 +24,45 @@ public class SysConfigRequest extends BaseRequest {
     /**
      * 主键
      */
-    @NotNull(message = "ID不能为空", groups = {edit.class, detail.class, delete.class})
+    @NotNull(message = "ID不能为空")
     private Long configId;
 
     /**
      * 参数配置类型编码
      */
-    @NotBlank(message = "参数配置类型编码不能为空", groups = {add.class, page.class})
+    @NotBlank(message = "参数配置类型编码不能为空")
     private String configTypeCode;
 
     /**
      * 参数配置名称
      */
-    @NotBlank(message = "参数配置名称不能为空", groups = {add.class, edit.class})
+    @NotBlank(message = "参数配置名称不能为空")
     private String configName;
 
     /**
      * 参数配置编码
      */
-    @TableUniqueValue(
-            message = "参数配置编码已存在",
-            groups = {BaseRequest.add.class},
-            tableName = "sys_config",
-            columnName = "config_code",
-            idFieldName = "config_id",
-            excludeLogicDeleteItems = true
-    )
-    @NotBlank(message = "参数配置编码不能为空", groups = {add.class})
+    @NotBlank(message = "参数配置编码不能为空")
     private String configCode;
 
     /**
      * 参数配置值
      */
-    @NotBlank(message = "参数配置值不能为空", groups = {add.class, edit.class})
+    @NotBlank(message = "参数配置值不能为空")
     private String configValue;
 
     /**
      * 是否是系统参数
      * <p>Y=是，N=否</p>
      */
-    @NotNull(message = "是否是系统参数不能为空", groups = {add.class, edit.class})
-    @FlagValue(message = "是否是系统参数格式错误,正确格式应该Y或者N", groups = {add.class, edit.class})
+    @NotNull(message = "是否是系统参数不能为空")
+    @FlagValue(message = "是否是系统参数格式错误,正确格式应该Y或者N")
     private String sysFlag;
 
     /**
      * 排序
      */
-    @NotNull(message = "排序不能为空", groups = {add.class, edit.class})
+    @NotNull(message = "排序不能为空")
     private BigDecimal configSort;
 
     /**
@@ -83,7 +74,7 @@ public class SysConfigRequest extends BaseRequest {
      * 参数配置ID列表
      * <p>用于批量操作</p>
      */
-    @NotEmpty(message = "参数配置ID列表不能为空", groups = {batchDelete.class})
+    @NotEmpty(message = "参数配置ID列表不能为空")
     private List<Long> configIdList;
 
 }

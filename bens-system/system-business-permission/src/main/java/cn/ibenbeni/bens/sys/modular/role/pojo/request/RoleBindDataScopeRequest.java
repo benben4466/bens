@@ -20,7 +20,7 @@ public class RoleBindDataScopeRequest extends BaseRequest {
     /**
      * 角色ID
      */
-    @NotNull(message = "角色ID不能为空", groups = {detail.class, roleBindDataScope.class})
+    @NotNull(message = "角色ID不能为空")
     private Long roleId;
 
     /**

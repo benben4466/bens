@@ -41,19 +41,19 @@ public class SysUserRequest extends BaseRequest {
     /**
      * 账号
      */
-    @NotBlank(message = "账号不能为空", groups = {add.class, edit.class})
+    @NotBlank(message = "账号不能为空")
     private String account;
 
     /**
      * 密码
      */
-    @NotBlank(message = "密码不能为空", groups = {add.class, updatePwd.class})
+    @NotBlank(message = "密码不能为空")
     private String password;
 
     /**
      * 新密码
      */
-    @NotBlank(message = "新密码不能为空", groups = {updatePwd.class})
+    @NotBlank(message = "新密码不能为空")
     private String newPassword;
 
     /**
@@ -70,13 +70,13 @@ public class SysUserRequest extends BaseRequest {
     /**
      * 性别：M-男，F-女
      */
-    @NotBlank(message = "性别：M-男，F-女不能为空", groups = {add.class, edit.class, updateInfo.class})
+    @NotBlank(message = "性别：M-男，F-女不能为空")
     private String sex;
 
     /**
      * 邮箱
      */
-    @Email(message = "邮箱格式错误", groups = {updateInfo.class})
+    @Email(message = "邮箱格式错误")
     private String email;
 
     /**
@@ -87,13 +87,13 @@ public class SysUserRequest extends BaseRequest {
     /**
      * 是否是超级管理员：Y-是，N-否
      */
-    @NotBlank(message = "是否是超级管理员：Y-是，N-否不能为空", groups = {add.class, edit.class})
+    @NotBlank(message = "是否是超级管理员：Y-是，N-否不能为空")
     private String superAdminFlag;
 
     /**
      * 状态：1-正常，2-冻结，3-临时冻结
      */
-    @NotNull(message = "状态不能为空", groups = {add.class, edit.class, updateStatus.class})
+    @NotNull(message = "状态不能为空")
     private Integer statusFlag;
 
     /**
@@ -109,35 +109,6 @@ public class SysUserRequest extends BaseRequest {
      */
     @NotEmpty(message = "用户ID集合不能为空", groups = {batchDelete.class})
     private Set<Long> userIdList;
-
-    // endregion
-
-    //-------------------------------参数校验分组-------------------------------
-    // region 参数校验分组
-
-    /**
-     * 重置用户密码
-     */
-    public interface resetPassword {
-    }
-
-    /**
-     * 更新信息
-     */
-    public interface updateInfo {
-    }
-
-    /**
-     * 修改密码
-     */
-    public interface updatePwd {
-    }
-
-    /**
-     * 修改头像
-     */
-    public interface updateAvatar {
-    }
 
     // endregion
 

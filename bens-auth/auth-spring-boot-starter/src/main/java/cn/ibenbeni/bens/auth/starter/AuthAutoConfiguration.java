@@ -59,7 +59,7 @@ public class AuthAutoConfiguration {
         bean.addUrlPatterns("/*");
         bean.setName(TokenAuthenticationFilter.NAME);
         bean.setOrder(WebFilterOrderConstants.TOKEN_AUTHENTICATION_FILTER);
-        return null;
+        return bean;
     }
 
 }

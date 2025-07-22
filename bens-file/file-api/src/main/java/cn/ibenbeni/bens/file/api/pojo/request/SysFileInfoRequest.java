@@ -17,7 +17,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class SysFileInfoRequest extends BaseRequest {
 
-    @NotNull(message = "文件ID不能为空", groups = {detail.class, delete.class})
+    @NotNull(message = "文件ID不能为空")
     private Long fileId;
 
     /**

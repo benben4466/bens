@@ -23,13 +23,6 @@
             <version>${revision}</version>
         </dependency>
 
-        <!-- 校验模块-表相关 -->
-        <dependency>
-            <groupId>cn.ibenbeni</groupId>
-            <artifactId>validator-api-table-unique</artifactId>
-            <version>${revision}</version>
-        </dependency>
-
         <!-- 缓存模块 -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>

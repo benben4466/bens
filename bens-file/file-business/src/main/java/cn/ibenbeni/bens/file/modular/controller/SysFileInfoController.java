@@ -32,7 +32,7 @@ public class SysFileInfoController {
      * 上传文件
      */
     @PostMapping("/sysFileInfo/upload")
-    public ResponseData<SysFileInfoResponse> upload(@RequestPart("file") MultipartFile file, @Validated(SysFileInfoRequest.add.class) SysFileInfoRequest sysFileInfoRequest) {
+    public ResponseData<SysFileInfoResponse> upload(@RequestPart("file") MultipartFile file, @Validated SysFileInfoRequest sysFileInfoRequest) {
         SysFileInfoResponse fileUploadInfoResult = this.sysFileInfoService.uploadFile(file, sysFileInfoRequest);
         return new SuccessResponseData<>(fileUploadInfoResult);
     }
@@ -41,7 +41,7 @@ public class SysFileInfoController {
      * 文件下载
      */
     @GetMapping("/sysFileInfo/download")
-    public void privateDownload(@Validated(SysFileInfoRequest.detail.class) SysFileInfoRequest sysFileInfoRequest) {
+    public void privateDownload(@Validated SysFileInfoRequest sysFileInfoRequest) {
         HttpServletResponse response = HttpServletUtil.getResponse();
         this.sysFileInfoService.downloadFile(sysFileInfoRequest, response);
     }
@@ -88,7 +88,7 @@ public class SysFileInfoController {
      * 查询详情文件信息
      */
     @GetMapping("/sysFileInfo/detail")
-    public ResponseData<SysFileInfo> detail(@Validated(SysFileInfoRequest.detail.class) SysFileInfoRequest sysFileInfoRequest) {
+    public ResponseData<SysFileInfo> detail(@Validated SysFileInfoRequest sysFileInfoRequest) {
         return new SuccessResponseData<>(sysFileInfoService.detail(sysFileInfoRequest));
     }
 

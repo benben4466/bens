@@ -2,7 +2,6 @@ package cn.ibenbeni.bens.config.modular.pojo.request;
 
 import cn.ibenbeni.bens.rule.pojo.request.BaseRequest;
 import cn.ibenbeni.bens.validator.api.validators.flag.FlagValue;
-import cn.ibenbeni.bens.validator.api.validators.unique.TableUniqueValue;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -23,41 +22,33 @@ public class SysConfigTypeRequest extends BaseRequest {
     /**
      * 主键
      */
-    @NotNull(message = "ID不能为空", groups = {edit.class, delete.class, detail.class})
+    @NotNull(message = "ID不能为空")
     private Long configTypeId;
 
     /**
      * 参数配置类型名称
      */
-    @NotBlank(message = "类型名称不能为空", groups = {add.class, edit.class})
+    @NotBlank(message = "类型名称不能为空")
     private String configTypeName;
 
     /**
      * 参数配置类型编码
      */
-    @TableUniqueValue(
-            message = "参数配置类型编码已存在",
-            groups = {BaseRequest.add.class},
-            tableName = "sys_config_type",
-            columnName = "config_type_code",
-            idFieldName = "config_type_id",
-            excludeLogicDeleteItems = true
-    )
-    @NotBlank(message = "编码不能为空", groups = {add.class})
+    @NotBlank(message = "编码不能为空")
     private String configTypeCode;
 
     /**
      * 是否为系统参数类型
      * <p>Y=是，N=否</p>
      */
-    @FlagValue(message = "是否为系统参数格式错误", groups = {add.class, edit.class})
-    @NotBlank(message = "是否为系统参数不能为空", groups = {add.class, edit.class})
+    @FlagValue(message = "是否为系统参数格式错误")
+    @NotBlank(message = "是否为系统参数不能为空")
     private String sysFlag;
 
     /**
      * 排序
      */
-    @NotNull(message = "排序不能为空", groups = {add.class, edit.class})
+    @NotNull(message = "排序不能为空")
     private BigDecimal configTypeSort;
 
     /**

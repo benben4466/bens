@@ -20,25 +20,25 @@ public class SysMenuOptionsRequest extends BaseRequest {
     /**
      * 主键
      */
-    @NotNull(message = "主键不能为空", groups = {edit.class, delete.class})
+    @NotNull(message = "主键不能为空")
     private Long menuOptionId;
 
     /**
      * 菜单ID
      */
-    @NotNull(message = "菜单ID不能为空", groups = {add.class, edit.class})
+    @NotNull(message = "菜单ID不能为空")
     private Long menuId;
 
     /**
      * 功能或操作的名称
      */
-    @NotBlank(message = "功能或操作的名称不能为空", groups = {add.class, edit.class})
+    @NotBlank(message = "功能或操作的名称不能为空")
     private String optionName;
 
     /**
      * 功能或操作的编码
      */
-    @NotBlank(message = "功能或操作的编码不能为空", groups = {add.class, edit.class})
+    @NotBlank(message = "功能或操作的编码不能为空")
     private String optionCode;
 
 }

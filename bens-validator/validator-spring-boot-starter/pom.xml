@@ -16,13 +16,6 @@
     <description>校验模块-Starter</description>
 
     <dependencies>
-        <!-- 校验模块-表相关 -->
-        <dependency>
-            <groupId>cn.ibenbeni</groupId>
-            <artifactId>validator-api-table-unique</artifactId>
-            <version>${revision}</version>
-        </dependency>
-
         <!--Web模块-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -32,7 +32,7 @@ public class SysTenantPackageController {
      * 新增租户套餐
      */
     @PostMapping("/tenantPackage/add")
-    public ResponseData<SysTenantPackage> add(@RequestBody @Validated(BaseRequest.add.class) SysTenantPackageRequest sysTenantPackageRequest) {
+    public ResponseData<SysTenantPackage> add(@RequestBody @Validated SysTenantPackageRequest sysTenantPackageRequest) {
         sysTenantPackageService.add(sysTenantPackageRequest);
         return new SuccessResponseData<>();
     }
@@ -59,7 +59,7 @@ public class SysTenantPackageController {
      * 编辑租户套餐
      */
     @PostMapping("/tenantPackage/edit")
-    public ResponseData<?> edit(@RequestBody @Validated(BaseRequest.edit.class) SysTenantPackageRequest sysTenantPackageRequest) {
+    public ResponseData<?> edit(@RequestBody @Validated SysTenantPackageRequest sysTenantPackageRequest) {
         sysTenantPackageService.edit(sysTenantPackageRequest);
         return new SuccessResponseData<>();
     }
@@ -68,7 +68,7 @@ public class SysTenantPackageController {
      * 根据ID查询租户套餐
      */
     @GetMapping("/tenantPackage/detail")
-    public ResponseData<SysTenantPackage> detail(@Validated(BaseRequest.detail.class) SysTenantPackageRequest sysTenantPackageRequest) {
+    public ResponseData<SysTenantPackage> detail(@Validated SysTenantPackageRequest sysTenantPackageRequest) {
         return new SuccessResponseData<>(sysTenantPackageService.detail(sysTenantPackageRequest));
     }
 

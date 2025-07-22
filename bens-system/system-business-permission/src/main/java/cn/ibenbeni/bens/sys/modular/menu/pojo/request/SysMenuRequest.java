@@ -24,14 +24,14 @@ public class SysMenuRequest extends BaseRequest {
     /**
      * 主键
      */
-    @NotNull(message = "主键不能为空", groups = {edit.class, delete.class, detail.class})
+    @NotNull(message = "主键不能为空")
     private Long menuId;
 
     /**
      * 父ID
      * <p>顶级节点的父ID是-1</p>
      */
-    @NotNull(message = "父ID，顶级节点的父ID是-1不能为空", groups = {add.class})
+    @NotNull(message = "父ID，顶级节点的父ID是-1不能为空")
     private Long menuParentId;
 
     /**
@@ -42,26 +42,26 @@ public class SysMenuRequest extends BaseRequest {
     /**
      * 菜单名称
      */
-    @NotBlank(message = "菜单的名称不能为空", groups = {add.class, edit.class})
+    @NotBlank(message = "菜单的名称不能为空")
     private String menuName;
 
     /**
      * 菜单编码
      */
-    @NotBlank(message = "菜单的编码不能为空", groups = {add.class, edit.class})
+    @NotBlank(message = "菜单的编码不能为空")
     private String menuCode;
 
     /**
      * 菜单类型
      * <p>10-后台菜单，20-纯前台路由界面，30-内部链接，40-外部链接</p>
      */
-    @NotNull(message = "菜单类型不能为空", groups = {add.class, edit.class})
+    @NotNull(message = "菜单类型不能为空")
     private Integer menuType;
 
     /**
      * 显示排序
      */
-    @NotNull(message = "排序不能为空", groups = {add.class,edit.class})
+    @NotNull(message = "排序不能为空")
     private BigDecimal menuSort;
 
     /**

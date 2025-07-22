@@ -50,18 +50,4 @@ public class PageFactory {
         return new Page<>(pageNo, pageSize);
     }
 
-    /**
-     * 从baseRequest中获取分页参数
-     */
-    public static <T> Page<T> defaultPage(BaseRequest baseRequest) {
-        int pageSize = 20;
-        int pageNo = 1;
-
-        if (ObjectUtil.isNotEmpty(baseRequest)) {
-            pageNo = baseRequest.getPageNo() == null ? pageNo : baseRequest.getPageNo();
-            pageSize = baseRequest.getPageSize() == null ? pageSize : baseRequest.getPageSize();
-        }
-        return new Page<>(pageNo, pageSize);
-    }
-
 }

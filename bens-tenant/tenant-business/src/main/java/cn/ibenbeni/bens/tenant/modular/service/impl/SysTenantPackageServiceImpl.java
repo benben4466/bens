@@ -14,7 +14,6 @@ import cn.ibenbeni.bens.tenant.api.callback.RemoveTenantPackageCallbackApi;
 import cn.ibenbeni.bens.tenant.api.exception.TenantException;
 import cn.ibenbeni.bens.tenant.api.exception.enums.TenantExceptionEnum;
 import cn.ibenbeni.bens.tenant.modular.entity.SysTenantPackage;
-import cn.ibenbeni.bens.tenant.modular.factory.TenantPermissionFactory;
 import cn.ibenbeni.bens.tenant.modular.mapper.SysTenantPackageMapper;
 import cn.ibenbeni.bens.tenant.modular.pojo.request.SysTenantPackageRequest;
 import cn.ibenbeni.bens.tenant.modular.service.SysTenantPackageService;
@@ -45,7 +44,7 @@ public class SysTenantPackageServiceImpl extends ServiceImpl<SysTenantPackageMap
 
         SysTenantPackage tenantPackage = BeanUtil.toBean(sysTenantPackageRequest, SysTenantPackage.class);
         // 填充菜单及菜单功能
-        TenantPermissionFactory.fillPermissionMenus(tenantPackage, sysTenantPackageRequest.getPermissionList());
+        // TenantPermissionFactory.fillPermissionMenus(tenantPackage, sysTenantPackageRequest.getPermissionList());
 
         this.save(tenantPackage);
 
@@ -78,19 +77,19 @@ public class SysTenantPackageServiceImpl extends ServiceImpl<SysTenantPackageMap
         validateTenantPackageNameUnique(sysTenantPackageRequest.getPackageId(), sysTenantPackageRequest.getPackageName());
 
         // 填充菜单及菜单功能
-        Set<Long> tenantPackageMenuIds = TenantPermissionFactory.getTenantPackageMenuIds(sysTenantPackageRequest.getPermissionList());
-        Set<Long> tenantPackageMenuOptionIds = TenantPermissionFactory.getTenantPackageMenuOptionIds(sysTenantPackageRequest.getPermissionList());
-        if (!CollUtil.isEqualList(tenantPackageMenuIds, tenantPackage.getPackageMenuIds())) {
-            // TODO 修改所属租户的菜单权限
-        }
-        if (!CollUtil.isEqualList(tenantPackageMenuOptionIds, tenantPackage.getPackageMenuOptionIds())) {
-            // TODO 修改所属租户的菜单功能权限
-        }
+//        Set<Long> tenantPackageMenuIds = TenantPermissionFactory.getTenantPackageMenuIds(sysTenantPackageRequest.getPermissionList());
+//        Set<Long> tenantPackageMenuOptionIds = TenantPermissionFactory.getTenantPackageMenuOptionIds(sysTenantPackageRequest.getPermissionList());
+//        if (!CollUtil.isEqualList(tenantPackageMenuIds, tenantPackage.getPackageMenuIds())) {
+//            // TODO 修改所属租户的菜单权限
+//        }
+//        if (!CollUtil.isEqualList(tenantPackageMenuOptionIds, tenantPackage.getPackageMenuOptionIds())) {
+//            // TODO 修改所属租户的菜单功能权限
+//        }
 
         // 更新租户套餐
         BeanUtil.copyProperties(sysTenantPackageRequest, tenantPackage);
-        tenantPackage.setPackageMenuIds(tenantPackageMenuIds);
-        tenantPackage.setPackageMenuOptionIds(tenantPackageMenuOptionIds);
+//        tenantPackage.setPackageMenuIds(tenantPackageMenuIds);
+//        tenantPackage.setPackageMenuOptionIds(tenantPackageMenuOptionIds);
 
         this.updateById(tenantPackage);
 

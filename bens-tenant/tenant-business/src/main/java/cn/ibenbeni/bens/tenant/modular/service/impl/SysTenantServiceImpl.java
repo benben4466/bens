@@ -5,8 +5,6 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
-import cn.ibenbeni.bens.sys.api.PermissionAssignApi;
-import cn.ibenbeni.bens.sys.api.SysRoleServiceApi;
 import cn.ibenbeni.bens.tenant.api.exception.TenantException;
 import cn.ibenbeni.bens.tenant.api.exception.enums.TenantExceptionEnum;
 import cn.ibenbeni.bens.tenant.modular.entity.SysTenant;
@@ -32,12 +30,6 @@ import java.util.List;
  */
 @Service
 public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant> implements SysTenantService {
-
-    @Resource
-    private SysRoleServiceApi sysRoleServiceApi;
-
-    @Resource
-    private PermissionAssignApi permissionAssignApi;
 
     @Lazy
     @Resource
@@ -144,12 +136,7 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
      * @return 租户管理员角色ID
      */
     private Long createRole(SysTenantPackage tenantPackage) {
-        // 创建角色
-        Long roleId = sysRoleServiceApi.createTenantDefaultRole();
-
-        // 给租户管理员分配权限
-        permissionAssignApi.assignRoleMenuAndOption(roleId, tenantPackage.getPackageMenuIds(), tenantPackage.getPackageMenuOptionIds());
-        return roleId;
+        return null;
     }
 
     /**

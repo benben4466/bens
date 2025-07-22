@@ -3,11 +3,9 @@ package cn.ibenbeni.bens.sys.modular.role.factory;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
-import cn.ibenbeni.bens.rule.tree.factory.DefaultTreeBuildFactory;
+import cn.ibenbeni.bens.sys.api.pojo.role.RoleBindPermissionItem;
 import cn.ibenbeni.bens.sys.modular.menu.entity.SysMenuDO;
-import cn.ibenbeni.bens.sys.modular.menu.entity.SysMenuOptions;
 import cn.ibenbeni.bens.sys.modular.role.enums.PermissionNodeTypeEnum;
-import cn.ibenbeni.bens.sys.modular.role.pojo.response.RoleBindPermissionItem;
 import cn.ibenbeni.bens.sys.modular.role.pojo.response.RoleBindPermissionResponse;
 
 import java.util.ArrayList;
@@ -31,18 +29,18 @@ public class PermissionAssignFactory {
      * @param rolePermissions            角色所拥有的菜单ID和功能ID的集合
      */
     public static RoleBindPermissionResponse fillCheckedFlag(RoleBindPermissionResponse roleBindPermissionResponse, Set<Long> rolePermissions) {
-        List<RoleBindPermissionItem> permissionList = roleBindPermissionResponse.getPermissionList();
+//        List<RoleBindPermissionItem> permissionList = roleBindPermissionResponse.getPermissionList();
 
         // 开始填充菜单和功能的选中状态
-        fillSubItemCheckedFlag(permissionList, rolePermissions);
+//        fillSubItemCheckedFlag(permissionList, rolePermissions);
 
         // 填充全选的选中状态
-        roleBindPermissionResponse.setChecked(true);
-        for (RoleBindPermissionItem roleBindPermissionItem : permissionList) {
-            if (!roleBindPermissionItem.getChecked()) {
-                roleBindPermissionResponse.setChecked(false);
-            }
-        }
+//        roleBindPermissionResponse.setChecked(true);
+//        for (RoleBindPermissionItem roleBindPermissionItem : permissionList) {
+//            if (!roleBindPermissionItem.getChecked()) {
+//                roleBindPermissionResponse.setChecked(false);
+//            }
+//        }
 
         return roleBindPermissionResponse;
     }
@@ -104,48 +102,6 @@ public class PermissionAssignFactory {
         }
 
         return roleBindPermissionItems;
-    }
-
-    /**
-     * 创建菜单功能信息
-     */
-    public static List<RoleBindPermissionItem> createMenuOptions(List<SysMenuOptions> sysMenuOptionsList) {
-        if (CollUtil.isEmpty(sysMenuOptionsList)) {
-            return new ArrayList<>();
-        }
-
-        List<RoleBindPermissionItem> optionsResult = new ArrayList<>();
-        // 封装响应结果
-        for (SysMenuOptions sysMenuOptions : sysMenuOptionsList) {
-            RoleBindPermissionItem roleBindPermissionItem = new RoleBindPermissionItem(
-                    sysMenuOptions.getMenuOptionId(),
-                    sysMenuOptions.getMenuId(),
-                    sysMenuOptions.getOptionName(),
-                    PermissionNodeTypeEnum.OPTIONS.getCode(),
-                    false
-            );
-            optionsResult.add(roleBindPermissionItem);
-        }
-        return optionsResult;
-    }
-
-    /**
-     * 组合成角色绑定权限需要的详情信息，一颗树形结构，选中状态都是未选中
-     *
-     * @param menus       菜单集合
-     * @param menuOptions 菜单功能集合
-     */
-    public static RoleBindPermissionResponse composeSelectStructure(List<RoleBindPermissionItem> menus, List<RoleBindPermissionItem> menuOptions) {
-        RoleBindPermissionResponse roleBindPermissionResponse = new RoleBindPermissionResponse();
-        roleBindPermissionResponse.setChecked(false);
-
-        menus.addAll(menuOptions);
-        // 合并菜单和菜单功能，并构建树形结构
-        List<RoleBindPermissionItem> roleBindPermissionItems = new DefaultTreeBuildFactory<RoleBindPermissionItem>()
-                .doTreeBuild(menus);
-        roleBindPermissionResponse.setPermissionList(roleBindPermissionItems);
-
-        return roleBindPermissionResponse;
     }
 
 }

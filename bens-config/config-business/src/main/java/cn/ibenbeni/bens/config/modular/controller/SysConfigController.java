@@ -32,7 +32,7 @@ public class SysConfigController {
      * 添加系统参数配置
      */
     @PostMapping("/sysConfig/add")
-    public ResponseData<?> add(@RequestBody @Validated(BaseRequest.add.class) SysConfigRequest sysConfigRequest) {
+    public ResponseData<?> add(@RequestBody @Validated SysConfigRequest sysConfigRequest) {
         sysConfigService.add(sysConfigRequest);
         return new SuccessResponseData<>();
     }
@@ -59,7 +59,7 @@ public class SysConfigController {
      * 编辑系统参数配置
      */
     @PostMapping("/sysConfig/edit")
-    public ResponseData<?> edit(@RequestBody @Validated(BaseRequest.edit.class) SysConfigRequest sysConfigRequest) {
+    public ResponseData<?> edit(@RequestBody @Validated SysConfigRequest sysConfigRequest) {
         sysConfigService.edit(sysConfigRequest);
         return new SuccessResponseData<>();
     }
@@ -68,7 +68,7 @@ public class SysConfigController {
      * 查询系统参数配置
      */
     @GetMapping("/sysConfig/detail")
-    public ResponseData<SysConfig> detail(@Validated(BaseRequest.detail.class) SysConfigRequest sysConfigRequest) {
+    public ResponseData<SysConfig> detail(@Validated SysConfigRequest sysConfigRequest) {
         return new SuccessResponseData<>(sysConfigService.detail(sysConfigRequest));
     }
 

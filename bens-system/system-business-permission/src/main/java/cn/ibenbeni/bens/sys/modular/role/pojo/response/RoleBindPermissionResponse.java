@@ -2,8 +2,6 @@ package cn.ibenbeni.bens.sys.modular.role.pojo.response;
 
 import lombok.Data;
 
-import java.util.List;
-
 /**
  * 角色绑定权限界面的响应封装
  *
@@ -25,11 +23,5 @@ public class RoleBindPermissionResponse {
      * <p>本程序无应用，因此2-菜单，3-功能，-1-所有权限</p>
      */
     private Integer permissionNodeType = -1;
-
-    /**
-     * 菜单权限列表
-     * <p>菜单下边是菜单功能</p>
-     */
-    private List<RoleBindPermissionItem> permissionList;
 
 }
