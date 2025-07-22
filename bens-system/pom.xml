@@ -19,6 +19,7 @@
         <module>system-business-hr</module>
         <!--系统模块-应用权限管理模块-->
         <module>system-business-permission</module>
+        <!--系统模块-Starter-->
         <module>system-spring-boot-starter</module>
     </modules>
 
@@ -33,5 +34,33 @@
             <version>${revision}</version>
         </dependency>
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>cn.ibenbeni</groupId>
+                <artifactId>system-api</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.ibenbeni</groupId>
+                <artifactId>system-business-hr</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.ibenbeni</groupId>
+                <artifactId>system-business-permission</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.ibenbeni</groupId>
+                <artifactId>system-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 </project>

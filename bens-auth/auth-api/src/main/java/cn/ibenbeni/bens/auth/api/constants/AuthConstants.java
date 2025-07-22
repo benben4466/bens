@@ -22,6 +22,11 @@ public interface AuthConstants {
     String LOGGED_TOKEN_PREFIX = "LOGGED_TOKEN_";
 
     /**
+     * 登录用户ID的缓存前缀
+     */
+    String LOGGED_USERID_PREFIX = "LOGGED_USERID_";
+
+    /**
      * 获取HTTP请求携带Token的param的名称
      */
     String DEFAULT_AUTH_PARAM_NAME = "token";
@@ -35,5 +40,10 @@ public interface AuthConstants {
      * 默认http请求携带token的header名称
      */
     String DEFAULT_AUTH_HEADER_NAME = "Authorization";
+
+    /**
+     * PasswordEncoder加密长度
+     */
+    Integer DEFAULT_PASSWORD_ENCODER_LENGTH = 4;
 
 }

@@ -27,4 +27,9 @@ public interface CacheConstants {
      */
     String DEFAULT_STRING_CACHE_PREFIX = "DEFAULT:STRINGS:";
 
+    /**
+     * 给hutool缓存用的无限过期时间
+     */
+    Long NONE_EXPIRED_TIME = 1000L * 3600 * 24 * 999;
+
 }

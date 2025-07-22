@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>cn.ibenbeni</groupId>
+        <artifactId>bens-auth</artifactId>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <packaging>jar</packaging>
+
+    <artifactId>auth-sdk-customize</artifactId>
+    <description>认证模块-自定义实现</description>
+
+    <dependencies>
+        <!-- 权限模块-API -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>auth-api</artifactId>
+        </dependency>
+
+        <!--系统模块-API-->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>system-api</artifactId>
+        </dependency>
+
+        <!-- JWT模块-SDK -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>jwt-sdk</artifactId>
+        </dependency>
+
+        <!--缓存模块-->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>cache-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>cache-sdk-memory</artifactId>
+            <version>${revision}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>cache-sdk-redis</artifactId>
+            <version>${revision}</version>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+
+</project>

@@ -18,4 +18,12 @@ public class AuthConfigExpander {
         return 3600L;
     }
 
+    /**
+     * 获取Auth模块的JWT密钥
+     */
+    public static String getAuthJwtSecret() {
+        // TODO JWT密钥可配置
+        return "123456";
+    }
+
 }

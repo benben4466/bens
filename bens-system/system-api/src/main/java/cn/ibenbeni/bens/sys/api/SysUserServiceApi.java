@@ -27,7 +27,7 @@ public interface SysUserServiceApi {
      *
      * @param account 用户账号
      */
-    UserValidateDTO getUserLoginValidateDTO(String account);
+    UserValidateDTO getUserLoginValidateInfo(String account);
 
     /**
      * 更新用户的登录ip和最后登录时间

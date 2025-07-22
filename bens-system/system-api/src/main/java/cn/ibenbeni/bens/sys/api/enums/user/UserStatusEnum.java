@@ -22,14 +22,11 @@ public enum UserStatusEnum implements ReadableEnum<UserStatusEnum> {
     ENABLE(1, "启用"),
 
     /**
-     * 冻结
+     * 禁用
      */
-    DISABLE(2, "冻结"),
+    DISABLE(2, "禁用"),
 
-    /**
-     * 临时冻结，这个一般用在密码输入次数超过指定次数后，会被临时冻结
-     */
-    TEMP_FREEZE(3, "临时冻结");
+    ;
 
     private final Integer code;
 
