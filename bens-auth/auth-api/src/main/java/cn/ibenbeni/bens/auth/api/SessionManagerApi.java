@@ -14,10 +14,14 @@ public interface SessionManagerApi {
     /**
      * 创建会话
      *
-     * @param token     用户登录的token
-     * @param loginUser 登录的用户
+     * @param loginUser 登录用户
      */
-    void createSession(String token, LoginUser loginUser);
+    void createSession(LoginUser loginUser);
+
+    /**
+     * 根据Token删除一个会话
+     */
+    void removeSession(String token);
 
     /**
      * 通过token获取会话

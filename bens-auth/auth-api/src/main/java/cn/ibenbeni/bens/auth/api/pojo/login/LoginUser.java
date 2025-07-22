@@ -1,13 +1,14 @@
 package cn.ibenbeni.bens.auth.api.pojo.login;
 
 import cn.hutool.core.lang.Dict;
-import cn.ibenbeni.bens.rule.constants.RuleConstants;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 登录用户信息
@@ -16,6 +17,7 @@ import java.util.Date;
  * @date 2025/5/3  下午11:10
  */
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginUser implements Serializable {
@@ -23,7 +25,7 @@ public class LoginUser implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 用户主键id
+     * 用户ID
      */
     private Long userId;
 
@@ -33,46 +35,20 @@ public class LoginUser implements Serializable {
     private String account;
 
     /**
-     * 用户的token
+     * 用户Token
      */
     private String token;
 
     /**
-     * 当前用户激活的组织机构id（正在以哪个身份访问系统）
+     * 过期时间
      */
-    private Long currentOrgId;
-
-    /**
-     * 当前用户激活的职务id（正在以哪个身份访问系统）
-     */
-    private Long currentPositionId;
-
-    /**
-     * 当前用户语种的标识，例如：chinese，english
-     * <p>这个值是根据字典获取，字典类型编码 languages</p>
-     * <p>默认语种是中文</p>
-     */
-    private String tranLanguageCode = RuleConstants.CHINESE_TRAN_LANGUAGE_CODE;
-
-    /**
-     * 登录时候的IP
-     */
-    private String loginIp;
-
-    /**
-     * 登录时间
-     */
-    private Date loginTime;
+    private LocalDateTime expiresTime;
 
     /**
      * 登录用户的其他信息
+     * <p>不进行持久化</p>
      */
+    @JsonIgnore
     private Dict otherInfos;
-
-    public LoginUser(Long userId, String account, String token) {
-        this.userId = userId;
-        this.account = account;
-        this.token = token;
-    }
 
 }

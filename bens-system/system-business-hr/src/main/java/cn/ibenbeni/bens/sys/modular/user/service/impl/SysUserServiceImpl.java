@@ -9,10 +9,10 @@ import cn.ibenbeni.bens.auth.api.password.PasswordEncryptionStrategy;
 import cn.ibenbeni.bens.auth.api.pojo.password.SaltedEncryptResult;
 import cn.ibenbeni.bens.cache.api.CacheOperatorApi;
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
-import cn.ibenbeni.bens.rule.enums.StatusEnum;
 import cn.ibenbeni.bens.rule.exception.base.ServiceException;
 import cn.ibenbeni.bens.sys.api.SecurityConfigService;
 import cn.ibenbeni.bens.sys.api.callback.RemoveUserCallbackApi;
+import cn.ibenbeni.bens.sys.api.enums.user.UserStatusEnum;
 import cn.ibenbeni.bens.sys.api.pojo.user.SimpleUserDTO;
 import cn.ibenbeni.bens.sys.api.pojo.user.UserInfoDetailDTO;
 import cn.ibenbeni.bens.sys.api.pojo.user.UserValidateDTO;
@@ -77,7 +77,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserDO> im
         this.validateUserForCreateOrUpdate(null, createReqVO.getAccount());
 
         SysUserDO user = BeanUtil.toBean(createReqVO, SysUserDO.class);
-        user.setStatusFlag(StatusEnum.ENABLE.getCode());
+        user.setStatusFlag(UserStatusEnum.ENABLE.getCode());
         user.setUserSort(UserConstants.DEFAULT_USER_SORT);
 
         // 密码及密码盐
@@ -86,9 +86,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserDO> im
         user.setPasswordSalt(saltedEncryptResult.getPasswordSalt());
 
         this.save(user);
-
-        // 分配默认角色
-        sysUserRoleService.bindUserDefaultRole(user.getUserId());
 
         // 记录密码修改记录
         securityConfigService.recordPasswordEditLog(user.getUserId(), saltedEncryptResult.getEncryptPassword(), saltedEncryptResult.getPasswordSalt());
@@ -214,7 +211,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserDO> im
     }
 
     @Override
-    public UserValidateDTO getUserLoginValidateDTO(String account) {
+    public UserValidateDTO getUserLoginValidateInfo(String account) {
         LambdaQueryWrapper<SysUserDO> queryWrapper = Wrappers.lambdaQuery(SysUserDO.class)
                 .eq(SysUserDO::getAccount, account)
                 .select(SysUserDO::getUserId, SysUserDO::getPassword, SysUserDO::getPasswordSalt, SysUserDO::getStatusFlag);

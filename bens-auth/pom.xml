@@ -13,11 +13,11 @@
     <packaging>pom</packaging>
 
     <modules>
-        <!-- 认证模块-API -->
+        <!-- 权限模块-API -->
         <module>auth-api</module>
-        <!-- 认证模块-实现 -->
-        <module>auth-sdk</module>
-        <!-- 认证模块-starter -->
+        <!-- 权限模块-自定义实现 -->
+        <module>auth-sdk-customize</module>
+        <!-- 权限模块-starter -->
         <module>auth-spring-boot-starter</module>
     </modules>
 
@@ -30,6 +30,21 @@
             <groupId>cn.ibenbeni</groupId>
             <artifactId>bens-rule</artifactId>
             <version>${revision}</version>
+        </dependency>
+
+        <!-- 接口文档-Knife4j -->
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
+            <version>${knife4j.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <!-- 接口文档-Swagger页面 -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>${springdoc.version}</version>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 

@@ -9,6 +9,11 @@ package cn.ibenbeni.bens.rule.constants;
 public interface WebFilterOrderConstants {
 
     /**
+     * Token认证过滤器
+     */
+    int TOKEN_AUTHENTICATION_FILTER = 60;
+
+    /**
      * 租户上下文过滤器
      */
     int TENANT_CONTEXT_FILTER = 120;
