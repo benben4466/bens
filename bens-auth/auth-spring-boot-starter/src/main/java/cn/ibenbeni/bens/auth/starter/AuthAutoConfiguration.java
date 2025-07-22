@@ -1,9 +1,12 @@
 package cn.ibenbeni.bens.auth.starter;
 
 import cn.ibenbeni.bens.auth.api.SessionManagerApi;
+import cn.ibenbeni.bens.auth.api.constants.PasswordEncryptionConstants;
 import cn.ibenbeni.bens.auth.api.expander.AuthConfigExpander;
+import cn.ibenbeni.bens.auth.api.password.PasswordEncryptionStrategy;
 import cn.ibenbeni.bens.auth.api.pojo.login.LoginUser;
 import cn.ibenbeni.bens.auth.customize.filter.TokenAuthenticationFilter;
+import cn.ibenbeni.bens.auth.customize.password.MD5PasswordEncryptionStrategy;
 import cn.ibenbeni.bens.auth.customize.session.DefaultSessionManager;
 import cn.ibenbeni.bens.cache.api.CacheOperatorApi;
 import cn.ibenbeni.bens.jwt.JwtTokenOperator;
@@ -11,6 +14,7 @@ import cn.ibenbeni.bens.jwt.api.JwtApi;
 import cn.ibenbeni.bens.jwt.api.pojo.config.JwtConfig;
 import cn.ibenbeni.bens.rule.constants.WebFilterOrderConstants;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -60,6 +64,15 @@ public class AuthAutoConfiguration {
         bean.setName(TokenAuthenticationFilter.NAME);
         bean.setOrder(WebFilterOrderConstants.TOKEN_AUTHENTICATION_FILTER);
         return bean;
+    }
+
+    /**
+     * 注入MD5密码加密策略
+     */
+    @Bean
+    @ConditionalOnProperty(name = "bens.security.password", havingValue = PasswordEncryptionConstants.MD5)
+    public PasswordEncryptionStrategy passwordEncryptionStrategy() {
+        return new MD5PasswordEncryptionStrategy();
     }
 
 }
