@@ -14,6 +14,7 @@ import cn.ibenbeni.bens.rule.util.DateUtils;
 import cn.ibenbeni.bens.sys.api.SysUserServiceApi;
 import cn.ibenbeni.bens.sys.api.enums.user.UserStatusEnum;
 import cn.ibenbeni.bens.sys.api.pojo.user.UserValidateDTO;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
@@ -22,6 +23,7 @@ import javax.annotation.Resource;
  *
  * @author benben
  */
+@Service
 public class LoginService {
 
     @Resource
