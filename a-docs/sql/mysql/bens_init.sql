@@ -80,7 +80,7 @@ CREATE TABLE `sys_user_org`
     PRIMARY KEY (`user_org_id`)
 ) COMMENT = '用户组织机构关联';
 
-CREATE TABLE `sys_post`
+CREATE TABLE `sys_position`
 (
     `position_id`   bigint         NOT NULL COMMENT '主键',
     `position_name` varchar(100)   NOT NULL COMMENT '职位名称',
