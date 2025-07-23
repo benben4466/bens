@@ -36,7 +36,7 @@ public interface SysPositionMapper extends BaseMapperX<SysPositionDO> {
         return selectPage(req, new LambdaQueryWrapperX<SysPositionDO>()
                 .likeIfPresent(SysPositionDO::getPositionName, req.getPositionName())
                 .likeIfPresent(SysPositionDO::getPositionCode, req.getPositionCode())
-                .eq(SysPositionDO::getStatusFlag, req.getStatusFlag())
+                .eqIfPresent(SysPositionDO::getStatusFlag, req.getStatusFlag())
                 .orderByDesc(SysPositionDO::getPositionSort)
                 .orderByDesc(SysPositionDO::getCreateTime)
         );
