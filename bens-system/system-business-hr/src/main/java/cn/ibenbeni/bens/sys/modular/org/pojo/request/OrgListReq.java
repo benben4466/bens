@@ -1,4 +1,4 @@
-package cn.ibenbeni.bens.sys.modular.org.pojo.vo;
+package cn.ibenbeni.bens.sys.modular.org.pojo.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -11,7 +11,7 @@ import lombok.Data;
  * @time: 2025/7/7 下午4:12
  */
 @Data
-public class OrgListReqVO {
+public class OrgListReq {
 
     /**
      * 组织父级ID

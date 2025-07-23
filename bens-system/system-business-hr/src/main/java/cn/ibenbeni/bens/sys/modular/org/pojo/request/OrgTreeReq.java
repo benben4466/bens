@@ -1,4 +1,4 @@
-package cn.ibenbeni.bens.sys.modular.org.pojo.vo;
+package cn.ibenbeni.bens.sys.modular.org.pojo.request;
 
 import lombok.Data;
 
@@ -9,7 +9,7 @@ import lombok.Data;
  * @time: 2025/7/8 上午10:48
  */
 @Data
-public class OrgTreeReqVO {
+public class OrgTreeReq {
 
     /**
      * 组织父级ID

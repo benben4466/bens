@@ -1,4 +1,4 @@
-package cn.ibenbeni.bens.sys.modular.org.pojo.vo;
+package cn.ibenbeni.bens.sys.modular.org.pojo.request;
 
 import cn.ibenbeni.bens.db.api.pojo.page.PageParam;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class OrgPageReqVO extends PageParam {
+public class OrgPageReq extends PageParam {
 
     /**
      * 组织名称

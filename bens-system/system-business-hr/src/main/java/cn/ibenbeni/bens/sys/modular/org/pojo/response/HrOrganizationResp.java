@@ -1,4 +1,4 @@
-package cn.ibenbeni.bens.sys.modular.org.pojo.vo;
+package cn.ibenbeni.bens.sys.modular.org.pojo.response;
 
 import cn.ibenbeni.bens.sys.modular.org.entity.HrOrganizationDO;
 import lombok.AllArgsConstructor;
@@ -17,7 +17,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class HrOrganizationRespVO {
+public class HrOrganizationResp {
 
     /**
      * 主键

@@ -1,4 +1,4 @@
-package cn.ibenbeni.bens.sys.modular.org.pojo.vo;
+package cn.ibenbeni.bens.sys.modular.org.pojo.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DeptSimpleRespVO {
+public class DeptSimpleResp {
 
     /**
      * 组织ID

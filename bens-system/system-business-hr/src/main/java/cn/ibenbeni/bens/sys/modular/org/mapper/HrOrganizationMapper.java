@@ -4,8 +4,8 @@ import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
 import cn.ibenbeni.bens.db.api.pojo.query.LambdaQueryWrapperX;
 import cn.ibenbeni.bens.db.mp.mapper.BaseMapperX;
 import cn.ibenbeni.bens.sys.modular.org.entity.HrOrganizationDO;
-import cn.ibenbeni.bens.sys.modular.org.pojo.vo.OrgListReqVO;
-import cn.ibenbeni.bens.sys.modular.org.pojo.vo.OrgPageReqVO;
+import cn.ibenbeni.bens.sys.modular.org.pojo.request.OrgListReq;
+import cn.ibenbeni.bens.sys.modular.org.pojo.request.OrgPageReq;
 
 import java.util.Collection;
 import java.util.List;
@@ -53,7 +53,7 @@ public interface HrOrganizationMapper extends BaseMapperX<HrOrganizationDO> {
     /**
      * 根据查询条件获取组织列表
      */
-    default List<HrOrganizationDO> selectList(OrgListReqVO reqVO) {
+    default List<HrOrganizationDO> selectList(OrgListReq reqVO) {
         return selectList(new LambdaQueryWrapperX<HrOrganizationDO>()
                 .eqIfPresent(HrOrganizationDO::getOrgParentId, reqVO.getOrgParentId())
                 .likeIfPresent(HrOrganizationDO::getOrgName, reqVO.getOrgName())
@@ -66,11 +66,11 @@ public interface HrOrganizationMapper extends BaseMapperX<HrOrganizationDO> {
     /**
      * 分页查询组织列表
      */
-    default PageResult<HrOrganizationDO> selectPage(OrgPageReqVO reqVO) {
+    default PageResult<HrOrganizationDO> selectPage(OrgPageReq reqVO) {
         return selectPage(reqVO, new LambdaQueryWrapperX<HrOrganizationDO>()
                 .likeIfPresent(HrOrganizationDO::getOrgName, reqVO.getOrgName())
                 .likeIfPresent(HrOrganizationDO::getOrgCode, reqVO.getOrgCode())
-                .eq(HrOrganizationDO::getStatusFlag, reqVO.getStatusFlag())
+                .eqIfPresent(HrOrganizationDO::getStatusFlag, reqVO.getStatusFlag())
                 .orderByDesc(HrOrganizationDO::getOrgSort)
                 .orderByDesc(HrOrganizationDO::getCreateTime));
     }

@@ -1,9 +1,7 @@
-package cn.ibenbeni.bens.sys.modular.org.pojo.vo;
+package cn.ibenbeni.bens.sys.modular.org.pojo.request;
 
-import cn.ibenbeni.bens.rule.pojo.request.BaseRequest;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -17,8 +15,7 @@ import java.math.BigDecimal;
  * @time: 2025/7/7 下午3:57
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class OrganizationSaveReqVO extends BaseRequest {
+public class OrganizationSaveReq {
 
     /**
      * 机构ID
@@ -99,7 +96,7 @@ public class OrganizationSaveReqVO extends BaseRequest {
      * <p>1-启用，2-禁用</p>
      */
     @Schema(description = "组织状态", example = "1" , requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotNull(message = "组织状态不能为空", groups = {create.class, update.class})
+    @NotNull(message = "组织状态不能为空")
     private Integer statusFlag;
 
     /**

@@ -13,9 +13,9 @@ import cn.ibenbeni.bens.sys.api.exception.SysException;
 import cn.ibenbeni.bens.sys.api.exception.enums.OrganizationExceptionEnum;
 import cn.ibenbeni.bens.sys.modular.org.entity.HrOrganizationDO;
 import cn.ibenbeni.bens.sys.modular.org.mapper.HrOrganizationMapper;
-import cn.ibenbeni.bens.sys.modular.org.pojo.vo.OrgPageReqVO;
-import cn.ibenbeni.bens.sys.modular.org.pojo.vo.OrganizationSaveReqVO;
-import cn.ibenbeni.bens.sys.modular.org.pojo.vo.OrgListReqVO;
+import cn.ibenbeni.bens.sys.modular.org.pojo.request.OrgPageReq;
+import cn.ibenbeni.bens.sys.modular.org.pojo.request.OrganizationSaveReq;
+import cn.ibenbeni.bens.sys.modular.org.pojo.request.OrgListReq;
 import cn.ibenbeni.bens.sys.modular.org.service.HrOrganizationService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
@@ -37,7 +37,7 @@ public class HrOrganizationServiceImpl extends ServiceImpl<HrOrganizationMapper,
     private HrOrganizationMapper hrOrganizationMapper;
 
     @Override
-    public Long createOrg(OrganizationSaveReqVO createReqVO) {
+    public Long createOrg(OrganizationSaveReq createReqVO) {
         // 默认填充根节点
         if (createReqVO.getOrgParentId() == null) {
             createReqVO.setOrgParentId(TreeConstants.DEFAULT_PARENT_ID);
@@ -70,7 +70,7 @@ public class HrOrganizationServiceImpl extends ServiceImpl<HrOrganizationMapper,
     }
 
     @Override
-    public void updateOrg(OrganizationSaveReqVO updateReqVO) {
+    public void updateOrg(OrganizationSaveReq updateReqVO) {
         HrOrganizationDO orgDO = this.validateOrgExists(updateReqVO.getOrgId());
         // 默认填充根节点
         if (updateReqVO.getOrgParentId() == null) {
@@ -102,7 +102,7 @@ public class HrOrganizationServiceImpl extends ServiceImpl<HrOrganizationMapper,
     }
 
     @Override
-    public List<HrOrganizationDO> getOrgList(OrgListReqVO reqVO) {
+    public List<HrOrganizationDO> getOrgList(OrgListReq reqVO) {
         return hrOrganizationMapper.selectList(reqVO);
     }
 
@@ -134,7 +134,7 @@ public class HrOrganizationServiceImpl extends ServiceImpl<HrOrganizationMapper,
     }
 
     @Override
-    public PageResult<HrOrganizationDO> getOrgPage(OrgPageReqVO reqVO) {
+    public PageResult<HrOrganizationDO> getOrgPage(OrgPageReq reqVO) {
         return hrOrganizationMapper.selectPage(reqVO);
     }
 

@@ -4,9 +4,9 @@ import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
 import cn.ibenbeni.bens.rule.util.CollectionUtils;
 import cn.ibenbeni.bens.sys.api.OrganizationServiceApi;
 import cn.ibenbeni.bens.sys.modular.org.entity.HrOrganizationDO;
-import cn.ibenbeni.bens.sys.modular.org.pojo.vo.OrgPageReqVO;
-import cn.ibenbeni.bens.sys.modular.org.pojo.vo.OrganizationSaveReqVO;
-import cn.ibenbeni.bens.sys.modular.org.pojo.vo.OrgListReqVO;
+import cn.ibenbeni.bens.sys.modular.org.pojo.request.OrgPageReq;
+import cn.ibenbeni.bens.sys.modular.org.pojo.request.OrganizationSaveReq;
+import cn.ibenbeni.bens.sys.modular.org.pojo.request.OrgListReq;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.*;
@@ -23,7 +23,7 @@ public interface HrOrganizationService extends IService<HrOrganizationDO>, Organ
      *
      * @return 组织机构ID
      */
-    Long createOrg(OrganizationSaveReqVO createReqVO);
+    Long createOrg(OrganizationSaveReq createReqVO);
 
     /**
      * 删除组织机构
@@ -35,7 +35,7 @@ public interface HrOrganizationService extends IService<HrOrganizationDO>, Organ
     /**
      * 更新组织机构
      */
-    void updateOrg(OrganizationSaveReqVO updateReqVO);
+    void updateOrg(OrganizationSaveReq updateReqVO);
 
     /**
      * 获取组织机构信息
@@ -56,7 +56,7 @@ public interface HrOrganizationService extends IService<HrOrganizationDO>, Organ
     /**
      * 根据条件查询组织信息列表
      */
-    List<HrOrganizationDO> getOrgList(OrgListReqVO reqVO);
+    List<HrOrganizationDO> getOrgList(OrgListReq reqVO);
 
     /**
      * 获取指定组织ID的所有子部门
@@ -76,7 +76,7 @@ public interface HrOrganizationService extends IService<HrOrganizationDO>, Organ
     /**
      * 获取组织列表（分页）
      */
-    PageResult<HrOrganizationDO> getOrgPage(OrgPageReqVO reqVO);
+    PageResult<HrOrganizationDO> getOrgPage(OrgPageReq reqVO);
 
     /**
      * 校验组织是否有效
