@@ -33,6 +33,11 @@ public enum PositionExceptionEnum implements AbstractExceptionEnum {
      */
     POSITION_DISABLE(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + "30004", "职位被禁用"),
 
+    /**
+     * 职位状态错误
+     */
+    STATUS_FLAG_ERROR(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + "30005", "职位状态错误"),
+
     ;
 
     /**

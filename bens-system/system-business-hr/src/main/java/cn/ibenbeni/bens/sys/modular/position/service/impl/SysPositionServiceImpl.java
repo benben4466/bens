@@ -46,7 +46,7 @@ public class SysPositionServiceImpl extends ServiceImpl<SysPositionMapper, SysPo
     @Override
     public Long createPosition(PositionSaveReq req) {
         // 校验职位信息
-        this.validatePositionForCreateOrUpdate(null, req.getPositionName(), req.getPositionCode());
+        this.validatePositionForCreateOrUpdate(null, req.getPositionName(), req.getPositionCode(), req.getStatusFlag());
 
         SysPositionDO position = BeanUtil.toBean(req, SysPositionDO.class);
         this.save(position);
@@ -69,7 +69,7 @@ public class SysPositionServiceImpl extends ServiceImpl<SysPositionMapper, SysPo
     @Override
     public void updatePosition(PositionSaveReq req) {
         // 校验职位信息
-        this.validatePositionForCreateOrUpdate(req.getPositionId(), req.getPositionName(), req.getPositionCode());
+        this.validatePositionForCreateOrUpdate(req.getPositionId(), req.getPositionName(), req.getPositionCode(), req.getStatusFlag());
 
         SysPositionDO position = this.getById(req.getPositionId());
         BeanUtil.copyProperties(req, position);
@@ -131,13 +131,13 @@ public class SysPositionServiceImpl extends ServiceImpl<SysPositionMapper, SysPo
     }
 
     private void validatePositionNameUnique(Long positionId, String positionName) {
-        if (positionId == null) {
-            throw new SysException(PositionExceptionEnum.POSITION_NAME_DUPLICATE);
-        }
-
         SysPositionDO position = sysPositionMapper.selectByName(positionName);
         if (position == null) {
             return;
+        }
+
+        if (positionId == null) {
+            throw new SysException(PositionExceptionEnum.POSITION_NAME_DUPLICATE);
         }
 
         // 职位ID不同，说明职位已存在
@@ -147,18 +147,24 @@ public class SysPositionServiceImpl extends ServiceImpl<SysPositionMapper, SysPo
     }
 
     private void validatePositionCodeUnique(Long positionId, String positionCode) {
-        if (positionId == null) {
-            throw new SysException(PositionExceptionEnum.POSITION_CODE_DUPLICATE);
-        }
-
         SysPositionDO position = sysPositionMapper.selectByCode(positionCode);
         if (position == null) {
             return;
         }
 
+        if (positionId == null) {
+            throw new SysException(PositionExceptionEnum.POSITION_CODE_DUPLICATE);
+        }
+
         // 职位ID不同，说明职位已存在
         if (ObjectUtil.notEqual(positionId, position.getPositionId())) {
             throw new SysException(PositionExceptionEnum.POSITION_CODE_DUPLICATE);
+        }
+    }
+
+    private void validateStatusFlag(Integer statusFlag) {
+        if (StatusEnum.codeToEnum(statusFlag) == null) {
+            throw new SysException(PositionExceptionEnum.STATUS_FLAG_ERROR);
         }
     }
 
@@ -169,11 +175,13 @@ public class SysPositionServiceImpl extends ServiceImpl<SysPositionMapper, SysPo
      * @param positionName 职位名称
      * @param positionCode 职位编码
      */
-    private void validatePositionForCreateOrUpdate(Long positionId, String positionName, String positionCode) {
+    private void validatePositionForCreateOrUpdate(Long positionId, String positionName, String positionCode, Integer statusFlag) {
         // 校验职位是否存在（更新时校验）
         if (positionId != null) {
             this.validatePositionExist(positionId);
         }
+        // 校验职位状态值
+        validateStatusFlag(statusFlag);
         // 校验职位名称唯一
         this.validatePositionNameUnique(positionId, positionName);
         // 校验职位编码唯一
