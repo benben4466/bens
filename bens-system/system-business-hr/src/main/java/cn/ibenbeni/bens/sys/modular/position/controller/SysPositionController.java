@@ -42,7 +42,7 @@ public class SysPositionController {
 
     @Operation(summary = "创建职位")
     @PostMapping("/system/position/create")
-    public ResponseData<Long> createPosition(@RequestBody @Validated(BaseRequest.create.class) PositionSaveReq req) {
+    public ResponseData<Long> createPosition(@RequestBody @Validated PositionSaveReq req) {
         return new SuccessResponseData<>(sysPositionService.createPosition(req));
     }
 
@@ -56,7 +56,7 @@ public class SysPositionController {
 
     @Operation(summary = "更新职位")
     @PutMapping("/system/position/update")
-    public ResponseData<Boolean> updatePosition(@RequestBody @Validated(BaseRequest.update.class) PositionSaveReq req) {
+    public ResponseData<Boolean> updatePosition(@RequestBody @Validated PositionSaveReq req) {
         sysPositionService.updatePosition(req);
         return new SuccessResponseData<>(true);
     }
