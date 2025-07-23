@@ -29,7 +29,7 @@ public class DictTypeController {
      * 新增字典类型
      */
     @PostMapping("/dictType/add")
-    public ResponseData<?> add(@RequestBody @Validated(DictTypeRequest.add.class) DictTypeRequest dictTypeRequest) {
+    public ResponseData<?> add(@RequestBody @Validated DictTypeRequest dictTypeRequest) {
         sysDictTypeService.add(dictTypeRequest);
         return new SuccessResponseData<>();
     }
@@ -38,7 +38,7 @@ public class DictTypeController {
      * 删除字典类型
      */
     @PostMapping("/dictType/delete")
-    public ResponseData<?> delete(@RequestBody @Validated(DictTypeRequest.delete.class) DictTypeRequest dictTypeRequest) {
+    public ResponseData<?> delete(@RequestBody @Validated DictTypeRequest dictTypeRequest) {
         sysDictTypeService.del(dictTypeRequest);
         return new SuccessResponseData<>();
     }
@@ -47,7 +47,7 @@ public class DictTypeController {
      * 编辑字典类型
      */
     @PostMapping("/dictType/edit")
-    public ResponseData<?> edit(@RequestBody @Validated(DictTypeRequest.edit.class) DictTypeRequest dictTypeRequest) {
+    public ResponseData<?> edit(@RequestBody @Validated DictTypeRequest dictTypeRequest) {
         sysDictTypeService.edit(dictTypeRequest);
         return new SuccessResponseData<>();
     }
@@ -56,7 +56,7 @@ public class DictTypeController {
      * 获取字典类型详情
      */
     @GetMapping("/dictType/detail")
-    public ResponseData<SysDictType> detail(@Validated(BaseRequest.detail.class) DictTypeRequest dictTypeRequest) {
+    public ResponseData<SysDictType> detail(@Validated DictTypeRequest dictTypeRequest) {
         SysDictType detail = sysDictTypeService.detail(dictTypeRequest);
         return new SuccessResponseData<>(detail);
     }

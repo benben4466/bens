@@ -2,7 +2,6 @@ package cn.ibenbeni.bens.validator.starter;
 
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.validation.ValidationAutoConfiguration;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -15,14 +14,4 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @AutoConfigureBefore(ValidationAutoConfiguration.class)
 public class ValidatorAutoConfiguration {
-
-    /**
-     * 注入自定义Spring参数校验器
-     * <p>作用：保存validator中读取不到的信息</p>
-     */
-    @Bean
-    public CacheVerificationGroup bensValidator() {
-        return new CacheVerificationGroup();
-    }
-
 }

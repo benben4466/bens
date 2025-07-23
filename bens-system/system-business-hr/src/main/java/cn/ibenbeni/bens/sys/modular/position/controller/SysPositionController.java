@@ -18,6 +18,7 @@ import cn.ibenbeni.bens.sys.modular.position.pojo.response.PositionSimpleResp;
 import cn.ibenbeni.bens.sys.modular.position.service.SysPositionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +33,7 @@ import java.util.List;
  * @author: benben
  * @time: 2025/7/12 下午1:39
  */
+@Tag(name = "管理后台 - 职位")
 @RestController
 public class SysPositionController {
 

@@ -4,7 +4,6 @@ import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
 import cn.ibenbeni.bens.dict.modular.entity.SysDict;
 import cn.ibenbeni.bens.dict.modular.pojo.request.DictRequest;
 import cn.ibenbeni.bens.dict.modular.service.SysDictService;
-import cn.ibenbeni.bens.rule.pojo.request.BaseRequest;
 import cn.ibenbeni.bens.rule.pojo.response.ResponseData;
 import cn.ibenbeni.bens.rule.pojo.response.SuccessResponseData;
 import org.springframework.validation.annotation.Validated;
@@ -32,7 +31,7 @@ public class DictController {
      * 添加字典条目
      */
     @PostMapping("/dict/add")
-    public ResponseData<?> add(@RequestBody @Validated(DictRequest.add.class) DictRequest dictRequest) {
+    public ResponseData<?> add(@RequestBody @Validated DictRequest dictRequest) {
         sysDictService.add(dictRequest);
         return new SuccessResponseData<>();
     }
@@ -41,7 +40,7 @@ public class DictController {
      * 删除字典条目
      */
     @PostMapping("/dict/delete")
-    public ResponseData<?> delete(@RequestBody @Validated(DictRequest.delete.class) DictRequest dictRequest) {
+    public ResponseData<?> delete(@RequestBody @Validated DictRequest dictRequest) {
         sysDictService.del(dictRequest);
         return new SuccessResponseData<>();
     }
@@ -50,7 +49,7 @@ public class DictController {
      * 批量删除字典条目
      */
     @PostMapping("/dict/batchDelete")
-    public ResponseData<?> batchDelete(@RequestBody @Validated(DictRequest.batchDelete.class) DictRequest dictRequest) {
+    public ResponseData<?> batchDelete(@RequestBody @Validated DictRequest dictRequest) {
         sysDictService.batchDelete(dictRequest);
         return new SuccessResponseData<>();
     }
@@ -59,7 +58,7 @@ public class DictController {
      * 编辑字典
      */
     @PostMapping("/dict/edit")
-    public ResponseData<?> edit(@RequestBody @Validated(DictRequest.edit.class) DictRequest dictRequest) {
+    public ResponseData<?> edit(@RequestBody @Validated DictRequest dictRequest) {
         sysDictService.edit(dictRequest);
         return new SuccessResponseData<>();
     }
@@ -68,7 +67,7 @@ public class DictController {
      * 获取字典详情
      */
     @GetMapping("/dict/detail")
-    public ResponseData<SysDict> detail(@Validated(BaseRequest.detail.class) DictRequest dictRequest) {
+    public ResponseData<SysDict> detail(@Validated DictRequest dictRequest) {
         SysDict detail = sysDictService.detail(dictRequest);
         return new SuccessResponseData<>(detail);
     }

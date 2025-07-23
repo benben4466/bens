@@ -39,7 +39,7 @@ public class HrOrganizationController {
      */
     @Operation(summary = "创建组织")
     @PostMapping("/system/org/create")
-    public ResponseData<Long> createOrg(@Validated(BaseRequest.create.class) @RequestBody OrganizationSaveReqVO createReqVO) {
+    public ResponseData<Long> createOrg(@Validated @RequestBody OrganizationSaveReqVO createReqVO) {
         return new SuccessResponseData<>(organizationService.createOrg(createReqVO));
     }
 

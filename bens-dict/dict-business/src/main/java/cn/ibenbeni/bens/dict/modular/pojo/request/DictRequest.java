@@ -23,25 +23,25 @@ public class DictRequest extends BaseRequest {
     /**
      * 字典ID
      */
-    @NotNull(message = "字典ID不能为空", groups = {edit.class, delete.class, detail.class})
+    @NotNull(message = "字典ID不能为空")
     private Long dictId;
 
     /**
      * 字典类型ID
      */
-    @NotNull(message = "字典类型ID不能为空", groups = {add.class, edit.class})
+    @NotNull(message = "字典类型ID不能为空")
     private Long dictTypeId;
 
     /**
      * 字典名称
      */
-    @NotBlank(message = "字典名称不能为空", groups = {add.class, edit.class})
+    @NotBlank(message = "字典名称不能为空")
     private String dictName;
 
     /**
      * 字典值
      */
-    @NotNull(message = "字典值不能为空", groups = {add.class, edit.class})
+    @NotNull(message = "字典值不能为空")
     private String dictValue;
 
     /**
@@ -52,14 +52,13 @@ public class DictRequest extends BaseRequest {
     /**
      * 字典排序
      */
-    @NotNull(message = "排序不能为空", groups = {add.class, edit.class})
+    @NotNull(message = "排序不能为空")
     private BigDecimal dictSort;
 
     /**
      * 状态：0=禁用，1=正常
      */
-    @NotNull(message = "状态不能为空", groups = {add.class, edit.class})
-    // TODO @StatusValue(groups = {add.class, edit.class})
+    @NotNull(message = "状态不能为空")
     private Integer statusFlag;
 
     /**

@@ -24,7 +24,6 @@ public class OrganizationSaveReqVO extends BaseRequest {
      * 机构ID
      */
     @Schema(description = "组织ID", example = "10")
-    @NotNull(message = "组织ID不能为空", groups = {update.class})
     private Long orgId;
 
     /**
@@ -33,15 +32,14 @@ public class OrganizationSaveReqVO extends BaseRequest {
      * <p>若未选择，前端默认-1</p>
      */
     @Schema(description = "父组织ID", example = "9")
-    @NotNull(message = "父组织ID不能为空", groups = {create.class, update.class})
     private Long orgParentId;
 
     /**
      * 组织名称
      */
     @Schema(description = "组织名称", example = "笨笨组织", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotBlank(message = "组织名称不能为空", groups = {create.class, update.class})
-    @Size(max = 30, message = "组织名称长度不能超过30个字符", groups = {create.class, update.class})
+    @NotBlank(message = "组织名称不能为空")
+    @Size(max = 30, message = "组织名称长度不能超过30个字符")
     private String orgName;
 
     /**
@@ -54,14 +52,14 @@ public class OrganizationSaveReqVO extends BaseRequest {
      * 组织编码
      */
     @Schema(description = "组织编码", example = "benben_org" , requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotBlank(message = "组织编码不能为空", groups = {create.class, update.class})
+    @NotBlank(message = "组织编码不能为空")
     private String orgCode;
 
     /**
      * 排序
      */
     @Schema(description = "组织显示排序", example = "0", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotNull(message = "组织排序不能为空", groups = {create.class, update.class})
+    @NotNull(message = "组织排序不能为空")
     private BigDecimal orgSort;
 
     /**
@@ -69,7 +67,7 @@ public class OrganizationSaveReqVO extends BaseRequest {
      * <p>类型编码: {@link cn.ibenbeni.bens.sys.api.enums.menu.OrganizationTypeEnum}</p>
      */
     @Schema(description = "组织类型", example = "1")
-    @NotNull(message = "组织机构类型不能为空", groups = {create.class, update.class})
+    @NotNull(message = "组织机构类型不能为空")
     private Integer orgType;
 
     /**
