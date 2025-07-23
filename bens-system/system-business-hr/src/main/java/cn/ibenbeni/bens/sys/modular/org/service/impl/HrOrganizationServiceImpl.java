@@ -218,7 +218,7 @@ public class HrOrganizationServiceImpl extends ServiceImpl<HrOrganizationMapper,
      */
     private void validateOrgNameUnique(Long orgId, String orgName) {
         HrOrganizationDO orgDO = hrOrganizationMapper.selectByOrgName(orgName);
-        if (orgDO != null) {
+        if (orgDO != null && !orgDO.getOrgId().equals(orgId)) {
             throw new SysException(OrganizationExceptionEnum.ORG_NAME_DUPLICATE);
         }
     }
