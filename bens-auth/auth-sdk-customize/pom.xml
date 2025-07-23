@@ -20,18 +20,21 @@
         <dependency>
             <groupId>cn.ibenbeni</groupId>
             <artifactId>auth-api</artifactId>
+            <version>${revision}</version>
         </dependency>
 
         <!--系统模块-API-->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
             <artifactId>system-api</artifactId>
+            <version>${revision}</version>
         </dependency>
 
         <!-- JWT模块-SDK -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
             <artifactId>jwt-sdk</artifactId>
+            <version>${revision}</version>
         </dependency>
 
         <!--缓存模块-->
