@@ -1,5 +1,8 @@
 package cn.ibenbeni.bens.sys.modular.user.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
+import cn.ibenbeni.bens.sys.api.pojo.user.SysUserRoleDTO;
 import cn.ibenbeni.bens.sys.modular.user.entity.SysUserRoleDO;
 import cn.ibenbeni.bens.sys.modular.user.mapper.SysUserRoleMapper;
 import cn.ibenbeni.bens.sys.modular.user.service.SysUserRoleService;
@@ -30,12 +33,21 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
     // region 公共方法
 
     @Override
-    public void bindRole(Long userId, Long roleId) {
+    public void bindUserRole(Long userId, Long roleId) {
         SysUserRoleDO userRole = SysUserRoleDO.builder()
                 .userId(userId)
                 .roleId(roleId)
                 .build();
         this.save(userRole);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void bindUserRole(Long userId, Set<Long> roleIdSet) {
+        if (CollUtil.isEmpty(roleIdSet)) {
+            return;
+        }
+        roleIdSet.forEach(roleId -> bindUserRole(userId, roleId));
     }
 
     @Override
@@ -50,13 +62,17 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void deleteListByUserIdAndRoleIdIds(Long userId, Set<Long> roleIdSet) {
+    public void deleteByUserIdAndRoleIdIds(Long userId, Set<Long> roleIdSet) {
+        if (CollUtil.isEmpty(roleIdSet)) {
+            return;
+        }
         sysUserRoleMapper.deleteListByUserIdAndRoleIdIds(userId, roleIdSet);
     }
 
     @Override
-    public List<SysUserRoleDO> getListByUserId(Long userId) {
-        return sysUserRoleMapper.selectListByUserId(userId);
+    public List<SysUserRoleDTO> listByUserId(Long userId) {
+        List<SysUserRoleDO> userRoleList = sysUserRoleMapper.selectListByUserId(userId);
+        return BeanUtil.copyToList(userRoleList, SysUserRoleDTO.class);
     }
 
     @Override

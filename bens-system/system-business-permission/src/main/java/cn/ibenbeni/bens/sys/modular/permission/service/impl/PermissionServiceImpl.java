@@ -2,6 +2,8 @@ package cn.ibenbeni.bens.sys.modular.permission.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.ibenbeni.bens.rule.util.CollectionUtils;
+import cn.ibenbeni.bens.sys.api.SysUserRoleServiceApi;
+import cn.ibenbeni.bens.sys.api.pojo.user.SysUserRoleDTO;
 import cn.ibenbeni.bens.sys.modular.menu.entity.SysMenuDO;
 import cn.ibenbeni.bens.sys.modular.menu.service.SysMenuService;
 import cn.ibenbeni.bens.sys.modular.permission.service.PermissionService;
@@ -27,6 +29,9 @@ public class PermissionServiceImpl implements PermissionService {
     // region 属性
 
     @Resource
+    private SysUserRoleServiceApi userRoleServiceApi;
+
+    @Resource
     private SysRoleService roleService;
 
     @Resource
@@ -34,6 +39,27 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Resource
     private SysMenuService menuService;
+
+    // endregion
+
+    // region 用户-角色相关方法
+
+    @Override
+    public void assignUserRole(Long userId, Set<Long> roleIdSet) {
+        // 获取用户绑定的角色ID集合
+        Set<Long> dbRoleIdSet = CollectionUtils.convertSet(userRoleServiceApi.listByUserId(userId), SysUserRoleDTO::getRoleId);
+        // 计算新增和删除的角色编号
+        Set<Long> roleIds = CollUtil.emptyIfNull(roleIdSet);
+        Collection<Long> createRoleIds = CollUtil.subtract(roleIds, dbRoleIdSet);
+        Collection<Long> deleteMenuIds = CollUtil.subtract(dbRoleIdSet, roleIds);
+        // 执行新增和删除, 已授权角色忽略
+        if (CollUtil.isNotEmpty(createRoleIds)) {
+            userRoleServiceApi.bindUserRole(userId, CollUtil.newHashSet(createRoleIds));
+        }
+        if (CollUtil.isNotEmpty(deleteMenuIds)) {
+            userRoleServiceApi.deleteByUserIdAndRoleIdIds(userId, CollUtil.newHashSet(deleteMenuIds));
+        }
+    }
 
     // endregion
 

@@ -12,6 +12,18 @@ import java.util.Set;
  */
 public interface PermissionService {
 
+    // region 用户-角色相关方法
+
+    /**
+     * 用户分配角色
+     *
+     * @param userId    用户ID
+     * @param roleIdSet 被分配的角色ID集合
+     */
+    void assignUserRole(Long userId, Set<Long> roleIdSet);
+
+    // endregion
+
 
     // region 角色-菜单相关方法
 
