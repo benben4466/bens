@@ -29,35 +29,35 @@ public interface SysRoleMenuService extends IService<SysRoleMenuDO>, RemoveRoleC
      *
      * @param roleId 角色ID
      */
-    List<SysRoleMenuDO> getListByRoleId(Long roleId);
+    List<SysRoleMenuDO> listByRoleId(Long roleId);
 
     /**
      * 根据指定角色ID，获取角色绑定的菜单列表
      *
      * @param roleIdSet 角色ID集合
      */
-    List<SysRoleMenuDO> getListByRoleId(Set<Long> roleIdSet);
+    List<SysRoleMenuDO> listByRoleId(Set<Long> roleIdSet);
 
     /**
      * 根据菜单ID，获取菜单列表
      *
      * @param menuId 菜单ID
      */
-    List<SysRoleMenuDO> getListByMenuId(Long menuId);
+    List<SysRoleMenuDO> listByMenuId(Long menuId);
 
     /**
      * 删除指定角色ID下，所有菜单关联关系
      *
      * @param roleId 角色ID
      */
-    void deleteListByRoleId(Long roleId);
+    void deleteByRoleId(Long roleId);
 
     /**
      * 删除指定菜单ID下，所有角色的关联关系
      *
      * @param menuId 菜单ID
      */
-    void deleteListByMenuId(Long menuId);
+    void deleteByMenuId(Long menuId);
 
     /**
      * 删除指定角色ID下，菜单ID集合
@@ -65,6 +65,6 @@ public interface SysRoleMenuService extends IService<SysRoleMenuDO>, RemoveRoleC
      * @param roleId    角色ID
      * @param menuIdSet 菜单ID集合
      */
-    void deleteListByRoleIdAndMenuIds(Long roleId, Set<Long> menuIdSet);
+    void deleteByRoleIdAndMenuIds(Long roleId, Set<Long> menuIdSet);
 
 }

@@ -38,32 +38,32 @@ public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuMapper, SysRo
     }
 
     @Override
-    public List<SysRoleMenuDO> getListByRoleId(Long roleId) {
+    public List<SysRoleMenuDO> listByRoleId(Long roleId) {
         return sysRoleMenuMapper.selectListByRoleId(roleId);
     }
 
     @Override
-    public List<SysRoleMenuDO> getListByRoleId(Set<Long> roleIdSet) {
+    public List<SysRoleMenuDO> listByRoleId(Set<Long> roleIdSet) {
         return sysRoleMenuMapper.selectListByRoleId(roleIdSet);
     }
 
     @Override
-    public List<SysRoleMenuDO> getListByMenuId(Long menuId) {
+    public List<SysRoleMenuDO> listByMenuId(Long menuId) {
         return sysRoleMenuMapper.selectListByMenuId(menuId);
     }
 
     @Override
-    public void deleteListByRoleId(Long roleId) {
+    public void deleteByRoleId(Long roleId) {
         sysRoleMenuMapper.deleteListByRoleId(roleId);
     }
 
     @Override
-    public void deleteListByMenuId(Long menuId) {
+    public void deleteByMenuId(Long menuId) {
         sysRoleMenuMapper.deleteListByMenuId(menuId);
     }
 
     @Override
-    public void deleteListByRoleIdAndMenuIds(Long roleId, Set<Long> menuIdSet) {
+    public void deleteByRoleIdAndMenuIds(Long roleId, Set<Long> menuIdSet) {
         sysRoleMenuMapper.deleteListByRoleIdAndMenuIds(roleId, menuIdSet);
     }
 
