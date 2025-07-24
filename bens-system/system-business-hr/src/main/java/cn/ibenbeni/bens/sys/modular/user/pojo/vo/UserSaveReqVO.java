@@ -1,12 +1,9 @@
 package cn.ibenbeni.bens.sys.modular.user.pojo.vo;
 
-import cn.ibenbeni.bens.rule.pojo.request.BaseRequest;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 /**
@@ -16,14 +13,12 @@ import java.math.BigDecimal;
  * @time: 2025/7/2 下午4:57
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class UserSaveReqVO extends BaseRequest {
+public class UserSaveReqVO {
 
     /**
      * 主键
      */
     @Schema(description = "用户ID", example = "10")
-    @NotNull(message = "主键不能为空")
     private Long userId;
 
     /**

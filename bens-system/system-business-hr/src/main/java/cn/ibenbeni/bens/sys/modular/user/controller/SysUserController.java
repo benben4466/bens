@@ -39,7 +39,7 @@ public class SysUserController {
      */
     @Operation(summary = "新增用户")
     @PostMapping(value = "/system/user/create")
-    public ResponseData<Long> createUser(@RequestBody @Validated(BaseRequest.create.class) UserSaveReqVO reqVO) {
+    public ResponseData<Long> createUser(@RequestBody @Validated UserSaveReqVO reqVO) {
         return new SuccessResponseData<>(sysUserService.createUser(reqVO));
     }
 
@@ -70,7 +70,7 @@ public class SysUserController {
      */
     @Operation(summary = "修改用户")
     @PutMapping(value = "/system/user/update")
-    public ResponseData<Boolean> updateUser(@RequestBody @Validated(BaseRequest.update.class) UserSaveReqVO reqVO) {
+    public ResponseData<Boolean> updateUser(@RequestBody @Validated UserSaveReqVO reqVO) {
         sysUserService.updateUser(reqVO);
         return new SuccessResponseData<>(true);
     }
