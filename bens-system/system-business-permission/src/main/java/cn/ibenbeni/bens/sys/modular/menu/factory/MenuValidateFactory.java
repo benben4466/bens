@@ -73,4 +73,29 @@ public class MenuValidateFactory {
         }
     }
 
+    /**
+     * 校验菜单权限编码
+     * <p>菜单权限编码唯一</p>
+     *
+     * @param childMenuId   子菜单ID
+     * @param childMenuName 子菜单名称
+     */
+    public static void validateMenuPermissionCode(Long childMenuId, String childMenuName) {
+        SysMenuMapper sysMenuMapper = SpringUtil.getBean(SysMenuMapper.class);
+        SysMenuDO menu = sysMenuMapper.selectByPermissionCode(childMenuName);
+        if (menu == null) {
+            return;
+        }
+
+        // 菜单ID为空，默认重复
+        if (childMenuId == null) {
+            throw new SysException(SysMenuExceptionEnum.MENU_PERMISSION_CODE_DUPLICATE);
+        }
+
+        // ID不相等, 说明菜单权限编码重复
+        if (!menu.getMenuId().equals(childMenuId)) {
+            throw new SysException(SysMenuExceptionEnum.MENU_PERMISSION_CODE_DUPLICATE);
+        }
+    }
+
 }

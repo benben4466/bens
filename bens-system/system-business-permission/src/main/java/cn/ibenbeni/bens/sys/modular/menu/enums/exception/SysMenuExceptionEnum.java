@@ -73,6 +73,11 @@ public enum SysMenuExceptionEnum implements AbstractExceptionEnum {
      */
     MENU_CHILDREN_EXISTED(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + "10012", "存在子菜单,无法删除"),
 
+    /**
+     * 权限编码已存在
+     */
+    MENU_PERMISSION_CODE_DUPLICATE(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + "10013", "权限编码已存在"),
+
     ;
 
     /**

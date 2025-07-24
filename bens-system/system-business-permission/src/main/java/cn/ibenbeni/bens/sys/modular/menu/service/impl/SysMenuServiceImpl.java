@@ -47,6 +47,8 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenuDO> im
         MenuValidateFactory.validateParentMenu(req.getMenuParentId(), null);
         // 校验菜单名称
         MenuValidateFactory.validateMenuName(req.getMenuParentId(), null, req.getMenuName());
+        // 校验权限编码
+        MenuValidateFactory.validateMenuPermissionCode(null, req.getPermissionCode());
 
         SysMenuDO menu = BeanUtil.toBean(req, SysMenuDO.class);
         // 初始化通用属性，防止误添加（针对按钮）
@@ -95,6 +97,8 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenuDO> im
         MenuValidateFactory.validateParentMenu(req.getMenuParentId(), req.getMenuId());
         // 校验菜单名称
         MenuValidateFactory.validateMenuName(req.getMenuParentId(), req.getMenuId(), req.getMenuName());
+        // 校验权限编码
+        MenuValidateFactory.validateMenuPermissionCode(req.getMenuId(), req.getPermissionCode());
 
         BeanUtil.copyProperties(req, menu);
         this.initMenuCommonProperty(menu);
