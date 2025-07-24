@@ -113,10 +113,4 @@ public class SysMenuDO extends BaseExpandFieldEntity {
     @TableField("remark")
     private String remark;
 
-    /**
-     * 租户ID
-     */
-    @TableField(value = "tenant_id", fill = FieldFill.INSERT)
-    private Long tenantId;
-
 }

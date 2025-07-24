@@ -39,10 +39,4 @@ public class SysUserRoleDO extends BaseEntity {
     @TableField("role_id")
     private Long roleId;
 
-    /**
-     * 租户ID
-     */
-    @TableField("tenant_id")
-    private Long tenantId;
-
 }

@@ -36,10 +36,4 @@ public class SysRoleMenuDO extends BaseEntity {
     @TableField("menu_id")
     private Long menuId;
 
-    /**
-     * 租户ID
-     */
-    @TableField(value = "tenant_id", fill = FieldFill.INSERT)
-    private Long tenantId;
-
 }
