@@ -7,7 +7,6 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 系统用户实例类
@@ -28,12 +27,6 @@ public class SysUserDO extends BaseBusinessEntity implements GetSortKey {
      */
     @TableId(value = "user_id", type = IdType.ASSIGN_ID)
     private Long userId;
-
-    /**
-     * 姓名
-     */
-    @TableField("real_name")
-    private String realName;
 
     /**
      * 昵称
@@ -94,30 +87,11 @@ public class SysUserDO extends BaseBusinessEntity implements GetSortKey {
     private String phone;
 
     /**
-     * 是否是超级管理员
-     * <p>Y-是，N-否</p>
-     */
-    @TableField("super_admin_flag")
-    private String superAdminFlag;
-
-    /**
      * 状态
-     * <p>1-正常，2-冻结，3-临时冻结</p>
+     * <p>{@link cn.ibenbeni.bens.sys.api.enums.user.UserStatusEnum}</p>
      */
     @TableField("status_flag")
     private Integer statusFlag;
-
-    /**
-     * 冻结截止时间
-     */
-    @TableField(value = "freeze_deadline_time", updateStrategy = FieldStrategy.ALWAYS, insertStrategy = FieldStrategy.ALWAYS)
-    private Date freezeDeadlineTime;
-
-    /**
-     * 登录次数
-     */
-    @TableField("login_count")
-    private Long loginCount;
 
     /**
      * 最后登陆IP
@@ -142,13 +116,6 @@ public class SysUserDO extends BaseBusinessEntity implements GetSortKey {
      */
     @TableField(value = "tenant_id", fill = FieldFill.INSERT)
     private Long tenantId;
-
-    /**
-     * 获取用户角色ID列表
-     * <p>用在获取用户详情信息的响应</p>
-     */
-    @TableField(exist = false)
-    private List<Long> roleIdList;
 
     @Override
     public Object getSortKey() {

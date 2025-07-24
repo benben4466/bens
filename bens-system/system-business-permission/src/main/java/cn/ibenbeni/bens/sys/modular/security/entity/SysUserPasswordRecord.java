@@ -48,10 +48,4 @@ public class SysUserPasswordRecord extends BaseEntity {
     @TableField("update_password_time")
     private Date updatePasswordTime;
 
-    /**
-     * 租户ID
-     */
-    @TableField(value = "tenant_id", fill = FieldFill.INSERT)
-    private Long tenantId;
-
 }
