@@ -5,8 +5,6 @@ import cn.ibenbeni.bens.auth.api.SessionManagerApi;
 import cn.ibenbeni.bens.auth.api.context.LoginContext;
 import cn.ibenbeni.bens.auth.api.pojo.auth.AuthLoginReq;
 import cn.ibenbeni.bens.auth.api.pojo.auth.AuthLoginResp;
-import cn.ibenbeni.bens.auth.api.pojo.auth.LoginRequest;
-import cn.ibenbeni.bens.auth.api.pojo.auth.LoginResponse;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,18 +17,13 @@ import javax.annotation.Resource;
 @Service
 public class AuthServiceImpl implements AuthServiceApi {
 
+    // region 属性
+
     @Resource
     private SessionManagerApi sessionManagerApi;
 
     @Resource
     private LoginService loginService;
-
-    // region 待删除
-
-    @Override
-    public LoginResponse login(LoginRequest loginRequest) {
-        return null;
-    }
 
     // endregion
 

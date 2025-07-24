@@ -2,8 +2,6 @@ package cn.ibenbeni.bens.auth.api;
 
 import cn.ibenbeni.bens.auth.api.pojo.auth.AuthLoginReq;
 import cn.ibenbeni.bens.auth.api.pojo.auth.AuthLoginResp;
-import cn.ibenbeni.bens.auth.api.pojo.auth.LoginRequest;
-import cn.ibenbeni.bens.auth.api.pojo.auth.LoginResponse;
 
 /**
  * 认证服务的接口，包括基本的登录退出操作和校验token等操作
@@ -11,14 +9,6 @@ import cn.ibenbeni.bens.auth.api.pojo.auth.LoginResponse;
  * @author benben
  */
 public interface AuthServiceApi {
-
-    /**
-     * 常规登录操作
-     *
-     * @param loginRequest 登录的请求
-     * @return token Token
-     */
-    LoginResponse login(LoginRequest loginRequest);
 
     /**
      * 账号登录
