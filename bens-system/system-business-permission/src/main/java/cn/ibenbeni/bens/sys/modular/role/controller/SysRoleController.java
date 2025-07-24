@@ -72,6 +72,7 @@ public class SysRoleController {
     }
 
     @Operation(summary = "获得角色信息")
+    @Parameter(name = "id", description = "角色ID", example = "10", required = true)
     @GetMapping("/system/role/get")
     public ResponseData<RoleResp> getRole(@RequestParam("id") Long id) {
         SysRoleDO role = sysRoleService.getRole(id);
