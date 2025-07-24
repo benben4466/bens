@@ -360,7 +360,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserDO> im
 
         // 执行删除用户关联业务的操作
         for (RemoveUserCallbackApi removeUserCallbackApi : removeUserCallbackApiMap.values()) {
-            removeUserCallbackApi.validateHaveUserBind(userIdList);
+            removeUserCallbackApi.removeUserAction(userIdList);
         }
     }
 
