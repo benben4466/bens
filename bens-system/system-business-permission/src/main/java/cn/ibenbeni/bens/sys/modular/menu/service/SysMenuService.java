@@ -72,6 +72,6 @@ public interface SysMenuService extends IService<SysMenuDO> {
     /**
      * 获取权限对应的菜单编号数组
      */
-    List<Long> getMenuIdListByPermission(String permissionCode);
+    List<Long> listMenuIdByPermissionCode(String permissionCode);
 
 }

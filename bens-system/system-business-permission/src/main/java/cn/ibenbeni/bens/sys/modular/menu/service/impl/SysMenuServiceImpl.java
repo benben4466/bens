@@ -149,8 +149,8 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenuDO> im
     }
 
     @Override
-    public List<Long> getMenuIdListByPermission(String permissionCode) {
-        List<SysMenuDO> menuList = sysMenuMapper.selectListByPermission(permissionCode);
+    public List<Long> listMenuIdByPermissionCode(String permissionCode) {
+        List<SysMenuDO> menuList = sysMenuMapper.selectListByPermissionCode(permissionCode);
         return CollectionUtils.convertList(menuList, SysMenuDO::getMenuId);
     }
 

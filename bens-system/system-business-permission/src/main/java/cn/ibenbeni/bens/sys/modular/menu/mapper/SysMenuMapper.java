@@ -34,7 +34,7 @@ public interface SysMenuMapper extends BaseMapperX<SysMenuDO> {
         return selectCount(SysMenuDO::getMenuParentId, parentId);
     }
 
-    default List<SysMenuDO> selectListByPermission(String permissionCode) {
+    default List<SysMenuDO> selectListByPermissionCode(String permissionCode) {
         return selectList(SysMenuDO::getPermissionCode, permissionCode);
     }
 
