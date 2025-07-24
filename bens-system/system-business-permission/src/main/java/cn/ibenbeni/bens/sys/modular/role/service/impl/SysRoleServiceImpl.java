@@ -88,7 +88,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRoleDO> im
         validateRoleDuplicate(req.getRoleId(), req.getRoleName(), req.getRoleCode());
 
         SysRoleDO role = getById(req.getRoleId());
-        BeanUtil.copyProperties(role, req);
+        BeanUtil.copyProperties(req, role);
         updateById(role);
     }
 

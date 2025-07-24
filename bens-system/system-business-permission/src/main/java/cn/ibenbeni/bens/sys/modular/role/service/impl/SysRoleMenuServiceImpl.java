@@ -6,6 +6,7 @@ import cn.ibenbeni.bens.sys.modular.role.service.SysRoleMenuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Set;
 
@@ -20,6 +21,7 @@ public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuMapper, SysRo
 
     // region 属性
 
+    @Resource
     private SysRoleMenuMapper sysRoleMenuMapper;
 
     // endregion
