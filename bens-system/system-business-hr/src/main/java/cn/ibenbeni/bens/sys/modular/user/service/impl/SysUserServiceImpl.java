@@ -286,7 +286,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserDO> im
         // 校验用户是否存在
         SysUserDO user = this.validateUserExist(userId);
         // 校验用户名唯一
-        this.validateAccountUnique(userAccount);
+        this.validateAccountUnique(userId, userAccount);
         return user;
     }
 
@@ -312,9 +312,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserDO> im
      *
      * @param account 用户账号
      */
-    private void validateAccountUnique(String account) {
-        List<SysUserDO> userList = sysUserMapper.listByAccount(account);
-        if (CollUtil.isNotEmpty(userList)) {
+    private void validateAccountUnique(Long userId, String account) {
+        SysUserDO user = sysUserMapper.selectByAccount(account);
+        if (user == null) {
+            return;
+        }
+
+        // ID 为空，则直接抛出异常
+        if (userId == null) {
+            throw new ServiceException(SysUserExceptionEnum.USER_ACCOUNT_EXISTED);
+        }
+        if (!user.getUserId().equals(userId)) {
             throw new ServiceException(SysUserExceptionEnum.USER_ACCOUNT_EXISTED);
         }
     }
