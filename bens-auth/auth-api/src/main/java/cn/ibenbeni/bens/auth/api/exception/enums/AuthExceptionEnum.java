@@ -47,7 +47,23 @@ public enum AuthExceptionEnum implements AbstractExceptionEnum {
     /**
      * 密码重试次数过多，帐号被锁定
      */
-    LOGIN_LOCKED(RuleConstants.BUSINESS_ERROR_TYPE_CODE + AuthConstants.AUTH_EXCEPTION_STEP_CODE + "18", "账号或密码错误!");
+    LOGIN_LOCKED(RuleConstants.BUSINESS_ERROR_TYPE_CODE + AuthConstants.AUTH_EXCEPTION_STEP_CODE + "18", "账号或密码错误!"),
+
+    /**
+     * Token解析失败
+     */
+    TOKEN_PARSE_ERROR(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + AuthConstants.AUTH_EXCEPTION_STEP_CODE + "07", "Token解析失败"),
+
+    /**
+     * 权限编码参数为空
+     */
+    PERMISSION_CODE_PARAM_EMPTY(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + AuthConstants.AUTH_EXCEPTION_STEP_CODE + "07", "权限编码参数为空"),
+
+    /**
+     * 权限校验未通过
+     */
+    PERMISSION_VALIDATE_NOT_PASS(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + AuthConstants.AUTH_EXCEPTION_STEP_CODE + "07", "权限校验未通过"),
+    ;
 
     /**
      * 错误编码
