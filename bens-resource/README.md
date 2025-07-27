@@ -1,0 +1,2 @@
+资源指项目中接口资源, 一个资源对应一个Controller接口
+提供 @ApiResource、@PostResource、@DeleteResource、@PutResource、@GetResource 五种资源类型注解，对应SpringMvc的 @RequestMapping、@PostMapping、@DeleteMapping、@PutMapping、@GetMapping注解，在此基础上增加了权限校验功能

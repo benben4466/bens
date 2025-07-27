@@ -46,6 +46,8 @@
         <module>bens-excel</module>
         <!-- JWT模块 -->
         <module>bens-jwt</module>
+        <!-- 资源模块 -->
+        <module>bens-resource</module>
     </modules>
 
     <properties>
