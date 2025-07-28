@@ -2,11 +2,13 @@ package cn.ibenbeni.bens.dict.modular.service;
 
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
 import cn.ibenbeni.bens.dict.api.DictApi;
-import cn.ibenbeni.bens.dict.modular.entity.SysDict;
-import cn.ibenbeni.bens.dict.modular.pojo.request.DictRequest;
+import cn.ibenbeni.bens.dict.modular.entity.SysDictDO;
+import cn.ibenbeni.bens.dict.modular.pojo.request.DictPageReq;
+import cn.ibenbeni.bens.dict.modular.pojo.request.DictSaveReq;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 字典服务类
@@ -14,50 +16,87 @@ import java.util.List;
  * @author: benben
  * @time: 2025/6/13 下午11:55
  */
-public interface SysDictService extends IService<SysDict>, DictApi {
+public interface SysDictService extends IService<SysDictDO>, DictApi {
 
     /**
-     * 新增
+     * 创建字典
+     *
+     * @return 字典ID
      */
-    void add(DictRequest dictRequest);
+    Long createDict(DictSaveReq req);
 
     /**
-     * 删除
+     * 删除字典
+     *
+     * @param dictId 字典ID
      */
-    void del(DictRequest dictRequest);
+    void deleteDict(Long dictId);
 
     /**
-     * 批量删除
+     * 批量删除字典
+     *
+     * @param dictIdSet 字典ID集合
      */
-    void batchDelete(DictRequest dictRequest);
+    void deleteDict(Set<Long> dictIdSet);
 
     /**
-     * 删除字典类型下的所有字典
+     * 更新字典
      */
-    void delByDictTypeId(Long dictTypeId);
+    void updateDict(DictSaveReq req);
 
     /**
-     * 编辑
+     * 获取字典信息
+     *
+     * @param dictId 字典ID
      */
-    void edit(DictRequest dictRequest);
+    SysDictDO getDict(Long dictId);
 
     /**
-     * 查询详情
+     * 获取字典信息
+     *
+     * @param dictTypeCode 字典类型编码
+     * @param dictValue    字典值
      */
-    SysDict detail(DictRequest dictRequest);
+    SysDictDO getDict(String dictTypeCode, String dictValue);
 
     /**
-     * 查询列表
+     * 获取指定字典类型编码下字典数量
+     *
+     * @param dictTypeCode 字典类型编码
+     */
+    long getDictCountByDictTypeCode(String dictTypeCode);
+
+    /**
+     * 获取字典数据列表
+     *
+     * @param dictTypeCode   字典类型编码
+     * @param dictStatusFlag 字典状态
+     */
+    List<SysDictDO> listByStatusAndDictTypeCode(Integer dictStatusFlag, String dictTypeCode);
+
+    /**
+     * 获取字典数据列表
+     *
+     * @param dictTypeCode 字典类型编码
+     */
+    List<SysDictDO> listByDictTypeCode(String dictTypeCode);
+
+    /**
+     * 获得字典数据分页列表
+     */
+    PageResult<SysDictDO> getDictPage(DictPageReq req);
+
+    /**
+     * 校验字典是否有效
      * <p>
-     * 查询条件：字典类型ID，或者字典类型编码
+     * 以下情况无效：
+     * 1.字典不存在
+     * 2.字典被禁用
      * </p>
+     *
+     * @param dictTypeCode 字典类型编码
+     * @param dictValueSet 字典值集合
      */
-    List<SysDict> findList(DictRequest dictRequest);
-
-    /**
-     * 查询列表(分页)
-     * <p>询条件：字典类型ID，或者字典类型编码</p>
-     */
-    PageResult<SysDict> findPage(DictRequest dictRequest);
+    void validateDictList(String dictTypeCode, Set<String> dictValueSet);
 
 }

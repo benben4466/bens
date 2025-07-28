@@ -30,14 +30,19 @@ public enum DictExceptionEnum implements AbstractExceptionEnum {
     DICT_NOT_EXISTED(RuleConstants.BUSINESS_ERROR_TYPE_CODE + DictConstants.DICT_EXCEPTION_STEP_CODE + "04", "字典不存在，字典id：{}"),
 
     /**
-     * 错误的字典状态
+     * 字典状态错误
      */
-    WRONG_DICT_STATUS(RuleConstants.BUSINESS_ERROR_TYPE_CODE + DictConstants.DICT_EXCEPTION_STEP_CODE + "05", "字典状态错误，字典状态：{}"),
+    DICT_NOT_ENABLE(RuleConstants.BUSINESS_ERROR_TYPE_CODE + DictConstants.DICT_EXCEPTION_STEP_CODE + "05", "字典状态错误"),
+
+    /**
+     * 字典类型状态错误
+     */
+    DICT_TYPE_NOT_ENABLE(RuleConstants.BUSINESS_ERROR_TYPE_CODE + DictConstants.DICT_EXCEPTION_STEP_CODE + "05", "字典类型状态错误"),
 
     /**
      * 字典类型编码重复
      */
-    DICT_TYPE_CODE_REPEAT(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + DictConstants.DICT_EXCEPTION_STEP_CODE + "06", "字典类型编码重复，字典类型编码：{}"),
+    DICT_TYPE_CODE_DUPLICATE(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + DictConstants.DICT_EXCEPTION_STEP_CODE + "06", "字典类型编码重复，字典类型编码：{}"),
 
     /**
      * 系统字典不允许操作
@@ -45,14 +50,25 @@ public enum DictExceptionEnum implements AbstractExceptionEnum {
     SYSTEM_DICT_NOT_ALLOW_OPERATION(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + DictConstants.DICT_EXCEPTION_STEP_CODE + "07", "系统字典不允许操作，如需操作请联系超级管理员！"),
 
     /**
-     * 字典类型不存在
-     */
-    DICT_TYPE_NOT_EXISTED(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + DictConstants.DICT_EXCEPTION_STEP_CODE + "08", "字典类型不存在，字典类型ID：{}"),
-
-    /**
      * 字典类型名称重复
      */
-    DICT_TYPE_NAME_REPEAT(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + DictConstants.DICT_EXCEPTION_STEP_CODE + "06", "字典类型名称重复，字典类型名称：{}"),
+    DICT_TYPE_NAME_DUPLICATE(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + DictConstants.DICT_EXCEPTION_STEP_CODE + "06", "字典类型名称重复，字典类型名称：{}"),
+
+    /**
+     * 字典类型不存在
+     */
+    DICT_TYPE_NOT_EXISTED(RuleConstants.BUSINESS_ERROR_TYPE_CODE + DictConstants.DICT_EXCEPTION_STEP_CODE + "04", "字典类型不存在"),
+
+    /**
+     * 字典值重复
+     */
+    DICT_VALUE_DUPLICATE(RuleConstants.BUSINESS_ERROR_TYPE_CODE + DictConstants.DICT_EXCEPTION_STEP_CODE + "04", "字典值重复"),
+
+    /**
+     * 无法删除,该字典类型还有字典数据
+     */
+    DICT_TYPE_HAS_CHILDREN(RuleConstants.BUSINESS_ERROR_TYPE_CODE + DictConstants.DICT_EXCEPTION_STEP_CODE + "04", "无法删除,该字典类型还有字典数据"),
+
     ;
 
     /**

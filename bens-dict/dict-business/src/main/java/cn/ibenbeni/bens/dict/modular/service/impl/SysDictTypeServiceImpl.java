@@ -1,30 +1,23 @@
 package cn.ibenbeni.bens.dict.modular.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.ibenbeni.bens.auth.api.context.LoginContext;
-import cn.ibenbeni.bens.db.api.factory.PageFactory;
-import cn.ibenbeni.bens.db.api.factory.PageResultFactory;
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
-import cn.ibenbeni.bens.dict.api.enums.DictTypeClassEnum;
 import cn.ibenbeni.bens.dict.api.exception.DictException;
 import cn.ibenbeni.bens.dict.api.exception.enums.DictExceptionEnum;
-import cn.ibenbeni.bens.dict.modular.entity.SysDictType;
+import cn.ibenbeni.bens.dict.modular.entity.SysDictTypeDO;
 import cn.ibenbeni.bens.dict.modular.mapper.SysDictTypeMapper;
-import cn.ibenbeni.bens.dict.modular.pojo.request.DictTypeRequest;
+import cn.ibenbeni.bens.dict.modular.pojo.request.DictTypePageReq;
+import cn.ibenbeni.bens.dict.modular.pojo.request.DictTypeSaveReq;
 import cn.ibenbeni.bens.dict.modular.service.SysDictService;
 import cn.ibenbeni.bens.dict.modular.service.SysDictTypeService;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 字典类型表服务实现类
@@ -33,143 +26,136 @@ import java.util.List;
  * @time: 2025/6/13 下午11:33
  */
 @Service
-public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDictType> implements SysDictTypeService {
+public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDictTypeDO> implements SysDictTypeService {
 
-    @Lazy
+    // region 属性
+
     @Resource
-    private SysDictService sysDictService;
+    private SysDictTypeMapper dictTypeMapper;
+
+    @Resource
+    private SysDictService dictService;
+
+    // endregion
+
+    // region 公共方法
 
     @Override
-    public void add(DictTypeRequest dictTypeRequest) {
-        // 校验请求是否合法
-        this.validateRequest(dictTypeRequest, false);
-        SysDictType sysDictType = BeanUtil.toBean(dictTypeRequest, SysDictType.class);
-        this.save(sysDictType);
-    }
+    public Long createDictType(DictTypeSaveReq req) {
+        // 校验字典类型名称和编码唯一性
+        validateDictTypeNameUnique(null, req.getDictTypeName());
+        validateDictTypeCodeUnique(null, req.getDictTypeCode());
 
-    @Transactional(rollbackFor = Exception.class)
-    @Override
-    public void del(DictTypeRequest dictTypeRequest) {
-        // 系统级字典只能管理员操作
-        this.validateSystemTypeClassOperate(dictTypeRequest);
-
-        // 删除字典类型及字典数据
-        this.removeById(dictTypeRequest.getDictTypeId());
-        this.sysDictService.delByDictTypeId(dictTypeRequest.getDictTypeId());
-    }
-
-    @Override
-    public void edit(DictTypeRequest dictTypeRequest) {
-        // 校验请求是否合法
-        this.validateRequest(dictTypeRequest, true);
-
-        SysDictType dbDictType = this.querySysDictType(dictTypeRequest.getDictTypeId());
-        BeanUtil.copyProperties(dictTypeRequest, dbDictType);
-        // 字典类型编码不能修改
-        dbDictType.setDictTypeCode(null);
-
-        this.updateById(dbDictType);
+        SysDictTypeDO dictType = BeanUtil.toBean(req, SysDictTypeDO.class);
+        save(dictType);
+        return dictType.getDictTypeId();
     }
 
     @Override
-    public SysDictType detail(DictTypeRequest dictTypeRequest) {
-        return this.querySysDictType(dictTypeRequest.getDictTypeId());
-    }
-
-    @Override
-    public List<SysDictType> findList(DictTypeRequest dictTypeRequest) {
-        LambdaQueryWrapper<SysDictType> queryWrapper = this.createWrapper(dictTypeRequest)
-                .select(SysDictType::getDictTypeName, SysDictType::getDictTypeId);
-        return this.list(queryWrapper);
-    }
-
-    @Override
-    public PageResult<SysDictType> findPage(DictTypeRequest dictTypeRequest) {
-        LambdaQueryWrapper<SysDictType> queryWrapper = this.createWrapper(dictTypeRequest)
-                .select(SysDictType::getDictTypeName, SysDictType::getDictTypeId);
-        Page<SysDictType> page = this.page(PageFactory.defaultPage(), queryWrapper);
-        return PageResultFactory.createPageResult(page);
-    }
-
-    @Override
-    public Long getDictTypeIdByDictTypeCode(String dictTypeCode) {
-        if (StrUtil.isEmpty(dictTypeCode)) {
-            return null;
+    public void deleteDictType(Long dictTypeId) {
+        // 校验字典类型是否存在
+        SysDictTypeDO dictType = validateDictTypeExists(dictTypeId);
+        long dictCount = dictService.getDictCountByDictTypeCode(dictType.getDictTypeCode());
+        if (dictCount > 0) {
+            throw new DictException(DictExceptionEnum.DICT_TYPE_HAS_CHILDREN);
         }
-
-        LambdaQueryWrapper<SysDictType> queryWrapper = Wrappers.lambdaQuery(SysDictType.class)
-                .eq(SysDictType::getDictTypeCode, dictTypeCode)
-                .select(SysDictType::getDictTypeId);
-        SysDictType dbDictType = this.getOne(queryWrapper, false);
-        return dbDictType != null ? dbDictType.getDictTypeId() : null;
+        removeById(dictTypeId);
     }
 
-    /**
-     * 校验请求是否合法
-     *
-     * @param dictTypeRequest 请求参数
-     * @param editFlag        是否编辑
-     */
-    private void validateRequest(DictTypeRequest dictTypeRequest, boolean editFlag) {
-        this.validateSystemTypeClassOperate(dictTypeRequest);
-        this.validateRepeat(dictTypeRequest, editFlag);
-    }
-
-    /**
-     * 校验dictTypeClass是否是系统字典，如果是系统字典只能超级管理员操作
-     *
-     * @param dictTypeRequest 请求参数
-     */
-    private void validateSystemTypeClassOperate(DictTypeRequest dictTypeRequest) {
-        if (DictTypeClassEnum.BUSINESS_TYPE.getCode().equals(dictTypeRequest.getDictTypeClass())) {
-            if (!LoginContext.me().getSuperAdminFlag()) {
-                throw new DictException(DictExceptionEnum.SYSTEM_DICT_NOT_ALLOW_OPERATION);
+    @Override
+    public void deleteDictType(Set<Long> dictTypeIdSet) {
+        if (CollUtil.isEmpty(dictTypeIdSet)) {
+            return;
+        }
+        List<SysDictTypeDO> dictTypeList = listByIds(dictTypeIdSet);
+        dictTypeList.forEach(dictType -> {
+            long dictCount = dictService.getDictCountByDictTypeCode(dictType.getDictTypeCode());
+            if (dictCount > 0) {
+                throw new DictException(DictExceptionEnum.DICT_TYPE_HAS_CHILDREN);
             }
-        }
+        });
+
+        removeByIds(dictTypeIdSet);
     }
 
+    @Override
+    public void updateDictType(DictTypeSaveReq req) {
+        // 校验字典类型是否存在
+        SysDictTypeDO dictType = validateDictTypeExists(req.getDictTypeId());
+        // 校验字典类型名称和编码唯一性
+        validateDictTypeNameUnique(req.getDictTypeId(), req.getDictTypeName());
+        validateDictTypeCodeUnique(req.getDictTypeId(), req.getDictTypeCode());
+
+        BeanUtil.copyProperties(req, dictType);
+        updateById(dictType);
+    }
+
+    @Override
+    public SysDictTypeDO getDictType(Long dictTypeId) {
+        return getById(dictTypeId);
+    }
+
+    @Override
+    public SysDictTypeDO getDictType(String dictTypeCode) {
+        return dictTypeMapper.selectByCode(dictTypeCode);
+    }
+
+    @Override
+    public PageResult<SysDictTypeDO> getDictTypePage(DictTypePageReq req) {
+        return dictTypeMapper.selectPage(req);
+    }
+
+    @Override
+    public List<SysDictTypeDO> getDictTypeList() {
+        return list();
+    }
+
+    // endregion
+
+    // region 私有方法
+
     /**
-     * 校验字典类型名称和字典类型编码是否重复
+     * 校验字典类型名称唯一
      *
-     * @param dictTypeRequest 请求参数
-     * @param editFlag        是否编辑
+     * @param dictTypeId   字典类型ID
+     * @param dictTypeName 字典类型名称
      */
-    private void validateRepeat(DictTypeRequest dictTypeRequest, boolean editFlag) {
-        // 字典类型编码是否重复
-        LambdaQueryWrapper<SysDictType> dictTypeCodeWrapper = Wrappers.lambdaQuery(SysDictType.class).eq(SysDictType::getDictTypeCode, dictTypeRequest.getDictTypeCode());
-        if (editFlag) {
-            dictTypeCodeWrapper.ne(SysDictType::getDictTypeId, dictTypeRequest.getDictTypeId());
-        }
-        long dictTypeCodeCount = this.count(dictTypeCodeWrapper);
-        if (dictTypeCodeCount > 0) {
-            throw new DictException(DictExceptionEnum.DICT_TYPE_CODE_REPEAT, dictTypeRequest.getDictTypeCode());
+    void validateDictTypeNameUnique(Long dictTypeId, String dictTypeName) {
+        SysDictTypeDO dictType = dictTypeMapper.selectByName(dictTypeName);
+        if (dictType == null) {
+            return;
         }
 
-        // 字典类型名称是否重复
-        LambdaQueryWrapper<SysDictType> dictTypeNameWrapper = Wrappers.lambdaQuery(SysDictType.class).eq(SysDictType::getDictTypeName, dictTypeRequest.getDictTypeName());
-        if (editFlag) {
-            dictTypeNameWrapper.ne(SysDictType::getDictTypeId, dictTypeRequest.getDictTypeId());
+        if (dictTypeId == null) {
+            throw new DictException(DictExceptionEnum.DICT_TYPE_NAME_DUPLICATE, dictTypeName);
         }
-        long dictTypeNameCount = this.count(dictTypeNameWrapper);
-        if (dictTypeNameCount > 0) {
-            throw new DictException(DictExceptionEnum.DICT_TYPE_NAME_REPEAT, dictTypeRequest.getDictTypeName());
+        if (ObjectUtil.notEqual(dictTypeId, dictType.getDictTypeId())) {
+            throw new DictException(DictExceptionEnum.DICT_TYPE_NAME_DUPLICATE, dictTypeName);
         }
     }
 
-    private SysDictType querySysDictType(Long dictTypeId) {
-        SysDictType sysDictType = this.getById(dictTypeId);
-        if (ObjectUtil.isEmpty(sysDictType)) {
-            throw new DictException(DictExceptionEnum.DICT_TYPE_NOT_EXISTED, dictTypeId);
+    void validateDictTypeCodeUnique(Long dictTypeId, String dictTypeCode) {
+        SysDictTypeDO dictType = dictTypeMapper.selectByCode(dictTypeCode);
+        if (dictType == null) {
+            return;
         }
-        return sysDictType;
+
+        if (dictTypeId == null) {
+            throw new DictException(DictExceptionEnum.DICT_TYPE_CODE_DUPLICATE, dictTypeCode);
+        }
+        if (ObjectUtil.notEqual(dictTypeId, dictType.getDictTypeId())) {
+            throw new DictException(DictExceptionEnum.DICT_TYPE_CODE_DUPLICATE, dictTypeCode);
+        }
     }
 
-    /**
-     * 构建查询条件
-     */
-    private LambdaQueryWrapper<SysDictType> createWrapper(DictTypeRequest dictTypeRequest) {
-        return Wrappers.lambdaQuery(SysDictType.class)
-                .orderByAsc(SysDictType::getDictTypeSort);
+    SysDictTypeDO validateDictTypeExists(Long dictTypeId) {
+        SysDictTypeDO dictType = getById(dictTypeId);
+        if (dictType == null) {
+            throw new DictException(DictExceptionEnum.DICT_TYPE_NOT_EXISTED);
+        }
+        return dictType;
     }
+
+    // endregion
 
 }
