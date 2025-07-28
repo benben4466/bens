@@ -54,6 +54,13 @@
             <version>${revision}</version>
         </dependency>
 
+        <!-- 字典模块-Starter -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>dict-spring-boot-starter</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
         <!--数据源连接和dao框架-->
         <dependency>
             <groupId>cn.ibenbeni</groupId>

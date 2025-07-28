@@ -17,9 +17,7 @@ import java.math.BigDecimal;
 @TableName(value = "sys_dict", autoResultMap = true)
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class SysDict extends BaseBusinessEntity {
-
-    private static final long serialVersionUID = 1L;
+public class SysDictDO extends BaseBusinessEntity {
 
     /**
      * 主键
@@ -28,16 +26,17 @@ public class SysDict extends BaseBusinessEntity {
     private Long dictId;
 
     /**
-     * 字典类型ID
+     * 字典类型编码
+     * <p>冗余字段</p>
      */
-    @TableField("dict_type_id")
-    private Long dictTypeId;
+    @TableField("dict_type_code")
+    private String dictTypeCode;
 
     /**
-     * 字典名称
+     * 字典编码
      */
-    @TableField("dict_name")
-    private String dictName;
+    @TableField("dict_code")
+    private String dictCode;
 
     /**
      * 字典值
@@ -46,38 +45,29 @@ public class SysDict extends BaseBusinessEntity {
     private String dictValue;
 
     /**
-     * 字典简称名称
+     * 颜色类型
+     * <p>给前端使用，显示状态框颜色</p>
      */
-    @TableField("dict_short_name")
-    private String dictShortName;
+    @TableField("dict_color_type")
+    private String dictColorType;
 
     /**
-     * 排序
+     * 显示排序
      */
     @TableField("dict_sort")
     private BigDecimal dictSort;
 
     /**
-     * 状态：0-禁用，1-正常
+     * 状态
+     * <p>枚举值: {@link cn.ibenbeni.bens.rule.enums.StatusEnum}</p>
      */
     @TableField("status_flag")
     private Integer statusFlag;
 
     /**
-     * 租户ID
+     * 备注
      */
-    @TableField(value = "tenant_id", fill = FieldFill.INSERT)
-    private Long tenantId;
-
-    // -----------------------------------------------------非实体字段-------------------------------------------------
-    // region 非实体字段
-
-    /**
-     * 字典类型的名称
-     */
-    @TableField(exist = false)
-    private String dictTypeName;
-
-    // endregion
+    @TableField("remark")
+    private String remark;
 
 }

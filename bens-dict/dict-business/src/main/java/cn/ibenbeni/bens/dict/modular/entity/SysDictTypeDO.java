@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 @TableName(value = "sys_dict_type", autoResultMap = true)
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class SysDictType extends BaseBusinessEntity {
+public class SysDictTypeDO extends BaseBusinessEntity {
 
     /**
      * 主键
@@ -38,15 +38,8 @@ public class SysDictType extends BaseBusinessEntity {
     private String dictTypeCode;
 
     /**
-     * 字典类型编码
-     * <p>1=业务类型；2=系统类型</p>
-     */
-    @TableField("dict_type_class")
-    private Integer dictTypeClass;
-
-    /**
      * 状态
-     * <p>1=启用，2=禁用</p>
+     * <p>枚举: {@link cn.ibenbeni.bens.rule.enums.StatusEnum}</p>
      */
     @TableField("status_flag")
     private Integer statusFlag;
@@ -62,11 +55,5 @@ public class SysDictType extends BaseBusinessEntity {
      */
     @TableField("remark")
     private String remark;
-
-    /**
-     * 租户ID
-     */
-    @TableField(value = "tenant_id", fill = FieldFill.INSERT)
-    private Long tenantId;
 
 }

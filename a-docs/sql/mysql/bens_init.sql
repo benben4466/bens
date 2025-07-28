@@ -168,3 +168,39 @@ CREATE TABLE `sys_role_menu`
     `update_user`  bigint      NULL DEFAULT NULL COMMENT '修改人',
     PRIMARY KEY (`role_menu_id`)
 ) COMMENT = '角色菜单关联';
+
+CREATE TABLE `sys_dict_type`
+(
+    `dict_type_id`   bigint         NOT NULL COMMENT '主键',
+    `dict_type_name` varchar(100)   NOT NULL COMMENT '字典类型名称',
+    `dict_type_code` varchar(100)   NOT NULL COMMENT '字典类型编码',
+    `status_flag`    tinyint        NOT NULL DEFAULT 1 COMMENT '状态(1=启用; 2=禁用)',
+    `dict_type_sort` decimal(10, 2) NOT NULL DEFAULT 999 COMMENT '排序',
+    `remark`         varchar(255)   NULL     DEFAULT NULL COMMENT '备注',
+    `del_flag`       char(1)        NOT NULL DEFAULT 'N' COMMENT '删除标记(Y=已删除; N=未删除)',
+    `version_flag`   bigint         NULL     DEFAULT NULL COMMENT '乐观锁',
+    `create_time`    datetime(0)    NULL     DEFAULT NULL COMMENT '创建时间',
+    `create_user`    bigint         NULL     DEFAULT NULL COMMENT '创建人',
+    `update_time`    datetime(0)    NULL     DEFAULT NULL COMMENT '修改时间',
+    `update_user`    bigint         NULL     DEFAULT NULL COMMENT '修改人',
+    PRIMARY KEY (`dict_type_id`)
+) COMMENT = '字典类型';
+
+CREATE TABLE `sys_dict`
+(
+    `dict_id`         bigint         NOT NULL COMMENT '主键',
+    `dict_type_code`  varchar(100)   NOT NULL COMMENT '字典类型编码',
+    `dict_code`       varchar(255)   NOT NULL COMMENT '字典编码',
+    `dict_value`      varchar(255)   NOT NULL COMMENT '字典值',
+    `dict_color_type` varchar(100)   NULL     DEFAULT '' COMMENT '颜色类型(前端使用)',
+    `dict_sort`       decimal(10, 2) NOT NULL COMMENT '排序',
+    `status_flag`     tinyint        NOT NULL DEFAULT 1 COMMENT '状态(1=启用; 2=禁用)',
+    `remark`          varchar(255)   NULL     DEFAULT NULL COMMENT '备注',
+    `del_flag`        char(1)        NOT NULL DEFAULT 'N' COMMENT '删除标记(Y=已删除; N=未删除)',
+    `version_flag`    bigint         NULL     DEFAULT NULL COMMENT '乐观锁',
+    `create_time`     datetime                DEFAULT NULL COMMENT '创建时间',
+    `create_user`     bigint                  DEFAULT NULL COMMENT '创建人',
+    `update_time`     datetime                DEFAULT NULL COMMENT '修改时间',
+    `update_user`     bigint                  DEFAULT NULL COMMENT '修改人',
+    PRIMARY KEY (`dict_id`)
+) COMMENT ='字典';
