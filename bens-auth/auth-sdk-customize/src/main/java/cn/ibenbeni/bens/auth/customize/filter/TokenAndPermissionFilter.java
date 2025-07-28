@@ -1,5 +1,8 @@
 package cn.ibenbeni.bens.auth.customize.filter;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.ibenbeni.bens.auth.api.exception.AuthException;
+import cn.ibenbeni.bens.auth.api.exception.enums.AuthExceptionEnum;
 import cn.ibenbeni.bens.auth.customize.factory.PermissionVerificationFactory;
 import cn.ibenbeni.bens.auth.customize.pojo.permission.MethodPermissionVerification;
 import cn.ibenbeni.bens.resource.api.exception.ResourceException;
@@ -51,6 +54,11 @@ public class TokenAndPermissionFilter extends OncePerRequestFilter {
                     MethodPermissionVerification permissionVerification = new MethodPermissionVerification();
                     PermissionVerificationFactory.clazzFillPermissionVerification(handlerMethod.getBeanType(), permissionVerification);
                     PermissionVerificationFactory.methodFillPermissionVerification(handlerMethod.getMethod(), permissionVerification);
+
+                    // MethodPermissionVerification所有属性为空，则说明未使用资源接口
+                    if (BeanUtil.isEmpty(permissionVerification)) {
+                        throw new AuthException(AuthExceptionEnum.NOT_USED_RESOURCE_INTERFACE);
+                    }
 
                     // 校验
                     PermissionVerificationFactory.permissionVerification(permissionVerification);

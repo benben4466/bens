@@ -68,6 +68,12 @@ public enum AuthExceptionEnum implements AbstractExceptionEnum {
      * 用户未登录
      */
     USER_NOT_LOGIN(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + AuthConstants.AUTH_EXCEPTION_STEP_CODE + "07", "用户未登录"),
+
+    /**
+     * 未使用资源接口
+     */
+    NOT_USED_RESOURCE_INTERFACE(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + AuthConstants.AUTH_EXCEPTION_STEP_CODE + "07", "未使用资源接口"),
+
     ;
 
     /**
