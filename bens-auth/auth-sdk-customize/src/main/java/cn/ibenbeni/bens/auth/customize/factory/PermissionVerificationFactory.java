@@ -161,7 +161,11 @@ public class PermissionVerificationFactory {
     public static void permissionVerification(MethodPermissionVerification verification) {
         String userToken = null;
         if (verification.getRequiredLogin()) {
-            userToken = CommonLoginUserUtils.getToken();
+            try {
+                userToken = CommonLoginUserUtils.getToken();
+            } catch (Exception ex) {
+                throw new AuthException(AuthExceptionEnum.USER_NOT_LOGIN);
+            }
             if (StrUtil.isNotBlank(userToken)) {
                 LoginUser loginUser = buildLoginUserByToken(userToken);
                 // 设置到登陆用户上下文中

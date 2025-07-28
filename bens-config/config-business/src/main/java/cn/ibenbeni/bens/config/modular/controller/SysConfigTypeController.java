@@ -4,7 +4,8 @@ import cn.ibenbeni.bens.config.modular.entity.SysConfigType;
 import cn.ibenbeni.bens.config.modular.pojo.request.SysConfigTypeRequest;
 import cn.ibenbeni.bens.config.modular.service.SysConfigTypeService;
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
-import cn.ibenbeni.bens.rule.pojo.request.BaseRequest;
+import cn.ibenbeni.bens.resource.api.annotation.GetResource;
+import cn.ibenbeni.bens.resource.api.annotation.PostResource;
 import cn.ibenbeni.bens.rule.pojo.response.ResponseData;
 import cn.ibenbeni.bens.rule.pojo.response.SuccessResponseData;
 import org.springframework.validation.annotation.Validated;
@@ -28,7 +29,7 @@ public class SysConfigTypeController {
     /**
      * 新增
      */
-    @PostMapping("/sysConfigType/add")
+    @PostResource(path = "/sysConfigType/add")
     public ResponseData<SysConfigType> add(@RequestBody @Validated SysConfigTypeRequest sysConfigTypeRequest) {
         sysConfigTypeService.add(sysConfigTypeRequest);
         return new SuccessResponseData<>();
@@ -37,7 +38,7 @@ public class SysConfigTypeController {
     /**
      * 删除
      */
-    @PostMapping("/sysConfigType/delete")
+    @PostResource(path = "/sysConfigType/delete")
     public ResponseData<SysConfigType> del(@RequestBody @Validated SysConfigTypeRequest sysConfigTypeRequest) {
         sysConfigTypeService.del(sysConfigTypeRequest);
         return new SuccessResponseData<>();
@@ -46,7 +47,7 @@ public class SysConfigTypeController {
     /**
      * 编辑
      */
-    @PostMapping("/sysConfigType/edit")
+    @PostResource(path = "/sysConfigType/edit")
     public ResponseData<SysConfigType> edit(@RequestBody @Validated SysConfigTypeRequest sysConfigTypeRequest) {
         sysConfigTypeService.edit(sysConfigTypeRequest);
         return new SuccessResponseData<>();
@@ -55,7 +56,7 @@ public class SysConfigTypeController {
     /**
      * 查看详情
      */
-    @GetMapping("/sysConfigType/detail")
+    @GetResource(path = "/sysConfigType/detail")
     public ResponseData<SysConfigType> detail(@Validated SysConfigTypeRequest sysConfigTypeRequest) {
         return new SuccessResponseData<>(sysConfigTypeService.detail(sysConfigTypeRequest));
     }
@@ -63,7 +64,7 @@ public class SysConfigTypeController {
     /**
      * 查看详情列表
      */
-    @GetMapping("/sysConfigType/list")
+    @GetResource(path = "/sysConfigType/list")
     public ResponseData<List<SysConfigType>> list(SysConfigTypeRequest sysConfigTypeRequest) {
         return new SuccessResponseData<>(sysConfigTypeService.findList(sysConfigTypeRequest));
     }
@@ -71,7 +72,7 @@ public class SysConfigTypeController {
     /**
      * 查看详情列表（分页）
      */
-    @GetMapping("/sysConfigType/page")
+    @GetResource(path = "/sysConfigType/page")
     public ResponseData<PageResult<SysConfigType>> page(SysConfigTypeRequest sysConfigTypeRequest) {
         return new SuccessResponseData<>(sysConfigTypeService.findPage(sysConfigTypeRequest));
     }

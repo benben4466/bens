@@ -63,6 +63,11 @@ public enum AuthExceptionEnum implements AbstractExceptionEnum {
      * 权限校验未通过
      */
     PERMISSION_VALIDATE_NOT_PASS(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + AuthConstants.AUTH_EXCEPTION_STEP_CODE + "07", "权限校验未通过"),
+
+    /**
+     * 用户未登录
+     */
+    USER_NOT_LOGIN(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + AuthConstants.AUTH_EXCEPTION_STEP_CODE + "07", "用户未登录"),
     ;
 
     /**
