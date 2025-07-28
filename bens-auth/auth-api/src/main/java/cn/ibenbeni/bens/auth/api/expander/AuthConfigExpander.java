@@ -23,7 +23,7 @@ public class AuthConfigExpander {
      */
     public static String getAuthJwtSecret() {
         // TODO JWT密钥可配置
-        return "123456";
+        return "123456789abc123456789abc123456789abc";
     }
 
 }

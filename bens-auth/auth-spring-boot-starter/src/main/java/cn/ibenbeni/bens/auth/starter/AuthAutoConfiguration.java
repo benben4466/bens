@@ -5,7 +5,7 @@ import cn.ibenbeni.bens.auth.api.constants.PasswordEncryptionConstants;
 import cn.ibenbeni.bens.auth.api.expander.AuthConfigExpander;
 import cn.ibenbeni.bens.auth.api.password.PasswordEncryptionStrategy;
 import cn.ibenbeni.bens.auth.api.pojo.login.LoginUser;
-import cn.ibenbeni.bens.auth.customize.filter.TokenAuthenticationFilter;
+import cn.ibenbeni.bens.auth.customize.filter.TokenAndPermissionFilter;
 import cn.ibenbeni.bens.auth.customize.password.MD5PasswordEncryptionStrategy;
 import cn.ibenbeni.bens.auth.customize.session.DefaultSessionManager;
 import cn.ibenbeni.bens.cache.api.CacheOperatorApi;
@@ -18,6 +18,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 
 /**
@@ -53,16 +54,15 @@ public class AuthAutoConfiguration {
     }
 
     /**
-     * 注入Token认证过滤器
+     * 注入权限过滤器
      */
     @Bean
-    public FilterRegistrationBean<TokenAuthenticationFilter> tokenAuthenticationFilterFilterRegistrationBean() {
-        FilterRegistrationBean<TokenAuthenticationFilter> bean = new FilterRegistrationBean<>();
-        bean.setFilter(new TokenAuthenticationFilter());
-        // TODO 提供各模块拓展接口
+    public FilterRegistrationBean<TokenAndPermissionFilter> permissionFilterFilterRegistrationBean(RequestMappingHandlerMapping handlerMapping) {
+        FilterRegistrationBean<TokenAndPermissionFilter> bean = new FilterRegistrationBean<>();
+        bean.setFilter(new TokenAndPermissionFilter(handlerMapping));
         bean.addUrlPatterns("/*");
-        bean.setName(TokenAuthenticationFilter.NAME);
-        bean.setOrder(WebFilterOrderConstants.TOKEN_AUTHENTICATION_FILTER);
+        bean.setName(TokenAndPermissionFilter.NAME);
+        bean.setOrder(WebFilterOrderConstants.PERMISSION_AUTHENTICATION_FILTER);
         return bean;
     }
 

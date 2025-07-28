@@ -2,6 +2,10 @@ package cn.ibenbeni.bens.sys.modular.org.controller;
 
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
 import cn.ibenbeni.bens.db.api.util.DbUtil;
+import cn.ibenbeni.bens.resource.api.annotation.DeleteResource;
+import cn.ibenbeni.bens.resource.api.annotation.GetResource;
+import cn.ibenbeni.bens.resource.api.annotation.PostResource;
+import cn.ibenbeni.bens.resource.api.annotation.PutResource;
 import cn.ibenbeni.bens.rule.enums.StatusEnum;
 import cn.ibenbeni.bens.rule.pojo.response.ResponseData;
 import cn.ibenbeni.bens.rule.pojo.response.SuccessResponseData;
@@ -39,7 +43,7 @@ public class HrOrganizationController {
      * 创建组织
      */
     @Operation(summary = "创建组织")
-    @PostMapping("/system/org/create")
+    @PostResource(path = "/system/org/create")
     public ResponseData<Long> createOrg(@Validated @RequestBody OrganizationSaveReq createReqVO) {
         return new SuccessResponseData<>(organizationService.createOrg(createReqVO));
     }
@@ -49,7 +53,7 @@ public class HrOrganizationController {
      */
     @Operation(summary = "删除组织")
     @Parameter(name = "id", description = "组织ID", required = true, example = "10")
-    @DeleteMapping("/system/org/delete")
+    @DeleteResource(path = "/system/org/delete")
     public ResponseData<Boolean> deleteOrg(@RequestParam("id") Long id) {
         organizationService.deleteOrg(id);
         return new SuccessResponseData<>(true);
@@ -59,7 +63,7 @@ public class HrOrganizationController {
      * 更新组织
      */
     @Operation(summary = "更新组织")
-    @PutMapping("/system/org/update")
+    @PutResource(path = "/system/org/update")
     public ResponseData<Boolean> updateOrg(@Validated @RequestBody OrganizationSaveReq createReqVO) {
         organizationService.updateOrg(createReqVO);
         return new SuccessResponseData<>(true);
@@ -70,7 +74,7 @@ public class HrOrganizationController {
      */
     @Operation(summary = "获取组织信息")
     @Parameter(name = "id", description = "组织ID", required = true, example = "10")
-    @GetMapping("/system/org/get")
+    @GetResource(path = "/system/org/get")
     public ResponseData<HrOrganizationResp> getOrg(@RequestParam("id") Long id) {
         HrOrganizationDO org = organizationService.getOrg(id);
         return new SuccessResponseData<>(BeanUtils.toBean(org, HrOrganizationResp.class));
@@ -80,7 +84,7 @@ public class HrOrganizationController {
      * 获取组织精简信息列表
      */
     @Operation(summary = "获取组织精简信息列表", description = "仅包含状态为启用的组织, 主要用于下拉选项")
-    @GetMapping("/system/org/simple-list")
+    @GetResource(path = "/system/org/simple-list")
     public ResponseData<List<DeptSimpleResp>> getSimpleOrgList() {
         OrgListReq reqVO = new OrgListReq();
         reqVO.setStatusFlag(StatusEnum.ENABLE.getCode());
@@ -92,7 +96,7 @@ public class HrOrganizationController {
      * 根据条件查询组织信息列表
      */
     @Operation(summary = "查询组织信息列表", description = "根据指定条件查询")
-    @GetMapping("/system/org/list")
+    @GetResource("/system/org/list")
     public ResponseData<List<HrOrganizationResp>> getOrgList(OrgListReq reqVO) {
         List<HrOrganizationDO> orgList = organizationService.getOrgList(reqVO);
         return new SuccessResponseData<>(BeanUtils.toBean(orgList, HrOrganizationResp.class));
@@ -102,7 +106,7 @@ public class HrOrganizationController {
      * 根据条件查询组织信息列表（分页）
      */
     @Operation(summary = "查询组织信息列表(分页)", description = "根据指定条件分页")
-    @GetMapping("/system/org/page")
+    @GetResource("/system/org/page")
     public ResponseData<PageResult<HrOrganizationResp>> getOrgPage(OrgPageReq reqVO) {
         PageResult<HrOrganizationDO> pageResult = organizationService.getOrgPage(reqVO);
         return new SuccessResponseData<>(DbUtil.toBean(pageResult, HrOrganizationResp.class));
@@ -114,7 +118,7 @@ public class HrOrganizationController {
      * <p>若传递orgParentId, 则懒加载；传入-1，获取所有一级子节点</p>
      */
     @Operation(summary = "通用获取组织机构树", description = "仅获取直接子节点")
-    @GetMapping("/system/common/org/tree")
+    @GetResource(path = "/system/common/org/tree")
     public ResponseData<List<HrOrganizationResp>> commonOrgTree(@RequestBody OrgListReq reqVO) {
         reqVO.setStatusFlag(StatusEnum.ENABLE.getCode()); // 默认查询启用的
         List<HrOrganizationDO> orgList = organizationService.getOrgList(reqVO);

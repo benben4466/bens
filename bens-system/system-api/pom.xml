@@ -16,6 +16,21 @@
     <description>系统模块-API</description>
 
     <dependencies>
+
+        <!-- 权限模块-API -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>auth-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- 资源模块-API -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>resource-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
     </dependencies>
 
 </project>

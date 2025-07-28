@@ -1,6 +1,7 @@
 package cn.ibenbeni.bens.sys.modular.permission.service;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.ibenbeni.bens.sys.api.PermissionApi;
 
 import java.util.Set;
 
@@ -10,7 +11,7 @@ import java.util.Set;
  * @author: benben
  * @time: 2025/6/8 下午5:05
  */
-public interface PermissionService {
+public interface PermissionService extends PermissionApi {
 
     // region 用户-角色相关方法
 

@@ -31,6 +31,13 @@
             <artifactId>bens-rule</artifactId>
             <version>${revision}</version>
         </dependency>
+
+        <!-- 资源模块-API -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>resource-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
     </dependencies>
 
 </project>
