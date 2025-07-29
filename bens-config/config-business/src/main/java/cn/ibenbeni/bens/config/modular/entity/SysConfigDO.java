@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 @TableName(value = "sys_config", autoResultMap = true)
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class SysConfig extends BaseBusinessEntity {
+public class SysConfigDO extends BaseBusinessEntity {
 
     /**
      * 主键
@@ -52,17 +52,22 @@ public class SysConfig extends BaseBusinessEntity {
     private String configValue;
 
     /**
-     * 是否是系统参数
-     * <p>Y=是，N=否</p>
+     * 系统参数类型
      */
-    @TableField("sys_flag")
-    private String sysFlag;
+    @TableField("config_type")
+    private Integer configType;
 
     /**
-     * 排序
+     * 显示排序
      */
     @TableField("config_sort")
     private BigDecimal configSort;
+
+    /**
+     * 是否可见
+     */
+    @TableField("visible_flag")
+    private Boolean visibleFlag;
 
     /**
      * 备注

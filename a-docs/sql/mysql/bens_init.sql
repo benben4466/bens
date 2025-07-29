@@ -204,3 +204,41 @@ CREATE TABLE `sys_dict`
     `update_user`     bigint                  DEFAULT NULL COMMENT '修改人',
     PRIMARY KEY (`dict_id`)
 ) COMMENT ='字典';
+
+CREATE TABLE `sys_config_type`
+(
+    `config_type_id`   bigint         NOT NULL COMMENT '主键',
+    `config_type_name` varchar(255)   NOT NULL COMMENT '参数配置类型名称',
+    `config_type_code` varchar(100)   NOT NULL COMMENT '参数配置类型编码',
+    `config_type`      tinyint        NOT NULL COMMENT '参数配置类型',
+    `visible_flag`     bit(1)         NOT NULL COMMENT '是否可见',
+    `config_type_sort` decimal(10, 2) NOT NULL DEFAULT 999 COMMENT '显示排序',
+    `remark`           varchar(255)   NULL     DEFAULT NULL COMMENT '备注',
+    `del_flag`         char(1)        NOT NULL DEFAULT 'N' COMMENT '是否删除(Y=被删除，N=未删除)',
+    `version_flag`     bigint         NULL     DEFAULT NULL COMMENT '乐观锁',
+    `create_time`      datetime(0)    NULL     DEFAULT NULL COMMENT '创建时间',
+    `create_user`      bigint         NULL     DEFAULT NULL COMMENT '创建人',
+    `update_time`      datetime(0)    NULL     DEFAULT NULL COMMENT '修改时间',
+    `update_user`      bigint         NULL     DEFAULT NULL COMMENT '修改人',
+    PRIMARY KEY (`config_type_id`)
+) COMMENT = '参数配置类型';
+
+CREATE TABLE `sys_config`
+(
+    `config_id`        bigint         NOT NULL COMMENT '主键',
+    `config_type_code` varchar(100)   NOT NULL COMMENT '参数配置类型编码',
+    `config_name`      varchar(255)   NOT NULL COMMENT '参数配置名称',
+    `config_code`      varchar(100)   NOT NULL COMMENT '参数配置编码',
+    `config_value`     varchar(3500)  NOT NULL COMMENT '参数配置值',
+    `config_type`      tinyint        NOT NULL COMMENT '参数类型',
+    `visible_flag`     bit(1)         NOT NULL COMMENT '是否可见',
+    `config_sort`      decimal(10, 2) NOT NULL COMMENT '显示排序',
+    `remark`           varchar(255)   NULL     DEFAULT NULL COMMENT '备注',
+    `del_flag`         char(1)        NOT NULL DEFAULT 'N' COMMENT '是否删除(Y=被删除，N=未删除)',
+    `version_flag`     bigint         NULL     DEFAULT NULL COMMENT '乐观锁',
+    `create_time`      datetime(0)    NULL     DEFAULT NULL COMMENT '创建时间',
+    `create_user`      bigint         NULL     DEFAULT NULL COMMENT '创建人',
+    `update_time`      datetime(0)    NULL     DEFAULT NULL COMMENT '修改时间',
+    `update_user`      bigint         NULL     DEFAULT NULL COMMENT '修改人',
+    PRIMARY KEY (`config_id`)
+) COMMENT = '参数配置';

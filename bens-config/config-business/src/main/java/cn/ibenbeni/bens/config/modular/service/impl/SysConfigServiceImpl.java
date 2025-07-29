@@ -5,26 +5,24 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.ibenbeni.bens.cache.api.CacheOperatorApi;
+import cn.ibenbeni.bens.config.api.enums.ConfigTypeEnum;
 import cn.ibenbeni.bens.config.api.exception.ConfigException;
 import cn.ibenbeni.bens.config.api.exception.enums.ConfigExceptionEnum;
-import cn.ibenbeni.bens.config.modular.entity.SysConfig;
+import cn.ibenbeni.bens.config.modular.entity.SysConfigDO;
 import cn.ibenbeni.bens.config.modular.mapper.SysConfigMapper;
-import cn.ibenbeni.bens.config.modular.pojo.request.SysConfigRequest;
+import cn.ibenbeni.bens.config.modular.pojo.request.SysConfigPageReq;
+import cn.ibenbeni.bens.config.modular.pojo.request.SysConfigSaveReq;
 import cn.ibenbeni.bens.config.modular.service.SysConfigService;
-import cn.ibenbeni.bens.db.api.factory.PageFactory;
-import cn.ibenbeni.bens.db.api.factory.PageResultFactory;
+import cn.ibenbeni.bens.config.modular.service.SysConfigTypeService;
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
-import cn.ibenbeni.bens.rule.enums.YesOrNotEnum;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 参数配置服务实现类
@@ -33,132 +31,92 @@ import java.util.List;
  * @time: 2025/6/18 上午10:32
  */
 @Service
-public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig> implements SysConfigService {
+public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfigDO> implements SysConfigService {
+
+    // region 参数校验分组
 
     @Resource(name = "configValueCache")
     private CacheOperatorApi<String> configValueCache;
 
-    @Override
-    public void add(SysConfigRequest sysConfigRequest) {
-        SysConfig sysConfig = BeanUtil.toBean(sysConfigRequest, SysConfig.class);
-        this.save(sysConfig);
+    @Resource
+    private SysConfigMapper configMapper;
 
-        // 更新缓存
-        this.putConfig(sysConfigRequest.getConfigCode(), sysConfigRequest.getConfigValue());
+    @Lazy
+    @Resource
+    private SysConfigTypeService configTypeService;
+
+    // endregion
+
+    // region 参数校验分组
+
+    @Override
+    public Long createConfig(SysConfigSaveReq req) {
+        // 检查参数类型是否存在
+        configTypeService.validateConfigTypeExists(req.getConfigTypeCode());
+        // 校验参数编码唯一
+        validateConfigCodeUnique(null, req.getConfigCode());
+
+        SysConfigDO config = BeanUtil.toBean(req, SysConfigDO.class);
+        save(config);
+        return config.getConfigId();
     }
 
     @Override
-    public void del(SysConfigRequest sysConfigRequest) {
-        SysConfig dbSysConfig = this.querySysConfig(sysConfigRequest.getConfigId());
-
-        // 不允许删除系统参数
-        if (YesOrNotEnum.Y.getCode().equals(dbSysConfig.getSysFlag())) {
-            throw new ConfigException(ConfigExceptionEnum.CONFIG_SYS_CAN_NOT_DELETE);
+    public void deleteConfig(Long configId) {
+        SysConfigDO config = validateConfigExists(configId);
+        if (ConfigTypeEnum.SYSTEM.getTypeCode().equals(config.getConfigType())) {
+            throw new ConfigException(ConfigExceptionEnum.CONFIG_CAN_NOT_DELETE_SYSTEM_TYPE);
         }
-        this.removeById(dbSysConfig.getConfigId());
-
-        // 清除缓存
-        this.deleteConfig(dbSysConfig.getConfigCode());
+        removeById(configId);
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void batchDelete(SysConfigRequest sysConfigRequest) {
-        for (Long configId : sysConfigRequest.getConfigIdList()) {
-            SysConfig dbSysConfig = this.querySysConfig(configId);
-
-            // 不允许删除系统参数
-            if (YesOrNotEnum.Y.getCode().equals(dbSysConfig.getSysFlag())) {
-                throw new ConfigException(ConfigExceptionEnum.CONFIG_SYS_CAN_NOT_DELETE);
+    public void deleteConfigList(Set<Long> configIdSet) {
+        List<SysConfigDO> configList = listByIds(configIdSet);
+        configList.forEach(config -> {
+            if (ConfigTypeEnum.SYSTEM.getTypeCode().equals(config.getConfigType())) {
+                throw new ConfigException(ConfigExceptionEnum.CONFIG_CAN_NOT_DELETE_SYSTEM_TYPE);
             }
-            this.removeById(dbSysConfig.getConfigId());
+        });
 
-            // 清除缓存
-            this.deleteConfig(dbSysConfig.getConfigCode());
-        }
+        removeByIds(configIdSet);
     }
 
     @Override
-    public void delByConfigTypeCode(String configTypeCode) {
-        if (StrUtil.isBlank(configTypeCode)) {
-            return;
-        }
-        LambdaQueryWrapper<SysConfig> queryWrapper = Wrappers.lambdaQuery(SysConfig.class)
-                .eq(SysConfig::getConfigTypeCode, configTypeCode);
-        this.remove(queryWrapper);
+    public void updateConfig(SysConfigSaveReq req) {
+        // 校验参数是否存在
+        SysConfigDO config = validateConfigExists(req.getConfigId());
+        // 校验参数编码是否存在
+        validateConfigCodeUnique(req.getConfigId(), req.getConfigCode());
+
+        BeanUtil.copyProperties(req, config);
+        updateById(config);
     }
 
     @Override
-    public void edit(SysConfigRequest sysConfigRequest) {
-        SysConfig dbSysConfig = this.querySysConfig(sysConfigRequest.getConfigId());
-        BeanUtil.copyProperties(sysConfigRequest, dbSysConfig);
-
-        // 不允许修改参数配置编码、参数配置类型编码
-        dbSysConfig.setConfigTypeCode(null);
-        dbSysConfig.setConfigCode(null);
-
-        this.updateById(dbSysConfig);
-
-        // 更新缓存
-        this.putConfig(sysConfigRequest.getConfigCode(), sysConfigRequest.getConfigValue());
+    public SysConfigDO getConfig(Long configId) {
+        return getById(configId);
     }
 
     @Override
-    public SysConfig detail(SysConfigRequest sysConfigRequest) {
-        return this.querySysConfig(sysConfigRequest.getConfigId());
+    public SysConfigDO getConfigByCode(String configCode) {
+        return configMapper.getConfigByCode(configCode);
     }
 
     @Override
-    public List<SysConfig> findList(SysConfigRequest sysConfigRequest) {
-        LambdaQueryWrapper<SysConfig> queryWrapper = this.createWrapper(sysConfigRequest)
-                .select(SysConfig::getConfigId, SysConfig::getConfigName, SysConfig::getConfigCode, SysConfig::getConfigValue, SysConfig::getSysFlag);
-        return this.list(queryWrapper);
+    public long countByConfigTypeCode(String configTypeCode) {
+        return configMapper.countByConfigTypeCode(configTypeCode);
     }
 
     @Override
-    public PageResult<SysConfig> findPage(SysConfigRequest sysConfigRequest) {
-        LambdaQueryWrapper<SysConfig> queryWrapper = this.createWrapper(sysConfigRequest)
-                .select(SysConfig::getConfigId, SysConfig::getConfigName, SysConfig::getConfigCode, SysConfig::getConfigValue, SysConfig::getSysFlag);
-        Page<SysConfig> page = this.page(PageFactory.defaultPage(), queryWrapper);
-        return PageResultFactory.createPageResult(page);
+    public List<SysConfigDO> listByConfigTypeCode(Set<String> configTypeCode) {
+        return configMapper.listByConfigTypeCode(configTypeCode);
     }
 
     @Override
-    public String getConfigValueByConfigCode(String configCode) {
-        if (StrUtil.isBlank(configCode)) {
-            return null;
-        }
-        LambdaQueryWrapper<SysConfig> queryWrapper = Wrappers.lambdaQuery(SysConfig.class)
-                .eq(SysConfig::getConfigCode, configCode);
-        SysConfig dbSysConfig = this.getOne(queryWrapper, false);
-        return dbSysConfig != null ? dbSysConfig.getConfigValue() : null;
-    }
-
-    private SysConfig querySysConfig(Long configId) {
-        SysConfig dbSysConfig = this.getById(configId);
-        if (dbSysConfig == null) {
-            throw new ConfigException(ConfigExceptionEnum.CONFIG_NOT_EXIST, "id: " + configId);
-        }
-        return dbSysConfig;
-    }
-
-    private LambdaQueryWrapper<SysConfig> createWrapper(SysConfigRequest sysConfigRequest) {
-        return Wrappers.lambdaQuery(SysConfig.class)
-                .eq(StrUtil.isNotBlank(sysConfigRequest.getConfigTypeCode()), SysConfig::getConfigTypeCode, sysConfigRequest.getConfigTypeCode())
-                .eq(StrUtil.isNotBlank(sysConfigRequest.getConfigCode()), SysConfig::getConfigCode, sysConfigRequest.getConfigCode())
-                .eq(StrUtil.isNotBlank(sysConfigRequest.getConfigName()), SysConfig::getConfigName, sysConfigRequest.getConfigName())
-                .eq(ObjectUtil.isNotEmpty(sysConfigRequest.getSysFlag()), SysConfig::getSysFlag, sysConfigRequest.getSysFlag())
-                .orderByAsc(SysConfig::getConfigSort);
-    }
-
-    @Override
-    public void putConfig(String key, String value) {
-        configValueCache.put(key, value);
-    }
-
-    @Override
-    public void deleteConfig(String key) {
-        configValueCache.remove(key);
+    public PageResult<SysConfigDO> getConfigPage(SysConfigPageReq req) {
+        return configMapper.selectPage(req);
     }
 
     @Override
@@ -184,5 +142,32 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
         T configValue = this.getConfigValueNullable(configCode, clazz);
         return ObjectUtil.isNotEmpty(configValue) ? configValue : defaultValue;
     }
+
+    // endregion
+
+    // region 私有方法
+
+    private void validateConfigCodeUnique(Long configId, String configCode) {
+        SysConfigDO config = configMapper.getConfigByCode(configCode);
+        if (config == null) {
+            return;
+        }
+        if (configId == null) {
+            throw new ConfigException(ConfigExceptionEnum.CONFIG_CODE_DUPLICATE);
+        }
+        if (!config.getConfigId().equals(configId)) {
+            throw new ConfigException(ConfigExceptionEnum.CONFIG_CODE_DUPLICATE);
+        }
+    }
+
+    private SysConfigDO validateConfigExists(Long configId) {
+        SysConfigDO config = getById(configId);
+        if (config == null) {
+            throw new ConfigException(ConfigExceptionEnum.CONFIG_NOT_EXIST);
+        }
+        return config;
+    }
+
+    // endregion
 
 }

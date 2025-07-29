@@ -76,12 +76,48 @@ public enum ConfigExceptionEnum implements AbstractExceptionEnum {
     /**
      * 系统配置类型不存在
      */
-    CONFIG_TYPE_NOT_EXIST(RuleConstants.BUSINESS_ERROR_TYPE_CODE + ConfigConstants.CONFIG_EXCEPTION_STEP_CODE + "13", "系统配置类型表不存在该配置类型，配置名称：{}，系统将使用默认配置"),
+    CONFIG_TYPE_NOT_EXIST(RuleConstants.BUSINESS_ERROR_TYPE_CODE + ConfigConstants.CONFIG_EXCEPTION_STEP_CODE + "13", "系统配置类型表不存在该配置类型"),
 
     /**
      * 删除失败，不能删除系统配置类型
      */
     CONFIG_TYPE_SYS_CAN_NOT_DELETE(RuleConstants.BUSINESS_ERROR_TYPE_CODE + ConfigConstants.CONFIG_EXCEPTION_STEP_CODE + "14", "删除失败，不能删除系统配置类型"),
+
+    /**
+     * 系统配置类型编码重复
+     */
+    CONFIG_TYPE_CODE_DUPLICATE(RuleConstants.BUSINESS_ERROR_TYPE_CODE + ConfigConstants.CONFIG_EXCEPTION_STEP_CODE + "13", "系统配置类型编码重复"),
+
+    /**
+     * 系统配置类型参数错误
+     */
+    CONFIG_TYPE_PARAM_ERROR(RuleConstants.BUSINESS_ERROR_TYPE_CODE + ConfigConstants.CONFIG_EXCEPTION_STEP_CODE + "13", "系统配置类型参数错误"),
+
+    /**
+     * 系统参数类型配置不允许删除
+     */
+    CONFIG_TYPE_CAN_NOT_DELETE_SYSTEM_TYPE(RuleConstants.BUSINESS_ERROR_TYPE_CODE + ConfigConstants.CONFIG_EXCEPTION_STEP_CODE + "09", "系统参数类型配置不允许删除"),
+
+    /**
+     * 系统编码重复
+     */
+    CONFIG_CODE_DUPLICATE(RuleConstants.BUSINESS_ERROR_TYPE_CODE + ConfigConstants.CONFIG_EXCEPTION_STEP_CODE + "13", "系统编码重复"),
+
+
+    /**
+     * 系统配置不允许删除
+     */
+    CONFIG_CAN_NOT_DELETE_SYSTEM_TYPE(RuleConstants.BUSINESS_ERROR_TYPE_CODE + ConfigConstants.CONFIG_EXCEPTION_STEP_CODE + "09", "系统配置不允许删除"),
+
+    /**
+     * 系统类型下存在参数,不允许删除
+     */
+    DICT_TYPE_HAS_CHILDREN(RuleConstants.BUSINESS_ERROR_TYPE_CODE + ConfigConstants.CONFIG_EXCEPTION_STEP_CODE + "09", "系统类型下存在参数,不允许删除"),
+
+    /**
+     * 获取参数配置失败,原因:不允许获取不可见配置
+     */
+    CONFIG_GET_VALUE_ERROR_IF_VISIBLE(RuleConstants.BUSINESS_ERROR_TYPE_CODE + ConfigConstants.CONFIG_EXCEPTION_STEP_CODE + "09", "获取参数配置失败,原因:不允许获取不可见配置"),
 
     ;
 

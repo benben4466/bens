@@ -1,11 +1,13 @@
 package cn.ibenbeni.bens.config.modular.service;
 
-import cn.ibenbeni.bens.config.modular.entity.SysConfigType;
-import cn.ibenbeni.bens.config.modular.pojo.request.SysConfigTypeRequest;
+import cn.ibenbeni.bens.config.api.exception.ConfigException;
+import cn.ibenbeni.bens.config.modular.entity.SysConfigTypeDO;
+import cn.ibenbeni.bens.config.modular.pojo.request.SysConfigTypePageReq;
+import cn.ibenbeni.bens.config.modular.pojo.request.SysConfigTypeSaveReq;
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
 import com.baomidou.mybatisplus.extension.service.IService;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * 参数配置类型服务类
@@ -13,36 +15,58 @@ import java.util.List;
  * @author: benben
  * @time: 2025/6/18 下午10:33
  */
-public interface SysConfigTypeService extends IService<SysConfigType> {
+public interface SysConfigTypeService extends IService<SysConfigTypeDO> {
 
     /**
-     * 新增
+     * 创建参数配置类型
+     *
+     * @return 参数配置类型ID
      */
-    void add(SysConfigTypeRequest sysConfigTypeRequest);
+    Long createConfigType(SysConfigTypeSaveReq req);
 
     /**
-     * 删除
+     * 删除参数配置类型
+     *
+     * @param configTypeId 参数配置类型ID
      */
-    void del(SysConfigTypeRequest sysConfigTypeRequest);
+    void deleteConfigType(Long configTypeId);
 
     /**
-     * 编辑
+     * 批量删除参数配置类型
+     *
+     * @param configTypeIdSet 参数配置类型ID集合
      */
-    void edit(SysConfigTypeRequest sysConfigTypeRequest);
+    void deleteConfigType(Set<Long> configTypeIdSet);
 
     /**
-     * 查询详情
+     * 更新参数配置类型
      */
-    SysConfigType detail(SysConfigTypeRequest sysConfigTypeRequest);
+    void updateConfigType(SysConfigTypeSaveReq req);
 
     /**
-     * 查询列表
+     * 查询参数配置类型
+     *
+     * @param configTypeId 参数配置类型ID
      */
-    List<SysConfigType> findList(SysConfigTypeRequest sysConfigTypeRequest);
+    SysConfigTypeDO getConfigType(Long configTypeId);
 
     /**
-     * 查询列表（分页）
+     * 根据参数配置类型编码查询参数配置类型
+     *
+     * @param configTypeCode 参数配置类型编码
      */
-    PageResult<SysConfigType> findPage(SysConfigTypeRequest sysConfigTypeRequest);
+    SysConfigTypeDO getConfigTypeByCode(String configTypeCode);
+
+    /**
+     * 分页查询参数配置类型
+     */
+    PageResult<SysConfigTypeDO> getConfigTypePage(SysConfigTypePageReq req);
+
+    /**
+     * 校验参数配置类型是否存在
+     *
+     * @param configTypeCode 参数配置类型编码
+     */
+    SysConfigTypeDO validateConfigTypeExists(String configTypeCode) throws ConfigException;
 
 }
