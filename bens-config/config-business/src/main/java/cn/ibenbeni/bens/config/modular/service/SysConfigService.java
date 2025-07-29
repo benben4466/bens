@@ -1,12 +1,14 @@
 package cn.ibenbeni.bens.config.modular.service;
 
 import cn.ibenbeni.bens.config.api.ConfigApi;
-import cn.ibenbeni.bens.config.modular.entity.SysConfig;
-import cn.ibenbeni.bens.config.modular.pojo.request.SysConfigRequest;
+import cn.ibenbeni.bens.config.modular.entity.SysConfigDO;
+import cn.ibenbeni.bens.config.modular.pojo.request.SysConfigPageReq;
+import cn.ibenbeni.bens.config.modular.pojo.request.SysConfigSaveReq;
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 参数配置服务类
@@ -14,51 +16,65 @@ import java.util.List;
  * @author: benben
  * @time: 2025/6/18 上午10:31
  */
-public interface SysConfigService extends IService<SysConfig>, ConfigApi {
+public interface SysConfigService extends IService<SysConfigDO>, ConfigApi {
 
     /**
-     * 新增
+     * 创建参数配置
+     *
+     * @return 参数ID
      */
-    void add(SysConfigRequest sysConfigRequest);
+    Long createConfig(SysConfigSaveReq req);
 
     /**
-     * 删除
+     * 删除参数配置
+     *
+     * @param configId 参数ID
      */
-    void del(SysConfigRequest sysConfigRequest);
+    void deleteConfig(Long configId);
 
     /**
-     * 批量删除
+     * 批量删除参数配置
+     *
+     * @param configIdSet 参数ID集合
      */
-    void batchDelete(SysConfigRequest sysConfigRequest);
+    void deleteConfigList(Set<Long> configIdSet);
 
     /**
-     * 删除参数配置类型下所有参数配置
+     * 修改参数配置
      */
-    void delByConfigTypeCode(String configTypeCode);
+    void updateConfig(SysConfigSaveReq req);
 
     /**
-     * 编辑
+     * 获取参数配置
+     *
+     * @param configId 参数ID
      */
-    void edit(SysConfigRequest sysConfigRequest);
+    SysConfigDO getConfig(Long configId);
 
     /**
-     * 查询详情
+     * 根据参数编码获取参数配置
+     *
+     * @param configCode 参数编码
      */
-    SysConfig detail(SysConfigRequest sysConfigRequest);
+    SysConfigDO getConfigByCode(String configCode);
 
     /**
-     * 查询列表
+     * 获取参数类型下，参数数量
+     *
+     * @param configTypeCode 参数类型编码
      */
-    List<SysConfig> findList(SysConfigRequest sysConfigRequest);
+    long countByConfigTypeCode(String configTypeCode);
 
     /**
-     * 查询列表（分页）
+     * 根据参数类型编码集合获取参数列表
+     *
+     * @param configTypeCode 参数类型编码集合
      */
-    PageResult<SysConfig> findPage(SysConfigRequest sysConfigRequest);
+    List<SysConfigDO> listByConfigTypeCode(Set<String> configTypeCode);
 
     /**
-     * 根据参数配置编码获取参数配置值
+     * 获取参数配置分页
      */
-    String getConfigValueByConfigCode(String configCode);
+    PageResult<SysConfigDO> getConfigPage(SysConfigPageReq req);
 
 }

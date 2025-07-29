@@ -79,6 +79,22 @@ public class CollectionUtils {
                 .collect(Collectors.toMap(keyFunc, valueFunc, mergeFunc, supplier));
     }
 
+    /**
+     * 将集合按照keyFunc进行分组
+     *
+     * @param from    待转换集合
+     * @param keyFunc 获取key的方法
+     * @param <T>     待转换元素类型
+     * @param <R>     目标key类型
+     * @return 目标Map
+     */
+    public static <T, R> Map<R, Long> convertMapGroup(Collection<T> from, Function<T, R> keyFunc) {
+        if (CollUtil.isEmpty(from)) {
+            return new HashMap<>();
+        }
+        return from.stream().collect(Collectors.groupingBy(keyFunc, Collectors.counting()));
+    }
+
     public static <T, R> Set<R> convertSet(Collection<T> from, Function<T, R> func) {
         if (CollUtil.isEmpty(from)) {
             return new HashSet<>();
