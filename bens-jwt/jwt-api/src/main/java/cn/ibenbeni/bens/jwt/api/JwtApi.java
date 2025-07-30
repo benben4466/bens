@@ -30,4 +30,25 @@ public interface JwtApi {
      */
     void validateToken(String token) throws JwtException;
 
+    /**
+     * 校验JWT Token是否正确，若有异常抛出JwtException
+     * <p>
+     * JWT Token不正确情况
+     * 1.JWT Token过期
+     * 2.JWT 自身错误：
+     * </p>
+     *
+     * @param token Token
+     * @throws JwtException JWT异常
+     */
+    void validateTokenWithException(String token) throws JwtException;
+
+    /**
+     * 校验JWT Token是否过期
+     *
+     * @param token Token
+     * @return true：过期; false：未过期;
+     */
+    boolean validateTokenIsExpired(String token);
+
 }
