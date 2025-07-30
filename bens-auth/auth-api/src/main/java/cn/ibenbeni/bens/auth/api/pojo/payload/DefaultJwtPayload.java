@@ -1,4 +1,4 @@
-package cn.ibenbeni.bens.auth.customize.pojo.payload;
+package cn.ibenbeni.bens.auth.api.pojo.payload;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -4,13 +4,10 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
-import cn.ibenbeni.bens.auth.api.exception.AuthException;
-import cn.ibenbeni.bens.auth.api.exception.enums.AuthExceptionEnum;
 import cn.ibenbeni.bens.auth.api.expander.AuthConfigExpander;
-import cn.ibenbeni.bens.auth.customize.pojo.payload.DefaultJwtPayload;
+import cn.ibenbeni.bens.auth.api.pojo.payload.DefaultJwtPayload;
 import cn.ibenbeni.bens.auth.customize.token.TokenService;
 import cn.ibenbeni.bens.jwt.api.JwtApi;
-import cn.ibenbeni.bens.jwt.api.exception.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Service;
@@ -50,14 +47,20 @@ public class AuthJwtTokenServiceImpl implements TokenService {
     }
 
     @Override
-    public DefaultJwtPayload validateAccessToken(String token) throws AuthException {
+    public boolean validateAccessToken(String token) {
         try {
             jwtApi.validateToken(token);
-            Map<String, Object> jwtPayloadClaims = jwtApi.getJwtPayloadClaims(token);
-            return BeanUtil.toBean(jwtPayloadClaims, DefaultJwtPayload.class);
+            jwtApi.getJwtPayloadClaims(token);
+            return true;
         } catch (Exception ex) {
-            throw  new AuthException(AuthExceptionEnum.AUTH_EXPIRED_ERROR);
+            return false;
         }
+    }
+
+    @Override
+    public DefaultJwtPayload getDefaultPayload(String token) {
+        Map<String, Object> jwtPayload = jwtApi.getJwtPayloadClaims(token);
+        return BeanUtil.toBeanIgnoreError(jwtPayload, DefaultJwtPayload.class);
     }
 
 }

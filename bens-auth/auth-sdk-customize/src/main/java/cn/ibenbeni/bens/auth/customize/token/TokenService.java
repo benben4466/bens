@@ -1,7 +1,6 @@
 package cn.ibenbeni.bens.auth.customize.token;
 
-import cn.ibenbeni.bens.auth.api.exception.AuthException;
-import cn.ibenbeni.bens.auth.customize.pojo.payload.DefaultJwtPayload;
+import cn.ibenbeni.bens.auth.api.pojo.payload.DefaultJwtPayload;
 import cn.ibenbeni.bens.jwt.api.exception.JwtException;
 
 /**
@@ -29,6 +28,14 @@ public interface TokenService {
      * @param token JWT Token
      * @throws JwtException JWT相关错误
      */
-    DefaultJwtPayload validateAccessToken(String token) throws AuthException;
+    boolean validateAccessToken(String token);
+
+    /**
+     * 获取JWT的payload
+     *
+     * @param token Token
+     * @return 默认JWT的payload
+     */
+    DefaultJwtPayload getDefaultPayload(String token);
 
 }

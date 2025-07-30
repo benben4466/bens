@@ -3,15 +3,14 @@ package cn.ibenbeni.bens.auth.customize.factory;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
-import cn.ibenbeni.bens.auth.api.SessionManagerApi;
+import cn.ibenbeni.bens.auth.api.AuthServiceApi;
 import cn.ibenbeni.bens.auth.api.context.LoginUserHolder;
 import cn.ibenbeni.bens.auth.api.exception.AuthException;
 import cn.ibenbeni.bens.auth.api.exception.enums.AuthExceptionEnum;
 import cn.ibenbeni.bens.auth.api.pojo.login.LoginUser;
+import cn.ibenbeni.bens.auth.api.pojo.payload.DefaultJwtPayload;
 import cn.ibenbeni.bens.auth.api.util.CommonLoginUserUtils;
-import cn.ibenbeni.bens.auth.customize.pojo.payload.DefaultJwtPayload;
 import cn.ibenbeni.bens.auth.customize.pojo.permission.MethodPermissionVerification;
-import cn.ibenbeni.bens.auth.customize.token.TokenService;
 import cn.ibenbeni.bens.resource.api.annotation.*;
 import cn.ibenbeni.bens.rule.util.DateUtils;
 import cn.ibenbeni.bens.sys.api.PermissionApi;
@@ -162,7 +161,6 @@ public class PermissionVerificationFactory {
     public static void permissionVerification(MethodPermissionVerification verification) {
         String userToken = null;
         if (verification.getRequiredLogin()) {
-            validateToken();
             try {
                 userToken = CommonLoginUserUtils.getToken();
             } catch (Exception ex) {
@@ -190,8 +188,8 @@ public class PermissionVerificationFactory {
     }
 
     public static LoginUser buildLoginUserByToken(String userToken) {
-        TokenService tokenService = SpringUtil.getBean(TokenService.class);
-        DefaultJwtPayload defaultJwtPayload = tokenService.validateAccessToken(userToken);
+        AuthServiceApi authServiceApi = SpringUtil.getBean(AuthServiceApi.class);
+        DefaultJwtPayload defaultJwtPayload = authServiceApi.validateToken(userToken);
         if (defaultJwtPayload == null) {
             throw new AuthException(AuthExceptionEnum.TOKEN_PARSE_ERROR);
         }
@@ -202,23 +200,6 @@ public class PermissionVerificationFactory {
                 .token(userToken)
                 .expiresTime(DateUtils.convertLocalDateTime(defaultJwtPayload.getExpirationTimestamp()))
                 .build();
-    }
-
-    /**
-     * 校验用户Token
-     */
-    private static void validateToken() {
-        // 获取用户Token
-        String userToken = CommonLoginUserUtils.getToken();
-        // 校验Token是否合法
-        TokenService tokenService = SpringUtil.getBean(TokenService.class);
-        tokenService.validateAccessToken(userToken);
-        // 用户校验用户是否已退出登陆
-        SessionManagerApi sessionManagerApi = SpringUtil.getBean(SessionManagerApi.class);
-        LoginUser loginUser = sessionManagerApi.getSession(userToken);
-        if (loginUser == null) {
-            throw new AuthException(AuthExceptionEnum.AUTH_EXPIRED_ERROR);
-        }
     }
 
 }

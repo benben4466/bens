@@ -49,10 +49,27 @@ public class JwtTokenOperator implements JwtApi {
         }
     }
 
+    @Override
+    public void validateTokenWithException(String token) throws JwtException {
+        // 判断JWT是否过期
+        boolean tokenIsExpired = validateTokenIsExpired(token);
+        if (tokenIsExpired) {
+            throw new JwtException(JwtExceptionEnum.JWT_EXPIRED_ERROR);
+        }
+
+        // 判断JWT自身是否正确
+        try {
+            getJwtPayloadClaims(token);
+        } catch (io.jsonwebtoken.JwtException ex) {
+            throw new JwtException(JwtExceptionEnum.JWT_PARSE_ERROR);
+        }
+    }
+
     /**
      * 校验Token是否过期
      */
-    private boolean validateTokenIsExpired(String token) {
+    @Override
+    public boolean validateTokenIsExpired(String token) {
         try {
             Claims claims = getJwtPayloadClaims(token);
             Date expiration = claims.getExpiration();

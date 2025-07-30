@@ -1,5 +1,6 @@
 package cn.ibenbeni.bens.auth.starter;
 
+import cn.ibenbeni.bens.auth.api.AuthServiceApi;
 import cn.ibenbeni.bens.auth.api.SessionManagerApi;
 import cn.ibenbeni.bens.auth.api.constants.PasswordEncryptionConstants;
 import cn.ibenbeni.bens.auth.api.expander.AuthConfigExpander;
@@ -57,9 +58,9 @@ public class AuthAutoConfiguration {
      * 注入权限过滤器
      */
     @Bean
-    public FilterRegistrationBean<TokenAndPermissionFilter> permissionFilterFilterRegistrationBean(RequestMappingHandlerMapping handlerMapping) {
+    public FilterRegistrationBean<TokenAndPermissionFilter> permissionFilterFilterRegistrationBean(RequestMappingHandlerMapping handlerMapping, AuthServiceApi authServiceApi) {
         FilterRegistrationBean<TokenAndPermissionFilter> bean = new FilterRegistrationBean<>();
-        bean.setFilter(new TokenAndPermissionFilter(handlerMapping));
+        bean.setFilter(new TokenAndPermissionFilter(handlerMapping, authServiceApi));
         bean.addUrlPatterns("/*");
         bean.setName(TokenAndPermissionFilter.NAME);
         bean.setOrder(WebFilterOrderConstants.PERMISSION_AUTHENTICATION_FILTER);

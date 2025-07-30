@@ -1,8 +1,10 @@
 package cn.ibenbeni.bens.auth.customize.filter;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.ibenbeni.bens.auth.api.AuthServiceApi;
 import cn.ibenbeni.bens.auth.api.exception.AuthException;
 import cn.ibenbeni.bens.auth.api.exception.enums.AuthExceptionEnum;
+import cn.ibenbeni.bens.auth.api.util.CommonLoginUserUtils;
 import cn.ibenbeni.bens.auth.customize.factory.PermissionVerificationFactory;
 import cn.ibenbeni.bens.auth.customize.pojo.permission.MethodPermissionVerification;
 import cn.ibenbeni.bens.resource.api.exception.ResourceException;
@@ -36,6 +38,8 @@ public class TokenAndPermissionFilter extends OncePerRequestFilter {
      */
     private final RequestMappingHandlerMapping handlerMapping;
 
+    private final AuthServiceApi authServiceApi;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
@@ -58,6 +62,11 @@ public class TokenAndPermissionFilter extends OncePerRequestFilter {
                     // MethodPermissionVerification所有属性为空，则说明未使用资源接口
                     if (BeanUtil.isEmpty(permissionVerification)) {
                         throw new AuthException(AuthExceptionEnum.NOT_USED_RESOURCE_INTERFACE);
+                    }
+
+                    // 校验Token信息
+                    if (permissionVerification.getRequiredLogin() || permissionVerification.getRequiredPermission()) {
+                        authServiceApi.validateToken(CommonLoginUserUtils.getToken());
                     }
 
                     // 校验

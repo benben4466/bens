@@ -1,7 +1,7 @@
 package cn.ibenbeni.bens.auth.customize.auth;
 
 import cn.ibenbeni.bens.auth.api.LoginUserApi;
-import cn.ibenbeni.bens.auth.api.context.LoginUserHolder;
+import cn.ibenbeni.bens.auth.api.util.CommonLoginUserUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,7 +12,7 @@ public class LoginUserImpl implements LoginUserApi {
 
     @Override
     public String getToken() {
-        return LoginUserHolder.get().getToken();
+        return CommonLoginUserUtils.getToken();
     }
 
 }

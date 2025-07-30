@@ -8,7 +8,7 @@ import cn.ibenbeni.bens.auth.api.password.PasswordEncryptionStrategy;
 import cn.ibenbeni.bens.auth.api.pojo.auth.AuthLoginReq;
 import cn.ibenbeni.bens.auth.api.pojo.auth.AuthLoginResp;
 import cn.ibenbeni.bens.auth.api.pojo.login.LoginUser;
-import cn.ibenbeni.bens.auth.customize.pojo.payload.DefaultJwtPayload;
+import cn.ibenbeni.bens.auth.api.pojo.payload.DefaultJwtPayload;
 import cn.ibenbeni.bens.auth.customize.token.TokenService;
 import cn.ibenbeni.bens.rule.util.DateUtils;
 import cn.ibenbeni.bens.sys.api.SysUserServiceApi;
