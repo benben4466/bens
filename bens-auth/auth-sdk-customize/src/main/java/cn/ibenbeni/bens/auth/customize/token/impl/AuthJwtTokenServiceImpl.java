@@ -4,6 +4,8 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
+import cn.ibenbeni.bens.auth.api.exception.AuthException;
+import cn.ibenbeni.bens.auth.api.exception.enums.AuthExceptionEnum;
 import cn.ibenbeni.bens.auth.api.expander.AuthConfigExpander;
 import cn.ibenbeni.bens.auth.customize.pojo.payload.DefaultJwtPayload;
 import cn.ibenbeni.bens.auth.customize.token.TokenService;
@@ -48,13 +50,13 @@ public class AuthJwtTokenServiceImpl implements TokenService {
     }
 
     @Override
-    public DefaultJwtPayload validateAccessToken(String token) throws JwtException {
+    public DefaultJwtPayload validateAccessToken(String token) throws AuthException {
         try {
             jwtApi.validateToken(token);
             Map<String, Object> jwtPayloadClaims = jwtApi.getJwtPayloadClaims(token);
             return BeanUtil.toBean(jwtPayloadClaims, DefaultJwtPayload.class);
         } catch (Exception ex) {
-            return null;
+            throw  new AuthException(AuthExceptionEnum.AUTH_EXPIRED_ERROR);
         }
     }
 
