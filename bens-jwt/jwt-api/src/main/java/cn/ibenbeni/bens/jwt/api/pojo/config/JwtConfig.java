@@ -18,7 +18,7 @@ public class JwtConfig {
      * JWT密钥
      */
     // TODO JWT密钥可配置
-    private String jwtSecret = "123456";
+    private String jwtSecret = "123456789abc123456789abc123456789abc";
 
     /**
      * 过期时间

@@ -3,6 +3,7 @@ package cn.ibenbeni.bens.auth.customize.factory;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
+import cn.ibenbeni.bens.auth.api.SessionManagerApi;
 import cn.ibenbeni.bens.auth.api.context.LoginUserHolder;
 import cn.ibenbeni.bens.auth.api.exception.AuthException;
 import cn.ibenbeni.bens.auth.api.exception.enums.AuthExceptionEnum;
@@ -161,6 +162,7 @@ public class PermissionVerificationFactory {
     public static void permissionVerification(MethodPermissionVerification verification) {
         String userToken = null;
         if (verification.getRequiredLogin()) {
+            validateToken();
             try {
                 userToken = CommonLoginUserUtils.getToken();
             } catch (Exception ex) {
@@ -200,6 +202,23 @@ public class PermissionVerificationFactory {
                 .token(userToken)
                 .expiresTime(DateUtils.convertLocalDateTime(defaultJwtPayload.getExpirationTimestamp()))
                 .build();
+    }
+
+    /**
+     * 校验用户Token
+     */
+    private static void validateToken() {
+        // 获取用户Token
+        String userToken = CommonLoginUserUtils.getToken();
+        // 校验Token是否合法
+        TokenService tokenService = SpringUtil.getBean(TokenService.class);
+        tokenService.validateAccessToken(userToken);
+        // 用户校验用户是否已退出登陆
+        SessionManagerApi sessionManagerApi = SpringUtil.getBean(SessionManagerApi.class);
+        LoginUser loginUser = sessionManagerApi.getSession(userToken);
+        if (loginUser == null) {
+            throw new AuthException(AuthExceptionEnum.AUTH_EXPIRED_ERROR);
+        }
     }
 
 }
