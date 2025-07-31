@@ -7,6 +7,7 @@ import cn.ibenbeni.bens.db.api.pojo.sort.SortingField;
 import cn.ibenbeni.bens.db.api.util.MyBatisUtils;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.yulichang.base.MPJBaseMapper;
@@ -25,6 +26,16 @@ import java.util.List;
  * @time: 2025/7/6 上午9:10
  */
 public interface BaseMapperX<T> extends MPJBaseMapper<T> {
+
+    /**
+     * 全表批量更新
+     *
+     * @param updateDO 更新数据
+     * @return 批量更新的数量
+     */
+    default int updateBatch(T updateDO) {
+        return update(updateDO, new QueryWrapper<>());
+    }
 
     /**
      * 根据实体字段条件，查询一条记录 (单参数相等字段查询)

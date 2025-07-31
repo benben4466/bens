@@ -5,8 +5,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 /**
  * 文件信息实体
@@ -14,10 +13,13 @@ import lombok.EqualsAndHashCode;
  * @author: benben
  * @time: 2025/6/20 下午4:38
  */
-@TableName(value = "sys_file_info", autoResultMap = true)
+@TableName(value = "sys_file", autoResultMap = true)
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class SysFileInfo extends BaseBusinessEntity {
+public class FileDO extends BaseBusinessEntity {
 
     /**
      * 主键
@@ -26,17 +28,10 @@ public class SysFileInfo extends BaseBusinessEntity {
     private Long fileId;
 
     /**
-     * 文件存储位置
+     * 文件配置编码
      */
-    @TableField(value = "file_location")
-    private Integer fileLocation;
-
-    /**
-     * 文件存储桶
-     * <p>别名：文件夹</p>
-     */
-    @TableField("file_bucket")
-    private String fileBucket;
+    @TableField(value = "file_config_code")
+    private String fileConfigCode;
 
     /**
      * 文件原始名称
@@ -44,13 +39,6 @@ public class SysFileInfo extends BaseBusinessEntity {
      */
     @TableField(value = "file_origin_name")
     private String fileOriginName;
-
-    /**
-     * 文件后缀
-     * <p>如：txt</p>
-     */
-    @TableField("file_suffix")
-    private String fileSuffix;
 
     /**
      * 存储桶中文件名称
@@ -66,27 +54,28 @@ public class SysFileInfo extends BaseBusinessEntity {
     private String filePath;
 
     /**
+     * 文件URL
+     */
+    @TableField("file_url")
+    private String fileUrl;
+
+    /**
      * 文件大小(单位：KB)
      */
     @TableField("file_size_kb")
     private Long fileSizeKb;
 
     /**
-     * 可读格式文件大小
-     * <p>如88.9KB, 4.56MB等</p>
+     * 文件类型
      */
-    @TableField("readable_file_size")
-    private String readableFileSize;
-
-    // -----------------------------------------------------非实体字段-------------------------------------------------
-    // region 非实体字段
+    @TableField("file_type")
+    private String fileType;
 
     /**
-     * 文件访问的URL
+     * 文件后缀
+     * <p>如：txt</p>
      */
-    @TableField(exist = false)
-    private String fileUrl;
-
-    // endregion
+    @TableField("file_suffix")
+    private String fileSuffix;
 
 }
