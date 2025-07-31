@@ -242,3 +242,41 @@ CREATE TABLE `sys_config`
     `update_user`      bigint         NULL     DEFAULT NULL COMMENT '修改人',
     PRIMARY KEY (`config_id`)
 ) COMMENT = '参数配置';
+
+CREATE TABLE `sys_file_config`
+(
+    `file_config_id`   bigint        NOT NULL COMMENT '主键',
+    `file_config_name` varchar(100)  NOT NULL COMMENT '文件配置名称',
+    `file_config_code` varchar(100)  NOT NULL COMMENT '文件配置编码',
+    `file_storage`     tinyint       NOT NULL COMMENT '文件存储器',
+    `master_flag`      bit(1)        NOT NULL COMMENT '是否为主配置',
+    `storage_config`   varchar(4096) NOT NULL COMMENT '存储配置',
+    `remark`           varchar(255)  NULL     DEFAULT NULL COMMENT '备注',
+    `del_flag`         char(1)       NOT NULL DEFAULT 'N' COMMENT '是否删除：Y=被删除，N=未删除',
+    `version_flag`     bigint        NULL     DEFAULT NULL COMMENT '乐观锁',
+    `create_time`      datetime(0)   NULL     DEFAULT NULL COMMENT '创建时间',
+    `create_user`      bigint        NULL     DEFAULT NULL COMMENT '创建人',
+    `update_time`      datetime(0)   NULL     DEFAULT NULL COMMENT '修改时间',
+    `update_user`      bigint        NULL     DEFAULT NULL COMMENT '修改人',
+    PRIMARY KEY (`file_config_id`) USING BTREE
+) COMMENT = '文件配置表';
+
+CREATE TABLE `sys_file`
+(
+    `file_id`          bigint        NOT NULL COMMENT '主键',
+    `file_config_code` varchar(100)  NOT NULL COMMENT '文件配置编码',
+    `file_origin_name` varchar(255)  NOT NULL COMMENT '文件原始名称(上传时候的文件全名)',
+    `file_object_name` varchar(255)  NULL     DEFAULT NULL COMMENT '文件存储名称',
+    `file_path`        varchar(255)  NULL     DEFAULT NULL COMMENT '文件路径',
+    `file_url`         varchar(1024) NOT NULL COMMENT '文件URL',
+    `file_size_kb`     bigint        NULL     DEFAULT NULL COMMENT '文件大小(单位:KB)',
+    `file_type`        varchar(255)  NULL     DEFAULT NULL COMMENT '文件类型',
+    `file_suffix`      varchar(255)  NULL     DEFAULT NULL COMMENT '文件后缀(例如txt)',
+    `del_flag`         char(1)       NOT NULL DEFAULT 'N' COMMENT '是否删除(Y=被删除，N=未删除)',
+    `version_flag`     bigint        NULL     DEFAULT NULL COMMENT '乐观锁',
+    `create_time`      datetime(0)   NULL     DEFAULT NULL COMMENT '创建时间',
+    `create_user`      bigint        NULL     DEFAULT NULL COMMENT '创建人',
+    `update_time`      datetime(0)   NULL     DEFAULT NULL COMMENT '修改时间',
+    `update_user`      bigint        NULL     DEFAULT NULL COMMENT '修改人',
+    PRIMARY KEY (`file_id`)
+) COMMENT = '文件信息';

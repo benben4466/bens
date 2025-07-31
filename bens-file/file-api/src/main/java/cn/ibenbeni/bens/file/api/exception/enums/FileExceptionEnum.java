@@ -48,9 +48,9 @@ public enum FileExceptionEnum implements AbstractExceptionEnum {
     ERROR_FILE(RuleConstants.BUSINESS_ERROR_TYPE_CODE + FileConstants.FILE_EXCEPTION_STEP_CODE + "07", "上传文件操作异常，具体信息为：{}"),
 
     /**
-     * 该条文件信息记录不存在
+     * 文件不存在
      */
-    NOT_EXISTED(RuleConstants.BUSINESS_ERROR_TYPE_CODE + FileConstants.FILE_EXCEPTION_STEP_CODE + "08", "该条文件信息记录不存在，文件id为：{}"),
+    FILE_NOT_EXISTED(RuleConstants.BUSINESS_ERROR_TYPE_CODE + FileConstants.FILE_EXCEPTION_STEP_CODE + "08", "文件不存在"),
 
     /**
      * 获取文件流错误
@@ -95,7 +95,24 @@ public enum FileExceptionEnum implements AbstractExceptionEnum {
     /**
      * 文件不允许被访问
      */
-    FILE_PERMISSION_DENIED(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + FileConstants.FILE_EXCEPTION_STEP_CODE + "17", "文件不允许被访问，请登录后访问");
+    FILE_PERMISSION_DENIED(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + FileConstants.FILE_EXCEPTION_STEP_CODE + "17", "文件不允许被访问，请登录后访问"),
+
+    /**
+     * 文件配置编码重复
+     */
+    FILE_CONFIG_CODE_DUPLICATE(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + FileConstants.FILE_EXCEPTION_STEP_CODE + "16", "文件配置编码重复"),
+
+    /**
+     * 文件配置不存在
+     */
+    FILE_CONFIG_NOT_EXIST(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + FileConstants.FILE_EXCEPTION_STEP_CODE + "16", "文件配置不存在"),
+
+    /**
+     * 主文件配置不允许删除
+     */
+    FILE_CONFIG_DELETE_FAIL_MASTER(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + FileConstants.FILE_EXCEPTION_STEP_CODE + "16", "主文件配置不允许删除"),
+
+    ;
 
     /**
      * 错误编码

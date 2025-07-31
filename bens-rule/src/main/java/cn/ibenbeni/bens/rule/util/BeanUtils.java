@@ -5,6 +5,7 @@ import cn.hutool.core.collection.CollUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Bean工具类
@@ -33,6 +34,14 @@ public class BeanUtils {
             return new ArrayList<>();
         }
         return CollectionUtils.convertList(list, t -> toBean(t, targetType));
+    }
+
+    public static <T> T toBean(Object source, Class<T> targetClass, Consumer<T> peek) {
+        T target = toBean(source, targetClass);
+        if (target != null) {
+            peek.accept(target);
+        }
+        return target;
     }
 
 }
