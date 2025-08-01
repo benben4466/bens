@@ -87,6 +87,10 @@ public class FileConfigDO extends BaseBusinessEntity {
         public Object parse(String json) {
             // 将JSON字符串反序列化为Java对象
             // 获取@type属性值, 再进行解析是为了防止类移动导致解析失败
+
+            // 带有@type属性的JSON字符串, 在反序列化时可以自动识别出类，但是此处为了防止类移动导致解析失败，这里手动获取@type属性值
+            // FileClientConfig fileClientConfig = JSON.parseObject(json, FileClientConfig.class);
+
             JSONObject jsonObj = JSON.parseObject(json);
             String className = jsonObj.getString("@type");
             className = StrUtil.subAfter(className, ".", true);
@@ -100,6 +104,7 @@ public class FileConfigDO extends BaseBusinessEntity {
         @Override
         public String toJson(Object obj) {
             // 将Java对象序列化为JSON字符串
+            // 将@type属性保持到JSON字符串中，方便反序列化时识别类
             return JSON.toJSONString(obj, JSONWriter.Feature.WriteClassName);
         }
 
