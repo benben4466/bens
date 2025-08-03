@@ -48,6 +48,12 @@
             <groupId>com.github.yulichang</groupId>
             <artifactId>mybatis-plus-join-boot-starter</artifactId>
         </dependency>
+
+        <!-- 动态数据源 -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

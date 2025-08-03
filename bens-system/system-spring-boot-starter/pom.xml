@@ -89,13 +89,6 @@
             <version>${revision}</version>
         </dependency>
 
-        <!-- 动态数据源模块-Starter -->
-        <dependency>
-            <groupId>cn.ibenbeni</groupId>
-            <artifactId>ds-container-spring-boot-starter</artifactId>
-            <version>${revision}</version>
-        </dependency>
-
     </dependencies>
 
 </project>

@@ -70,6 +70,7 @@
         <springdoc.version>1.8.0</springdoc.version>
         <knife4j.version>4.5.0</knife4j.version>
         <mybatis-plus.version>3.5.9</mybatis-plus.version>
+        <dynamic-datasource.version>4.3.1</dynamic-datasource.version>
         <mybatis-plus-join.version>1.4.13</mybatis-plus-join.version>
         <sa-token.version>1.43.0</sa-token.version>
     </properties>
@@ -173,6 +174,13 @@
                 <groupId>com.github.yulichang</groupId>
                 <artifactId>mybatis-plus-join-boot-starter</artifactId>
                 <version>${mybatis-plus-join.version}</version>
+            </dependency>
+
+            <!-- 动态数据源 -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+                <version>${dynamic-datasource.version}</version>
             </dependency>
 
             <!-- Sa-Token-权限认证框架 -->
