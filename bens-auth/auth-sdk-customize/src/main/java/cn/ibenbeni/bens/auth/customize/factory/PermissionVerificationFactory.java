@@ -17,7 +17,7 @@ import cn.ibenbeni.bens.sys.api.PermissionApi;
 import org.springframework.core.annotation.AnnotationUtils;
 
 import java.lang.reflect.Method;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -135,7 +135,7 @@ public class PermissionVerificationFactory {
         verification.setRequiredPermission(requiredPermission);
 
         // 权限编码
-        List<String> newRequirePermissionCode = ObjectUtil.defaultIfNull(verification.getRequirePermissionCode(), Collections.emptyList());
+        List<String> newRequirePermissionCode = ObjectUtil.defaultIfNull(verification.getRequirePermissionCode(), new ArrayList<>());
         if (StrUtil.isNotBlank(requirePermissionCode)) {
             newRequirePermissionCode.add(requirePermissionCode);
             verification.setRequirePermissionCode(newRequirePermissionCode);
