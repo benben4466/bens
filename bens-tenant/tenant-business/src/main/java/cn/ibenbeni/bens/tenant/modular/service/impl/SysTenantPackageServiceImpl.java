@@ -17,12 +17,12 @@ import cn.ibenbeni.bens.tenant.modular.entity.SysTenantPackage;
 import cn.ibenbeni.bens.tenant.modular.mapper.SysTenantPackageMapper;
 import cn.ibenbeni.bens.tenant.modular.pojo.request.SysTenantPackageRequest;
 import cn.ibenbeni.bens.tenant.modular.service.SysTenantPackageService;
+import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -61,14 +61,14 @@ public class SysTenantPackageServiceImpl extends ServiceImpl<SysTenantPackageMap
         // TODO 记录日志
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @DSTransactional(rollbackFor = Exception.class)
     @Override
     public void batchDelete(SysTenantPackageRequest sysTenantPackageRequest) {
         this.baseDelete(sysTenantPackageRequest.getPackageIdList());
         // TODO 记录日志
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @DSTransactional(rollbackFor = Exception.class)
     @Override
     public void edit(SysTenantPackageRequest sysTenantPackageRequest) {
         SysTenantPackage tenantPackage = this.queryTenantPackage(sysTenantPackageRequest.getPackageId());

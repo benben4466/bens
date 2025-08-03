@@ -14,9 +14,9 @@ import cn.ibenbeni.bens.config.modular.service.SysConfigService;
 import cn.ibenbeni.bens.config.modular.service.SysConfigTypeService;
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
 import cn.ibenbeni.bens.rule.util.CollectionUtils;
+import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -71,7 +71,7 @@ public class SysConfigTypeServiceImpl extends ServiceImpl<SysConfigTypeMapper, S
         removeById(configTypeId);
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @DSTransactional(rollbackFor = Exception.class)
     @Override
     public void deleteConfigType(Set<Long> configTypeIdSet) {
         if (CollUtil.isEmpty(configTypeIdSet)) {

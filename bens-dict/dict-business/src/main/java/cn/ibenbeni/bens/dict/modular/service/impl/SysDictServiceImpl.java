@@ -14,10 +14,10 @@ import cn.ibenbeni.bens.dict.modular.service.SysDictService;
 import cn.ibenbeni.bens.dict.modular.service.SysDictTypeService;
 import cn.ibenbeni.bens.rule.enums.StatusEnum;
 import cn.ibenbeni.bens.rule.util.CollectionUtils;
+import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -66,7 +66,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDictDO> im
         removeById(dictId);
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @DSTransactional(rollbackFor = Exception.class)
     @Override
     public void deleteDict(Set<Long> dictIdSet) {
         removeBatchByIds(dictIdSet);

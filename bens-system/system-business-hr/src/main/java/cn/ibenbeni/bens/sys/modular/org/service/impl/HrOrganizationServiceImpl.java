@@ -17,9 +17,9 @@ import cn.ibenbeni.bens.sys.modular.org.pojo.request.OrgPageReq;
 import cn.ibenbeni.bens.sys.modular.org.pojo.request.OrganizationSaveReq;
 import cn.ibenbeni.bens.sys.modular.org.pojo.request.OrgListReq;
 import cn.ibenbeni.bens.sys.modular.org.service.HrOrganizationService;
+import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -55,7 +55,7 @@ public class HrOrganizationServiceImpl extends ServiceImpl<HrOrganizationMapper,
         return org.getOrgId();
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @DSTransactional(rollbackFor = Exception.class)
     @Override
     public void deleteOrg(Long orgId) {
         // 校验组织是否存在

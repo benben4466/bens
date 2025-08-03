@@ -20,10 +20,10 @@ import cn.ibenbeni.bens.file.modular.pojo.request.FileConfigSaveReq;
 import cn.ibenbeni.bens.file.modular.service.FileConfigService;
 import cn.ibenbeni.bens.validator.api.util.ValidationUtils;
 import com.alibaba.fastjson2.JSON;
+import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.validation.Validator;
@@ -80,7 +80,7 @@ public class FileConfigServiceImpl extends ServiceImpl<FileConfigMapper, FileCon
         clearCache(fileConfig.getFileConfigCode(), null);
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @DSTransactional(rollbackFor = Exception.class)
     @Override
     public void deleteFileConfig(Set<Long> fileConfigIdSet) {
         List<FileConfigDO> fileConfigList = listByIds(fileConfigIdSet);
@@ -112,7 +112,7 @@ public class FileConfigServiceImpl extends ServiceImpl<FileConfigMapper, FileCon
         clearCache(fileConfig.getFileConfigCode(), null);
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @DSTransactional(rollbackFor = Exception.class)
     @Override
     public void updateFileConfigMaster(Long fileConfigId) {
         // 校验存在

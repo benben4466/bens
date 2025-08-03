@@ -25,6 +25,7 @@ import cn.ibenbeni.bens.sys.modular.user.pojo.vo.UserSaveReqVO;
 import cn.ibenbeni.bens.sys.modular.user.pojo.vo.profile.UserProfileUpdatePasswordReqVO;
 import cn.ibenbeni.bens.sys.modular.user.service.SysUserRoleService;
 import cn.ibenbeni.bens.sys.modular.user.service.SysUserService;
+import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -32,7 +33,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -70,7 +70,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserDO> im
     // -----------------------------------------------------公共方法-------------------------------------------------
     // region 公共方法
 
-    @Transactional(rollbackFor = Exception.class)
+    @DSTransactional(rollbackFor = Exception.class)
     @Override
     public Long createUser(UserSaveReqVO createReqVO) {
         // 校验请求合法性
@@ -93,7 +93,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserDO> im
         return user.getUserId();
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @DSTransactional(rollbackFor = Exception.class)
     @Override
     public void deleteUser(Long id) {
         // 校验用户是否存在
@@ -103,13 +103,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserDO> im
         this.baseRemoveUser(CollectionUtil.set(false, user.getUserId()));
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @DSTransactional(rollbackFor = Exception.class)
     @Override
     public void deleteUserList(List<Long> idList) {
         this.baseRemoveUser(CollectionUtil.newHashSet(idList));
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @DSTransactional(rollbackFor = Exception.class)
     @Override
     public void updateUser(UserSaveReqVO updateReqVO) {
         // 密码不允许在此处修改
@@ -121,7 +121,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserDO> im
         this.updateById(dbUser);
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @DSTransactional(rollbackFor = Exception.class)
     @Override
     public void updateUserPassword(Long id, UserProfileUpdatePasswordReqVO reqVO) {
         this.validateOldPassword(id, reqVO.getOldPassword());

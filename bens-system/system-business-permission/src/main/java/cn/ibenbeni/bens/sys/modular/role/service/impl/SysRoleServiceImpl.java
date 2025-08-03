@@ -19,9 +19,9 @@ import cn.ibenbeni.bens.sys.modular.role.mapper.SysRoleMapper;
 import cn.ibenbeni.bens.sys.modular.role.pojo.request.RolePageReq;
 import cn.ibenbeni.bens.sys.modular.role.pojo.request.RoleSaveReq;
 import cn.ibenbeni.bens.sys.modular.role.service.SysRoleService;
+import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -61,7 +61,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRoleDO> im
         return role.getRoleId();
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @DSTransactional(rollbackFor = Exception.class)
     @Override
     public void deleteRole(Long roleId) {
         // 校验是否可以删除
@@ -71,7 +71,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRoleDO> im
         baseDelete(CollUtil.set(false, roleId));
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @DSTransactional(rollbackFor = Exception.class)
     @Override
     public void deleteRole(Set<Long> roleIdSet) {
         // 校验是否可以删除

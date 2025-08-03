@@ -11,10 +11,10 @@ import cn.ibenbeni.bens.sys.modular.user.entity.SysUserOrgDO;
 import cn.ibenbeni.bens.sys.modular.user.mapper.SysUserOrgMapper;
 import cn.ibenbeni.bens.sys.modular.user.pojo.request.org.UserOrgSaveReq;
 import cn.ibenbeni.bens.sys.modular.user.service.SysUserOrgService;
+import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -71,7 +71,7 @@ public class SysUserOrgServiceImpl extends ServiceImpl<SysUserOrgMapper, SysUser
         this.updateById(userOrgDO);
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @DSTransactional(rollbackFor = Exception.class)
     @Override
     public void updateUserOrg(Long userId, List<SysUserOrgDO> userOrgList) {
         List<SysUserOrgDO> newUserOrgList = this.validateUserOrgParam(userId, userOrgList);

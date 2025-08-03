@@ -6,9 +6,9 @@ import cn.ibenbeni.bens.sys.api.pojo.user.SysUserRoleDTO;
 import cn.ibenbeni.bens.sys.modular.user.entity.SysUserRoleDO;
 import cn.ibenbeni.bens.sys.modular.user.mapper.SysUserRoleMapper;
 import cn.ibenbeni.bens.sys.modular.user.service.SysUserRoleService;
+import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -41,7 +41,7 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
         this.save(userRole);
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @DSTransactional(rollbackFor = Exception.class)
     @Override
     public void bindUserRole(Long userId, Set<Long> roleIdSet) {
         if (CollUtil.isEmpty(roleIdSet)) {
@@ -60,7 +60,7 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUs
         sysUserRoleMapper.deleteListByRoleId(roleId);
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @DSTransactional(rollbackFor = Exception.class)
     @Override
     public void deleteByUserIdAndRoleIdIds(Long userId, Set<Long> roleIdSet) {
         if (CollUtil.isEmpty(roleIdSet)) {

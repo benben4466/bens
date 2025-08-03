@@ -16,9 +16,9 @@ import cn.ibenbeni.bens.sys.modular.menu.mapper.SysMenuMapper;
 import cn.ibenbeni.bens.sys.modular.menu.pojo.request.SysMenuListReq;
 import cn.ibenbeni.bens.sys.modular.menu.pojo.request.SysMenuSaveReq;
 import cn.ibenbeni.bens.sys.modular.menu.service.SysMenuService;
+import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -57,7 +57,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenuDO> im
         return menu.getMenuId();
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @DSTransactional(rollbackFor = Exception.class)
     @Override
     public void deleteMenu(Long menuId) {
         // 校验删除菜单是否存在
@@ -73,7 +73,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenuDO> im
         this.baseDelete(CollUtil.set(false, menuId));
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @DSTransactional(rollbackFor = Exception.class)
     @Override
     public void deleteMenu(Set<Long> idSet) {
         // 校验是否存在子菜单

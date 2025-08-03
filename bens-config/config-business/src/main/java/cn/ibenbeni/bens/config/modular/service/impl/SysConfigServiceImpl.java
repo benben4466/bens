@@ -15,10 +15,10 @@ import cn.ibenbeni.bens.config.modular.pojo.request.SysConfigSaveReq;
 import cn.ibenbeni.bens.config.modular.service.SysConfigService;
 import cn.ibenbeni.bens.config.modular.service.SysConfigTypeService;
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
+import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -70,7 +70,7 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
         removeById(configId);
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @DSTransactional(rollbackFor = Exception.class)
     @Override
     public void deleteConfigList(Set<Long> configIdSet) {
         List<SysConfigDO> configList = listByIds(configIdSet);
