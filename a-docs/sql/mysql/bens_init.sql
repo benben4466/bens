@@ -102,7 +102,7 @@ CREATE TABLE `sys_menu`
     `menu_id`           bigint                                                   NOT NULL COMMENT '主键',
     `menu_parent_id`    bigint                                                   NOT NULL COMMENT '父id，顶级节点的父id是-1',
     `menu_name`         varchar(100)                                             NOT NULL COMMENT '菜单的名称',
-    `permission_code`   varchar(50)                                              NOT NULL COMMENT '权限编码',
+    `permission_code`   varchar(50)                                              NOT NULL DEFAULT '' COMMENT '权限编码',
     `menu_type`         tinyint                                                  NULL     DEFAULT NULL COMMENT '菜单类型',
     `menu_sort`         decimal(20, 2)                                           NOT NULL DEFAULT 100.00 COMMENT '排序',
     `component_path`    varchar(255)                                             NULL     DEFAULT NULL COMMENT '组件地址',
