@@ -22,6 +22,35 @@
             <artifactId>log-api</artifactId>
             <version>${revision}</version>
         </dependency>
+
+        <!-- DAO模块-Mp框架 -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>db-sdk-mp</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- Excel模块-EasyExcel -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>excel-sdk-easyexcel</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- 接口文档-Knife4j -->
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
+            <version>${knife4j.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <!-- 接口文档-Swagger页面 -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>${springdoc.version}</version>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
 </project>

@@ -1,5 +1,9 @@
 package cn.ibenbeni.bens.log.api;
 
+import cn.ibenbeni.bens.log.api.pojo.dto.LoginLogCreateReqDTO;
+
+import javax.validation.Valid;
+
 /**
  * 登录日志api接口
  *
@@ -9,17 +13,8 @@ package cn.ibenbeni.bens.log.api;
 public interface LoginLogServiceApi {
 
     /**
-     * 增加登录成功日志
-     *
-     * @param userId 用户ID
+     * 创建登录日志
      */
-    void loginSuccess(Long userId, String account);
-
-    /**
-     * 增加退出成功日志
-     *
-     * @param userId 用户ID
-     */
-    void loginOutSuccess(Long userId);
+    void createLoginLog(@Valid LoginLogCreateReqDTO req);
 
 }
