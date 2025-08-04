@@ -280,3 +280,24 @@ CREATE TABLE `sys_file`
     `update_user`      bigint        NULL     DEFAULT NULL COMMENT '修改人',
     PRIMARY KEY (`file_id`)
 ) COMMENT = '文件信息';
+
+CREATE TABLE `sys_login_log`
+(
+    `llg_id`       bigint       NOT NULL COMMENT '主键',
+    `llg_type`     int          NOT NULL COMMENT '日志类型',
+    `trace_id`     varchar(64)  NOT NULL DEFAULT '' COMMENT '链路追踪编号',
+    `login_result` tinyint      NOT NULL COMMENT '登陆结果',
+    `user_id`      bigint       NULL     DEFAULT NULL COMMENT '用户ID',
+    `user_account` varchar(50)  NOT NULL DEFAULT '' COMMENT '用户账号',
+    `user_type`    tinyint      NOT NULL DEFAULT 0 COMMENT '用户类型',
+    `login_ip`     varchar(50)  NOT NULL COMMENT '用户登陆IP',
+    `user_agent`   varchar(512) NOT NULL COMMENT '浏览器UA',
+    `del_flag`     char(1)      NOT NULL DEFAULT 'N' COMMENT '删除标记：Y-已删除，N-未删除',
+    `version_flag` bigint       NULL     DEFAULT NULL COMMENT '乐观锁',
+    `create_time`  datetime(0)  NULL     DEFAULT NULL COMMENT '创建时间',
+    `create_user`  bigint       NULL     DEFAULT NULL COMMENT '创建人',
+    `update_time`  datetime(0)  NULL     DEFAULT NULL COMMENT '更新时间',
+    `update_user`  bigint       NULL     DEFAULT NULL COMMENT '更新人',
+    `tenant_id`    bigint       NULL     DEFAULT NULL COMMENT '租户号',
+    PRIMARY KEY (`llg_id`)
+) COMMENT = '系统登录记录';
