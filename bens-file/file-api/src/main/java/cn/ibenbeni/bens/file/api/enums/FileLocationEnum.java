@@ -1,6 +1,10 @@
 package cn.ibenbeni.bens.file.api.enums;
 
+import cn.hutool.core.util.ArrayUtil;
+import cn.ibenbeni.bens.rule.base.ReadableEnum;
 import lombok.Getter;
+
+import java.util.Arrays;
 
 /**
  * 文件存储位置枚举类
@@ -9,7 +13,7 @@ import lombok.Getter;
  * @time: 2025/6/22 上午9:27
  */
 @Getter
-public enum FileLocationEnum {
+public enum FileLocationEnum implements ReadableEnum<FileLocationEnum> {
 
     /**
      * 本地
@@ -32,6 +36,8 @@ public enum FileLocationEnum {
     ALIYUN(4, "阿里云OSS"),
 
     ;
+
+    public static final Integer[] ARRAYS = Arrays.stream(values()).map(FileLocationEnum::getCode).toArray(Integer[]::new);
 
     private final Integer code;
 
@@ -65,6 +71,26 @@ public enum FileLocationEnum {
         }
 
         return false;
+    }
+
+    @Override
+    public Object getKey() {
+        return code;
+    }
+
+    @Override
+    public Object getName() {
+        return platform;
+    }
+
+    @Override
+    public FileLocationEnum parseToEnum(String code) {
+        return ArrayUtil.firstMatch(item -> item.getCode().equals(Integer.valueOf(code)), values());
+    }
+
+    @Override
+    public Object[] compareValueArray() {
+        return ARRAYS;
     }
 
 }

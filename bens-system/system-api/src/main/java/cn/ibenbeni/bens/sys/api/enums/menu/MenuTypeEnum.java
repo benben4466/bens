@@ -5,6 +5,8 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.ibenbeni.bens.rule.base.ReadableEnum;
 import lombok.Getter;
 
+import java.util.Arrays;
+
 /**
  * 菜单类型
  *
@@ -21,6 +23,8 @@ public enum MenuTypeEnum implements ReadableEnum<MenuTypeEnum> {
     BUTTON(3, "按钮"),
 
     ;
+
+    public static final Integer[] ARRAYS = Arrays.stream(values()).map(MenuTypeEnum::getCode).toArray(Integer[]::new);
 
     private final Integer code;
 
@@ -52,6 +56,11 @@ public enum MenuTypeEnum implements ReadableEnum<MenuTypeEnum> {
             }
         }
         return null;
+    }
+
+    @Override
+    public Object[] compareValueArray() {
+        return ARRAYS;
     }
 
 }

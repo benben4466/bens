@@ -35,4 +35,9 @@ public interface ReadableEnum<T> {
      */
     T parseToEnum(String originValue);
 
+    /**
+     * 返回枚举数组
+     */
+    Object[] compareValueArray();
+
 }

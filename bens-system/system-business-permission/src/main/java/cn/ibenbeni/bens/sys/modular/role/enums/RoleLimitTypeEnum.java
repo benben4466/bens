@@ -5,6 +5,8 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.ibenbeni.bens.rule.base.ReadableEnum;
 import lombok.Getter;
 
+import java.util.Arrays;
+
 /**
  * 角色绑定的限制类型
  *
@@ -23,6 +25,8 @@ public enum RoleLimitTypeEnum implements ReadableEnum<RoleLimitTypeEnum> {
      * 菜单功能
      */
     MENU_OPTIONS(2, "菜单功能");
+
+    public static final Integer[] ARRAYS = Arrays.stream(values()).map(RoleLimitTypeEnum::getCode).toArray(Integer[]::new);
 
     private final Integer code;
 
@@ -55,4 +59,10 @@ public enum RoleLimitTypeEnum implements ReadableEnum<RoleLimitTypeEnum> {
         }
         return null;
     }
+
+    @Override
+    public Object[] compareValueArray() {
+        return ARRAYS;
+    }
+
 }

@@ -5,6 +5,8 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.ibenbeni.bens.rule.base.ReadableEnum;
 import lombok.Getter;
 
+import java.util.Arrays;
+
 /**
  * 角色类型
  *
@@ -19,6 +21,8 @@ public enum RoleTypeEnum implements ReadableEnum<RoleTypeEnum> {
     CUSTOM(20, "自定义角色"),
 
     ;
+
+    public static final Integer[] ARRAYS = Arrays.stream(values()).map(RoleTypeEnum::getCode).toArray(Integer[]::new);
 
     private final Integer code;
 
@@ -50,6 +54,11 @@ public enum RoleTypeEnum implements ReadableEnum<RoleTypeEnum> {
             }
         }
         return null;
+    }
+
+    @Override
+    public Object[] compareValueArray() {
+        return ARRAYS;
     }
 
 }

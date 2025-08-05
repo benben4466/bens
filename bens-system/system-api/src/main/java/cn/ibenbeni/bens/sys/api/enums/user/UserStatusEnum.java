@@ -8,6 +8,8 @@ import cn.ibenbeni.bens.sys.api.exception.SysException;
 import cn.ibenbeni.bens.sys.api.exception.enums.UserExceptionEnum;
 import lombok.Getter;
 
+import java.util.Arrays;
+
 /**
  * 用户状态的枚举
  *
@@ -27,6 +29,8 @@ public enum UserStatusEnum implements ReadableEnum<UserStatusEnum> {
     DISABLE(2, "禁用"),
 
     ;
+
+    public static final Integer[] ARRAYS = Arrays.stream(values()).map(UserStatusEnum::getCode).toArray(Integer[]::new);
 
     private final Integer code;
 
@@ -96,6 +100,11 @@ public enum UserStatusEnum implements ReadableEnum<UserStatusEnum> {
             }
         }
         return null;
+    }
+
+    @Override
+    public Object[] compareValueArray() {
+        return ARRAYS;
     }
 
 }
