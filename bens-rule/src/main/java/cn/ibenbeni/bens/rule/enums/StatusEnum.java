@@ -6,6 +6,8 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.ibenbeni.bens.rule.base.ReadableEnum;
 import lombok.Getter;
 
+import java.util.Arrays;
+
 /**
  * 公共状态，一般用来表示开启和关闭
  *
@@ -24,6 +26,8 @@ public enum StatusEnum implements ReadableEnum<StatusEnum> {
      * 禁用
      */
     DISABLE(2, "禁用");
+
+    public static final Integer[] ARRAYS = Arrays.stream(values()).map(StatusEnum::getCode).toArray(Integer[]::new);
 
     // @EnumValue
     // @JsonValue
@@ -75,6 +79,11 @@ public enum StatusEnum implements ReadableEnum<StatusEnum> {
             }
         }
         return null;
+    }
+
+    @Override
+    public Object[] compareValueArray() {
+        return ARRAYS;
     }
 
 }

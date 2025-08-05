@@ -1,8 +1,12 @@
 package cn.ibenbeni.bens.rule.enums.permission;
 
+import cn.hutool.core.util.ArrayUtil;
+import cn.ibenbeni.bens.rule.base.ReadableEnum;
 import cn.ibenbeni.bens.rule.exception.base.ServiceException;
 import cn.ibenbeni.bens.rule.exception.enums.DataScopeExceptionEnum;
 import lombok.Getter;
+
+import java.util.Arrays;
 
 /**
  * 数据范围类型枚举，数据范围的值越小，数据权限越小
@@ -11,7 +15,7 @@ import lombok.Getter;
  * @date 2025/5/25  下午4:12
  */
 @Getter
-public enum DataScopeTypeEnum {
+public enum DataScopeTypeEnum implements ReadableEnum<DataScopeTypeEnum> {
 
     /**
      * 仅本人数据
@@ -44,6 +48,8 @@ public enum DataScopeTypeEnum {
     ALL(50, "全部数据"),
     ;
 
+    public static final Integer[] ARRAYS = Arrays.stream(values()).map(DataScopeTypeEnum::getCode).toArray(Integer[]::new);
+
     private final Integer code;
 
     private final String message;
@@ -62,6 +68,26 @@ public enum DataScopeTypeEnum {
             }
         }
         throw new ServiceException(DataScopeExceptionEnum.DATA_SCOPE_ERROR);
+    }
+
+    @Override
+    public Object getKey() {
+        return code;
+    }
+
+    @Override
+    public Object getName() {
+        return message;
+    }
+
+    @Override
+    public DataScopeTypeEnum parseToEnum(String code) {
+        return ArrayUtil.firstMatch(item -> item.getCode().equals(Integer.valueOf(code)), values());
+    }
+
+    @Override
+    public Object[] compareValueArray() {
+        return ARRAYS;
     }
 
 }

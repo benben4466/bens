@@ -1,6 +1,10 @@
 package cn.ibenbeni.bens.rule.enums;
 
+import cn.hutool.core.util.ArrayUtil;
+import cn.ibenbeni.bens.rule.base.ReadableEnum;
 import lombok.Getter;
+
+import java.util.Arrays;
 
 /**
  * 不同数据库类型的枚举
@@ -10,7 +14,7 @@ import lombok.Getter;
  * @time: 2025/6/16 下午10:23
  */
 @Getter
-public enum DbTypeEnum {
+public enum DbTypeEnum implements ReadableEnum<DbTypeEnum> {
 
     /**
      * MySQL
@@ -22,6 +26,8 @@ public enum DbTypeEnum {
      */
     PG_SQL("jdbc:postgresql", "pgsql", "select version()"),
     ;
+
+    public static final String[] ARRAYS = Arrays.stream(values()).map(DbTypeEnum::getUrlWords).toArray(String[]::new);
 
     /**
      * spring.datasource.url中包含的关键字
@@ -62,6 +68,26 @@ public enum DbTypeEnum {
         }
 
         return MYSQL.name();
+    }
+
+    @Override
+    public Object getKey() {
+        return urlWords;
+    }
+
+    @Override
+    public Object getName() {
+        return xmlDatabaseId;
+    }
+
+    @Override
+    public DbTypeEnum parseToEnum(String urlWords) {
+        return ArrayUtil.firstMatch(item -> item.getUrlWords().equals(urlWords), values());
+    }
+
+    @Override
+    public Object[] compareValueArray() {
+        return ARRAYS;
     }
 
 }

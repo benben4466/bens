@@ -5,6 +5,8 @@ import cn.hutool.core.util.StrUtil;
 import cn.ibenbeni.bens.rule.base.ReadableEnum;
 import lombok.Getter;
 
+import java.util.Arrays;
+
 /**
  * 组织类型枚举
  *
@@ -19,6 +21,8 @@ public enum OrganizationTypeEnum implements ReadableEnum<OrganizationTypeEnum> {
     DEPARTMENT(2, "部门"),
 
     ;
+
+    public static final Integer[] ARRAYS = Arrays.stream(values()).map(OrganizationTypeEnum::getCode).toArray(Integer[]::new);
 
     private final Integer code;
 
@@ -53,6 +57,11 @@ public enum OrganizationTypeEnum implements ReadableEnum<OrganizationTypeEnum> {
         }
 
         return null;
+    }
+
+    @Override
+    public Object[] compareValueArray() {
+        return ARRAYS;
     }
 
 }

@@ -5,6 +5,8 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.ibenbeni.bens.rule.base.ReadableEnum;
 import lombok.Getter;
 
+import java.util.Arrays;
+
 /**
  * @author benben
  */
@@ -34,6 +36,8 @@ public enum YesOrNotEnum implements ReadableEnum<YesOrNotEnum> {
      */
     // @JsonValue
     private final Boolean boolFlag;
+
+    public static final String[] ARRAYS = Arrays.stream(values()).map(YesOrNotEnum::getCode).toArray(String[]::new);
 
     YesOrNotEnum(String code, String message, Boolean boolFlag) {
         this.code = code;
@@ -77,6 +81,11 @@ public enum YesOrNotEnum implements ReadableEnum<YesOrNotEnum> {
             }
         }
         return null;
+    }
+
+    @Override
+    public Object[] compareValueArray() {
+        return ARRAYS;
     }
 
 }

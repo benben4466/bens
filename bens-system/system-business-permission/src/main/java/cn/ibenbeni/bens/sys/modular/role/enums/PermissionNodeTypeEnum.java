@@ -5,6 +5,8 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.ibenbeni.bens.rule.base.ReadableEnum;
 import lombok.Getter;
 
+import java.util.Arrays;
+
 /**
  * 节点类型
  * <p>1-应用，2-菜单，3-功能，-1-所有权限</p>
@@ -38,6 +40,8 @@ public enum PermissionNodeTypeEnum implements ReadableEnum<PermissionNodeTypeEnu
     TOTAL(-1, "所有权限"),
     ;
 
+    public static final Integer[] ARRAYS = Arrays.stream(values()).map(PermissionNodeTypeEnum::getCode).toArray(Integer[]::new);
+
     private final Integer code;
 
     private final String message;
@@ -68,6 +72,11 @@ public enum PermissionNodeTypeEnum implements ReadableEnum<PermissionNodeTypeEnu
             }
         }
         return null;
+    }
+
+    @Override
+    public Object[] compareValueArray() {
+        return ARRAYS;
     }
 
 }

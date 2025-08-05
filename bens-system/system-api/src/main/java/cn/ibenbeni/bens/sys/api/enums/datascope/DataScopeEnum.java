@@ -5,6 +5,8 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.ibenbeni.bens.rule.base.ReadableEnum;
 import lombok.Getter;
 
+import java.util.Arrays;
+
 /**
  * 数据权限枚举
  */
@@ -18,6 +20,8 @@ public enum DataScopeEnum implements ReadableEnum<DataScopeEnum> {
     ALL(50, "全部数据"),
 
     ;
+
+    public static final Integer[] ARRAYS = Arrays.stream(values()).map(DataScopeEnum::getCode).toArray(Integer[]::new);
 
     private final Integer code;
 
@@ -49,6 +53,11 @@ public enum DataScopeEnum implements ReadableEnum<DataScopeEnum> {
             }
         }
         return null;
+    }
+
+    @Override
+    public Object[] compareValueArray() {
+        return ARRAYS;
     }
 
 }
