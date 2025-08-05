@@ -3,6 +3,7 @@ package cn.ibenbeni.bens.log.api.pojo.dto.request;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotNull;
  * 操作日志创建请求
  */
 @Data
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class OperateLogCreateReqDTO {
@@ -34,14 +36,14 @@ public class OperateLogCreateReqDTO {
 
     /**
      * 请求参数
+     * <p>mzt-sdk组件暂时无法获取</p>
      */
-    @NotEmpty(message = "请求参数不能为空")
     private String requestParams;
 
     /**
      * 请求响应
+     * <p>mzt-sdk组件暂时无法获取</p>
      */
-    @NotEmpty(message = "请求响应不能为空")
     private String requestResult;
 
     /**
@@ -103,5 +105,10 @@ public class OperateLogCreateReqDTO {
      */
     @NotEmpty(message = "服务器IP不能为空")
     private String serverIp;
+
+    /**
+     * 扩展字段
+     */
+    private String expandField;
 
 }

@@ -1,5 +1,7 @@
 package cn.ibenbeni.bens.auth.api;
 
+import cn.ibenbeni.bens.auth.api.pojo.login.LoginUser;
+
 /**
  * 当前登陆用户相关的一系列方法
  *
@@ -14,5 +16,10 @@ public interface LoginUserApi {
      * @return 当前用户的token或null
      */
     String getToken();
+
+    /**
+     * 获取当前登陆用户信息
+     */
+    LoginUser getLoginUser();
 
 }

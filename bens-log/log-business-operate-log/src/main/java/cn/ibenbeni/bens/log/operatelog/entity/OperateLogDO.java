@@ -112,4 +112,10 @@ public class OperateLogDO extends BaseBusinessEntity {
     @TableField(value = "server_ip")
     private String serverIp;
 
+    /**
+     * 拓展字段
+     */
+    @TableField(value = "expand_field")
+    private String expandField;
+
 }

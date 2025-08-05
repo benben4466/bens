@@ -1,5 +1,6 @@
 package cn.ibenbeni.bens.rule.util;
 
+import cn.hutool.core.net.NetUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -21,6 +22,20 @@ public class ServletUtils {
             return null;
         }
         return ServletUtil.getClientIP(request);
+    }
+
+    /**
+     * 获取客户端IP
+     */
+    public static String getClientIP(HttpServletRequest request) {
+        return ServletUtil.getClientIP(request);
+    }
+
+    /**
+     * 获取服务端IP
+     */
+    public static String getServerIp() {
+        return NetUtil.getLocalhostStr();
     }
 
     /**

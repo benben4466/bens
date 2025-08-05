@@ -95,6 +95,11 @@ public class OperateLogRespDTO {
     private String serverIp;
 
     /**
+     * 扩展字段
+     */
+    private String expandField;
+
+    /**
      * 创建时间
      */
     private LocalDateTime createTime;

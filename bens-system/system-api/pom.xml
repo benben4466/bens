@@ -31,6 +31,13 @@
             <version>${revision}</version>
         </dependency>
 
+        <!-- 日志模块-API -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>log-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
     </dependencies>
 
 </project>

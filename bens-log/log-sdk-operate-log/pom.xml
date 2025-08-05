@@ -12,22 +12,24 @@
 
     <packaging>jar</packaging>
 
-    <artifactId>log-api</artifactId>
-    <description>日志模块-API</description>
+    <artifactId>log-sdk-operate-log</artifactId>
+    <description>日志模块-操作日志SDK</description>
 
     <dependencies>
 
-        <!-- 校验模块-API -->
+        <!-- 日志模块-API -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
-            <artifactId>validator-api</artifactId>
+            <artifactId>log-api</artifactId>
             <version>${revision}</version>
         </dependency>
 
-        <!-- 操作日志组件 -->
+        <!-- 权限模块-API -->
+        <!-- 用于获取登陆用户 -->
         <dependency>
-            <groupId>io.github.mouzt</groupId>
-            <artifactId>bizlog-sdk</artifactId>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>auth-api</artifactId>
+            <version>${revision}</version>
         </dependency>
 
     </dependencies>
