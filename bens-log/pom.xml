@@ -19,6 +19,10 @@
         <module>log-business</module>
         <!-- 日志模块-登陆日志 -->
         <module>log-business-login-log</module>
+        <!-- 日志模块-操作日志 -->
+        <module>log-business-operate-log</module>
+        <!-- 日志模块-操作日志SDK -->
+        <module>log-sdk-operate-log</module>
         <!-- 日志模块-Starter -->
         <module>log-spring-boot-starter</module>
     </modules>

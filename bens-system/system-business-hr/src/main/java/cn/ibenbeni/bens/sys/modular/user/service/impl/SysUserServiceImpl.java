@@ -30,12 +30,16 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.mzt.logapi.context.LogRecordContext;
+import com.mzt.logapi.starter.annotation.LogRecord;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.*;
+
+import static cn.ibenbeni.bens.sys.api.constants.SysLogRecordConstants.*;
 
 /**
  * 系统用户业务实现层
@@ -70,6 +74,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserDO> im
     // -----------------------------------------------------公共方法-------------------------------------------------
     // region 公共方法
 
+    @LogRecord(
+            type = SYSTEM_USER_MODULE_NO, subType = SYSTEM_USER_CREATE_SUB_MODULE_NO,
+            bizNo = "{{#user.userId}}", success = SYSTEM_USER_CREATE_SUCCESS
+    )
     @DSTransactional(rollbackFor = Exception.class)
     @Override
     public Long createUser(UserSaveReqVO createReqVO) {
@@ -90,6 +98,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserDO> im
         // 记录密码修改记录
         securityConfigService.recordPasswordEditLog(user.getUserId(), saltedEncryptResult.getEncryptPassword(), saltedEncryptResult.getPasswordSalt());
 
+        // 设置操作日志上下文
+        LogRecordContext.putVariable("user", user);
         return user.getUserId();
     }
 

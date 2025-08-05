@@ -2,7 +2,7 @@ package cn.ibenbeni.bens.log.loginlog.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
-import cn.ibenbeni.bens.log.api.pojo.dto.LoginLogCreateReqDTO;
+import cn.ibenbeni.bens.log.api.pojo.dto.request.LoginLogCreateReqDTO;
 import cn.ibenbeni.bens.log.loginlog.entity.LoginLogDO;
 import cn.ibenbeni.bens.log.loginlog.mapper.LoginLogMapper;
 import cn.ibenbeni.bens.log.loginlog.pojo.request.LoginLogPageReq;

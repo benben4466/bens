@@ -4,7 +4,7 @@ import cn.ibenbeni.bens.db.api.pojo.page.PageParam;
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
 import cn.ibenbeni.bens.db.api.util.DbUtil;
 import cn.ibenbeni.bens.easyexcel.util.ExcelUtils;
-import cn.ibenbeni.bens.log.api.pojo.dto.LoginLogCreateReqDTO;
+import cn.ibenbeni.bens.log.api.pojo.dto.request.LoginLogCreateReqDTO;
 import cn.ibenbeni.bens.log.loginlog.entity.LoginLogDO;
 import cn.ibenbeni.bens.log.loginlog.pojo.request.LoginLogPageReq;
 import cn.ibenbeni.bens.log.loginlog.pojo.response.LoginLogResp;
