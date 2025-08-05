@@ -13,7 +13,7 @@ import cn.ibenbeni.bens.auth.customize.token.TokenService;
 import cn.ibenbeni.bens.log.api.LoginLogServiceApi;
 import cn.ibenbeni.bens.log.api.enums.LoginLogTypeEnum;
 import cn.ibenbeni.bens.log.api.enums.LoginResultEnum;
-import cn.ibenbeni.bens.log.api.pojo.dto.LoginLogCreateReqDTO;
+import cn.ibenbeni.bens.log.api.pojo.dto.request.LoginLogCreateReqDTO;
 import cn.ibenbeni.bens.rule.enums.user.UserTypeEnum;
 import cn.ibenbeni.bens.rule.util.DateUtils;
 import cn.ibenbeni.bens.rule.util.ServletUtils;

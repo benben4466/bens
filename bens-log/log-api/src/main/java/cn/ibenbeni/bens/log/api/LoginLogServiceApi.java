@@ -1,6 +1,6 @@
 package cn.ibenbeni.bens.log.api;
 
-import cn.ibenbeni.bens.log.api.pojo.dto.LoginLogCreateReqDTO;
+import cn.ibenbeni.bens.log.api.pojo.dto.request.LoginLogCreateReqDTO;
 
 import javax.validation.Valid;
 

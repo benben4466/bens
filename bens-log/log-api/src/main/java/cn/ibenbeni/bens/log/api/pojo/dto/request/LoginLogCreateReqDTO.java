@@ -1,4 +1,4 @@
-package cn.ibenbeni.bens.log.api.pojo.dto;
+package cn.ibenbeni.bens.log.api.pojo.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

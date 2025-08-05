@@ -301,3 +301,32 @@ CREATE TABLE `sys_login_log`
     `tenant_id`    bigint       NULL     DEFAULT NULL COMMENT '租户号',
     PRIMARY KEY (`llg_id`)
 ) COMMENT = '系统登录记录';
+
+CREATE TABLE `sys_operate_log`
+(
+    `olg_id`         bigint        NOT NULL COMMENT '主键',
+    `trace_id`       varchar(64)   NOT NULL DEFAULT '' COMMENT '链路追踪编号',
+    `request_url`    varchar(255)  NULL     DEFAULT NULL COMMENT '请求地址',
+    `request_method` varchar(255)  NULL     DEFAULT NULL COMMENT '请求方式',
+    `request_params` longtext      NULL COMMENT '请求参数',
+    `request_result` longtext      NULL COMMENT '请求响应',
+    `module_no`      varchar(255)  NULL COMMENT '操作模块编号',
+    `sub_module_no`  varchar(255)  NULL COMMENT '操作子模块编号',
+    `biz_id`         bigint        NOT NULL COMMENT '操作模块业务ID',
+    `op_action`      varchar(2000) NOT NULL DEFAULT '' COMMENT '操作内容',
+    `user_id`        bigint        NULL     DEFAULT NULL COMMENT '用户ID',
+    `user_account`   varchar(50)   NOT NULL DEFAULT '' COMMENT '用户账号',
+    `user_type`      tinyint       NOT NULL DEFAULT 10 COMMENT '用户类型',
+    `user_ip`       varchar(50)   NOT NULL COMMENT '用户IP',
+    `user_agent`     varchar(512)  NOT NULL COMMENT '浏览器UA',
+    `server_ip`      varchar(255)  NULL     DEFAULT NULL COMMENT '当前服务器的ip',
+    `del_flag`       char(1)       NOT NULL DEFAULT 'N' COMMENT '删除标记：Y-已删除，N-未删除',
+    `expand_field`   varchar(2000) NULL COMMENT '拓展字段',
+    `version_flag`   bigint        NULL     DEFAULT NULL COMMENT '乐观锁',
+    `create_time`    datetime(0)   NULL     DEFAULT NULL COMMENT '创建时间',
+    `create_user`    bigint        NULL     DEFAULT NULL COMMENT '创建人',
+    `update_time`    datetime(0)   NULL     DEFAULT NULL COMMENT '更新时间',
+    `update_user`    bigint        NULL     DEFAULT NULL COMMENT '更新人',
+    `tenant_id`      bigint        NULL     DEFAULT NULL COMMENT '租户号',
+    PRIMARY KEY (`olg_id`)
+) COMMENT = '操作日志记录';
