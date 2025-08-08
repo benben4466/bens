@@ -18,4 +18,9 @@ public interface WebFilterOrderConstants {
      */
     int TENANT_CONTEXT_FILTER = 120;
 
+    /**
+     * 跨域过滤器
+     */
+    int CORS_FILTER = Integer.MIN_VALUE;
+
 }
