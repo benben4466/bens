@@ -36,6 +36,8 @@ public class HrOrganizationServiceImpl extends ServiceImpl<HrOrganizationMapper,
     @Resource
     private HrOrganizationMapper hrOrganizationMapper;
 
+    // region 公共方法
+
     @Override
     public Long createOrg(OrganizationSaveReq createReqVO) {
         // 默认填充根节点
@@ -158,6 +160,14 @@ public class HrOrganizationServiceImpl extends ServiceImpl<HrOrganizationMapper,
             }
         }
     }
+
+    @Override
+    public Set<Long> listChildDeptId(Set<Long> deptIdSet) {
+        List<HrOrganizationDO> childOrgList = getChildOrgList(deptIdSet);
+        return CollectionUtils.convertSet(childOrgList, HrOrganizationDO::getOrgId);
+    }
+
+    // endregion
 
     // region 私有方法
 

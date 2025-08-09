@@ -25,7 +25,7 @@ public enum DataScopeTypeEnum implements ReadableEnum<DataScopeTypeEnum> {
     /**
      * 本部门数据
      */
-    DEPT(20, "本部门数据"),
+    DEPT_ONLY(20, "本部门数据"),
 
     /**
      * 本部门及以下数据
@@ -40,7 +40,7 @@ public enum DataScopeTypeEnum implements ReadableEnum<DataScopeTypeEnum> {
     /**
      * 指定部门数据
      */
-    DEFINE(40, "指定部门数据"),
+    DEPT_CUSTOM(40, "指定部门数据"),
 
     /**
      * 全部数据

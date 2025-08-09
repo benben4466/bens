@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>cn.ibenbeni</groupId>
+        <artifactId>bens-permission</artifactId>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <packaging>jar</packaging>
+
+    <artifactId>permission-sdk-data</artifactId>
+    <description>权限模块-数据权限</description>
+
+    <dependencies>
+
+        <!-- 权限模块-API -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>permission-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- 系统业务模块-API -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>system-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- 权限模块-API -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>auth-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- 数据库模块-Mp实现 -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>db-sdk-mp</artifactId>
+            <version>${revision}</version>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- TTL -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>transmittable-thread-local</artifactId>
+            <version>${transmittable-thread-local.version}</version>
+        </dependency>
+
+    </dependencies>
+
+</project>
