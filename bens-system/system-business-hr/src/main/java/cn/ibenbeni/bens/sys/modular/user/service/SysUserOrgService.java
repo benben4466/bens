@@ -1,5 +1,6 @@
 package cn.ibenbeni.bens.sys.modular.user.service;
 
+import cn.ibenbeni.bens.sys.api.UserOrgServiceApi;
 import cn.ibenbeni.bens.sys.api.callback.RemoveOrgCallbackApi;
 import cn.ibenbeni.bens.sys.api.callback.RemovePositionCallbackApi;
 import cn.ibenbeni.bens.sys.api.callback.RemoveUserCallbackApi;
@@ -15,7 +16,7 @@ import java.util.List;
  * @author: benben
  * @time: 2025/7/8 下午10:01
  */
-public interface SysUserOrgService extends IService<SysUserOrgDO>, RemoveUserCallbackApi, RemoveOrgCallbackApi, RemovePositionCallbackApi {
+public interface SysUserOrgService extends IService<SysUserOrgDO>, UserOrgServiceApi, RemoveUserCallbackApi, RemoveOrgCallbackApi, RemovePositionCallbackApi {
 
     /**
      * 创建组织用户关联

@@ -5,6 +5,7 @@ import cn.ibenbeni.bens.db.mp.mapper.BaseMapperX;
 import cn.ibenbeni.bens.rule.enums.YesOrNotEnum;
 import cn.ibenbeni.bens.sys.modular.user.entity.SysUserOrgDO;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -38,6 +39,12 @@ public interface SysUserOrgMapper extends BaseMapperX<SysUserOrgDO> {
     default Long selectCountByPositionId(Long positionId) {
         return selectCount(new LambdaQueryWrapperX<SysUserOrgDO>()
                 .eq(SysUserOrgDO::getPositionId, positionId)
+        );
+    }
+
+    default List<SysUserOrgDO> selectListByUserId(Long userId) {
+        return selectList(new LambdaQueryWrapperX<SysUserOrgDO>()
+                .eq(SysUserOrgDO::getUserId, userId)
         );
     }
 

@@ -5,6 +5,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.ibenbeni.bens.rule.enums.StatusEnum;
 import cn.ibenbeni.bens.rule.enums.YesOrNotEnum;
+import cn.ibenbeni.bens.rule.util.CollectionUtils;
 import cn.ibenbeni.bens.sys.api.exception.SysException;
 import cn.ibenbeni.bens.sys.api.exception.enums.SysUserOrgExceptionEnum;
 import cn.ibenbeni.bens.sys.modular.user.entity.SysUserOrgDO;
@@ -134,6 +135,11 @@ public class SysUserOrgServiceImpl extends ServiceImpl<SysUserOrgMapper, SysUser
     @Override
     public void removePositionAction(Set<Long> beRemovedPositionIdList) {
         sysUserOrgMapper.deleteByPositionIds(beRemovedPositionIdList);
+    }
+
+    @Override
+    public List<Long> listOrgByUserId(Long userId) {
+        return CollectionUtils.convertList(sysUserOrgMapper.selectListByUserId(userId), SysUserOrgDO::getOrgId);
     }
 
     // endregion

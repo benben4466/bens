@@ -1,6 +1,7 @@
 package cn.ibenbeni.bens.sys.api;
 
 import cn.ibenbeni.bens.auth.api.exception.AuthException;
+import cn.ibenbeni.bens.sys.api.pojo.permission.dto.DeptDataPermissionRespDTO;
 
 import java.util.List;
 import java.util.Set;
@@ -29,5 +30,13 @@ public interface PermissionApi {
      * @return 权限编码集合
      */
     Set<String> getUserPermissionCodeList(Long userId);
+
+    /**
+     * 获取登陆用户的部门数据权限
+     *
+     * @param userId 用户ID
+     * @return 部门数据权限
+     */
+    DeptDataPermissionRespDTO getDeptDataPermission(Long userId);
 
 }

@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  cn.ibenbeni.bens.permission.sdk.data.config.BensDataPermissionAutoConfiguration,\
+  cn.ibenbeni.bens.permission.sdk.data.config.BensDeptDataPermissionAutoConfiguration

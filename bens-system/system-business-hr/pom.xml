@@ -60,6 +60,12 @@
             <version>${revision}</version>
         </dependency>
 
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>permission-sdk-data</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
         <!-- Spring Web模块 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

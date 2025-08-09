@@ -89,6 +89,13 @@
             <version>${revision}</version>
         </dependency>
 
+        <!-- 权限模块-Starter -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>permission-spring-boot-starter</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
     </dependencies>
 
 </project>

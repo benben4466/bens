@@ -5,6 +5,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
+import cn.ibenbeni.bens.permission.sdk.data.annotation.DataPermission;
 import cn.ibenbeni.bens.rule.constants.TreeConstants;
 import cn.ibenbeni.bens.rule.enums.StatusEnum;
 import cn.ibenbeni.bens.rule.util.CollectionUtils;
@@ -35,6 +36,8 @@ public class HrOrganizationServiceImpl extends ServiceImpl<HrOrganizationMapper,
 
     @Resource
     private HrOrganizationMapper hrOrganizationMapper;
+
+    // region 公共方法
 
     @Override
     public Long createOrg(OrganizationSaveReq createReqVO) {
@@ -158,6 +161,15 @@ public class HrOrganizationServiceImpl extends ServiceImpl<HrOrganizationMapper,
             }
         }
     }
+
+    @DataPermission(enable = false) // 禁止数据权限
+    @Override
+    public Set<Long> listChildDeptId(Set<Long> deptIdSet) {
+        List<HrOrganizationDO> childOrgList = getChildOrgList(deptIdSet);
+        return CollectionUtils.convertSet(childOrgList, HrOrganizationDO::getOrgId);
+    }
+
+    // endregion
 
     // region 私有方法
 
