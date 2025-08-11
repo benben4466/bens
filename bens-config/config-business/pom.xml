@@ -23,6 +23,13 @@
             <version>${revision}</version>
         </dependency>
 
+        <!-- 配置模块-存储SDK -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>config-sdk-storage</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
         <!-- 缓存模块 -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>

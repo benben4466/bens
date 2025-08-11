@@ -28,4 +28,10 @@ public interface ConfigConstants {
      */
     Long DEFAULT_CONFIG_CACHE_TIMEOUT_SECONDS = 3600L;
 
+    /**
+     * 系统初始化编码
+     * <p>是sys_config表的config_code字段存储值</p>
+     */
+    String SYSTEM_CONFIG_INIT_FLAG_CODE = "SYS_CONFIG_INIT_FLAG";
+
 }

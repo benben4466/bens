@@ -1,9 +1,11 @@
 package cn.ibenbeni.bens.config.modular.mapper;
 
+import cn.ibenbeni.bens.config.api.constants.ConfigConstants;
 import cn.ibenbeni.bens.config.modular.entity.SysConfigDO;
 import cn.ibenbeni.bens.config.modular.pojo.request.SysConfigPageReq;
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
 import cn.ibenbeni.bens.db.api.pojo.query.LambdaQueryWrapperX;
+import cn.ibenbeni.bens.db.api.pojo.query.LambdaUpdateWrapperX;
 import cn.ibenbeni.bens.db.mp.mapper.BaseMapperX;
 
 import java.util.List;
@@ -16,6 +18,28 @@ import java.util.Set;
  * @time: 2025/6/18 上午10:30
  */
 public interface SysConfigMapper extends BaseMapperX<SysConfigDO> {
+
+    /**
+     * 根据参数编码修改参数值
+     *
+     * @param configCode  参数编码
+     * @param configValue 参数值
+     * @return 影响行数
+     */
+    default int updateValueByCode(String configCode, String configValue) {
+        return update(new LambdaUpdateWrapperX<SysConfigDO>()
+                .eq(SysConfigDO::getConfigCode, configCode)
+                .set(SysConfigDO::getConfigValue, configValue)
+        );
+    }
+
+    /**
+     * 获取系统初始化标识
+     */
+    default Boolean getInitConfigFlag() {
+        SysConfigDO config = selectOne(SysConfigDO::getConfigCode, ConfigConstants.SYSTEM_CONFIG_INIT_FLAG_CODE);
+        return Boolean.parseBoolean(config.getConfigValue());
+    }
 
     default SysConfigDO getConfigByCode(String configCode) {
         return selectOne(SysConfigDO::getConfigCode, configCode);

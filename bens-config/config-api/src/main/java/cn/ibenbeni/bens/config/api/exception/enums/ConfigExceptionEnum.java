@@ -36,7 +36,7 @@ public enum ConfigExceptionEnum implements AbstractExceptionEnum {
     /**
      * 获取不到application.yml中的数据库配置
      */
-    APP_DB_CONFIG_ERROR(RuleConstants.BUSINESS_ERROR_TYPE_CODE + ConfigConstants.CONFIG_EXCEPTION_STEP_CODE + "04", "获取不到application.yml中的数据库配置，无法从数据库加载系统配置表"),
+    DB_CONFIG_ERROR(RuleConstants.BUSINESS_ERROR_TYPE_CODE + ConfigConstants.CONFIG_EXCEPTION_STEP_CODE + "04", "获取主数据源失败,无法初始化系统配置表"),
 
     /**
      * 初始化系统配置表失败，找不到com.mysql.cj.jdbc.Driver驱动类

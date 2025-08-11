@@ -7,6 +7,21 @@ package cn.ibenbeni.bens.config.api;
 public interface ConfigApi {
 
     /**
+     * 添加系统参数配置
+     *
+     * @param key   参数编码
+     * @param value 参数值
+     */
+    void putConfig(String key, String value);
+
+    /**
+     * 删除系统参数配置
+     *
+     * @param key 系统参数配置编码
+     */
+    void deleteConfig(String key);
+
+    /**
      * 获取sys_config表中的配置，如果为空，返回null
      *
      * @param configCode 系统参数配置编码
