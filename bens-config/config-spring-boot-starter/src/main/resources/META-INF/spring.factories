@@ -1,0 +1,2 @@
+org.springframework.context.ApplicationListener=\
+  cn.ibenbeni.bens.config.modular.listener.ConfigInitListener

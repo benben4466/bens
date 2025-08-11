@@ -1,15 +1,18 @@
 package cn.ibenbeni.bens.config.modular.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.convert.Convert;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.extra.spring.SpringUtil;
 import cn.ibenbeni.bens.cache.api.CacheOperatorApi;
+import cn.ibenbeni.bens.config.api.ConfigInitCallbackApi;
+import cn.ibenbeni.bens.config.api.constants.ConfigConstants;
+import cn.ibenbeni.bens.config.api.context.ConfigContext;
 import cn.ibenbeni.bens.config.api.enums.ConfigTypeEnum;
 import cn.ibenbeni.bens.config.api.exception.ConfigException;
 import cn.ibenbeni.bens.config.api.exception.enums.ConfigExceptionEnum;
 import cn.ibenbeni.bens.config.modular.entity.SysConfigDO;
 import cn.ibenbeni.bens.config.modular.mapper.SysConfigMapper;
+import cn.ibenbeni.bens.config.modular.pojo.request.ConfigInitReq;
 import cn.ibenbeni.bens.config.modular.pojo.request.SysConfigPageReq;
 import cn.ibenbeni.bens.config.modular.pojo.request.SysConfigSaveReq;
 import cn.ibenbeni.bens.config.modular.service.SysConfigService;
@@ -22,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -68,6 +72,9 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
             throw new ConfigException(ConfigExceptionEnum.CONFIG_CAN_NOT_DELETE_SYSTEM_TYPE);
         }
         removeById(configId);
+
+        // 清除缓存
+        ConfigContext.me().deleteConfig(config.getConfigCode());
     }
 
     @DSTransactional(rollbackFor = Exception.class)
@@ -78,6 +85,9 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
             if (ConfigTypeEnum.SYSTEM.getTypeCode().equals(config.getConfigType())) {
                 throw new ConfigException(ConfigExceptionEnum.CONFIG_CAN_NOT_DELETE_SYSTEM_TYPE);
             }
+
+            // 清除缓存
+            ConfigContext.me().deleteConfig(config.getConfigCode());
         });
 
         removeByIds(configIdSet);
@@ -119,28 +129,49 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
         return configMapper.selectPage(req);
     }
 
+    @DSTransactional(rollbackFor = Exception.class)
     @Override
-    public <T> T getConfigValueNullable(String configCode, Class<T> clazz) {
-        String configValue = configValueCache.get(configCode);
-        if (StrUtil.isNotBlank(configValue)) {
-            try {
-                return Convert.convert(clazz, configValue);
-            } catch (Exception ex) {
-                String format = StrUtil.format(ConfigExceptionEnum.CONVERT_ERROR.getUserTip(), configCode, configValue, clazz.toString());
-                log.warn(format);
-                return null;
+    public void initConfig(ConfigInitReq req) {
+        // 检查参数是否已经初始化
+        Boolean alreadyInit = getInitConfigFlag();
+        if (alreadyInit) {
+            throw new ConfigException(ConfigExceptionEnum.CONFIG_INIT_ALREADY);
+        }
+
+        Map<String, ConfigInitCallbackApi> configInitBeanMap = SpringUtil.getBeansOfType(ConfigInitCallbackApi.class);
+        // 调用初始化之前回调
+        if (CollUtil.isNotEmpty(configInitBeanMap)) {
+            for (ConfigInitCallbackApi configInitBean : configInitBeanMap.values()) {
+                configInitBean.initBefore();
             }
-        } else {
-            String format = StrUtil.format(ConfigExceptionEnum.CONFIG_NOT_EXIST.getUserTip(), configCode);
-            log.warn(format);
-            return null;
+        }
+
+        // 将系统初始化标识设置为true
+        Map<String, String> sysConfigMap = req.getSysConfigMap();
+        sysConfigMap.put(ConfigConstants.SYSTEM_CONFIG_INIT_FLAG_CODE, Boolean.TRUE.toString());
+
+        // 更新配置值
+        for (Map.Entry<String, String> entry : sysConfigMap.entrySet()) {
+            String configCode = entry.getKey();
+            String configValue = entry.getValue();
+
+            configMapper.updateValueByCode(configCode, configValue);
+
+            // 更新缓存
+            ConfigContext.me().putConfig(configCode, configValue);
+        }
+
+        // 调用初始化之后回调
+        if (CollUtil.isNotEmpty(configInitBeanMap)) {
+            for (ConfigInitCallbackApi configInitBean : configInitBeanMap.values()) {
+                configInitBean.initAfter();
+            }
         }
     }
 
     @Override
-    public <T> T getSysConfigValueWithDefault(String configCode, Class<T> clazz, T defaultValue) {
-        T configValue = this.getConfigValueNullable(configCode, clazz);
-        return ObjectUtil.isNotEmpty(configValue) ? configValue : defaultValue;
+    public Boolean getInitConfigFlag() {
+        return configMapper.getInitConfigFlag();
     }
 
     // endregion

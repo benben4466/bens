@@ -5,40 +5,30 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.ibenbeni</groupId>
-        <artifactId>bens</artifactId>
+        <artifactId>bens-config</artifactId>
         <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
-    <modules>
-        <!-- 配置模块-API -->
-        <module>config-api</module>
-        <!-- 配置模块-业务 -->
-        <module>config-business</module>
-        <!-- 配置模块-存储SDK -->
-        <module>config-sdk-storage</module>
-        <!-- 配置模块-Starter -->
-        <module>config-spring-boot-starter</module>
-    </modules>
-
-    <artifactId>bens-config</artifactId>
-    <description>配置模块</description>
+    <artifactId>config-sdk-storage</artifactId>
+    <description>配置模块-存储SDK</description>
 
     <dependencies>
-        <!-- 规则模块-开发规则 -->
+        <!-- 配置模块-API -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
-            <artifactId>bens-rule</artifactId>
+            <artifactId>config-api</artifactId>
             <version>${revision}</version>
         </dependency>
 
-        <!-- 资源模块-API -->
+        <!-- 缓存模块-Redis -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
-            <artifactId>resource-api</artifactId>
+            <artifactId>cache-sdk-redis</artifactId>
             <version>${revision}</version>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 

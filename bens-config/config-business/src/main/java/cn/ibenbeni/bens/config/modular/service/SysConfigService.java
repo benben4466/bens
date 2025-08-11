@@ -1,7 +1,8 @@
 package cn.ibenbeni.bens.config.modular.service;
 
-import cn.ibenbeni.bens.config.api.ConfigApi;
+import cn.ibenbeni.bens.config.api.InitConfigApi;
 import cn.ibenbeni.bens.config.modular.entity.SysConfigDO;
+import cn.ibenbeni.bens.config.modular.pojo.request.ConfigInitReq;
 import cn.ibenbeni.bens.config.modular.pojo.request.SysConfigPageReq;
 import cn.ibenbeni.bens.config.modular.pojo.request.SysConfigSaveReq;
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
@@ -16,7 +17,7 @@ import java.util.Set;
  * @author: benben
  * @time: 2025/6/18 上午10:31
  */
-public interface SysConfigService extends IService<SysConfigDO>, ConfigApi {
+public interface SysConfigService extends IService<SysConfigDO>, InitConfigApi {
 
     /**
      * 创建参数配置
@@ -76,5 +77,10 @@ public interface SysConfigService extends IService<SysConfigDO>, ConfigApi {
      * 获取参数配置分页
      */
     PageResult<SysConfigDO> getConfigPage(SysConfigPageReq req);
+
+    /**
+     * 初始化参数配置
+     */
+    void initConfig(ConfigInitReq req);
 
 }
