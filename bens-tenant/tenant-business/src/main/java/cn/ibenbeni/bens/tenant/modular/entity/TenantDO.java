@@ -1,6 +1,7 @@
 package cn.ibenbeni.bens.tenant.modular.entity;
 
 import cn.ibenbeni.bens.db.api.pojo.entity.BaseBusinessEntity;
+import cn.ibenbeni.bens.tenant.api.annotation.TenantIgnore;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -16,6 +17,7 @@ import java.util.Date;
  * @author: benben
  * @time: 2025/7/1 上午10:41
  */
+@TenantIgnore
 @Data
 @Builder
 @NoArgsConstructor

@@ -1,6 +1,7 @@
 package cn.ibenbeni.bens.sys.modular.role.entity;
 
 import cn.ibenbeni.bens.db.api.pojo.entity.BaseEntity;
+import cn.ibenbeni.bens.tenant.api.annotation.TenantIgnore;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.*;
 
@@ -10,6 +11,7 @@ import lombok.*;
  * @author: benben
  * @time: 2025/6/3 下午9:16
  */
+@TenantIgnore
 @TableName(value = "sys_role_menu", autoResultMap = true)
 @Data
 @Builder

@@ -2,8 +2,9 @@ package cn.ibenbeni.bens.tenant.starter;
 
 import cn.ibenbeni.bens.db.mp.util.MyBatisPlusUtils;
 import cn.ibenbeni.bens.rule.constants.WebFilterOrderConstants;
+import cn.ibenbeni.bens.tenant.aop.TenantIgnoreAspect;
 import cn.ibenbeni.bens.tenant.api.prop.TenantProp;
-import cn.ibenbeni.bens.tenant.db.TenantInterceptor;
+import cn.ibenbeni.bens.tenant.db.TenantDbInterceptor;
 import cn.ibenbeni.bens.tenant.web.TenantContextWebFilter;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerInterceptor;
@@ -24,6 +25,14 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties(TenantProp.class)
 public class BensTenantAutoConfiguration {
 
+    /**
+     * 注入忽略多租户插件
+     */
+    @Bean
+    public TenantIgnoreAspect tenantIgnoreAspect() {
+        return new TenantIgnoreAspect();
+    }
+
     // region DB插件
 
     /**
@@ -37,9 +46,9 @@ public class BensTenantAutoConfiguration {
     @Bean
     public TenantLineInnerInterceptor tenantLineInnerInterceptor(TenantProp tenantProp, MybatisPlusInterceptor interceptor) {
         // 自定义租户处理器
-        TenantInterceptor tenantInterceptor = new TenantInterceptor(tenantProp);
+        TenantDbInterceptor tenantDbInterceptor = new TenantDbInterceptor(tenantProp);
         // MyBatisPlus租户拦截器
-        TenantLineInnerInterceptor inner = new TenantLineInnerInterceptor(tenantInterceptor);
+        TenantLineInnerInterceptor inner = new TenantLineInnerInterceptor(tenantDbInterceptor);
         // 租户插件需在分页插件之前
         MyBatisPlusUtils.addInterceptor(interceptor, inner, 0);
         return inner;

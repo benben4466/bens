@@ -1,6 +1,7 @@
 package cn.ibenbeni.bens.file.modular.entity;
 
 import cn.ibenbeni.bens.db.api.pojo.entity.BaseBusinessEntity;
+import cn.ibenbeni.bens.tenant.api.annotation.TenantIgnore;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -13,6 +14,7 @@ import lombok.*;
  * @author: benben
  * @time: 2025/6/20 下午4:38
  */
+@TenantIgnore
 @TableName(value = "sys_file", autoResultMap = true)
 @Data
 @Builder

@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.ibenbeni.bens.db.api.pojo.entity.BaseBusinessEntity;
 import cn.ibenbeni.bens.file.api.client.FileClientConfig;
 import cn.ibenbeni.bens.file.api.client.local.LocalFileClientConfig;
+import cn.ibenbeni.bens.tenant.api.annotation.TenantIgnore;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.alibaba.fastjson2.JSONWriter;
@@ -19,6 +20,7 @@ import java.lang.reflect.Field;
 /**
  * 文件配置表实体
  */
+@TenantIgnore
 @TableName(value = "sys_file_config", autoResultMap = true)
 @Data
 @Builder
