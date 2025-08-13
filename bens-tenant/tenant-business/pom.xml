@@ -28,7 +28,14 @@
             <version>${revision}</version>
         </dependency>
 
-        <!-- 租户模块-API -->
+        <!-- 租户模块-SDK -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>tenant-sdk</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- DAO模块-MP -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
             <artifactId>db-sdk-mp</artifactId>

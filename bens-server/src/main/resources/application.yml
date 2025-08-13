@@ -54,10 +54,3 @@ bens:
   tenant:
     enable: true
     ignoreTables:
-      - sys_file_info
-      - sys_config_type
-      - sys_config
-      - sys_tenant
-      - sys_tenant_package
-      - sys_role_menu
-      - sys_user_role

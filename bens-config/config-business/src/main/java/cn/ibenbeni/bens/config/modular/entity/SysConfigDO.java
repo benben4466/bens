@@ -1,6 +1,7 @@
 package cn.ibenbeni.bens.config.modular.entity;
 
 import cn.ibenbeni.bens.db.api.pojo.entity.BaseBusinessEntity;
+import cn.ibenbeni.bens.tenant.api.annotation.TenantIgnore;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -16,6 +17,7 @@ import java.math.BigDecimal;
  * @author: benben
  * @time: 2025/6/18 上午10:20
  */
+@TenantIgnore
 @TableName(value = "sys_config", autoResultMap = true)
 @Data
 @EqualsAndHashCode(callSuper = true)
