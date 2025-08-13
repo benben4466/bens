@@ -3,6 +3,7 @@ package cn.ibenbeni.bens.rule.util;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Date;
 
 /**
  * 时间工具类
@@ -27,6 +28,16 @@ public class DateUtils {
      */
     public static LocalDateTime convertLocalDateTime(Long timestamp) {
         return LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault());
+    }
+
+    /**
+     * 判断时间是否过期
+     *
+     * @param date Date对象
+     * @return true=过期；false=未过期
+     */
+    public static boolean isExpired(Date date) {
+        return new Date().after(date);
     }
 
 }

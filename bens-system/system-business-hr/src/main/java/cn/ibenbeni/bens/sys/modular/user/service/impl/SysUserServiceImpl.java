@@ -3,19 +3,14 @@ package cn.ibenbeni.bens.sys.modular.user.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import cn.ibenbeni.bens.auth.api.password.PasswordEncryptionStrategy;
 import cn.ibenbeni.bens.auth.api.pojo.password.SaltedEncryptResult;
-import cn.ibenbeni.bens.cache.api.CacheOperatorApi;
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
 import cn.ibenbeni.bens.rule.exception.base.ServiceException;
 import cn.ibenbeni.bens.sys.api.SecurityConfigService;
 import cn.ibenbeni.bens.sys.api.callback.RemoveUserCallbackApi;
 import cn.ibenbeni.bens.sys.api.enums.user.UserStatusEnum;
-import cn.ibenbeni.bens.sys.api.pojo.user.SimpleUserDTO;
-import cn.ibenbeni.bens.sys.api.pojo.user.UserInfoDetailDTO;
-import cn.ibenbeni.bens.sys.api.pojo.user.UserValidateDTO;
 import cn.ibenbeni.bens.sys.modular.user.constants.UserConstants;
 import cn.ibenbeni.bens.sys.modular.user.entity.SysUserDO;
 import cn.ibenbeni.bens.sys.modular.user.enums.SysUserExceptionEnum;
@@ -23,21 +18,19 @@ import cn.ibenbeni.bens.sys.modular.user.mapper.SysUserMapper;
 import cn.ibenbeni.bens.sys.modular.user.pojo.vo.UserPageReqVO;
 import cn.ibenbeni.bens.sys.modular.user.pojo.vo.UserSaveReqVO;
 import cn.ibenbeni.bens.sys.modular.user.pojo.vo.profile.UserProfileUpdatePasswordReqVO;
-import cn.ibenbeni.bens.sys.modular.user.service.SysUserRoleService;
 import cn.ibenbeni.bens.sys.modular.user.service.SysUserService;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mzt.logapi.context.LogRecordContext;
 import com.mzt.logapi.starter.annotation.LogRecord;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static cn.ibenbeni.bens.sys.api.constants.SysLogRecordConstants.*;
 
@@ -61,13 +54,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserDO> im
 
     @Resource
     private SecurityConfigService securityConfigService;
-
-    @Lazy
-    @Resource
-    private SysUserRoleService sysUserRoleService;
-
-    @Resource(name = "loginErrorCountCacheApi")
-    private CacheOperatorApi<Integer> loginErrorCountCacheApi;
 
     // endregion
 
@@ -199,85 +185,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserDO> im
     @Override
     public boolean isPasswordMatch(String encryptBefore, String passwordSalt, String encryptAfter) {
         return passwordEncryptionStrategy.checkPasswordWithSalt(encryptBefore, passwordSalt, encryptAfter);
-    }
-
-    @Override
-    public SimpleUserDTO getUserInfoByUserId(Long userId) {
-        if (ObjectUtil.isEmpty(userId)) {
-            return null;
-        }
-        LambdaQueryWrapper<SysUserDO> queryWrapper = Wrappers.lambdaQuery(SysUserDO.class)
-                .eq(SysUserDO::getUserId, userId)
-                .select(SysUserDO::getAccount, SysUserDO::getAvatar);
-        SysUserDO dbSysUser = this.getOne(queryWrapper);
-        if (dbSysUser == null) {
-            return null;
-        }
-        return SimpleUserDTO.builder()
-                .userId(userId)
-                .account(dbSysUser.getAccount())
-                .avatarUrl(dbSysUser.getAvatar())
-                .build();
-    }
-
-    @Override
-    public UserValidateDTO getUserLoginValidateInfo(String account) {
-        LambdaQueryWrapper<SysUserDO> queryWrapper = Wrappers.lambdaQuery(SysUserDO.class)
-                .eq(SysUserDO::getAccount, account)
-                .select(SysUserDO::getUserId, SysUserDO::getPassword, SysUserDO::getPasswordSalt, SysUserDO::getStatusFlag);
-        SysUserDO dbSysUser = this.getOne(queryWrapper, false);
-        if (dbSysUser == null) {
-            // 用户查询不到，提示账号密码错误
-            throw new ServiceException(SysUserExceptionEnum.ACCOUNT_NOT_EXIST);
-        }
-
-        return UserValidateDTO.builder()
-                .userId(dbSysUser.getUserId())
-                .userPasswordHexed(dbSysUser.getPassword())
-                .userPasswordSalt(dbSysUser.getPasswordSalt())
-                .userStatus(dbSysUser.getStatusFlag())
-                .account(account).build();
-    }
-
-    @Override
-    public void updateUserLoginInfo(Long userId, String ip) {
-        if (ObjectUtil.isEmpty(userId) || ObjectUtil.isEmpty(ip)) {
-            return;
-        }
-
-        // 更新登录次数，登录ip，登录时间
-        LambdaUpdateWrapper<SysUserDO> updateWrapper = Wrappers.lambdaUpdate(SysUserDO.class)
-                .eq(SysUserDO::getUserId, userId)
-                .set(SysUserDO::getLastLoginIp, ip)
-                .set(SysUserDO::getLastLoginTime, new Date());
-        this.update(updateWrapper);
-    }
-
-    @Override
-    public UserInfoDetailDTO getUserDetail(Long userId) {
-        if (ObjectUtil.isEmpty(userId)) {
-            return null;
-        }
-        LambdaQueryWrapper<SysUserDO> queryWrapper = Wrappers.lambdaQuery(SysUserDO.class)
-                .eq(SysUserDO::getUserId, userId)
-                .select(SysUserDO::getUserId, SysUserDO::getNickName, SysUserDO::getAccount, SysUserDO::getBirthday,
-                        SysUserDO::getSex, SysUserDO::getEmail, SysUserDO::getPhone, SysUserDO::getStatusFlag,
-                        SysUserDO::getUserSort
-                );
-        SysUserDO dbSysUser = this.getOne(queryWrapper, false);
-        if (dbSysUser == null) {
-            return null;
-        }
-        return UserInfoDetailDTO.builder()
-                .userId(userId)
-                .nickName(dbSysUser.getNickName())
-                .account(dbSysUser.getAccount())
-                .birthday(dbSysUser.getBirthday())
-                .sex(dbSysUser.getSex())
-                .email(dbSysUser.getEmail())
-                .phone(dbSysUser.getPhone())
-                .statusFlag(dbSysUser.getStatusFlag())
-                .userSort(dbSysUser.getUserSort()).build();
     }
 
     // endregion

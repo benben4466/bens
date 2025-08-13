@@ -24,7 +24,7 @@ import java.util.Set;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @TableName(value = "sys_tenant_package", autoResultMap = true)
-public class SysTenantPackage extends BaseBusinessEntity {
+public class TenantPackageDO extends BaseBusinessEntity {
 
     /**
      * 租户套餐编号
@@ -45,14 +45,8 @@ public class SysTenantPackage extends BaseBusinessEntity {
     private Set<Long> packageMenuIds;
 
     /**
-     * 租户套餐关联的菜单功能编号
-     */
-    @TableField(value = "package_menu_option_ids", typeHandler = JacksonTypeHandler.class)
-    private Set<Long> packageMenuOptionIds;
-
-    /**
      * 状态
-     * <p>1-启用，2-禁用</p>
+     * <p>枚举类型: {@link cn.ibenbeni.bens.rule.enums.StatusEnum}</p>
      */
     @TableField("status_flag")
     private Integer statusFlag;

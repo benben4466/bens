@@ -21,6 +21,13 @@
             <version>${revision}</version>
         </dependency>
 
+        <!-- 系统模块-API -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>system-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
         <!-- 租户模块-API -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
@@ -28,10 +35,32 @@
             <version>${revision}</version>
         </dependency>
 
+        <!-- Excel模块-EasyExcel -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>excel-sdk-easyexcel</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
         <!-- Spring Web -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- 接口文档-Knife4j -->
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
+            <version>${knife4j.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <!-- 接口文档-Swagger页面 -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>${springdoc.version}</version>
             <optional>true</optional>
         </dependency>
     </dependencies>

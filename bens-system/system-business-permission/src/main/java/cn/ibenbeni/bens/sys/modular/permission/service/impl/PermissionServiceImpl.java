@@ -145,6 +145,12 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
+    public Set<Long> listRoleMenuByRoleId(Set<Long> roleIdSet) {
+        List<SysRoleMenuDO> roleMenuList = roleMenuService.listByRoleId(roleIdSet);
+        return CollectionUtils.convertSet(roleMenuList, SysRoleMenuDO::getMenuId);
+    }
+
+    @Override
     public Set<Long> getRoleMenuListByRoleId(Long roleId) {
         return PermissionService.super.getRoleMenuListByRoleId(roleId);
     }

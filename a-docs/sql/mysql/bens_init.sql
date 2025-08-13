@@ -35,6 +35,7 @@ create table sys_user_password_record
     `create_user`           bigint       NULL DEFAULT NULL COMMENT '创建人',
     `update_time`           datetime     NULL DEFAULT NULL COMMENT '更新时间',
     `update_user`           bigint       NULL DEFAULT NULL COMMENT '更新人',
+    `tenant_id`      bigint         NULL     DEFAULT NULL COMMENT '租户ID',
     primary key (`record_id`)
 ) COMMENT ='系统用户修改密码记录表';
 
@@ -317,7 +318,7 @@ CREATE TABLE `sys_operate_log`
     `user_id`        bigint        NULL     DEFAULT NULL COMMENT '用户ID',
     `user_account`   varchar(50)   NOT NULL DEFAULT '' COMMENT '用户账号',
     `user_type`      tinyint       NOT NULL DEFAULT 10 COMMENT '用户类型',
-    `user_ip`       varchar(50)   NOT NULL COMMENT '用户IP',
+    `user_ip`        varchar(50)   NOT NULL COMMENT '用户IP',
     `user_agent`     varchar(512)  NOT NULL COMMENT '浏览器UA',
     `server_ip`      varchar(255)  NULL     DEFAULT NULL COMMENT '当前服务器的ip',
     `del_flag`       char(1)       NOT NULL DEFAULT 'N' COMMENT '删除标记：Y-已删除，N-未删除',
@@ -330,3 +331,41 @@ CREATE TABLE `sys_operate_log`
     `tenant_id`      bigint        NULL     DEFAULT NULL COMMENT '租户号',
     PRIMARY KEY (`olg_id`)
 ) COMMENT = '操作日志记录';
+
+CREATE TABLE `sys_tenant_package`
+(
+    `package_id`       bigint       NOT NULL COMMENT '租户套餐编号',
+    `package_name`     varchar(255) NOT NULL COMMENT '租户套餐名称',
+    `package_menu_ids` varchar(255) NOT NULL COMMENT '租户套餐关联的菜单编号',
+    `status_flag`      tinyint      NULL     DEFAULT NULL COMMENT '租户状态(1=正常;2=禁用;)',
+    `remark`           varchar(255) NULL     DEFAULT NULL COMMENT '备注',
+    `del_flag`         char(1)      NOT NULL DEFAULT 'N' COMMENT '删除标记(Y=已删除;N=未删除)',
+    `version_flag`     bigint       NULL     DEFAULT NULL COMMENT '乐观锁',
+    `create_time`      datetime(0)  NULL     DEFAULT NULL COMMENT '创建时间',
+    `create_user`      bigint       NULL     DEFAULT NULL COMMENT '创建人',
+    `update_time`      datetime(0)  NULL     DEFAULT NULL COMMENT '更新时间',
+    `update_user`      bigint       NULL     DEFAULT NULL COMMENT '更新人',
+    PRIMARY KEY (`package_id`)
+) COMMENT = '租户套餐表';
+
+CREATE TABLE `sys_tenant`
+(
+    `tenant_id`         bigint       NOT NULL COMMENT '租户编号',
+    `tenant_package_id` bigint       NOT NULL COMMENT '租户套餐ID',
+    `tenant_name`       varchar(255) NOT NULL COMMENT '租户名称',
+    `contact_user_id`           bigint       NULL     DEFAULT NULL COMMENT '租户管理用户ID',
+    `contact_name`      varchar(255) NOT NULL COMMENT '租户联系人名称',
+    `contact_mobile`    varchar(255) NOT NULL COMMENT '租户联系人手机号码',
+    `status_flag`       tinyint      NULL     DEFAULT NULL COMMENT '租户状态(1=正常;2=禁用;)',
+    `tenant_website`    varchar(255) NULL COMMENT '租户绑定的域名',
+    `expire_time`       datetime(0)  NOT NULL COMMENT '租户过期时间',
+    `account_count`     bigint       NOT NULL COMMENT '授权的账号数量',
+    `remark`            varchar(255) NULL     DEFAULT NULL COMMENT '备注',
+    `del_flag`          char(1)      NOT NULL DEFAULT 'N' COMMENT '删除标记(Y=已删除;N=未删除)',
+    `version_flag`      bigint       NULL     DEFAULT NULL COMMENT '乐观锁',
+    `create_time`       datetime(0)  NULL     DEFAULT NULL COMMENT '创建时间',
+    `create_user`       bigint       NULL     DEFAULT NULL COMMENT '创建人',
+    `update_time`       datetime(0)  NULL     DEFAULT NULL COMMENT '更新时间',
+    `update_user`       bigint       NULL     DEFAULT NULL COMMENT '更新人',
+    PRIMARY KEY (`tenant_id`)
+) COMMENT = '租户表';

@@ -59,6 +59,46 @@ public enum TenantExceptionEnum implements AbstractExceptionEnum {
      */
     TENANT_PACKAGE_DISABLE(RuleConstants.BUSINESS_ERROR_TYPE_CODE + TenantConstants.TENANT_EXCEPTION_STEP_CODE + "103", "租户套餐已被禁用"),
 
+    /**
+     * 租户套餐名称重复
+     */
+    TENANT_PACKAGE_NAME_DUPLICATE(RuleConstants.BUSINESS_ERROR_TYPE_CODE + TenantConstants.TENANT_EXCEPTION_STEP_CODE + "103", "租户套餐名称重复"),
+
+    /**
+     * 租户正在使用该套餐,请给租户重新设置套餐后再尝试删除
+     */
+    TENANT_PACKAGE_USED(RuleConstants.BUSINESS_ERROR_TYPE_CODE + TenantConstants.TENANT_EXCEPTION_STEP_CODE + "103", "租户正在使用该套餐,请给租户重新设置套餐后再尝试删除"),
+
+    /**
+     * 租户名称重复
+     */
+    TENANT_NAME_DUPLICATE(RuleConstants.BUSINESS_ERROR_TYPE_CODE + TenantConstants.TENANT_EXCEPTION_STEP_CODE + "103", "租户名称重复"),
+
+    /**
+     * 租户域名重复
+     */
+    TENANT_WEBSITE_DUPLICATE(RuleConstants.BUSINESS_ERROR_TYPE_CODE + TenantConstants.TENANT_EXCEPTION_STEP_CODE + "103", "租户域名重复"),
+
+    /**
+     * 租户不存在
+     */
+    TENANT_NOT_EXISTS(RuleConstants.BUSINESS_ERROR_TYPE_CODE + TenantConstants.TENANT_EXCEPTION_STEP_CODE + "103", "租户不存在"),
+
+    /**
+     * 系统租户不能进行修改,删除等操作
+     */
+    TENANT_CAN_NOT_UPDATE_SYSTEM(RuleConstants.BUSINESS_ERROR_TYPE_CODE + TenantConstants.TENANT_EXCEPTION_STEP_CODE + "103", "系统租户不能进行修改,删除等操作"),
+
+    /**
+     * 租户已被禁用
+     */
+    TENANT_DISABLE(RuleConstants.BUSINESS_ERROR_TYPE_CODE + TenantConstants.TENANT_EXCEPTION_STEP_CODE + "103", "系统租户不能进行修改,删除等操作"),
+
+    /**
+     * 租户已过期
+     */
+    TENANT_EXPIRED(RuleConstants.BUSINESS_ERROR_TYPE_CODE + TenantConstants.TENANT_EXCEPTION_STEP_CODE + "103", "租户已过期"),
+
     ;
 
     /**

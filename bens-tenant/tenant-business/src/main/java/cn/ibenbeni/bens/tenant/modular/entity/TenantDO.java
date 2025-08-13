@@ -23,7 +23,13 @@ import java.util.Date;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @TableName(value = "sys_tenant", autoResultMap = true)
-public class SysTenant extends BaseBusinessEntity {
+public class TenantDO extends BaseBusinessEntity {
+
+    /**
+     * 系统租户ID
+     */
+    @TableField(exist = false)
+    public static final Long PACKAGE_ID_SYSTEM = 0L;
 
     /**
      * 租户ID
@@ -36,6 +42,12 @@ public class SysTenant extends BaseBusinessEntity {
      */
     @TableField("tenant_name")
     private String tenantName;
+
+    /**
+     * 租户管理用户ID
+     */
+    @TableField(value = "contact_user_id")
+    private Long contactUserId;
 
     /**
      * 租户联系人名称
@@ -54,7 +66,7 @@ public class SysTenant extends BaseBusinessEntity {
      * <p>1=正常，2=禁用</p>
      */
     @TableField("status_flag")
-    private Integer status_flag;
+    private Integer statusFlag;
 
     /**
      * 租户绑定的域名
@@ -75,7 +87,7 @@ public class SysTenant extends BaseBusinessEntity {
     private Date expireTime;
 
     /**
-     * 账号数量
+     * 授权的账号数量
      */
     @TableField("account_count")
     private Long accountCount;
