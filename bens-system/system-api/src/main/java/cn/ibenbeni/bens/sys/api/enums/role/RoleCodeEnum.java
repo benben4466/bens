@@ -19,6 +19,7 @@ import java.util.Arrays;
 public enum RoleCodeEnum implements ReadableEnum<RoleCodeEnum> {
 
     SUPER_ADMIN("super_admin", "超级管理员"),
+    TENANT_ADMIN("tenant_admin", "租户管理员"),
     EMPLOYEE("employee", "普通员工"),
 
     ;

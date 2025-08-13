@@ -1,5 +1,6 @@
 package cn.ibenbeni.bens.sys.api;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.ibenbeni.bens.auth.api.exception.AuthException;
 import cn.ibenbeni.bens.sys.api.pojo.permission.dto.DeptDataPermissionRespDTO;
 
@@ -38,5 +39,46 @@ public interface PermissionApi {
      * @return 部门数据权限
      */
     DeptDataPermissionRespDTO getDeptDataPermission(Long userId);
+
+    // region 角色-菜单相关方法
+
+    /**
+     * 角色分配菜单
+     *
+     * @param roleId    角色ID
+     * @param menuIdSet 被分配的菜单ID集合
+     */
+    void assignRoleMenu(Long roleId, Set<Long> menuIdSet);
+
+    /**
+     * 获取角色的菜单ID集合
+     *
+     * @param roleId 角色ID
+     * @return 菜单ID集合
+     */
+    default Set<Long> listRoleMenuByRoleId(Long roleId) {
+        return listRoleMenuByRoleId(CollUtil.set(false, roleId));
+    }
+
+    /**
+     * 获取角色的菜单ID集合
+     *
+     * @param roleIdSet 角色ID集合
+     * @return 菜单ID集合
+     */
+    Set<Long> listRoleMenuByRoleId(Set<Long> roleIdSet);
+    // endregion
+
+    // region 用户-角色相关方法
+
+    /**
+     * 用户分配角色
+     *
+     * @param userId    用户ID
+     * @param roleIdSet 被分配的角色ID集合
+     */
+    void assignUserRole(Long userId, Set<Long> roleIdSet);
+
+    // endregion
 
 }

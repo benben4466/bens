@@ -13,28 +13,7 @@ import java.util.Set;
  */
 public interface PermissionService extends PermissionApi {
 
-    // region 用户-角色相关方法
-
-    /**
-     * 用户分配角色
-     *
-     * @param userId    用户ID
-     * @param roleIdSet 被分配的角色ID集合
-     */
-    void assignUserRole(Long userId, Set<Long> roleIdSet);
-
-    // endregion
-
-
     // region 角色-菜单相关方法
-
-    /**
-     * 角色分配菜单
-     *
-     * @param roleId    角色ID
-     * @param menuIdSet 被分配的菜单ID集合
-     */
-    void assignRoleMenu(Long roleId, Set<Long> menuIdSet);
 
     /**
      * 获取指定角色的所拥有菜单ID集合

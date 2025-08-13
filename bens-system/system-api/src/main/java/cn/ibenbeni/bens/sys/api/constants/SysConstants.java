@@ -1,5 +1,7 @@
 package cn.ibenbeni.bens.sys.api.constants;
 
+import java.math.BigDecimal;
+
 /**
  * 基础核心业务业务
  *
@@ -26,5 +28,15 @@ public interface SysConstants {
      * 默认的sys模块的缓存超时时间
      */
     Long DEFAULT_SYS_CACHE_TIMEOUT_SECONDS = 3600L;
+
+    /**
+     * 默认角色显示顺序
+     */
+    BigDecimal DEFAULT_ROLE_SORT = BigDecimal.valueOf(0);
+
+    /**
+     * 系统创建角色的备注
+     */
+    String SYS_CREATE_ROLE_REMAKE = "系统自动生成";
 
 }

@@ -16,7 +16,7 @@ import java.util.Set;
  *
  * @author benben
  */
-public interface SysUserService extends IService<SysUserDO>, SysUserServiceApi {
+public interface SysUserService extends IService<SysUserDO> {
 
     /**
      * 创建用户

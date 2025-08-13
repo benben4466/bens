@@ -16,7 +16,7 @@ import java.util.Set;
  *
  * @author benben
  */
-public interface SysRoleService extends IService<SysRoleDO>, SysRoleServiceApi {
+public interface SysRoleService extends IService<SysRoleDO> {
 
     /**
      * 创建角色

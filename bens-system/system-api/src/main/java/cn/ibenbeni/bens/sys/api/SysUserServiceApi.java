@@ -5,7 +5,7 @@ import cn.ibenbeni.bens.sys.api.pojo.user.SimpleUserDTO;
 import cn.ibenbeni.bens.sys.api.pojo.user.UserInfoDetailDTO;
 import cn.ibenbeni.bens.sys.api.pojo.user.UserValidateDTO;
 
-import java.util.List;
+import javax.validation.Valid;
 
 /**
  * 用户基础核心业务Api
@@ -43,5 +43,12 @@ public interface SysUserServiceApi {
      * @param userId 用户ID
      */
     UserInfoDetailDTO getUserDetail(Long userId);
+
+    /**
+     * 创建用户
+     *
+     * @return 用户ID
+     */
+    Long createUser(@Valid CreateUserDTO createUser);
 
 }

@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import java.math.BigDecimal;
+
 /**
  * 创建用户请求
  *
@@ -16,14 +19,35 @@ import lombok.NoArgsConstructor;
 public class CreateUserDTO {
 
     /**
-     * 账号
+     * 用户昵称
      */
+    @NotBlank(message = "用户昵称不能为空")
+    private String nickName;
+
+    /**
+     * 用户账号
+     */
+    @NotBlank(message = "账号不能为空")
     private String account;
 
     /**
-     * 昵称
+     * 密码
+     * <p>加密方式：MD5+盐</p>
      */
-    private String nickName;
+    @NotBlank(message = "密码不能为空")
+    private String password;
+
+    /**
+     * 头像
+     * <p>头像存储路径</p>
+     */
+    private String avatar;
+
+    /**
+     * 性别
+     * <p>性别枚举：{@link cn.ibenbeni.bens.rule.enums.SexEnum}</p>
+     */
+    private String sex;
 
     /**
      * 邮箱
@@ -31,24 +55,13 @@ public class CreateUserDTO {
     private String email;
 
     /**
-     * 姓名
-     */
-    private String realName;
-
-    /**
-     * 密码
-     */
-    private String password;
-
-    /**
      * 手机号码
      */
     private String phone;
 
     /**
-     * 是否是超级管理员
-     * <p>Y-是，N-否</p>
+     * 用户的排序
      */
-    private String superAdminFlag;
+    private BigDecimal userSort;
 
 }
