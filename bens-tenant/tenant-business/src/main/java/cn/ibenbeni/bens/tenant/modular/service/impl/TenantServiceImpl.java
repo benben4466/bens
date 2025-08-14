@@ -18,6 +18,7 @@ import cn.ibenbeni.bens.sys.api.pojo.role.dto.RoleDTO;
 import cn.ibenbeni.bens.sys.api.pojo.role.dto.RoleSaveReqDTO;
 import cn.ibenbeni.bens.tenant.api.exception.TenantException;
 import cn.ibenbeni.bens.tenant.api.exception.enums.TenantExceptionEnum;
+import cn.ibenbeni.bens.tenant.api.util.TenantUtils;
 import cn.ibenbeni.bens.tenant.modular.convert.TenantConvert;
 import cn.ibenbeni.bens.tenant.modular.entity.TenantDO;
 import cn.ibenbeni.bens.tenant.modular.entity.TenantPackageDO;
@@ -83,7 +84,20 @@ public class TenantServiceImpl extends ServiceImpl<TenantMapper, TenantDO> imple
         save(tenant);
 
         // 创建租户管理员角色和管理员用户
-        createTenantAdmin(tenantPackage, saveReq, tenant.getTenantId());
+        TenantUtils.execute(tenant.getTenantId(), () -> {
+            // 创建租户管理员角色
+            Long roleId = createRole(tenantPackage);
+            // 创建租户管理员用户
+            Long userId = createUser(roleId, saveReq);
+
+            // 更新租户管理用户ID
+            TenantDO updateTenant = TenantDO.builder()
+                    .tenantId(tenant.getTenantId())
+                    .contactUserId(userId)
+                    .build();
+            updateById(updateTenant);
+        });
+
         return tenant.getTenantId();
     }
 
@@ -126,21 +140,24 @@ public class TenantServiceImpl extends ServiceImpl<TenantMapper, TenantDO> imple
     @DSTransactional(rollbackFor = Exception.class)
     @Override
     public void updateTenantMenu(Long tenantId, Set<Long> menuIdSet) {
-        // 获取租户的所有角色
-        List<RoleDTO> roleList = roleServiceApi.list();
-        roleList.forEach(role -> Assert.isTrue(tenantId.equals(role.getTenantId()), "角色ID:{},角色租户ID:{},实际租户:{}",role.getRoleId(), role.getTenantId(), tenantId));
-        // 更新角色的菜单权限
-        roleList.forEach(role -> {
-            // 若是租户管理员角色，则更新菜单权限
-            if (ObjectUtil.equal(role.getRoleCode(), RoleCodeEnum.TENANT_ADMIN.getCode())) {
-                permissionApi.assignRoleMenu(role.getRoleId(), menuIdSet);
-            }
-            // 如果是其余角色，则取消超出权限
-            Set<Long> roleMenuIdSet = permissionApi.listRoleMenuByRoleId(role.getRoleId());
-            // intersectionDistinct：计算集合的交集
-            roleMenuIdSet = CollUtil.intersectionDistinct(roleMenuIdSet, menuIdSet);
-            permissionApi.assignRoleMenu(role.getRoleId(), roleMenuIdSet);
-            log.info("[updateTenantRoleMenu][角色({}/{})的权限修改为({})]", role.getTenantId(), role.getRoleId(), roleMenuIdSet);
+        // 使用指定租户ID执行操作
+        TenantUtils.execute(tenantId, () -> {
+            // 获取租户的所有角色
+            List<RoleDTO> roleList = roleServiceApi.list();
+            roleList.forEach(role -> Assert.isTrue(tenantId.equals(role.getTenantId()), "角色ID:{},角色租户ID:{},实际租户:{}",role.getRoleId(), role.getTenantId(), tenantId));
+            // 更新角色的菜单权限
+            roleList.forEach(role -> {
+                // 若是租户管理员角色，则更新菜单权限
+                if (ObjectUtil.equal(role.getRoleCode(), RoleCodeEnum.TENANT_ADMIN.getCode())) {
+                    permissionApi.assignRoleMenu(role.getRoleId(), menuIdSet);
+                }
+                // 如果是其余角色，则取消超出权限
+                Set<Long> roleMenuIdSet = permissionApi.listRoleMenuByRoleId(role.getRoleId());
+                // intersectionDistinct：计算集合的交集
+                roleMenuIdSet = CollUtil.intersectionDistinct(roleMenuIdSet, menuIdSet);
+                permissionApi.assignRoleMenu(role.getRoleId(), roleMenuIdSet);
+                log.info("[updateTenantRoleMenu][角色({}/{})的权限修改为({})]", role.getTenantId(), role.getRoleId(), roleMenuIdSet);
+            });
         });
     }
 
@@ -252,26 +269,6 @@ public class TenantServiceImpl extends ServiceImpl<TenantMapper, TenantDO> imple
      */
     private boolean isSystemTenant(TenantDO tenant) {
         return Objects.equals(tenant.getTenantId(), TenantDO.PACKAGE_ID_SYSTEM);
-    }
-
-    /**
-     * 创建租户管理员
-     *
-     * @param tenantPackage 租户套餐
-     * @param tenantId      租户实例ID
-     */
-    private void createTenantAdmin(TenantPackageDO tenantPackage, TenantSaveReq tenantSaveReq, Long tenantId) {
-        // 创建租户管理员角色
-        Long roleId = createRole(tenantPackage);
-        // 创建租户管理员用户
-        Long userId = createUser(roleId, tenantSaveReq);
-
-        // 更新租户管理用户ID
-        TenantDO tenant = TenantDO.builder()
-                .tenantId(tenantId)
-                .contactUserId(userId)
-                .build();
-        updateById(tenant);
     }
 
     /**
