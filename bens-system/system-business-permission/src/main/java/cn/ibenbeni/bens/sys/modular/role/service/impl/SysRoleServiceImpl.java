@@ -166,6 +166,17 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRoleDO> im
         });
     }
 
+    @Override
+    public void validateHaveTenantBind(Set<Long> beRemovedIdSet) {
+    }
+
+    @Override
+    public void removeTenantAction(Set<Long> beRemovedPackageIdSet) {
+        // 删除该租户下所有角色
+        Set<Long> roleIdSet = CollectionUtils.convertSet(list(), SysRoleDO::getRoleId);
+        baseDelete(roleIdSet);
+    }
+
     // endregion
 
     // region 私有方法

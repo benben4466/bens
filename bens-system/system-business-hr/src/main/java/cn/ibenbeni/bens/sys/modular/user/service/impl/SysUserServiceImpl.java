@@ -8,6 +8,7 @@ import cn.ibenbeni.bens.auth.api.password.PasswordEncryptionStrategy;
 import cn.ibenbeni.bens.auth.api.pojo.password.SaltedEncryptResult;
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
 import cn.ibenbeni.bens.rule.exception.base.ServiceException;
+import cn.ibenbeni.bens.rule.util.CollectionUtils;
 import cn.ibenbeni.bens.sys.api.SecurityConfigService;
 import cn.ibenbeni.bens.sys.api.callback.RemoveUserCallbackApi;
 import cn.ibenbeni.bens.sys.api.enums.user.UserStatusEnum;
@@ -185,6 +186,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserDO> im
     @Override
     public boolean isPasswordMatch(String encryptBefore, String passwordSalt, String encryptAfter) {
         return passwordEncryptionStrategy.checkPasswordWithSalt(encryptBefore, passwordSalt, encryptAfter);
+    }
+
+    @Override
+    public void validateHaveTenantBind(Set<Long> beRemovedIdSet) {
+    }
+
+    @Override
+    public void removeTenantAction(Set<Long> beRemovedPackageIdSet) {
+        Set<Long> userIdSet = CollectionUtils.convertSet(list(), SysUserDO::getUserId);
+        baseRemoveUser(userIdSet);
     }
 
     // endregion

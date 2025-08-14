@@ -6,6 +6,7 @@ import cn.ibenbeni.bens.sys.modular.user.entity.SysUserDO;
 import cn.ibenbeni.bens.sys.modular.user.pojo.vo.UserPageReqVO;
 import cn.ibenbeni.bens.sys.modular.user.pojo.vo.UserSaveReqVO;
 import cn.ibenbeni.bens.sys.modular.user.pojo.vo.profile.UserProfileUpdatePasswordReqVO;
+import cn.ibenbeni.bens.tenant.api.callback.RemoveTenantCallbackApi;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.Set;
  *
  * @author benben
  */
-public interface SysUserService extends IService<SysUserDO> {
+public interface SysUserService extends IService<SysUserDO>, RemoveTenantCallbackApi {
 
     /**
      * 创建用户

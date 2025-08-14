@@ -5,6 +5,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.extra.spring.SpringUtil;
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
 import cn.ibenbeni.bens.rule.enums.StatusEnum;
 import cn.ibenbeni.bens.rule.util.DateUtils;
@@ -16,6 +17,7 @@ import cn.ibenbeni.bens.sys.api.enums.role.RoleCodeEnum;
 import cn.ibenbeni.bens.sys.api.enums.role.RoleTypeEnum;
 import cn.ibenbeni.bens.sys.api.pojo.role.dto.RoleDTO;
 import cn.ibenbeni.bens.sys.api.pojo.role.dto.RoleSaveReqDTO;
+import cn.ibenbeni.bens.tenant.api.callback.RemoveTenantCallbackApi;
 import cn.ibenbeni.bens.tenant.api.exception.TenantException;
 import cn.ibenbeni.bens.tenant.api.exception.enums.TenantExceptionEnum;
 import cn.ibenbeni.bens.tenant.api.util.TenantUtils;
@@ -35,6 +37,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -101,18 +104,20 @@ public class TenantServiceImpl extends ServiceImpl<TenantMapper, TenantDO> imple
         return tenant.getTenantId();
     }
 
+    @DSTransactional(rollbackFor = Exception.class)
     @Override
     public void deleteTenant(Long tenantId) {
-        // 校验是否允许更新
-        validateUpdateTenant(tenantId);
-        removeById(tenantId);
+        TenantUtils.execute(tenantId, () -> {
+            // 校验是否允许更新
+            validateUpdateTenant(tenantId);
+            baseRemoveTenant(CollUtil.set(false, tenantId));
+        });
     }
 
     @DSTransactional(rollbackFor = Exception.class)
     @Override
     public void deleteTenant(Set<Long> tenantIdSet) {
-        tenantIdSet.forEach(this::validateUpdateTenant);
-        removeByIds(tenantIdSet);
+        tenantIdSet.forEach(this::deleteTenant);
     }
 
     @Override
@@ -144,7 +149,7 @@ public class TenantServiceImpl extends ServiceImpl<TenantMapper, TenantDO> imple
         TenantUtils.execute(tenantId, () -> {
             // 获取租户的所有角色
             List<RoleDTO> roleList = roleServiceApi.list();
-            roleList.forEach(role -> Assert.isTrue(tenantId.equals(role.getTenantId()), "角色ID:{},角色租户ID:{},实际租户:{}",role.getRoleId(), role.getTenantId(), tenantId));
+            roleList.forEach(role -> Assert.isTrue(tenantId.equals(role.getTenantId()), "角色ID:{},角色租户ID:{},实际租户:{}", role.getRoleId(), role.getTenantId(), tenantId));
             // 更新角色的菜单权限
             roleList.forEach(role -> {
                 // 若是租户管理员角色，则更新菜单权限
@@ -302,6 +307,19 @@ public class TenantServiceImpl extends ServiceImpl<TenantMapper, TenantDO> imple
         Long userId = userServiceApi.createUser(TenantConvert.convertToCreateUserDTO(saveReq));
         permissionApi.assignUserRole(userId, CollUtil.set(false, roleId));
         return userId;
+    }
+
+    private void baseRemoveTenant(Set<Long> tenantIdSet) {
+        Map<String, RemoveTenantCallbackApi> map = SpringUtil.getBeansOfType(RemoveTenantCallbackApi.class);
+        for (RemoveTenantCallbackApi removeTenantCallbackApi : map.values()) {
+            removeTenantCallbackApi.validateHaveTenantBind(tenantIdSet);
+        }
+
+        removeBatchByIds(tenantIdSet);
+
+        for (RemoveTenantCallbackApi removeTenantCallbackApi : map.values()) {
+            removeTenantCallbackApi.removeTenantAction(tenantIdSet);
+        }
     }
 
     // endregion

@@ -1,10 +1,10 @@
 package cn.ibenbeni.bens.sys.modular.role.service;
 
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
-import cn.ibenbeni.bens.sys.api.SysRoleServiceApi;
 import cn.ibenbeni.bens.sys.modular.role.entity.SysRoleDO;
 import cn.ibenbeni.bens.sys.modular.role.pojo.request.RolePageReq;
 import cn.ibenbeni.bens.sys.modular.role.pojo.request.RoleSaveReq;
+import cn.ibenbeni.bens.tenant.api.callback.RemoveTenantCallbackApi;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import javax.validation.Valid;
@@ -16,7 +16,7 @@ import java.util.Set;
  *
  * @author benben
  */
-public interface SysRoleService extends IService<SysRoleDO> {
+public interface SysRoleService extends IService<SysRoleDO>, RemoveTenantCallbackApi {
 
     /**
      * 创建角色
