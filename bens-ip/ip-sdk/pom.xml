@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>cn.ibenbeni</groupId>
+        <artifactId>bens-ip</artifactId>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>ip-sdk</artifactId>
+
+    <dependencies>
+        <!-- IP模块-API -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>ip-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- 资源模块-API -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>resource-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- IP地址检索库 -->
+        <dependency>
+            <groupId>org.lionsoul</groupId>
+            <artifactId>ip2region</artifactId>
+            <version>${ip2region.version}</version>
+        </dependency>
+
+        <!-- Spring Web -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- 接口文档-Knife4j -->
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
+            <version>${knife4j.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <!-- 接口文档-Swagger页面 -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>${springdoc.version}</version>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+
+</project>
