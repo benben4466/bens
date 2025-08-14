@@ -96,6 +96,13 @@
             <version>${revision}</version>
         </dependency>
 
+        <!-- IP模块-Starter -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>ip-spring-boot-starter</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
     </dependencies>
 
 </project>
