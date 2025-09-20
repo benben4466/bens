@@ -103,6 +103,13 @@
             <version>${revision}</version>
         </dependency>
 
+        <!-- 消息中心模块-Starter -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>message-center-spring-boot-starter</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
     </dependencies>
 
 </project>

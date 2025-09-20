@@ -35,7 +35,7 @@ create table sys_user_password_record
     `create_user`           bigint       NULL DEFAULT NULL COMMENT '创建人',
     `update_time`           datetime     NULL DEFAULT NULL COMMENT '更新时间',
     `update_user`           bigint       NULL DEFAULT NULL COMMENT '更新人',
-    `tenant_id`      bigint         NULL     DEFAULT NULL COMMENT '租户ID',
+    `tenant_id`             bigint       NULL DEFAULT NULL COMMENT '租户ID',
     primary key (`record_id`)
 ) COMMENT ='系统用户修改密码记录表';
 
@@ -353,7 +353,7 @@ CREATE TABLE `sys_tenant`
     `tenant_id`         bigint       NOT NULL COMMENT '租户编号',
     `tenant_package_id` bigint       NOT NULL COMMENT '租户套餐ID',
     `tenant_name`       varchar(255) NOT NULL COMMENT '租户名称',
-    `contact_user_id`           bigint       NULL     DEFAULT NULL COMMENT '租户管理用户ID',
+    `contact_user_id`   bigint       NULL     DEFAULT NULL COMMENT '租户管理用户ID',
     `contact_name`      varchar(255) NOT NULL COMMENT '租户联系人名称',
     `contact_mobile`    varchar(255) NOT NULL COMMENT '租户联系人手机号码',
     `status_flag`       tinyint      NULL     DEFAULT NULL COMMENT '租户状态(1=正常;2=禁用;)',
@@ -369,3 +369,20 @@ CREATE TABLE `sys_tenant`
     `update_user`       bigint       NULL     DEFAULT NULL COMMENT '更新人',
     PRIMARY KEY (`tenant_id`)
 ) COMMENT = '租户表';
+
+CREATE TABLE `sys_notice`
+(
+    `notice_id`      bigint      NOT NULL COMMENT '公告ID',
+    `notice_title`   varchar(50) NOT NULL COMMENT '公告标题',
+    `notice_content` text        NOT NULL COMMENT '公告内容',
+    `notice_type`    tinyint     NOT NULL COMMENT '公告类型（1通知 2公告）',
+    `status_flag`    tinyint     NOT NULL DEFAULT 0 COMMENT '公告状态(0=正常;1=关闭)',
+    `version_flag`   bigint      NULL     DEFAULT NULL COMMENT '乐观锁',
+    `create_time`    datetime    NULL     DEFAULT NULL COMMENT '创建时间',
+    `create_user`    bigint      NULL     DEFAULT NULL COMMENT '创建人',
+    `update_time`    datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `update_user`    bigint      NULL     DEFAULT NULL COMMENT '更新人',
+    `del_flag`       char(1)     NOT NULL DEFAULT 'N' COMMENT '删除标记',
+    `tenant_id`      bigint      NULL     DEFAULT NULL COMMENT '租户编号',
+    PRIMARY KEY (`notice_id`)
+) COMMENT = '通知公告表';
