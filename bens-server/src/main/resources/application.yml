@@ -54,3 +54,7 @@ bens:
   tenant:
     enable: true
     ignoreTables:
+  websocket:
+    enable: true # 是否启用 websocket
+    path: /ws
+    sender-type: local

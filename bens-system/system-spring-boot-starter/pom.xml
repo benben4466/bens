@@ -110,6 +110,13 @@
             <version>${revision}</version>
         </dependency>
 
+        <!-- WebSocket模块-Starter -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>websocket-spring-boot-starter</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
     </dependencies>
 
 </project>
