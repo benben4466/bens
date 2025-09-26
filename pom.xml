@@ -54,6 +54,7 @@
         <module>bens-ip</module>
         <!-- 消息中心模块 -->
         <module>bens-message-center</module>
+        <module>bens-websocket</module>
     </modules>
 
     <properties>

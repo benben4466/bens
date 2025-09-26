@@ -51,4 +51,9 @@ public class LoginUser implements Serializable {
     @JsonIgnore
     private Dict otherInfos;
 
+    /**
+     * 租户ID
+     */
+    private Long tenantId;
+
 }
