@@ -1,8 +1,11 @@
 package cn.ibenbeni.bens.websocket.starter;
 
+import cn.ibenbeni.bens.websocket.api.WebSocketSenderApi;
 import cn.ibenbeni.bens.websocket.api.listener.WebSocketMessageListener;
 import cn.ibenbeni.bens.websocket.api.prop.WebSocketProperties;
+import cn.ibenbeni.bens.websocket.api.sender.WebSocketMessageSender;
 import cn.ibenbeni.bens.websocket.api.session.WebSocketSessionManager;
+import cn.ibenbeni.bens.websocket.sdk.api.WebSocketSenderApiImpl;
 import cn.ibenbeni.bens.websocket.sdk.handler.JsonWebSocketMessageHandler;
 import cn.ibenbeni.bens.websocket.sdk.security.LoginUserHandshakeInterceptor;
 import cn.ibenbeni.bens.websocket.sdk.sender.local.LocalWebSocketMessageSender;
@@ -22,6 +25,7 @@ import java.util.List;
 /**
  * WebSocket 自动配置类
  */
+@Configuration
 @EnableWebSocket // 开启 websocket, 即激活 Spring 的 WebSocket 编程模型
 @ConditionalOnProperty(prefix = "bens.websocket", value = "enable", matchIfMissing = true) // 允许使用 WebSocket 模块
 @EnableConfigurationProperties(WebSocketProperties.class)
@@ -77,6 +81,16 @@ public class BensWebSocketAutoConfiguration {
     @Bean
     public WebSocketSessionManager webSocketSessionManager() {
         return new WebSocketSessionManagerImpl();
+    }
+
+    /**
+     * WebSocket 消息发送器API
+     *
+     * @param messageSender WebSocket 消息发送器
+     */
+    @Bean
+    public WebSocketSenderApi webSocketSenderApi(WebSocketMessageSender messageSender) {
+        return new WebSocketSenderApiImpl(messageSender);
     }
 
     // ==================== Sender 相关 ====================

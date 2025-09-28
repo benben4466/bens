@@ -29,6 +29,13 @@
             <version>${revision}</version>
         </dependency>
 
+        <!--WebSocket模块-API-->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>websocket-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
         <!--资源模块-API-->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
