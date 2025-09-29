@@ -20,6 +20,8 @@
         <module>message-center-api</module>
         <!-- 消息中心模块-通知公告 -->
         <module>message-center-business-notice</module>
+        <!-- 消息中心模块-站内信 -->
+        <module>message-center-business-notify</module>
         <!-- 消息中心模块-Starter -->
         <module>message-center-spring-boot-starter</module>
     </modules>

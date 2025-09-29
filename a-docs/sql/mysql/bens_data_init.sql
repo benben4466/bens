@@ -19,3 +19,12 @@ insert into sys_config (config_id, config_type_code, config_name, config_code, c
 insert into sys_config (config_id, config_type_code, config_name, config_code, config_value, config_type, visible_flag, config_sort, del_flag, create_time) values (13, 'auth_config', '密码策略:最少多久更新一次密码(天)', 'SYS_LOGIN_PASSWORD_MIN_UPDATE_DAYS', '180', 1, true, 1.00, 'N', now());
 insert into sys_config (config_id, config_type_code, config_name, config_code, config_value, config_type, visible_flag, config_sort, del_flag, create_time) values (14, 'auth_config', '密码策略:修改密码时,不能和历史密码重复的次数', 'SYS_LOGIN_PASSWORD_MIN_CANT_REPEAT_TIMES', '0', 1, true, 1.00, 'N', now());
 insert into sys_config (config_id, config_type_code, config_name, config_code, config_value, config_type, visible_flag, config_sort, del_flag, create_time) values (15, 'auth_config', 'auth认证用的JWT秘钥,用于校验登录token', 'SYS_AUTH_JWT_SECRET', 'D9KbZxFM5Xm1SNxQ1LvO5m36DqvHFH', 1, true, 1.00, 'N', now());
+
+-- 插入[站内信模版的类型]字典类型 [2025.9.29]
+INSERT INTO `sys_dict_type` (`dict_type_id`, `dict_type_name`, `dict_type_code`, `status_flag`, `dict_type_sort`, `remark`, `del_flag`, `version_flag`, `create_time`, `create_user`, `update_time`, `update_user`)
+VALUES (1 ,'站内信模版的类型', 'sys_notify_template_type', 1, 1.00, '站内信模版的类型', 'N', NULL, '2025-09-29 10:26:02', 1, '2025-09-29 10:26:02', 1);
+-- 插入[站内信模版的类型]字典值 [2025.9.29]
+INSERT INTO `sys_dict` (`dict_id`, `dict_type_code`, `dict_code`, `dict_value`, `dict_color_type`, `dict_sort`, `status_flag`, `remark`, `del_flag`, `version_flag`, `create_time`, `create_user`, `update_time`, `update_user`)
+VALUES (1, 'sys_notify_template_type', '通知公告', '1', 'default', 1.00, 1, '站内信模版的类型-通知公告', 'N', NULL, '2025-09-29 10:26:02', 1, '2025-09-29 10:26:02', 1);
+INSERT INTO `sys_dict` (`dict_id`, `dict_type_code`, `dict_code`, `dict_value`, `dict_color_type`, `dict_sort`, `status_flag`, `remark`, `del_flag`, `version_flag`, `create_time`, `create_user`, `update_time`, `update_user`)
+VALUES (2, 'sys_notify_template_type', '系统消息', '2', 'default', 1.00, 1, '站内信模版的类型-系统消息', 'N', NULL, '2025-09-29 10:26:02', 1, '2025-09-29 10:26:02', 1);
