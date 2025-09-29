@@ -125,6 +125,7 @@ public class NotifyTemplateServiceImpl extends ServiceImpl<NotifyTemplateMapper,
      * @return 返回参数名称集合
      */
     private List<String> parseTemplateContentParams(String templateContent) {
+        // 使用正则表达式匹配 {} 中的变量, 并将其提取出来
         return ReUtil.findAllGroup1(PATTERN_PARAMS, templateContent);
     }
 
