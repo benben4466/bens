@@ -408,3 +408,26 @@ CREATE TABLE `sys_notify_template`
     `tenant_id`    bigint        NULL     DEFAULT NULL COMMENT '租户编号',
     PRIMARY KEY (`id`)
 ) COMMENT = '站内信模板表';
+
+CREATE TABLE sys_notify_message
+(
+    `id`                bigint        NOT NULL COMMENT '主键',
+    `user_id`           bigint        NOT NULL COMMENT '用户ID',
+    `user_type`         tinyint       NOT NULL COMMENT '用户类型',
+    `template_id`       bigint        NOT NULL COMMENT '模版编号',
+    `template_code`     varchar(64)   NOT NULL COMMENT '模板编码',
+    `template_nickname` varchar(63)   NOT NULL COMMENT '模版发送人名称',
+    `template_content`  varchar(1024) NOT NULL COMMENT '模版内容',
+    `template_type`     int           NOT NULL COMMENT '模版类型',
+    `template_params`   varchar(255)  NOT NULL COMMENT '模版参数',
+    `read_status`       bit           NOT NULL COMMENT '是否已读',
+    `read_time`         datetime               DEFAULT NULL NULL COMMENT '阅读时间',
+    `version_flag`      bigint        NULL     DEFAULT NULL COMMENT '乐观锁',
+    `create_time`       datetime      NULL     DEFAULT NULL COMMENT '创建时间',
+    `create_user`       bigint        NULL     DEFAULT NULL COMMENT '创建人',
+    `update_time`       datetime      NULL     DEFAULT NULL COMMENT '更新时间',
+    `update_user`       bigint        NULL     DEFAULT NULL COMMENT '更新人',
+    `del_flag`          char(1)       NOT NULL DEFAULT 'N' COMMENT '删除标记',
+    `tenant_id`         bigint        NULL     DEFAULT NULL COMMENT '租户编号',
+    PRIMARY KEY (`id`)
+) COMMENT = '站内信消息表';

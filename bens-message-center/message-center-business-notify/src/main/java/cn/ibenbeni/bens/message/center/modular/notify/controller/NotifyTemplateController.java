@@ -6,11 +6,14 @@ import cn.ibenbeni.bens.db.api.util.DbUtil;
 import cn.ibenbeni.bens.message.center.modular.notify.entity.NotifyTemplateDO;
 import cn.ibenbeni.bens.message.center.modular.notify.pojo.request.NotifyTemplatePageReq;
 import cn.ibenbeni.bens.message.center.modular.notify.pojo.request.NotifyTemplateSaveReq;
+import cn.ibenbeni.bens.message.center.modular.notify.pojo.request.NotifyTemplateSendReq;
 import cn.ibenbeni.bens.message.center.modular.notify.pojo.response.NotifyTemplateResp;
+import cn.ibenbeni.bens.message.center.modular.notify.service.NotifySendService;
 import cn.ibenbeni.bens.message.center.modular.notify.service.NotifyTemplateService;
 import cn.ibenbeni.bens.resource.api.annotation.DeleteResource;
 import cn.ibenbeni.bens.resource.api.annotation.GetResource;
 import cn.ibenbeni.bens.resource.api.annotation.PostResource;
+import cn.ibenbeni.bens.rule.enums.user.UserTypeEnum;
 import cn.ibenbeni.bens.rule.pojo.response.ResponseData;
 import cn.ibenbeni.bens.rule.pojo.response.SuccessResponseData;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,12 +25,15 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.Set;
 
-@Tag(name = "管理后台 - 站内信")
+@Tag(name = "管理后台 - 站内信模板")
 @RestController
 public class NotifyTemplateController {
 
     @Resource
     private NotifyTemplateService notifyTemplateService;
+
+    @Resource
+    private NotifySendService notifySendService;
 
     @Operation(summary = "创建站内信模版")
     @PostResource(path = "/system/notify-template/create")
@@ -71,6 +77,16 @@ public class NotifyTemplateController {
     public ResponseData<PageResult<NotifyTemplateResp>> pageNotifyTemplate(NotifyTemplatePageReq req) {
         PageResult<NotifyTemplateDO> page = notifyTemplateService.pageNotifyTemplate(req);
         return new SuccessResponseData<>(DbUtil.toBean(page, NotifyTemplateResp.class));
+    }
+
+    @Operation(summary = "发送站内信")
+    @PostResource(path = "/system/notify-template/send-notify")
+    public ResponseData<Long> sendNotify(@RequestBody @Valid NotifyTemplateSendReq sendReq) {
+        if (UserTypeEnum.ADMIN.getType().equals(sendReq.getUserType())) {
+            Long messageId = notifySendService.sendSingleNotifyToAdmin(sendReq.getUserId(), sendReq.getTemplateCode(), sendReq.getTemplateParams());
+            return new SuccessResponseData<>(messageId);
+        }
+        return new SuccessResponseData<>();
     }
 
 }

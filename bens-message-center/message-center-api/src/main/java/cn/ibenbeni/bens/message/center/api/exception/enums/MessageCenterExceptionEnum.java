@@ -26,6 +26,11 @@ public enum MessageCenterExceptionEnum implements AbstractExceptionEnum {
      */
     NOTIFY_TEMPLATE_NOT_EXIST(RuleConstants.BUSINESS_ERROR_TYPE_CODE + MessageCenterConstants.MESSAGE_CENTER_EXCEPTION_STEP_CODE + "50", "站内信模板({})不存在"),
 
+    /**
+     * 站内信模板参数缺失
+     */
+    NOTIFY_SEND_TEMPLATE_PARAM_MISS(RuleConstants.BUSINESS_ERROR_TYPE_CODE + MessageCenterConstants.MESSAGE_CENTER_EXCEPTION_STEP_CODE + "51", "模板参数({})缺失"),
+
 
     // endregion
 
