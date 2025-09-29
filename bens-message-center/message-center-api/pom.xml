@@ -16,6 +16,15 @@
     <description>消息中心API</description>
 
     <dependencies>
+
+        <!-- 校验模块 -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>validator-api</artifactId>
+            <version>${revision}</version>
+            <optional>true</optional>
+        </dependency>
+
     </dependencies>
 
 </project>

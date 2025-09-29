@@ -16,10 +16,17 @@
     <description>消息中心模块-Starter</description>
 
     <dependencies>
-        <!-- 消息中心-API -->
+        <!-- 消息中心-通知 -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
             <artifactId>message-center-business-notice</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- 消息中心-站内信 -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>message-center-business-notify</artifactId>
             <version>${revision}</version>
         </dependency>
     </dependencies>
