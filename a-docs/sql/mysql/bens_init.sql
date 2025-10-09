@@ -431,3 +431,23 @@ CREATE TABLE sys_notify_message
     `tenant_id`         bigint        NULL     DEFAULT NULL COMMENT '租户编号',
     PRIMARY KEY (`id`)
 ) COMMENT = '站内信消息表';
+
+DROP TABLE IF EXISTS `iot_product_category`;
+CREATE TABLE `iot_product_category`
+(
+    `category_id`   bigint         NOT NULL COMMENT '产品分类ID',
+    `category_name` varchar(100)   NOT NULL COMMENT '产品分类名称',
+    `category_code` varchar(100)   NOT NULL COMMENT '产品分类编码',
+    `category_sort` decimal(10, 2) NOT NULL COMMENT '产品分类排序',
+    `status_flag`   tinyint        NOT NULL DEFAULT 0 COMMENT '产品分类状态',
+    `is_sys`        tinyint        NULL     DEFAULT NULL COMMENT '是否系统内置',
+    `remark`        varchar(500)   NULL     DEFAULT NULL COMMENT '备注',
+    `version_flag`  bigint         NULL     DEFAULT NULL COMMENT '乐观锁',
+    `create_time`   datetime       NULL     DEFAULT NULL COMMENT '创建时间',
+    `create_user`   bigint         NULL     DEFAULT NULL COMMENT '创建人',
+    `update_time`   datetime       NULL     DEFAULT NULL COMMENT '更新时间',
+    `update_user`   bigint         NULL     DEFAULT NULL COMMENT '更新人',
+    `del_flag`      char(1)        NOT NULL DEFAULT 'N' COMMENT '删除标记',
+    `tenant_id`     bigint         NULL     DEFAULT NULL COMMENT '租户编号',
+    PRIMARY KEY (`category_id`)
+) COMMENT = 'IoT产品分类表';
