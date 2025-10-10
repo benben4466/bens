@@ -26,6 +26,16 @@ public enum IotExceptionEnum implements AbstractExceptionEnum {
      */
     PRODUCT_CATEGORY_NOT_ALLOW_UPDATE_SYS_FLAG(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + IotConstants.IOT_MODULE_NAME + "03", "内置标识不允许修改"),
 
+    /**
+     * 产品不存在
+     */
+    PRODUCT_NOT_EXISTED(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + IotConstants.IOT_MODULE_NAME + "04", "产品不存在"),
+
+    /**
+     * 内置产品不允许删除
+     */
+    PRODUCT_NOT_ALLOW_DELETE(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + IotConstants.IOT_MODULE_NAME + "05", "内置产品不允许删除"),
+
     ;
 
     /**

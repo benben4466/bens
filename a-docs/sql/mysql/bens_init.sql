@@ -451,3 +451,29 @@ CREATE TABLE `iot_product_category`
     `tenant_id`     bigint         NULL     DEFAULT NULL COMMENT '租户编号',
     PRIMARY KEY (`category_id`)
 ) COMMENT = 'IoT产品分类表';
+
+DROP TABLE IF EXISTS `iot_product`;
+CREATE TABLE `iot_product`
+(
+    `product_id`     bigint       NOT NULL COMMENT '产品ID',
+    `product_name`   varchar(100) NOT NULL COMMENT '产品名称',
+    `product_key`    varchar(64)  NOT NULL COMMENT '产品标识',
+    `product_icon`   varchar(512) NULL     DEFAULT NULL COMMENT '产品图标',
+    `category_id`    bigint       NOT NULL COMMENT '产品分类ID',
+    `category_name`  varchar(100) NOT NULL COMMENT '产品分类名称',
+    `status_flag`    tinyint      NOT NULL DEFAULT 1 COMMENT '产品状态',
+    `is_sys`         tinyint      NOT NULL DEFAULT 0 COMMENT '是否系统内置(0=内置;1=自定义;)',
+    `device_type`    tinyint      NULL     DEFAULT 1 COMMENT '设备类型(IotDeviceTypeEnum)',
+    `network_method` tinyint      NULL     DEFAULT 1 COMMENT '联网方式(IotDeviceNetworkMethodEnum)',
+    `auth_method`    tinyint      NULL     DEFAULT 1 COMMENT '认证方式(IotDeviceAuthMethodEnum)',
+    `protocol_code`  varchar(64)  NULL     DEFAULT NULL COMMENT '通信协议编码',
+    `remark`         varchar(500) NULL     DEFAULT NULL COMMENT '备注',
+    `version_flag`   bigint       NULL     DEFAULT NULL COMMENT '乐观锁',
+    `create_time`    datetime     NULL     DEFAULT NULL COMMENT '创建时间',
+    `create_user`    bigint       NULL     DEFAULT NULL COMMENT '创建人',
+    `update_time`    datetime     NULL     DEFAULT NULL COMMENT '更新时间',
+    `update_user`    bigint       NULL     DEFAULT NULL COMMENT '更新人',
+    `del_flag`       char(1)      NOT NULL DEFAULT 'N' COMMENT '删除标记',
+    `tenant_id`      bigint       NULL     DEFAULT NULL COMMENT '租户编号',
+    PRIMARY KEY (`product_id`)
+) COMMENT = 'IoT产品表';
