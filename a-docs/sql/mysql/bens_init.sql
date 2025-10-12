@@ -494,3 +494,15 @@ CREATE TABLE `iot_group`
     `tenant_id`    bigint         NULL     DEFAULT NULL COMMENT '租户编号',
     PRIMARY KEY (`group_id`)
 ) COMMENT = '设备分组表';
+
+DROP TABLE IF EXISTS `iot_device_group`;
+CREATE TABLE `iot_device_group`
+(
+    `device_id`       bigint(20) NOT NULL COMMENT '设备ID',
+    `device_group_id` bigint(20) NOT NULL COMMENT '设备分组ID',
+    `create_time`     datetime   NULL DEFAULT NULL COMMENT '创建时间',
+    `create_user`     bigint     NULL DEFAULT NULL COMMENT '创建人',
+    `update_time`     datetime   NULL DEFAULT NULL COMMENT '更新时间',
+    `update_user`     bigint     NULL DEFAULT NULL COMMENT '更新人',
+    PRIMARY KEY (`device_id`, `device_group_id`)
+) COMMENT = '设备分组';
