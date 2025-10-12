@@ -477,3 +477,20 @@ CREATE TABLE `iot_product`
     `tenant_id`      bigint       NULL     DEFAULT NULL COMMENT '租户编号',
     PRIMARY KEY (`product_id`)
 ) COMMENT = 'IoT产品表';
+
+DROP TABLE IF EXISTS `iot_group`;
+CREATE TABLE `iot_group`
+(
+    `group_id`     bigint         NOT NULL AUTO_INCREMENT COMMENT '设备分组ID',
+    `group_name`   varchar(64)    NOT NULL COMMENT '设备分组名称',
+    `group_order`  decimal(10, 2) NOT NULL DEFAULT 0 COMMENT '设备分组排序',
+    `remark`       varchar(500)   NULL     DEFAULT NULL COMMENT '备注',
+    `version_flag` bigint         NULL     DEFAULT NULL COMMENT '乐观锁',
+    `create_time`  datetime       NULL     DEFAULT NULL COMMENT '创建时间',
+    `create_user`  bigint         NULL     DEFAULT NULL COMMENT '创建人',
+    `update_time`  datetime       NULL     DEFAULT NULL COMMENT '更新时间',
+    `update_user`  bigint         NULL     DEFAULT NULL COMMENT '更新人',
+    `del_flag`     char(1)        NOT NULL DEFAULT 'N' COMMENT '删除标记',
+    `tenant_id`    bigint         NULL     DEFAULT NULL COMMENT '租户编号',
+    PRIMARY KEY (`group_id`)
+) COMMENT = '设备分组表';
