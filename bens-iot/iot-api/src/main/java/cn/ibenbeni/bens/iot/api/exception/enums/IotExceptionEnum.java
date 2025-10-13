@@ -37,9 +37,29 @@ public enum IotExceptionEnum implements AbstractExceptionEnum {
     PRODUCT_NOT_ALLOW_DELETE(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + IotConstants.IOT_MODULE_NAME + "05", "内置产品不允许删除"),
 
     /**
+     * 产品下存在设备,不允许删除
+     */
+    PRODUCT_DELETE_FAIL_HAS_DEVICE(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + IotConstants.IOT_MODULE_NAME + "06", "产品下存在设备,不允许删除"),
+
+    /**
      * 设备分组不存在
      */
     DEVICE_GROUP_NOT_EXISTED(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + IotConstants.IOT_MODULE_NAME + "300", "设备分组不存在"),
+
+    /**
+     * 设备不存在
+     */
+    DEVICE_NOT_EXISTED(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + IotConstants.IOT_MODULE_NAME + "400", "设备不存在"),
+
+    /**
+     * 设备SN已存在
+     */
+    DEVICE_SN_NOT_EXISTS(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + IotConstants.IOT_MODULE_NAME + "401", "设备SN已存在"),
+
+    /**
+     * 设备名称在同一产品下必须唯一
+     */
+    DEVICE_NAME_EXISTS(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + IotConstants.IOT_MODULE_NAME + "402", "设备名称在同一产品下必须唯一"),
 
     ;
 

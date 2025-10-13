@@ -1,10 +1,7 @@
 package cn.ibenbeni.bens.iot.modular.base.entity.device;
 
 import cn.ibenbeni.bens.db.api.pojo.entity.BaseBusinessEntity;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -40,5 +37,11 @@ public class IotGroupDO extends BaseBusinessEntity {
      */
     @TableField("remark")
     private String remark;
+
+    /**
+     * 租户ID
+     */
+    @TableField(value = "tenant_id", fill = FieldFill.INSERT)
+    private Long tenantId;
 
 }

@@ -28,4 +28,20 @@ public class TenantUtils {
         }
     }
 
+    /**
+     * 忽略租户执行任务
+     *
+     * @param runnable 任务
+     */
+    public static void executeIgnore(Runnable runnable) {
+        Boolean oldIgnore = TenantContextHolder.isIgnore();
+        try {
+            TenantContextHolder.setIgnore(true);
+            // 执行逻辑
+            runnable.run();
+        } finally {
+            TenantContextHolder.setIgnore(oldIgnore);
+        }
+    }
+
 }

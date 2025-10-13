@@ -506,3 +506,34 @@ CREATE TABLE `iot_device_group`
     `update_user`     bigint     NULL DEFAULT NULL COMMENT '更新人',
     PRIMARY KEY (`device_id`, `device_group_id`)
 ) COMMENT = '设备分组';
+
+DROP TABLE IF EXISTS `iot_device`;
+CREATE TABLE `iot_device`
+(
+    `device_id`       bigint         NOT NULL COMMENT '设备ID',
+    `device_name`     varchar(255)   NOT NULL COMMENT '设备名称(产品内唯一)',
+    `device_nickname` varchar(255)   NULL     DEFAULT NULL COMMENT '设备昵称',
+    `device_sn`       varchar(64)    NULL COMMENT '设备序列号',
+    `pic_url`         varchar(255)   NULL     DEFAULT NULL COMMENT '设备图片',
+    `product_id`      bigint         NOT NULL COMMENT '产品ID',
+    `product_key`     varchar(255)   NOT NULL COMMENT '产品Key',
+    `device_type`     tinyint        NOT NULL DEFAULT 0 COMMENT '设备类型(IotDeviceTypeEnum)',
+    `status_flag`     tinyint        NOT NULL DEFAULT 0 COMMENT '设备状态(IotDeviceStateEnum)',
+    `online_time`     bigint       NULL     DEFAULT NULL COMMENT '最后上线时间',
+    `offline_time`    bigint       NULL     DEFAULT NULL COMMENT '最后离线时间',
+    `active_time`     bigint       NULL     DEFAULT NULL COMMENT '设备激活时间',
+    `network_ip`              varchar(45)    NULL     DEFAULT NULL COMMENT '设备IP地址',
+    `device_secret`   varchar(255)   NULL     DEFAULT NULL COMMENT '设备密钥',
+    `longitude`       decimal(10, 6) NULL     DEFAULT NULL COMMENT '设备位置的经度',
+    `latitude`        decimal(10, 6) NULL     DEFAULT NULL COMMENT '设备位置的纬度',
+    `device_address`  varchar(256)   NULL     DEFAULT NULL COMMENT '设备所在地址',
+    `remark`          varchar(500)   NULL     DEFAULT NULL COMMENT '备注',
+    `version_flag`    bigint         NULL     DEFAULT NULL COMMENT '乐观锁',
+    `create_time`     datetime       NULL     DEFAULT NULL COMMENT '创建时间',
+    `create_user`     bigint         NULL     DEFAULT NULL COMMENT '创建人',
+    `update_time`     datetime       NULL     DEFAULT NULL COMMENT '更新时间',
+    `update_user`     bigint         NULL     DEFAULT NULL COMMENT '更新人',
+    `del_flag`        char(1)        NOT NULL DEFAULT 'N' COMMENT '删除标记',
+    `tenant_id`       bigint         NULL     DEFAULT NULL COMMENT '租户编号',
+    PRIMARY KEY (`device_id`)
+) COMMENT = 'IoT设备表';

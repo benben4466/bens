@@ -8,6 +8,7 @@ import cn.ibenbeni.bens.iot.modular.base.entity.product.IotProductDO;
 import cn.ibenbeni.bens.iot.modular.base.mapper.product.IotProductMapper;
 import cn.ibenbeni.bens.iot.modular.base.pojo.request.product.IotProductPageReq;
 import cn.ibenbeni.bens.iot.modular.base.pojo.request.product.IotProductSaveReq;
+import cn.ibenbeni.bens.iot.modular.base.service.device.IotDeviceService;
 import cn.ibenbeni.bens.iot.modular.base.service.product.IotProductService;
 import cn.ibenbeni.bens.rule.enums.IsSysEnum;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -27,6 +29,9 @@ public class IotProductServiceImpl implements IotProductService {
 
     @Resource
     private IotProductMapper productMapper;
+
+    @Resource
+    private IotDeviceService deviceService;
 
     // region 公共方法
 
@@ -44,8 +49,13 @@ public class IotProductServiceImpl implements IotProductService {
     public void deleteProduct(Long productId) {
         // 校验是否存在
         IotProductDO iotProduct = validateProductExists(productId);
+        // 系统内置不允许删除
         if (IsSysEnum.isSys(iotProduct.getIsSys())) {
             throw new IotException(IotExceptionEnum.PRODUCT_NOT_ALLOW_DELETE);
+        }
+        // 校验产品下是否存在设备
+        if (deviceService.getDeviceCountByProductId(productId) > 0) {
+            throw new IotException(IotExceptionEnum.PRODUCT_DELETE_FAIL_HAS_DEVICE);
         }
 
         productMapper.deleteById(productId);
@@ -59,10 +69,17 @@ public class IotProductServiceImpl implements IotProductService {
         if (iotProducts.size() != productIdSet.size()) {
             throw new IotException(IotExceptionEnum.PRODUCT_NOT_EXISTED);
         }
-        // 系统内置不允许删除
+
+        Map<Long, Long> deviceCountMap = deviceService.getDeviceCountByProductId(productIdSet);
         for (IotProductDO iotProduct : iotProducts) {
+            // 系统内置不允许删除
             if (IsSysEnum.isSys(iotProduct.getIsSys())) {
                 throw new IotException(IotExceptionEnum.PRODUCT_NOT_ALLOW_DELETE);
+            }
+            // 校验产品下是否存在设备
+            Long deviceCount = deviceCountMap.get(iotProduct.getProductId());
+            if (deviceCount != null && deviceCount > 0) {
+                throw new IotException(IotExceptionEnum.PRODUCT_DELETE_FAIL_HAS_DEVICE);
             }
         }
 

@@ -1,4 +1,4 @@
-package cn.ibenbeni.bens.iot.api.enums;
+package cn.ibenbeni.bens.iot.api.enums.device;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

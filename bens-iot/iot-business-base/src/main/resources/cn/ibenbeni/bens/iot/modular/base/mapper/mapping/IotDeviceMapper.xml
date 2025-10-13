@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ibenbeni.bens.iot.modular.base.mapper.device.IotDeviceMapper">
+
+    <!-- 此方法在 Service 层调用硬编码了 deviceCount -->
+    <select id="getDeviceCountByProductId" resultType="java.util.Map">
+        select product_id as productId, count(*) as deviceCount
+        from iot_device
+        where product_id in
+            <foreach collection="productIdSet" item="productId" open="(" close=")" separator=",">
+                #{productId}
+            </foreach>
+        group by product_id
+    </select>
+
+</mapper>
