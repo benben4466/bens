@@ -61,6 +61,27 @@ public enum IotExceptionEnum implements AbstractExceptionEnum {
      */
     DEVICE_NAME_EXISTS(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + IotConstants.IOT_MODULE_NAME + "402", "设备名称在同一产品下必须唯一"),
 
+    /**
+     * 物模型模标识符已存在
+     */
+    THING_MODEL_TEMPLATE_IDENTIFIER_EXISTS(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + IotConstants.IOT_MODULE_NAME + "500", "物模型模标识符已存在"),
+
+    /**
+     * 物模型模名称已存在
+     */
+    THING_MODEL_TEMPLATE_NAME_EXISTS(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + IotConstants.IOT_MODULE_NAME + "501", "物模型模名称已存在"),
+
+    /**
+     * 物模型不存在
+     */
+    THING_MODEL_TEMPLATE_NOT_EXISTS(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + IotConstants.IOT_MODULE_NAME + "502", "物模型不存在"),
+
+    /**
+     * 内置物模型禁止删除
+     */
+    THING_MODEL_TEMPLATE_SYS_PROHIBIT_DELETE(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + IotConstants.IOT_MODULE_NAME + "503", "内置物模型禁止删除"),
+
+
     ;
 
     /**

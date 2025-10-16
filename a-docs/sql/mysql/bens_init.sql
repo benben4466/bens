@@ -519,10 +519,10 @@ CREATE TABLE `iot_device`
     `product_key`     varchar(255)   NOT NULL COMMENT '产品Key',
     `device_type`     tinyint        NOT NULL DEFAULT 0 COMMENT '设备类型(IotDeviceTypeEnum)',
     `status_flag`     tinyint        NOT NULL DEFAULT 0 COMMENT '设备状态(IotDeviceStateEnum)',
-    `online_time`     bigint       NULL     DEFAULT NULL COMMENT '最后上线时间',
-    `offline_time`    bigint       NULL     DEFAULT NULL COMMENT '最后离线时间',
-    `active_time`     bigint       NULL     DEFAULT NULL COMMENT '设备激活时间',
-    `network_ip`              varchar(45)    NULL     DEFAULT NULL COMMENT '设备IP地址',
+    `online_time`     bigint         NULL     DEFAULT NULL COMMENT '最后上线时间',
+    `offline_time`    bigint         NULL     DEFAULT NULL COMMENT '最后离线时间',
+    `active_time`     bigint         NULL     DEFAULT NULL COMMENT '设备激活时间',
+    `network_ip`      varchar(45)    NULL     DEFAULT NULL COMMENT '设备IP地址',
     `device_secret`   varchar(255)   NULL     DEFAULT NULL COMMENT '设备密钥',
     `longitude`       decimal(10, 6) NULL     DEFAULT NULL COMMENT '设备位置的经度',
     `latitude`        decimal(10, 6) NULL     DEFAULT NULL COMMENT '设备位置的纬度',
@@ -537,3 +537,28 @@ CREATE TABLE `iot_device`
     `tenant_id`       bigint         NULL     DEFAULT NULL COMMENT '租户编号',
     PRIMARY KEY (`device_id`)
 ) COMMENT = 'IoT设备表';
+
+DROP TABLE IF EXISTS `iot_thing_model_template`;
+CREATE TABLE `iot_thing_model_template`
+(
+    `template_id`   bigint         NOT NULL AUTO_INCREMENT COMMENT '物模型模板ID',
+    `name`          varchar(64)    NOT NULL COMMENT '模型名称',
+    `identifier`    varchar(32)    NOT NULL COMMENT '模型标识',
+    `type`          tinyint        NOT NULL COMMENT '模型类型(IotThingModelTypeEnum)',
+    `property`      json           NULL COMMENT '属性',
+    `event`         json           NULL COMMENT '事件',
+    `service`       json           NULL COMMENT '服务',
+    `is_sys`        tinyint        NOT NULL DEFAULT 0 COMMENT '是否系统通用(IsSysEnum)',
+    `is_monitor`    tinyint        NOT NULL DEFAULT 0 COMMENT '是否实时监测(YesOrNotEnum)',
+    `is_history`    tinyint        NOT NULL DEFAULT 0 COMMENT '是否历史存储(YesOrNotEnum)',
+    `template_sort` decimal(10, 2) NULL     DEFAULT 999 COMMENT '物模型模板排序',
+    `remark`        varchar(500)   NULL     DEFAULT NULL COMMENT '备注',
+    `tenant_id`     bigint         NULL     DEFAULT NULL COMMENT '租户编号',
+    `version_flag`  bigint         NULL     DEFAULT NULL COMMENT '乐观锁',
+    `create_time`   datetime       NULL     DEFAULT NULL COMMENT '创建时间',
+    `create_user`   bigint         NULL     DEFAULT NULL COMMENT '创建人',
+    `update_time`   datetime       NULL     DEFAULT NULL COMMENT '更新时间',
+    `update_user`   bigint         NULL     DEFAULT NULL COMMENT '更新人',
+    `del_flag`      char(1)        NOT NULL DEFAULT 'N' COMMENT '删除标记',
+    PRIMARY KEY (`template_id`)
+) COMMENT = '物模型模板';

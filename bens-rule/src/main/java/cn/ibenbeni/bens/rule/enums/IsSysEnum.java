@@ -10,9 +10,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum IsSysEnum {
 
-    SYS(0, "内置"),
+    SYS(1, "内置"),
 
-    CUSTOMIZE(1, "自定义");
+    CUSTOMIZE(0, "自定义");
 
     private final Integer code;
 
