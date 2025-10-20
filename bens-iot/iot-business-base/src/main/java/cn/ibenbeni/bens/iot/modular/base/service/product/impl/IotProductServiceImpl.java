@@ -96,6 +96,19 @@ public class IotProductServiceImpl implements IotProductService {
     }
 
     @Override
+    public void updateProductStatus(Long productId, Integer productStatus) {
+        // 校验产品是否存在
+        validateProductExists(productId);
+
+        // 更新状态
+        IotProductDO updateDO = IotProductDO.builder()
+                .productId(productId)
+                .statusFlag(productStatus)
+                .build();
+        productMapper.updateById(updateDO);
+    }
+
+    @Override
     public IotProductDO getProduct(Long productId) {
         return productMapper.selectById(productId);
     }

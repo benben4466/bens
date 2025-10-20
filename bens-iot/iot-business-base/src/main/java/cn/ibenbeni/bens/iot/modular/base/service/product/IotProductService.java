@@ -39,6 +39,14 @@ public interface IotProductService {
     void updateProduct(IotProductSaveReq updateReq);
 
     /**
+     * 修改产品状态
+     *
+     * @param productId     产品ID
+     * @param productStatus 产品状态
+     */
+    void updateProductStatus(Long productId, Integer productStatus);
+
+    /**
      * 获取产品详情
      *
      * @param productId 产品ID

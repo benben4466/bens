@@ -16,6 +16,7 @@ import cn.ibenbeni.bens.rule.pojo.response.ResponseData;
 import cn.ibenbeni.bens.rule.pojo.response.SuccessResponseData;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,6 +57,17 @@ public class IotProductController {
     @PutResource(path = "/iot/product/update")
     public ResponseData<Boolean> updateProduct(@RequestBody @Valid IotProductSaveReq updateReq) {
         productService.updateProduct(updateReq);
+        return new SuccessResponseData<>(true);
+    }
+
+    @Operation(summary = "更新产品状态")
+    @Parameters({
+            @Parameter(name = "id", description = "产品ID", required = true),
+            @Parameter(name = "status", description = "产品状态", required = true)
+    })
+    @PutResource(path = "/iot/product/update-status")
+    public ResponseData<Boolean> updateProductStatus(@RequestParam("id") Long id, @RequestParam("status") Integer status) {
+        productService.updateProductStatus(id, status);
         return new SuccessResponseData<>(true);
     }
 
