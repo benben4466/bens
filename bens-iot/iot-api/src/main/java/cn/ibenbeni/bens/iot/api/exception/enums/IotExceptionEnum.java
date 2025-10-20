@@ -74,12 +74,32 @@ public enum IotExceptionEnum implements AbstractExceptionEnum {
     /**
      * 物模型不存在
      */
-    THING_MODEL_TEMPLATE_NOT_EXISTS(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + IotConstants.IOT_MODULE_NAME + "502", "物模型不存在"),
+    THING_MODEL_TEMPLATE_NOT_EXISTS(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + IotConstants.IOT_MODULE_NAME + "502", "物模型模板不存在"),
 
     /**
      * 内置物模型禁止删除
      */
     THING_MODEL_TEMPLATE_SYS_PROHIBIT_DELETE(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + IotConstants.IOT_MODULE_NAME + "503", "内置物模型禁止删除"),
+
+    /**
+     * 物模型不存在
+     */
+    THING_MODEL_NOT_EXISTS(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + IotConstants.IOT_MODULE_NAME + "503", "物模型不存在"),
+
+    /**
+     * 物模型标识符已存在
+     */
+    THING_MODEL_IDENTIFIER_EXISTS(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + IotConstants.IOT_MODULE_NAME + "504", "物模型标识符已存在"),
+
+    /**
+     * 物模型名称已存在
+     */
+    THING_MODEL_NAME_EXISTS(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + IotConstants.IOT_MODULE_NAME + "505", "物模型名称已存在"),
+
+    /**
+     * 产品状是发布状态,不允许操作物模型
+     */
+    PRODUCT_STATUS_NOT_ALLOW_THING_MODEL(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + IotConstants.IOT_MODULE_NAME + "506", "产品状是发布状态,不允许操作物模型"),
 
 
     ;

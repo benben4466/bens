@@ -6,8 +6,6 @@ import lombok.Getter;
 
 /**
  * IoT-物模型类型枚举
- *
- * @author ahh
  */
 @Getter
 @AllArgsConstructor

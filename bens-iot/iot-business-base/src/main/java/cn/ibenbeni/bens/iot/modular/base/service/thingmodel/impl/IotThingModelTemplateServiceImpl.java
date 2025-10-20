@@ -1,4 +1,4 @@
-package cn.ibenbeni.bens.iot.modular.base.service.thingmodel;
+package cn.ibenbeni.bens.iot.modular.base.service.thingmodel.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
@@ -9,6 +9,7 @@ import cn.ibenbeni.bens.iot.modular.base.entity.thingmodel.IotThingModelTemplate
 import cn.ibenbeni.bens.iot.modular.base.mapper.thingmodel.IotThingModelTemplateMapper;
 import cn.ibenbeni.bens.iot.modular.base.pojo.request.thingmodel.IotThingModelTemplatePageReq;
 import cn.ibenbeni.bens.iot.modular.base.pojo.request.thingmodel.IotThingModelTemplateSaveReq;
+import cn.ibenbeni.bens.iot.modular.base.service.thingmodel.IotThingModelTemplateService;
 import cn.ibenbeni.bens.rule.enums.IsSysEnum;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import lombok.extern.slf4j.Slf4j;

@@ -461,7 +461,7 @@ CREATE TABLE `iot_product`
     `product_icon`   varchar(512) NULL     DEFAULT NULL COMMENT '产品图标',
     `category_id`    bigint       NOT NULL COMMENT '产品分类ID',
     `category_name`  varchar(100) NOT NULL COMMENT '产品分类名称',
-    `status_flag`    tinyint      NOT NULL DEFAULT 1 COMMENT '产品状态',
+    `status_flag`    tinyint      NOT NULL DEFAULT 1 COMMENT '产品状态(IotProductStatusEnum)',
     `is_sys`         tinyint      NOT NULL DEFAULT 0 COMMENT '是否系统内置(0=内置;1=自定义;)',
     `device_type`    tinyint      NULL     DEFAULT 1 COMMENT '设备类型(IotDeviceTypeEnum)',
     `network_method` tinyint      NULL     DEFAULT 1 COMMENT '联网方式(IotDeviceNetworkMethodEnum)',
@@ -562,3 +562,29 @@ CREATE TABLE `iot_thing_model_template`
     `del_flag`      char(1)        NOT NULL DEFAULT 'N' COMMENT '删除标记',
     PRIMARY KEY (`template_id`)
 ) COMMENT = '物模型模板';
+
+DROP TABLE IF EXISTS `iot_thing_model`;
+CREATE TABLE `iot_thing_model`
+(
+    `model_id`     bigint         NOT NULL AUTO_INCREMENT COMMENT '物模型模板ID',
+    `name`         varchar(64)    NOT NULL COMMENT '模型名称',
+    `identifier`   varchar(32)    NOT NULL COMMENT '模型标识',
+    `type`         tinyint        NOT NULL COMMENT '模型类型(IotThingModelTypeEnum)',
+    `product_id`   bigint         NOT NULL COMMENT '产品ID',
+    `product_key`  varchar(255)   NOT NULL COMMENT '产品Key',
+    `property`     json           NULL COMMENT '属性',
+    `event`        json           NULL COMMENT '事件',
+    `service`      json           NULL COMMENT '服务',
+    `is_monitor`   tinyint        NOT NULL DEFAULT 0 COMMENT '是否实时监测(YesOrNotEnum)',
+    `is_history`   tinyint        NOT NULL DEFAULT 0 COMMENT '是否历史存储(YesOrNotEnum)',
+    `model_sort`   decimal(10, 2) NULL     DEFAULT 999 COMMENT '物模型排序',
+    `remark`       varchar(500)   NULL     DEFAULT NULL COMMENT '备注',
+    `tenant_id`    bigint         NULL     DEFAULT NULL COMMENT '租户编号',
+    `version_flag` bigint         NULL     DEFAULT NULL COMMENT '乐观锁',
+    `create_time`  datetime       NULL     DEFAULT NULL COMMENT '创建时间',
+    `create_user`  bigint         NULL     DEFAULT NULL COMMENT '创建人',
+    `update_time`  datetime       NULL     DEFAULT NULL COMMENT '更新时间',
+    `update_user`  bigint         NULL     DEFAULT NULL COMMENT '更新人',
+    `del_flag`     char(1)        NOT NULL DEFAULT 'N' COMMENT '删除标记',
+    PRIMARY KEY (`model_id`)
+) COMMENT = '物模型';
