@@ -59,4 +59,12 @@ public interface IotProductService {
      */
     PageResult<IotProductDO> pageProduct(IotProductPageReq pageReq);
 
+    /**
+     * 校验产品是否存在
+     *
+     * @param productId 产品ID
+     * @return 产品信息
+     */
+    IotProductDO validateProductExists(Long productId);
+
 }

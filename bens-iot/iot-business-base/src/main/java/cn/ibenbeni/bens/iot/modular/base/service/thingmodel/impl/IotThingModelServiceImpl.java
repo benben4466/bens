@@ -15,6 +15,7 @@ import cn.ibenbeni.bens.iot.modular.base.service.product.IotProductService;
 import cn.ibenbeni.bens.iot.modular.base.service.thingmodel.IotThingModelService;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -31,6 +32,7 @@ public class IotThingModelServiceImpl implements IotThingModelService {
     @Resource
     private IotThingModelMapper thingModelMapper;
 
+    @Lazy
     @Resource
     private IotProductService productService;
 
@@ -104,6 +106,11 @@ public class IotThingModelServiceImpl implements IotThingModelService {
     @Override
     public IotThingModelDO getThingModel(Long modelId) {
         return thingModelMapper.selectById(modelId);
+    }
+
+    @Override
+    public List<IotThingModelDO> listByProductId(Long productId) {
+        return thingModelMapper.selectListByProductId(productId);
     }
 
     @Override

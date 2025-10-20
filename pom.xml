@@ -80,11 +80,13 @@
         <bizlog-sdk.version>3.0.6</bizlog-sdk.version>
         <springdoc.version>1.8.0</springdoc.version>
         <knife4j.version>4.5.0</knife4j.version>
+        <redisson.version>3.18.1</redisson.version>
+        <sa-token.version>1.43.0</sa-token.version>
+        <!-- DB 相关 -->
         <mybatis-plus.version>3.5.9</mybatis-plus.version>
         <dynamic-datasource.version>4.3.1</dynamic-datasource.version>
         <mybatis-plus-join.version>1.4.13</mybatis-plus-join.version>
-        <redisson.version>3.18.1</redisson.version>
-        <sa-token.version>1.43.0</sa-token.version>
+        <taos.version>3.7.3</taos.version>
     </properties>
 
     <dependencyManagement>
@@ -214,6 +216,13 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
                 <version>${dynamic-datasource.version}</version>
+            </dependency>
+
+            <!-- TDengine 驱动 -->
+            <dependency>
+                <groupId>com.taosdata.jdbc</groupId>
+                <artifactId>taos-jdbcdriver</artifactId>
+                <version>${taos.version}</version>
             </dependency>
 
             <!-- Sa-Token-权限认证框架 -->

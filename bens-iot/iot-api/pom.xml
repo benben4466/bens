@@ -16,6 +16,15 @@
     <description>IOT模块-API</description>
 
     <dependencies>
+
+        <!-- 为了引入@DS注解 -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>db-sdk-mp</artifactId>
+            <version>${revision}</version>
+            <optional>true</optional>
+        </dependency>
+
     </dependencies>
 
 </project>

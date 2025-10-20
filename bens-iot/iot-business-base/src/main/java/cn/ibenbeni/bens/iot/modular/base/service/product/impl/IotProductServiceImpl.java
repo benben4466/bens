@@ -2,6 +2,7 @@ package cn.ibenbeni.bens.iot.modular.base.service.product.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
+import cn.ibenbeni.bens.iot.api.enums.product.IotProductStatusEnum;
 import cn.ibenbeni.bens.iot.api.exception.IotException;
 import cn.ibenbeni.bens.iot.api.exception.enums.IotExceptionEnum;
 import cn.ibenbeni.bens.iot.modular.base.entity.product.IotProductDO;
@@ -9,6 +10,7 @@ import cn.ibenbeni.bens.iot.modular.base.mapper.product.IotProductMapper;
 import cn.ibenbeni.bens.iot.modular.base.pojo.request.product.IotProductPageReq;
 import cn.ibenbeni.bens.iot.modular.base.pojo.request.product.IotProductSaveReq;
 import cn.ibenbeni.bens.iot.modular.base.service.device.IotDeviceService;
+import cn.ibenbeni.bens.iot.modular.base.service.device.property.IotDevicePropertyService;
 import cn.ibenbeni.bens.iot.modular.base.service.product.IotProductService;
 import cn.ibenbeni.bens.rule.enums.IsSysEnum;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -32,6 +35,9 @@ public class IotProductServiceImpl implements IotProductService {
 
     @Resource
     private IotDeviceService deviceService;
+
+    @Resource
+    private IotDevicePropertyService devicePropertyService;
 
     // region 公共方法
 
@@ -100,6 +106,11 @@ public class IotProductServiceImpl implements IotProductService {
         // 校验产品是否存在
         validateProductExists(productId);
 
+        // 产品状态=发布，需要创建/修改数据定义
+        if (Objects.equals(productStatus, IotProductStatusEnum.PUBLISHED.getStatus())) {
+            devicePropertyService.defineDevicePropertyData(productId);
+        }
+
         // 更新状态
         IotProductDO updateDO = IotProductDO.builder()
                 .productId(productId)
@@ -118,6 +129,16 @@ public class IotProductServiceImpl implements IotProductService {
         return productMapper.selectPage(pageReq);
     }
 
+    @Override
+    public IotProductDO validateProductExists(Long productId) {
+        IotProductDO iotProduct = productMapper.selectById(productId);
+        if (iotProduct == null) {
+            throw new IotException(IotExceptionEnum.PRODUCT_NOT_EXISTED);
+        }
+
+        return iotProduct;
+    }
+
     // endregion
 
     // region 私有方法
@@ -134,15 +155,6 @@ public class IotProductServiceImpl implements IotProductService {
         if (!iotProduct.getProductId().equals(productId)) {
             throw new IotException(IotExceptionEnum.PRODUCT_NOT_EXISTED);
         }
-    }
-
-    private IotProductDO validateProductExists(Long productId) {
-        IotProductDO iotProduct = productMapper.selectById(productId);
-        if (iotProduct == null) {
-            throw new IotException(IotExceptionEnum.PRODUCT_NOT_EXISTED);
-        }
-
-        return iotProduct;
     }
 
     // endregion

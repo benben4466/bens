@@ -2,7 +2,7 @@ package cn.ibenbeni.bens.iot.modular.base.service.device.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.ibenbeni.bens.iot.modular.base.entity.device.IotDeviceGroupDO;
-import cn.ibenbeni.bens.iot.modular.base.mapper.device.IotDeviceGroupMapper;
+import cn.ibenbeni.bens.iot.modular.base.mapper.device.mysql.IotDeviceGroupMapper;
 import cn.ibenbeni.bens.iot.modular.base.pojo.request.device.IotDeviceGroupSaveReq;
 import cn.ibenbeni.bens.iot.modular.base.service.device.IotDeviceGroupService;
 import lombok.extern.slf4j.Slf4j;

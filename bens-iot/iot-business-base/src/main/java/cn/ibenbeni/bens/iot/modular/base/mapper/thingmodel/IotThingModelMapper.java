@@ -6,6 +6,8 @@ import cn.ibenbeni.bens.db.mp.mapper.BaseMapperX;
 import cn.ibenbeni.bens.iot.modular.base.entity.thingmodel.IotThingModelDO;
 import cn.ibenbeni.bens.iot.modular.base.pojo.request.thingmodel.IotThingModelPageReq;
 
+import java.util.List;
+
 /**
  * IOT-物模型-Mapper
  */
@@ -17,6 +19,10 @@ public interface IotThingModelMapper extends BaseMapperX<IotThingModelDO> {
 
     default IotThingModelDO selectByName(String name) {
         return selectOne(IotThingModelDO::getName, name);
+    }
+
+    default List<IotThingModelDO> selectListByProductId(Long productId) {
+        return selectList(IotThingModelDO::getProductId, productId);
     }
 
     default PageResult<IotThingModelDO> selectPage(IotThingModelPageReq pageReq) {

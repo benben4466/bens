@@ -1,4 +1,4 @@
-package cn.ibenbeni.bens.iot.modular.base.mapper.device;
+package cn.ibenbeni.bens.iot.modular.base.mapper.device.mysql;
 
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
 import cn.ibenbeni.bens.db.api.pojo.query.LambdaQueryWrapperX;

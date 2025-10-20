@@ -55,6 +55,13 @@ public interface IotThingModelService {
     IotThingModelDO getThingModel(Long modelId);
 
     /**
+     * 根据产品ID，获取物模型
+     *
+     * @param productId 产品ID
+     */
+    List<IotThingModelDO> listByProductId(Long productId);
+
+    /**
      * 获取物模型分页列表
      */
     PageResult<IotThingModelDO> pageThingModel(IotThingModelPageReq pageReq);
