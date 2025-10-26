@@ -58,3 +58,15 @@ bens:
     enable: true # 是否启用 websocket
     path: /ws
     sender-type: local
+  iot:
+    message-bus:
+      type: local
+    gateway:
+      protocol:
+        emqx:
+          enabled: true
+          mqttHost: 129.28.26.35
+          mqttClientId: bens-server
+          mqttUsername: bens-server
+          mqttPassword: bens-server
+          mqttTopics: /sys/

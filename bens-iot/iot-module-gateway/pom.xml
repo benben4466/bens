@@ -12,10 +12,11 @@
 
     <packaging>jar</packaging>
 
-    <artifactId>iot-business-base</artifactId>
-    <description>IOT模块-基础业务</description>
+    <artifactId>iot-module-gateway</artifactId>
+    <description>IOT-网关模块</description>
 
     <dependencies>
+
         <!-- IOT模块-API -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
@@ -30,34 +31,31 @@
             <version>${revision}</version>
         </dependency>
 
-        <!-- 资源模块-API -->
+        <!-- Vert.x -->
+        <!-- Vert.x Web模块 -->
         <dependency>
-            <groupId>cn.ibenbeni</groupId>
-            <artifactId>resource-api</artifactId>
-            <version>${revision}</version>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-web</artifactId>
+            <version>${vertx.version}</version>
+        </dependency>
+        <!-- Vert.x 的 MQTT 协议实现模块-->
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-mqtt</artifactId>
+            <version>${vertx.version}</version>
         </dependency>
 
-        <!-- DAO模块-MP -->
+        <!-- Spring Web模块 -->
         <dependency>
-            <groupId>cn.ibenbeni</groupId>
-            <artifactId>db-sdk-mp</artifactId>
-            <version>${revision}</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
         </dependency>
 
-        <!-- 接口文档-Knife4j -->
         <dependency>
-            <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
-            <version>${knife4j.version}</version>
-            <optional>true</optional>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
         </dependency>
-        <!-- 接口文档-Swagger页面 -->
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
-            <version>${springdoc.version}</version>
-            <optional>true</optional>
-        </dependency>
+
     </dependencies>
 
 </project>

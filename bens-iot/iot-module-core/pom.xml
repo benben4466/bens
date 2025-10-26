@@ -12,30 +12,31 @@
 
     <packaging>jar</packaging>
 
-    <artifactId>iot-spring-boot-starter</artifactId>
-    <description>IOT模块-Starter</description>
+    <artifactId>iot-module-core</artifactId>
+    <description>IOT-SDK-核心模块</description>
 
     <dependencies>
-        <!-- IOT模块-基础业务 -->
+
+        <!-- IOT模块-API -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
-            <artifactId>iot-business-base</artifactId>
+            <artifactId>iot-api</artifactId>
             <version>${revision}</version>
         </dependency>
 
-        <!-- IOT-SDK-核心模块 -->
+        <!-- 校验模块 -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
-            <artifactId>iot-module-core</artifactId>
+            <artifactId>validator-api</artifactId>
             <version>${revision}</version>
         </dependency>
 
-        <!-- IOT-SDK-网关模块 -->
+        <!-- Spring 核心 -->
         <dependency>
-            <groupId>cn.ibenbeni</groupId>
-            <artifactId>iot-module-gateway</artifactId>
-            <version>${revision}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
         </dependency>
+
     </dependencies>
 
 </project>

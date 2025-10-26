@@ -16,4 +16,12 @@ public interface IotDevicePropertyService {
 
     // endregion
 
+    /**
+     * 获得设备关联的网关服务 serverId
+     *
+     * @param deviceId 设备ID
+     * @return 网关 ServerId
+     */
+    String getDeviceServerId(Long deviceId);
+
 }

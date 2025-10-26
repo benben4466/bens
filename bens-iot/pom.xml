@@ -17,6 +17,10 @@
         <module>iot-api</module>
         <!-- IOT模块-基础业务 -->
         <module>iot-business-base</module>
+        <!-- IOT-SDK-核心模块 -->
+        <module>iot-module-core</module>
+        <!-- IOT-SDK-网关模块 -->
+        <module>iot-module-gateway</module>
         <!-- IOT模块-Starter -->
         <module>iot-spring-boot-starter</module>
     </modules>

@@ -103,6 +103,11 @@ public class IotDevicePropertyServiceImpl implements IotDevicePropertyService {
         devicePropertyMapper.alterProductPropertySTable(productId, oldFields, newFields);
     }
 
+    @Override
+    public String getDeviceServerId(Long deviceId) {
+        return "";
+    }
+
     // endregion
 
     // region 私有方法

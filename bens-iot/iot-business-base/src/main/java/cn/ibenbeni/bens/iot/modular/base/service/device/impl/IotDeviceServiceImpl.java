@@ -96,6 +96,11 @@ public class IotDeviceServiceImpl implements IotDeviceService {
     }
 
     @Override
+    public IotDeviceDO getDevice(String productKey, String deviceSn) {
+        return deviceMapper.selectByProductKeyAndDeviceSn(productKey, deviceSn);
+    }
+
+    @Override
     public Long getDeviceCountByProductId(Long productId) {
         return deviceMapper.selectCountByProductId(productId);
     }
@@ -120,6 +125,15 @@ public class IotDeviceServiceImpl implements IotDeviceService {
     @Override
     public PageResult<IotDeviceDO> pageDevice(IotDevicePageReq pageReq) {
         return deviceMapper.pageDevice(pageReq);
+    }
+
+    @Override
+    public IotDeviceDO validateDeviceExists(Long deviceId) {
+        IotDeviceDO iotDevice = deviceMapper.selectById(deviceId);
+        if (iotDevice == null) {
+            throw new IotException(IotExceptionEnum.DEVICE_NOT_EXISTED);
+        }
+        return iotDevice;
     }
 
     // endregion
@@ -154,14 +168,6 @@ public class IotDeviceServiceImpl implements IotDeviceService {
         if (existDevice != null && ObjectUtil.notEqual(existDevice.getDeviceId(), excludeDeviceId)) {
             throw new IotException(IotExceptionEnum.DEVICE_SN_NOT_EXISTS);
         }
-    }
-
-    private IotDeviceDO validateDeviceExists(Long deviceId) {
-        IotDeviceDO iotDevice = deviceMapper.selectById(deviceId);
-        if (iotDevice == null) {
-            throw new IotException(IotExceptionEnum.DEVICE_NOT_EXISTED);
-        }
-        return iotDevice;
     }
 
     private void initDevice(IotProductDO iotProduct, IotDeviceDO iotDevice) {

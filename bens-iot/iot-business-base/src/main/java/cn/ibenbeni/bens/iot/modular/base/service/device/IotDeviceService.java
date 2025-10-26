@@ -50,6 +50,15 @@ public interface IotDeviceService {
     IotDeviceDO getDevice(Long deviceId);
 
     /**
+     * 获取设备
+     *
+     * @param productKey 产品Key
+     * @param deviceSn   设备SN
+     * @return 设备信息
+     */
+    IotDeviceDO getDevice(String productKey, String deviceSn);
+
+    /**
      * 获取产品下的设备数量
      *
      * @param productId 产品ID
@@ -72,5 +81,13 @@ public interface IotDeviceService {
      * @return 设备信息分页列表
      */
     PageResult<IotDeviceDO> pageDevice(IotDevicePageReq pageReq);
+
+    /**
+     * 校验设备是否存在
+     *
+     * @param deviceId 设备ID
+     * @return 设备信息
+     */
+    IotDeviceDO validateDeviceExists(Long deviceId);
 
 }

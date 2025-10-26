@@ -24,6 +24,10 @@ public interface IotDeviceMapper extends BaseMapperX<IotDeviceDO> {
         return selectOne(IotDeviceDO::getProductKey, productKey, IotDeviceDO::getDeviceName, deviceName);
     }
 
+    default IotDeviceDO selectByProductKeyAndDeviceSn(String productKey, String deviceSn) {
+        return selectOne(IotDeviceDO::getProductKey, productKey, IotDeviceDO::getDeviceSn, deviceSn);
+    }
+
     default long selectCountByProductId(Long productId) {
         return selectCount(IotDeviceDO::getProductId, productId);
     }

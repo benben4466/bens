@@ -101,6 +101,11 @@ public enum IotExceptionEnum implements AbstractExceptionEnum {
      */
     PRODUCT_STATUS_NOT_ALLOW_THING_MODEL(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + IotConstants.IOT_MODULE_NAME + "506", "产品状是发布状态,不允许操作物模型"),
 
+    /**
+     * 下行设备消息失败, 原因: 设备未连接网关
+     */
+    DEVICE_DOWNSTREAM_FAILED_SERVER_ID_NULL(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + IotConstants.IOT_MODULE_NAME + "507", "下行设备消息失败, 原因: 设备未连接网关"),
+
 
     ;
 
