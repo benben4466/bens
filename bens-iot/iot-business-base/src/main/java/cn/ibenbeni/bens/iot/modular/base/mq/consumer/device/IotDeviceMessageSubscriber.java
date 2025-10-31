@@ -1,5 +1,7 @@
 package cn.ibenbeni.bens.iot.modular.base.mq.consumer.device;
 
+import cn.hutool.core.util.ObjectUtil;
+import cn.ibenbeni.bens.iot.api.enums.device.IotDeviceStateEnum;
 import cn.ibenbeni.bens.iot.modular.base.entity.device.IotDeviceDO;
 import cn.ibenbeni.bens.iot.modular.base.service.device.IotDeviceService;
 import cn.ibenbeni.bens.iot.modular.base.service.device.message.IotDeviceMessageService;
@@ -61,9 +63,39 @@ public class IotDeviceMessageSubscriber implements IotMessageSubscriber<IotDevic
         TenantUtils.execute(message.getTenantId(), () -> {
             IotDeviceDO device = deviceService.validateDeviceExists(message.getDeviceId());
 
+            // 强制设备上线
+            forceDeviceOnline(message, device);
+
             // 处理消息
             deviceMessageService.handleUpstreamDeviceMessage(message, device);
         });
+    }
+
+    /**
+     * 强制设备上线
+     *
+     * @param message 设备消息
+     * @param device  设备
+     */
+    private void forceDeviceOnline(IotDeviceMessage message, IotDeviceDO device) {
+        // 如果是已上线状态，则不处理
+        if (ObjectUtil.equal(device.getStatusFlag(), IotDeviceStateEnum.ONLINE.getState())) {
+            return;
+        }
+        // 若是 设备状态消息，则忽略，否则重复处理了
+        if (ObjectUtil.equal(message.getMethod(), IotDeviceMessageMethodEnum.STATE_UPDATE.getMethod())) {
+            return;
+        }
+
+        try {
+            IotDeviceMessage onlineMessage = IotDeviceMessage.buildStateUpdateOnline();
+            onlineMessage.setDeviceId(device.getDeviceId());
+
+            deviceMessageService.sendDeviceMessage(onlineMessage);
+        } catch (Exception ex) {
+            // 注意：即使执行失败，也不影响主流程
+            log.error("[forceDeviceOnline][message({}) deviceSn({}) 强制设备上线失败]", message, device.getDeviceSn(), ex);
+        }
     }
 
 }

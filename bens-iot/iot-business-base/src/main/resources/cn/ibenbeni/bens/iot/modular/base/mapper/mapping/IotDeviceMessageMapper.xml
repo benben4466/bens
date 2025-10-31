@@ -4,13 +4,13 @@
 
     <insert id="insert">
         INSERT INTO device_message_${deviceId} (
-            ts, id, report_time, tenant_id, server_id,upstream, reply,
+            ts, msg_id, report_time, tenant_id, server_id,upstream, reply,
             identifier, request_id, method,params, data, code, msg
         )
         USING device_message
         TAGS (#{deviceId})
         VALUES (
-            NOW, #{id}, #{reportTime}, #{tenantId},  #{serverId},#{upstream},
+            NOW, #{msgId}, #{reportTime}, #{tenantId},  #{serverId},#{upstream},
             #{reply}, #{identifier}, #{requestId}, #{method},
             #{params}, #{data}, #{code}, #{msg}
         )
@@ -19,7 +19,7 @@
     <update id="createSTable">
         CREATE STABLE IF NOT EXISTS device_message (
             ts TIMESTAMP,
-            id NCHAR(50),
+            msg_id NCHAR(50),
             report_time TIMESTAMP,
             tenant_id BIGINT,
             server_id NCHAR(50),

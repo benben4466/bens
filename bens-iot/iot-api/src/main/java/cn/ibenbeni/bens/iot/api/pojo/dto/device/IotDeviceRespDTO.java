@@ -1,4 +1,4 @@
-package cn.ibenbeni.bens.iot.api.pojo.dto;
+package cn.ibenbeni.bens.iot.api.pojo.dto.device;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -49,6 +49,11 @@ public class IotDeviceRespDTO {
      * 产品ID
      */
     private Long productId;
+
+    /**
+     * 数据格式，即编解码类型
+     */
+    private String dataFormat;
 
     // endregion
 

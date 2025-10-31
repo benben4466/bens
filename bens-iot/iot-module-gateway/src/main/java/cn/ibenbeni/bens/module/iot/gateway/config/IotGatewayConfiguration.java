@@ -1,6 +1,7 @@
 package cn.ibenbeni.bens.module.iot.gateway.config;
 
 import cn.ibenbeni.bens.module.iot.core.messagebus.core.IotMessageBus;
+import cn.ibenbeni.bens.module.iot.gateway.protocol.emqx.IotEmqxAuthEventProtocol;
 import cn.ibenbeni.bens.module.iot.gateway.protocol.emqx.IotEmqxDownstreamSubscriber;
 import cn.ibenbeni.bens.module.iot.gateway.protocol.emqx.IotEmqxUpstreamProtocol;
 import io.vertx.core.Vertx;
@@ -25,6 +26,11 @@ public class IotGatewayConfiguration {
         @Bean(destroyMethod = "close")
         public Vertx emqxVertx() {
             return Vertx.vertx();
+        }
+
+        @Bean
+        public IotEmqxAuthEventProtocol iotEmqxAuthEventProtocol(IotGatewayProperties gatewayProperties, Vertx emqxVertx) {
+            return new IotEmqxAuthEventProtocol(gatewayProperties.getProtocol().getEmqx(), emqxVertx);
         }
 
         @Bean

@@ -3,7 +3,7 @@ package cn.ibenbeni.bens.module.iot.gateway.protocol.emqx.router;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import cn.ibenbeni.bens.iot.api.IotDeviceCommonApi;
-import cn.ibenbeni.bens.iot.api.pojo.dto.IotDeviceRespDTO;
+import cn.ibenbeni.bens.iot.api.pojo.dto.device.IotDeviceRespDTO;
 import cn.ibenbeni.bens.module.iot.core.mq.message.IotDeviceMessage;
 import cn.ibenbeni.bens.module.iot.core.util.IotDeviceMessageUtils;
 import cn.ibenbeni.bens.module.iot.gateway.protocol.emqx.IotEmqxUpstreamProtocol;

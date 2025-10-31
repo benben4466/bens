@@ -19,13 +19,30 @@ public class IotMqttTopicUtils {
      */
     private static final String REPLY_TOPIC_SUFFIX = "_reply";
 
+    // region MQTT HTTP服务路径常量
+
+    /**
+     * MQTT 认证服务路径
+     * <p>对应 EMQX 客户端认证 HTTP服务</p>
+     */
+    public static final String MQTT_AUTH_PATH = "/mqtt/auth";
+
+    /**
+     * MQTT 事件服务路径
+     * <p>对应 EMQX Webhook 的统一事件处理接口，支持所有客户端事件</p>
+     */
+    public static final String MQTT_EVENT_PATH = "/mqtt/event";
+
+    // endregion
+
+
     /**
      * 根据消息方法构建对应的主题
      *
-     * @param method 消息方法，例如 thing.property.post
+     * @param method     消息方法，例如 thing.property.post
      * @param productKey 产品 Key
      * @param deviceName 设备名称
-     * @param isReply 是否为回复消息
+     * @param isReply    是否为回复消息
      * @return 完整的主题路径
      */
     public static String buildTopicByMethod(String method, String productKey, String deviceName, boolean isReply) {

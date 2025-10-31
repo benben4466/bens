@@ -4,15 +4,19 @@ import cn.hutool.core.util.StrUtil;
 import cn.ibenbeni.bens.iot.api.IotDeviceCommonApi;
 import cn.ibenbeni.bens.iot.api.exception.IotException;
 import cn.ibenbeni.bens.iot.api.exception.enums.IotExceptionEnum;
-import cn.ibenbeni.bens.iot.api.pojo.dto.IotDeviceRespDTO;
+import cn.ibenbeni.bens.iot.api.pojo.dto.device.IotDeviceRespDTO;
 import cn.ibenbeni.bens.module.iot.core.mq.message.IotDeviceMessage;
 import cn.ibenbeni.bens.module.iot.core.mq.producer.IotDeviceMessageProducer;
 import cn.ibenbeni.bens.module.iot.core.util.IotDeviceMessageUtils;
+import cn.ibenbeni.bens.module.iot.gateway.codec.IotDeviceMessageCodec;
+import cn.ibenbeni.bens.rule.util.CollectionUtils;
 import cn.ibenbeni.bens.rule.util.TimestampUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 /**
  * IOT-设备消息-服务实现类
@@ -24,11 +28,17 @@ public class IotDeviceMessageServiceImpl implements IotDeviceMessageService {
 
     public final static String GATEWAY_DEVICE_MESSAGE_SERVICE_NAME = "gatewayDeviceMessageService";
 
+    private final Map<String, IotDeviceMessageCodec> codes;
+
     @Resource
     private IotDeviceMessageProducer deviceMessageProducer;
 
     @Resource
     private IotDeviceCommonApi deviceCommonApi;
+
+    public IotDeviceMessageServiceImpl(List<IotDeviceMessageCodec> codes) {
+        this.codes = CollectionUtils.convertMap(codes, IotDeviceMessageCodec::type);
+    }
 
     @Override
     public byte[] encodeDeviceMessage(IotDeviceMessage message, String productKey, String deviceSn) {
@@ -37,7 +47,21 @@ public class IotDeviceMessageServiceImpl implements IotDeviceMessageService {
 
     @Override
     public IotDeviceMessage decodeDeviceMessage(byte[] bytes, String productKey, String deviceSn) {
-        return null;
+        // 1.获取设备信息
+        IotDeviceRespDTO device = deviceCommonApi.getDevice(productKey, deviceSn);
+        if (device == null) {
+            throw new IotException(IotExceptionEnum.DEVICE_NOT_EXISTED);
+        }
+
+        // 2.获取编解码器
+        IotDeviceMessageCodec codec = codes.get(device.getDataFormat());
+        if (codec == null) {
+            log.error("[decodeDeviceMessage][设备({}/{})缺失编码器({})]", device.getProductKey(), device.getDeviceSn(), device.getDataFormat());
+            throw new IotException(IotExceptionEnum.MSG_CODEC_NOT_EXISTED);
+        }
+
+        // 3.解码消息
+        return codec.decode(bytes);
     }
 
     @Override

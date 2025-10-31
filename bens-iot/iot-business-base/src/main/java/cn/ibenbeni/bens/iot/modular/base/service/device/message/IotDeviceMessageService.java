@@ -15,6 +15,14 @@ public interface IotDeviceMessageService {
     void defineDeviceMessageStable();
 
     /**
+     * 发送设备消息
+     *
+     * @param message 设备消息
+     * @return 设备消息
+     */
+    IotDeviceMessage sendDeviceMessage(IotDeviceMessage message);
+
+    /**
      * 向设备发送消息
      *
      * @param message 设备消息

@@ -106,6 +106,10 @@ public enum IotExceptionEnum implements AbstractExceptionEnum {
      */
     DEVICE_DOWNSTREAM_FAILED_SERVER_ID_NULL(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + IotConstants.IOT_MODULE_NAME + "507", "下行设备消息失败, 原因: 设备未连接网关"),
 
+    /**
+     * 消息编解码器不存在
+     */
+    MSG_CODEC_NOT_EXISTED(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + IotConstants.IOT_MODULE_NAME + "508", "消息编解码器不存在"),
 
     ;
 

@@ -467,6 +467,7 @@ CREATE TABLE `iot_product`
     `network_method` tinyint      NULL     DEFAULT 1 COMMENT '联网方式(IotDeviceNetworkMethodEnum)',
     `auth_method`    tinyint      NULL     DEFAULT 1 COMMENT '认证方式(IotDeviceAuthMethodEnum)',
     `protocol_code`  varchar(64)  NULL     DEFAULT NULL COMMENT '通信协议编码',
+    `data_format`    varchar(64)  NULL     DEFAULT NULL COMMENT '数据格式(编解码类型)',
     `remark`         varchar(500) NULL     DEFAULT NULL COMMENT '备注',
     `version_flag`   bigint       NULL     DEFAULT NULL COMMENT '乐观锁',
     `create_time`    datetime     NULL     DEFAULT NULL COMMENT '创建时间',

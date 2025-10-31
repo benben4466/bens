@@ -9,6 +9,8 @@ import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
 import cn.ibenbeni.bens.iot.api.enums.device.IotDeviceStateEnum;
 import cn.ibenbeni.bens.iot.api.exception.IotException;
 import cn.ibenbeni.bens.iot.api.exception.enums.IotExceptionEnum;
+import cn.ibenbeni.bens.iot.api.pojo.dto.device.IotDeviceAuthReqDTO;
+import cn.ibenbeni.bens.iot.api.util.IotDeviceAuthUtils;
 import cn.ibenbeni.bens.iot.modular.base.entity.device.IotDeviceDO;
 import cn.ibenbeni.bens.iot.modular.base.entity.product.IotProductDO;
 import cn.ibenbeni.bens.iot.modular.base.mapper.device.mysql.IotDeviceMapper;
@@ -17,6 +19,8 @@ import cn.ibenbeni.bens.iot.modular.base.pojo.request.device.IotDeviceSaveReq;
 import cn.ibenbeni.bens.iot.modular.base.service.device.IotDeviceService;
 import cn.ibenbeni.bens.iot.modular.base.service.product.IotProductService;
 import cn.ibenbeni.bens.rule.util.BeanUtils;
+import cn.ibenbeni.bens.rule.util.TimestampUtils;
+import cn.ibenbeni.bens.tenant.api.annotation.TenantIgnore;
 import cn.ibenbeni.bens.tenant.api.util.TenantUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
@@ -91,10 +95,30 @@ public class IotDeviceServiceImpl implements IotDeviceService {
     }
 
     @Override
+    public void updateDeviceState(IotDeviceDO device, Integer status) {
+        IotDeviceDO updateDO = IotDeviceDO.builder()
+                .deviceId(device.getDeviceId())
+                .statusFlag(status)
+                .build();
+        // 设备上线时间为 null 且 设置设备状态=在线时，则设置激活时间
+        if (device.getOnlineTime() == null && ObjectUtil.equal(status, IotDeviceStateEnum.ONLINE.getState())) {
+            updateDO.setActiveTime(TimestampUtils.curUtcMillis());
+        }
+
+        if (ObjectUtil.equal(status, IotDeviceStateEnum.OFFLINE.getState())) {
+            updateDO.setOnlineTime(TimestampUtils.curUtcMillis());
+        } else if (ObjectUtil.equal(status, IotDeviceStateEnum.ONLINE.getState())) {
+            updateDO.setOfflineTime(TimestampUtils.curUtcMillis());
+        }
+        deviceMapper.updateById(updateDO);
+    }
+
+    @Override
     public IotDeviceDO getDevice(Long deviceId) {
         return deviceMapper.selectById(deviceId);
     }
 
+    @TenantIgnore // 忽略租户信息
     @Override
     public IotDeviceDO getDevice(String productKey, String deviceSn) {
         return deviceMapper.selectByProductKeyAndDeviceSn(productKey, deviceSn);
@@ -134,6 +158,34 @@ public class IotDeviceServiceImpl implements IotDeviceService {
             throw new IotException(IotExceptionEnum.DEVICE_NOT_EXISTED);
         }
         return iotDevice;
+    }
+
+    @Override
+    public Boolean authDevice(IotDeviceAuthReqDTO authReq) {
+        // 1.校验认证参数
+        IotDeviceAuthUtils.DeviceInfo deviceInfo = IotDeviceAuthUtils.parseUsername(authReq.getUsername());
+        if (deviceInfo == null) {
+            log.error("[authDevice][认证失败，username({}) 格式不正确]", authReq.getUsername());
+            return false;
+        }
+
+        String productKey = deviceInfo.getProductKey();
+        String deviceSn = deviceInfo.getDeviceSn();
+        // 2.校验设备是否存在
+        IotDeviceDO device = getDevice(productKey, deviceSn);
+        if (device == null) {
+            log.warn("[authDevice][设备({}/{}) 不存在]", productKey, deviceSn);
+            return false;
+        }
+
+        // 3.连接密码校验
+        IotDeviceAuthUtils.AuthInfo authInfo = IotDeviceAuthUtils.getAuthInfo(productKey, deviceSn, device.getDeviceSecret());
+        if (StrUtil.equals(authInfo.getPassword(), authReq.getPassword())) {
+            log.error("[authDevice][设备({}/{}) 密码不正确]", productKey, deviceSn);
+            return false;
+        }
+
+        return true;
     }
 
     // endregion

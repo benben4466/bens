@@ -13,10 +13,10 @@ spring:
           username: root
           password: abc123456
         tdengine:
-          url: jdbc:TAOS-RS://129.28.26.35:6041/bens
+          url: jdbc:TAOS-RS://129.28.26.35:50006/bens
           driver-class-name: com.taosdata.jdbc.rs.RestfulDriver
           username: root
-          password: taosdata
+          password: TMPKaPTMt3G5z5cC
           druid:
             validation-query: SELECT SERVER_STATUS() # TDengine 数据源的有效性检查 SQL
   redis:

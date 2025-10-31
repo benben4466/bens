@@ -88,6 +88,12 @@ public class IotProductDO extends BaseBusinessEntity {
     private String protocolCode;
 
     /**
+     * 数据格式，即编解码类型
+     */
+    @TableField("data_format")
+    private String dataFormat;
+
+    /**
      * 备注
      */
     @TableField("remark")

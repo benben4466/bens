@@ -1,12 +1,15 @@
 package cn.ibenbeni.bens.iot.modular.base.service.device.message;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.ibenbeni.bens.iot.api.exception.IotException;
 import cn.ibenbeni.bens.iot.api.exception.enums.IotExceptionEnum;
 import cn.ibenbeni.bens.iot.modular.base.entity.device.IotDeviceDO;
 import cn.ibenbeni.bens.iot.modular.base.entity.device.IotDeviceMessageDO;
 import cn.ibenbeni.bens.iot.modular.base.mapper.device.tdengine.IotDeviceMessageMapper;
+import cn.ibenbeni.bens.iot.modular.base.service.device.IotDeviceService;
 import cn.ibenbeni.bens.iot.modular.base.service.device.property.IotDevicePropertyService;
 import cn.ibenbeni.bens.module.iot.core.enums.IotDeviceMessageMethodEnum;
 import cn.ibenbeni.bens.module.iot.core.mq.message.IotDeviceMessage;
@@ -36,6 +39,9 @@ public class IotDeviceMessageServiceImpl implements IotDeviceMessageService {
     private IotDeviceMessageMapper deviceMessageMapper;
 
     @Resource
+    private IotDeviceService deviceService;
+
+    @Resource
     private IotDevicePropertyService devicePropertyService;
 
     @Override
@@ -47,6 +53,12 @@ public class IotDeviceMessageServiceImpl implements IotDeviceMessageService {
         log.info("[defineDeviceMessageStable][设备消息超级表不存在, 创建开始]");
         deviceMessageMapper.createSTable();
         log.info("[defineDeviceMessageStable][设备消息超级表不存在, 创建成功]");
+    }
+
+    @Override
+    public IotDeviceMessage sendDeviceMessage(IotDeviceMessage message) {
+        IotDeviceDO device = deviceService.validateDeviceExists(message.getDeviceId());
+        return sendDeviceMessage(message, device);
     }
 
     @Override
@@ -97,6 +109,15 @@ public class IotDeviceMessageServiceImpl implements IotDeviceMessageService {
      * @return 回复数据
      */
     private Object doHandleUpstreamDeviceMessage(IotDeviceMessage message, IotDeviceDO device) {
+        // 设备上下线
+        if (ObjectUtil.equal(message.getMethod(), IotDeviceMessageMethodEnum.STATE_UPDATE.getMethod())) {
+            String stateStr = IotDeviceMessageUtils.getIdentifier(message);
+            assert stateStr != null;
+            Assert.notEmpty(stateStr, "设备状态不能为空");
+            deviceService.updateDeviceState(device, Integer.valueOf(stateStr));
+            return null;
+        }
+
         return new Object();
     }
 

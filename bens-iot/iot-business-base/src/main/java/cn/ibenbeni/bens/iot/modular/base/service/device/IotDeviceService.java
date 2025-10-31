@@ -1,10 +1,12 @@
 package cn.ibenbeni.bens.iot.modular.base.service.device;
 
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
+import cn.ibenbeni.bens.iot.api.pojo.dto.device.IotDeviceAuthReqDTO;
 import cn.ibenbeni.bens.iot.modular.base.entity.device.IotDeviceDO;
 import cn.ibenbeni.bens.iot.modular.base.pojo.request.device.IotDevicePageReq;
 import cn.ibenbeni.bens.iot.modular.base.pojo.request.device.IotDeviceSaveReq;
 
+import javax.validation.Valid;
 import java.util.Map;
 import java.util.Set;
 
@@ -42,6 +44,14 @@ public interface IotDeviceService {
     void updateDevice(IotDeviceSaveReq updateReq);
 
     /**
+     * 更新设备状态
+     *
+     * @param device 设备
+     * @param status 状态
+     */
+    void updateDeviceState(IotDeviceDO device, Integer status);
+
+    /**
      * 获取设备
      *
      * @param deviceId 设备ID
@@ -51,6 +61,7 @@ public interface IotDeviceService {
 
     /**
      * 获取设备
+     * <p>注意：该方法会忽略租户条件。调用时，确认不会出现跨租户数据错误</p>
      *
      * @param productKey 产品Key
      * @param deviceSn   设备SN
@@ -89,5 +100,13 @@ public interface IotDeviceService {
      * @return 设备信息
      */
     IotDeviceDO validateDeviceExists(Long deviceId);
+
+    /**
+     * 设备认证
+     *
+     * @param authReq 设备认证入参
+     * @return 设备认证结果；true=认证成功；false=认证失败；
+     */
+    Boolean authDevice(@Valid IotDeviceAuthReqDTO authReq);
 
 }

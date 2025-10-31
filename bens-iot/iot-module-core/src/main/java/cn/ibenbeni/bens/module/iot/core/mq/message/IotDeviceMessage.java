@@ -1,5 +1,8 @@
 package cn.ibenbeni.bens.module.iot.core.mq.message;
 
+import cn.hutool.core.map.MapUtil;
+import cn.ibenbeni.bens.iot.api.enums.device.IotDeviceStateEnum;
+import cn.ibenbeni.bens.module.iot.core.enums.IotDeviceMessageMethodEnum;
 import cn.ibenbeni.bens.module.iot.core.util.IotDeviceMessageUtils;
 import cn.ibenbeni.bens.rule.constants.RuleConstants;
 import cn.ibenbeni.bens.rule.util.TimestampUtils;
@@ -7,6 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Map;
 
 /**
  * IOT-设备消息
@@ -96,6 +101,10 @@ public class IotDeviceMessage {
 
     // region 方法
 
+    public static IotDeviceMessage requestOf(String method, Object params) {
+        return requestOf(null, method, params);
+    }
+
     public static IotDeviceMessage requestOf(String requestId, String method, Object params) {
         return of(requestId, method, params, null, null, null);
     }
@@ -120,6 +129,22 @@ public class IotDeviceMessage {
                 .code(code)
                 .msg(msg)
                 .build();
+    }
+
+    /**
+     * 构建设备状态-在线设备消息
+     */
+    public static IotDeviceMessage buildStateUpdateOnline() {
+        Map<String, Integer> paramMap = MapUtil.of("state", IotDeviceStateEnum.ONLINE.getState());
+        return requestOf(IotDeviceMessageMethodEnum.STATE_UPDATE.getMethod(), paramMap);
+    }
+
+    /**
+     * 构建设备状态-离线设备消息
+     */
+    public static IotDeviceMessage buildStateUpdateOffline() {
+        Map<String, Integer> paramMap = MapUtil.of("state", IotDeviceStateEnum.OFFLINE.getState());
+        return requestOf(IotDeviceMessageMethodEnum.STATE_UPDATE.getMethod(), paramMap);
     }
 
     // endregion

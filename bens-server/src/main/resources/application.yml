@@ -66,7 +66,9 @@ bens:
         emqx:
           enabled: true
           mqttHost: 129.28.26.35
+          mqtt-port: 50001
           mqttClientId: bens-server
           mqttUsername: bens-server
           mqttPassword: bens-server
-          mqttTopics: /sys/
+          mqttTopics:
+            - "/sys/#"
