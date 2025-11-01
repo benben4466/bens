@@ -107,9 +107,9 @@ public class IotDeviceServiceImpl implements IotDeviceService {
             updateDO.setActiveTime(TimestampUtils.curUtcMillis());
         }
 
-        if (ObjectUtil.equal(status, IotDeviceStateEnum.OFFLINE.getState())) {
+        if (ObjectUtil.equal(status, IotDeviceStateEnum.ONLINE.getState())) {
             updateDO.setOnlineTime(TimestampUtils.curUtcMillis());
-        } else if (ObjectUtil.equal(status, IotDeviceStateEnum.ONLINE.getState())) {
+        } else if (ObjectUtil.equal(status, IotDeviceStateEnum.OFFLINE.getState())) {
             updateDO.setOfflineTime(TimestampUtils.curUtcMillis());
         }
         deviceMapper.updateById(updateDO);
