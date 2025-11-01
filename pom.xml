@@ -83,7 +83,7 @@
         <redisson.version>3.18.1</redisson.version>
         <sa-token.version>1.43.0</sa-token.version>
         <!-- 通信相关 -->
-        <vertx.version>4.5.21</vertx.version>
+        <vertx.version>4.4.8</vertx.version>
         <netty.version>4.2.4.Final</netty.version>
         <!-- DB 相关 -->
         <mybatis-plus.version>3.5.9</mybatis-plus.version>

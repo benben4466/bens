@@ -341,7 +341,7 @@ public class IotEmqxUpstreamProtocol {
             Assert.notNull(will.getPayload(), "遗嘱消息内容(will.payload)不能为空");
             options.setWillFlag(true)
                     .setWillTopic(will.getTopic())
-                    .setWillMessageBytes(Buffer.buffer(will.getPayload()))
+                    .setWillMessage(will.getPayload())
                     .setWillQoS(will.getQos())
                     .setWillRetain(will.isRetain());
         }
