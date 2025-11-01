@@ -13,6 +13,7 @@ import cn.ibenbeni.bens.iot.modular.base.service.device.IotDeviceService;
 import cn.ibenbeni.bens.iot.modular.base.service.device.property.IotDevicePropertyService;
 import cn.ibenbeni.bens.iot.modular.base.service.product.IotProductService;
 import cn.ibenbeni.bens.rule.enums.IsSysEnum;
+import cn.ibenbeni.bens.tenant.api.annotation.TenantIgnore;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -124,6 +125,7 @@ public class IotProductServiceImpl implements IotProductService {
         return productMapper.selectById(productId);
     }
 
+    @TenantIgnore // 忽略多租户条件
     @Override
     public IotProductDO getProduct(String productKey) {
         return productMapper.selectByKey(productKey);

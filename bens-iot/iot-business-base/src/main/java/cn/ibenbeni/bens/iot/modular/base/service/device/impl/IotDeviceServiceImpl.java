@@ -5,6 +5,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.extra.spring.SpringUtil;
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
 import cn.ibenbeni.bens.iot.api.enums.device.IotDeviceStateEnum;
 import cn.ibenbeni.bens.iot.api.exception.IotException;
@@ -172,7 +173,7 @@ public class IotDeviceServiceImpl implements IotDeviceService {
         String productKey = deviceInfo.getProductKey();
         String deviceSn = deviceInfo.getDeviceSn();
         // 2.校验设备是否存在
-        IotDeviceDO device = getDevice(productKey, deviceSn);
+        IotDeviceDO device = getSelf().getDevice(productKey, deviceSn);
         if (device == null) {
             log.warn("[authDevice][设备({}/{}) 不存在]", productKey, deviceSn);
             return false;
@@ -222,6 +223,12 @@ public class IotDeviceServiceImpl implements IotDeviceService {
         }
     }
 
+    /**
+     * 初始化设备
+     *
+     * @param iotProduct 产品信息
+     * @param iotDevice  设备信息
+     */
     private void initDevice(IotProductDO iotProduct, IotDeviceDO iotDevice) {
         iotDevice.setProductId(iotProduct.getProductId());
         iotDevice.setProductKey(iotProduct.getProductKey());
@@ -237,6 +244,13 @@ public class IotDeviceServiceImpl implements IotDeviceService {
      */
     private String generateDeviceSecret() {
         return IdUtil.fastSimpleUUID();
+    }
+
+    /**
+     * 为了解决 Spring AOP 在类内部调用自己方法不生效问题
+     */
+    private IotDeviceServiceImpl getSelf() {
+        return SpringUtil.getBean(getClass());
     }
 
     // endregion
