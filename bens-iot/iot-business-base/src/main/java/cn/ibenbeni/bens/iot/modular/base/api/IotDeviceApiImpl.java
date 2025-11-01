@@ -31,7 +31,6 @@ public class IotDeviceApiImpl implements IotDeviceCommonApi {
         return BeanUtil.toBean(deviceService.getDevice(deviceId), IotDeviceRespDTO.class);
     }
 
-    @TenantIgnore
     @Override
     public IotDeviceRespDTO getDevice(String productKey, String deviceSn) {
         IotProductDO product = productService.getProduct(productKey);

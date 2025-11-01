@@ -7,12 +7,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * IoT 设备【认证】的工具类，参考阿里云
  *
  * @see <a href="https://help.aliyun.com/zh/iot/user-guide/how-do-i-obtain-mqtt-parameters-for-authentication">如何计算 MQTT 签名参数</a>
  */
+@Slf4j
 public class IotDeviceAuthUtils {
 
     /**
@@ -117,6 +119,16 @@ public class IotDeviceAuthUtils {
         String plaintextPassword = StrUtil.format(PASSWORD_TEMPLATE, clientId, productKey, deviceSn, deviceSecret);
         return DigestUtil.hmac(HmacAlgorithm.HmacSHA256, deviceSecret.getBytes())
                 .digestHex(plaintextPassword);
+    }
+
+    public static void main(String[] args) {
+        String password = IotDeviceAuthUtils.buildPassword(
+                "A17600981283438UVI",
+                "pt7hkhtmZSD8kz2e",
+                "A17600981283438UVI",
+                "f1a091f334ea4b8d9959878ceddc3de9"
+        );
+        log.info("加密密码: {}", password);
     }
 
 }

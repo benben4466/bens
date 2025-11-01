@@ -3,6 +3,7 @@ package cn.ibenbeni.bens.iot.modular.base.service.device.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
@@ -181,7 +182,7 @@ public class IotDeviceServiceImpl implements IotDeviceService {
 
         // 3.连接密码校验
         IotDeviceAuthUtils.AuthInfo authInfo = IotDeviceAuthUtils.getAuthInfo(productKey, deviceSn, device.getDeviceSecret());
-        if (StrUtil.equals(authInfo.getPassword(), authReq.getPassword())) {
+        if (ObjUtil.notEqual(authInfo.getPassword(), authReq.getPassword())) {
             log.error("[authDevice][设备({}/{}) 密码不正确]", productKey, deviceSn);
             return false;
         }

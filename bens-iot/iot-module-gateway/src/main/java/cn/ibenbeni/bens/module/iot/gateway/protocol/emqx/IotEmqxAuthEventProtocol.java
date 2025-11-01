@@ -62,7 +62,7 @@ public class IotEmqxAuthEventProtocol {
      * 启动 HTTP 服务
      */
     private void startHttpServer() {
-        Integer httpPort = emqxProperties.getHttpPort();
+        int httpPort = emqxProperties.getHttpPort();
 
         // 1.创建路由
         Router router = Router.router(vertx);
@@ -79,10 +79,14 @@ public class IotEmqxAuthEventProtocol {
             // requestHandler(Handler<HttpServerRequest> handler)：指定请求处理器
             // listen()：监听指定端口
             // result()：从异步结果 (Future<HttpServer>) 中取出真正的 HttpServer 对象
-            httpServer = vertx.createHttpServer()
+            vertx.createHttpServer()
                     .requestHandler(router)
                     .listen(httpPort)
-                    .result();
+                    .onSuccess(server -> {
+                        log.info("[startHttpServer][HTTP 启动成功, 端口: {}]", server.actualPort());
+                        httpServer = server;
+                    })
+                    .onFailure(ex -> log.error("[startHttpServer][HTTP 启动失败, 端口: {}]", httpPort, ex));
         } catch (Exception ex) {
             log.error("[startHttpServer][HTTP 服务器启动失败, 端口: {}]", httpPort, ex);
             throw ex;
