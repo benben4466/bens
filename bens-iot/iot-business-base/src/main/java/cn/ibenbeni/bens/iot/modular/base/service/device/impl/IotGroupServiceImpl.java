@@ -5,7 +5,7 @@ import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
 import cn.ibenbeni.bens.iot.api.exception.IotException;
 import cn.ibenbeni.bens.iot.api.exception.enums.IotExceptionEnum;
 import cn.ibenbeni.bens.iot.modular.base.entity.device.IotGroupDO;
-import cn.ibenbeni.bens.iot.modular.base.mapper.device.mysql.IotGroupMapper;
+import cn.ibenbeni.bens.iot.modular.base.mapper.mysql.device.IotGroupMapper;
 import cn.ibenbeni.bens.iot.modular.base.pojo.request.device.IotGroupPageReq;
 import cn.ibenbeni.bens.iot.modular.base.pojo.request.device.IotGroupSaveReq;
 import cn.ibenbeni.bens.iot.modular.base.service.device.IotGroupService;

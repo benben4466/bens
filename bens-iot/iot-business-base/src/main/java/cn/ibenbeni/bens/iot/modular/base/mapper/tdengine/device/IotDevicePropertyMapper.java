@@ -1,4 +1,4 @@
-package cn.ibenbeni.bens.iot.modular.base.mapper.device.tdengine;
+package cn.ibenbeni.bens.iot.modular.base.mapper.tdengine.device;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;

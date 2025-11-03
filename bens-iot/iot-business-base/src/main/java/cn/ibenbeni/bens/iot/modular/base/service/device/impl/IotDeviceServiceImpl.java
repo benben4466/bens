@@ -15,7 +15,7 @@ import cn.ibenbeni.bens.iot.api.pojo.dto.device.IotDeviceAuthReqDTO;
 import cn.ibenbeni.bens.iot.api.util.IotDeviceAuthUtils;
 import cn.ibenbeni.bens.iot.modular.base.entity.device.IotDeviceDO;
 import cn.ibenbeni.bens.iot.modular.base.entity.product.IotProductDO;
-import cn.ibenbeni.bens.iot.modular.base.mapper.device.mysql.IotDeviceMapper;
+import cn.ibenbeni.bens.iot.modular.base.mapper.mysql.device.IotDeviceMapper;
 import cn.ibenbeni.bens.iot.modular.base.pojo.request.device.IotDevicePageReq;
 import cn.ibenbeni.bens.iot.modular.base.pojo.request.device.IotDeviceSaveReq;
 import cn.ibenbeni.bens.iot.modular.base.service.device.IotDeviceService;

@@ -10,7 +10,7 @@ import cn.ibenbeni.bens.iot.api.exception.IotException;
 import cn.ibenbeni.bens.iot.api.exception.enums.IotExceptionEnum;
 import cn.ibenbeni.bens.iot.modular.base.entity.device.IotDeviceDO;
 import cn.ibenbeni.bens.iot.modular.base.entity.device.IotDeviceMessageDO;
-import cn.ibenbeni.bens.iot.modular.base.mapper.device.tdengine.IotDeviceMessageMapper;
+import cn.ibenbeni.bens.iot.modular.base.mapper.tdengine.device.IotDeviceMessageMapper;
 import cn.ibenbeni.bens.iot.modular.base.pojo.request.device.IotDeviceMessagePageReq;
 import cn.ibenbeni.bens.iot.modular.base.service.device.IotDeviceService;
 import cn.ibenbeni.bens.iot.modular.base.service.device.property.IotDevicePropertyService;

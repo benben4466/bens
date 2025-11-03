@@ -6,7 +6,7 @@ import cn.ibenbeni.bens.iot.api.enums.product.IotProductStatusEnum;
 import cn.ibenbeni.bens.iot.api.exception.IotException;
 import cn.ibenbeni.bens.iot.api.exception.enums.IotExceptionEnum;
 import cn.ibenbeni.bens.iot.modular.base.entity.product.IotProductDO;
-import cn.ibenbeni.bens.iot.modular.base.mapper.product.IotProductMapper;
+import cn.ibenbeni.bens.iot.modular.base.mapper.mysql.product.IotProductMapper;
 import cn.ibenbeni.bens.iot.modular.base.pojo.request.product.IotProductPageReq;
 import cn.ibenbeni.bens.iot.modular.base.pojo.request.product.IotProductSaveReq;
 import cn.ibenbeni.bens.iot.modular.base.service.device.IotDeviceService;

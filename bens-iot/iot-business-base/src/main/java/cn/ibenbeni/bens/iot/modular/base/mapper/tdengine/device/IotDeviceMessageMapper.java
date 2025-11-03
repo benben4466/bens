@@ -1,4 +1,4 @@
-package cn.ibenbeni.bens.iot.modular.base.mapper.device.tdengine;
+package cn.ibenbeni.bens.iot.modular.base.mapper.tdengine.device;
 
 import cn.ibenbeni.bens.iot.api.core.tdengine.annotation.TDengineDS;
 import cn.ibenbeni.bens.iot.modular.base.entity.device.IotDeviceMessageDO;

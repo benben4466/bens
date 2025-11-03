@@ -8,7 +8,7 @@ import cn.ibenbeni.bens.iot.api.enums.thingmodel.IotDataSpecsDataTypeEnum;
 import cn.ibenbeni.bens.iot.api.enums.thingmodel.IotThingModelTypeEnum;
 import cn.ibenbeni.bens.iot.modular.base.entity.device.IotDeviceDO;
 import cn.ibenbeni.bens.iot.modular.base.entity.thingmodel.IotThingModelDO;
-import cn.ibenbeni.bens.iot.modular.base.mapper.device.tdengine.IotDevicePropertyMapper;
+import cn.ibenbeni.bens.iot.modular.base.mapper.tdengine.device.IotDevicePropertyMapper;
 import cn.ibenbeni.bens.iot.modular.base.pojo.model.thingmodel.dataType.ThingModelDateOrTextDataSpecs;
 import cn.ibenbeni.bens.iot.modular.base.service.product.IotProductService;
 import cn.ibenbeni.bens.iot.modular.base.service.thingmodel.IotThingModelService;
