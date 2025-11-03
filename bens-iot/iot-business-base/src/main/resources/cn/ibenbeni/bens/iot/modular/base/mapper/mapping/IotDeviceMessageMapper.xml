@@ -41,4 +41,29 @@
         SHOW STABLES LIKE 'device_message'
     </select>
 
+    <select id="selectPage" resultType="cn.ibenbeni.bens.iot.modular.base.entity.device.IotDeviceMessageDO">
+        SELECT ts,msg_id,report_time,tenant_id,server_id,upstream,reply,
+               identifier,request_id,method,params,data,code,msg
+        from device_message_${pageReq.deviceId}
+        <where>
+            <if test="pageReq.method != null and pageReq.method != ''">
+                AND method = #{pageReq.method}
+            </if>
+            <if test="pageReq.upstream != null">
+                AND upstream = #{pageReq.upstream}
+            </if>
+            <if test="pageReq.reply != null">
+                AND reply = #{pageReq.reply}
+            </if>
+            <if test="pageReq.identifier != null and pageReq.identifier != ''">
+                AND identifier = #{pageReq.identifier}
+            </if>
+            <if test="qStartTs != -1 and qEndTs != -1">
+                AND ts &gt;= #{qStartTs}
+                AND ts &lt;= #{qEndTs}
+            </if>
+        </where>
+        ORDER BY ts DESC
+    </select>
+
 </mapper>

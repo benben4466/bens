@@ -4,11 +4,14 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.ibenbeni.bens.db.api.factory.PageResultFactory;
+import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
 import cn.ibenbeni.bens.iot.api.exception.IotException;
 import cn.ibenbeni.bens.iot.api.exception.enums.IotExceptionEnum;
 import cn.ibenbeni.bens.iot.modular.base.entity.device.IotDeviceDO;
 import cn.ibenbeni.bens.iot.modular.base.entity.device.IotDeviceMessageDO;
 import cn.ibenbeni.bens.iot.modular.base.mapper.device.tdengine.IotDeviceMessageMapper;
+import cn.ibenbeni.bens.iot.modular.base.pojo.request.device.IotDeviceMessagePageReq;
 import cn.ibenbeni.bens.iot.modular.base.service.device.IotDeviceService;
 import cn.ibenbeni.bens.iot.modular.base.service.device.property.IotDevicePropertyService;
 import cn.ibenbeni.bens.module.iot.core.enums.IotDeviceMessageMethodEnum;
@@ -18,6 +21,8 @@ import cn.ibenbeni.bens.module.iot.core.util.IotDeviceMessageUtils;
 import cn.ibenbeni.bens.rule.exception.base.ServiceException;
 import cn.ibenbeni.bens.rule.util.JsonUtils;
 import cn.ibenbeni.bens.rule.util.TimestampUtils;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -98,6 +103,28 @@ public class IotDeviceMessageServiceImpl implements IotDeviceMessageService {
             sendDeviceMessage(replyMessage, device, message.getServerId());
         } catch (Exception ex) {
             log.error("[handleUpstreamDeviceMessage][message({}) 回复消息失败]", message, ex);
+        }
+    }
+
+    @Override
+    public PageResult<IotDeviceMessageDO> pageDeviceMessage(IotDeviceMessagePageReq pageReq) {
+        try {
+            long qStartTs = -1L;
+            long qEndTs = -1L;
+            if (pageReq.getTimes() != null && pageReq.getTimes().length == 2) {
+                qStartTs = TimestampUtils.toMillis(pageReq.getTimes()[0]);
+                qEndTs = TimestampUtils.toMillis(pageReq.getTimes()[1]);
+            }
+
+            IPage<IotDeviceMessageDO> page = deviceMessageMapper.selectPage(new Page<>(pageReq.getPageNo(), pageReq.getPageSize()), pageReq, qStartTs, qEndTs);
+            return PageResultFactory.createPageResult(page.getRecords(), page.getTotal(), pageReq.getPageSize(), pageReq.getPageNo());
+        } catch (Exception ex) {
+            // 设备消息表不存在，则返回空结果
+            if (ex.getMessage().contains("Table does not exist")) {
+                return PageResultFactory.createEmptyPageResult();
+            }
+
+            throw ex;
         }
     }
 

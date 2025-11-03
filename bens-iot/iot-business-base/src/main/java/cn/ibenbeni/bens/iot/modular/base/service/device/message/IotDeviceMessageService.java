@@ -1,6 +1,9 @@
 package cn.ibenbeni.bens.iot.modular.base.service.device.message;
 
+import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
 import cn.ibenbeni.bens.iot.modular.base.entity.device.IotDeviceDO;
+import cn.ibenbeni.bens.iot.modular.base.entity.device.IotDeviceMessageDO;
+import cn.ibenbeni.bens.iot.modular.base.pojo.request.device.IotDeviceMessagePageReq;
 import cn.ibenbeni.bens.module.iot.core.mq.message.IotDeviceMessage;
 
 /**
@@ -44,5 +47,12 @@ public interface IotDeviceMessageService {
      * @param device  设备
      */
     void handleUpstreamDeviceMessage(IotDeviceMessage message, IotDeviceDO device);
+
+    /**
+     * 分页查询设备消息
+     *
+     * @param pageReq 分页参数
+     */
+    PageResult<IotDeviceMessageDO> pageDeviceMessage(IotDeviceMessagePageReq pageReq);
 
 }
