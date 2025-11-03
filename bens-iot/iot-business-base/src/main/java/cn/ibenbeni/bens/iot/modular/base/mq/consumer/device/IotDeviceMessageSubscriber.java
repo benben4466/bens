@@ -57,6 +57,7 @@ public class IotDeviceMessageSubscriber implements IotMessageSubscriber<IotDevic
         // 只处理上行消息
         if (!IotDeviceMessageUtils.isUpstreamMessage(message)) {
             log.error("[onMessage][message({}) 非上行消息，不进行处理]", message);
+            return;
         }
 
         // 指定租户执行

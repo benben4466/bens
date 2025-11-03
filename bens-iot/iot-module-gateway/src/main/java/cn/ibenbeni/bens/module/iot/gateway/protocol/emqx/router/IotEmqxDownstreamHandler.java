@@ -45,7 +45,7 @@ public class IotEmqxDownstreamHandler {
         }
 
         // 2.根据方法构建主题
-        String topic = buildTopicByMethod(message, deviceInfo.getProductKey(), deviceInfo.getDeviceName());
+        String topic = buildTopicByMethod(message, deviceInfo.getProductKey(), deviceInfo.getDeviceSn());
         if (StrUtil.isBlank(topic)) {
             log.warn("[handle][未知的消息方法: {}]", message.getMethod());
             return;

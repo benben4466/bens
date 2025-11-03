@@ -42,7 +42,19 @@ public class IotDeviceMessageServiceImpl implements IotDeviceMessageService {
 
     @Override
     public byte[] encodeDeviceMessage(IotDeviceMessage message, String productKey, String deviceSn) {
-        return new byte[0];
+        // 1.获取设备信息
+        IotDeviceRespDTO device = deviceCommonApi.getDevice(productKey, deviceSn);
+        if (device == null) {
+            throw new IotException(IotExceptionEnum.DEVICE_NOT_EXISTED);
+        }
+
+        // 2.获取编码器
+        IotDeviceMessageCodec codec = codes.get(device.getDataFormat());
+        if (codec == null) {
+            log.error("[decodeDeviceMessage][设备({}/{})缺失编码器({})]", device.getProductKey(), device.getDeviceSn(), device.getDataFormat());
+            throw new IotException(IotExceptionEnum.MSG_CODEC_NOT_EXISTED);
+        }
+        return codec.encode(message);
     }
 
     @Override
@@ -53,10 +65,10 @@ public class IotDeviceMessageServiceImpl implements IotDeviceMessageService {
             throw new IotException(IotExceptionEnum.DEVICE_NOT_EXISTED);
         }
 
-        // 2.获取编解码器
+        // 2.获取解码器
         IotDeviceMessageCodec codec = codes.get(device.getDataFormat());
         if (codec == null) {
-            log.error("[decodeDeviceMessage][设备({}/{})缺失编码器({})]", device.getProductKey(), device.getDeviceSn(), device.getDataFormat());
+            log.error("[decodeDeviceMessage][设备({}/{})缺失解码器({})]", device.getProductKey(), device.getDeviceSn(), device.getDataFormat());
             throw new IotException(IotExceptionEnum.MSG_CODEC_NOT_EXISTED);
         }
 
