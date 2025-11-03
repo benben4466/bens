@@ -118,7 +118,12 @@ public class IotDeviceMessageServiceImpl implements IotDeviceMessageService {
             return null;
         }
 
-        return new Object();
+        // 属性上报
+        if (ObjectUtil.equal(message.getMethod(), IotDeviceMessageMethodEnum.PROPERTY_POST.getMethod())) {
+            devicePropertyService.saveDeviceProperty(device, message);
+        }
+
+        return null;
     }
 
     /**

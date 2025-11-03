@@ -6,22 +6,22 @@ import cn.hutool.core.util.StrUtil;
 import cn.ibenbeni.bens.iot.api.core.tdengine.TDengineTableField;
 import cn.ibenbeni.bens.iot.api.enums.thingmodel.IotDataSpecsDataTypeEnum;
 import cn.ibenbeni.bens.iot.api.enums.thingmodel.IotThingModelTypeEnum;
+import cn.ibenbeni.bens.iot.modular.base.entity.device.IotDeviceDO;
 import cn.ibenbeni.bens.iot.modular.base.entity.thingmodel.IotThingModelDO;
 import cn.ibenbeni.bens.iot.modular.base.mapper.device.tdengine.IotDevicePropertyMapper;
 import cn.ibenbeni.bens.iot.modular.base.pojo.model.thingmodel.dataType.ThingModelDateOrTextDataSpecs;
 import cn.ibenbeni.bens.iot.modular.base.service.product.IotProductService;
 import cn.ibenbeni.bens.iot.modular.base.service.thingmodel.IotThingModelService;
+import cn.ibenbeni.bens.module.iot.core.mq.message.IotDeviceMessage;
 import cn.ibenbeni.bens.rule.util.CollectionUtils;
+import cn.ibenbeni.bens.rule.util.JsonUtils;
 import cn.ibenbeni.bens.rule.util.ObjectUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * IOT-设备属性-服务实现类
@@ -101,6 +101,40 @@ public class IotDevicePropertyServiceImpl implements IotDevicePropertyService {
 
         // 创建表或修改表结构
         devicePropertyMapper.alterProductPropertySTable(productId, oldFields, newFields);
+    }
+
+    @Override
+    public void saveDeviceProperty(IotDeviceDO device, IotDeviceMessage deviceMessage) {
+        if (!(deviceMessage.getParams() instanceof Map)) {
+            log.error("[saveDeviceProperty][消息内容({}) 的 params 类型不正确]", deviceMessage);
+            return;
+        }
+
+        // 1.根据物模型定义，整理属性数据
+        List<IotThingModelDO> thingModels = thingModelService.listByProductId(device.getProductId());
+        Map<String, Object> properties = new HashMap<>();
+        ((Map<?, ?>) deviceMessage.getParams()).forEach((key, value) -> {
+            IotThingModelDO thingModel = CollUtil.findOne(thingModels, item -> item.getIdentifier().equals(key));
+            if (thingModel == null || thingModel.getProperty() == null) {
+                log.error("[saveDeviceProperty][消息({}) 的属性({}) 不存在]", deviceMessage, key);
+                return;
+            }
+
+            // 若物模型数据类型是 STRUCT/ARRAY 类型，在TDengine中无对应数据类型，则将数据转为JSON字符串保存
+            if (ObjectUtils.equalsAny(thingModel.getProperty().getDataType(),
+                    IotDataSpecsDataTypeEnum.STRUCT.getDataType(), IotDataSpecsDataTypeEnum.ARRAY.getDataType())) {
+                properties.put((String) key, JsonUtils.toJsonStr(value));
+            } else {
+                properties.put((String) key, value);
+            }
+        });
+        if (CollUtil.isEmpty(properties)) {
+            log.error("[saveDeviceProperty][消息({}) 没有合法的属性]", deviceMessage);
+            return;
+        }
+
+        // 2.保存设备属性数据
+        devicePropertyMapper.insert(device, properties, deviceMessage.getReportTime());
     }
 
     @Override

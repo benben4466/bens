@@ -17,6 +17,23 @@
             device_id BIGINT
         )
     </update>
+
+    <insert id="insert">
+        INSERT INTO device_property_${device.deviceId}
+        USING product_property_${device.productId}
+        TAGS (${device.deviceId})
+        (ts, report_time,
+            <foreach item="key" collection="properties.keys" separator=",">
+                ${@cn.hutool.core.util.StrUtil@toUnderlineCase(key)}
+            </foreach>
+        )
+        VALUES
+        (NOW, ${reportTime},
+            <foreach item="value" collection="properties.values" separator=",">
+                #{value}
+            </foreach>
+        )
+    </insert>
     
     <update id="alterProductPropertySTableAddField">
         ALTER STABLE product_property_${productId}

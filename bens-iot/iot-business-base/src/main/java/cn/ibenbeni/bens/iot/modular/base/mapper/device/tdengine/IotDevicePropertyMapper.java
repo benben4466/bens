@@ -5,11 +5,13 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.ibenbeni.bens.iot.api.core.tdengine.TDengineTableField;
 import cn.ibenbeni.bens.iot.api.core.tdengine.annotation.TDengineDS;
+import cn.ibenbeni.bens.iot.modular.base.entity.device.IotDeviceDO;
 import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -27,6 +29,15 @@ public interface IotDevicePropertyMapper {
      * @param fields    属性字段列表
      */
     void createProductPropertySTable(@Param("productId") Long productId, @Param("fields") List<TDengineTableField> fields);
+
+    /**
+     * 插入设备属性数据
+     *
+     * @param device     设备
+     * @param properties 属性数据
+     * @param reportTime 上报时间
+     */
+    void insert(@Param("device") IotDeviceDO device, @Param("properties") Map<String, Object> properties, @Param("reportTime") Long reportTime);
 
     /**
      * 修改产品属性表字段
