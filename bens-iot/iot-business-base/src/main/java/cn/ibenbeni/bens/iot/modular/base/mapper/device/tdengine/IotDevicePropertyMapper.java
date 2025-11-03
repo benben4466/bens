@@ -48,7 +48,7 @@ public interface IotDevicePropertyMapper {
      */
     default void alterProductPropertySTable(Long productId, List<TDengineTableField> oldFields, List<TDengineTableField> newFields) {
         // 移除物模型外的固定字段
-        oldFields.removeIf(field -> StrUtil.equalsAny(field.getField(), TDengineTableField.REPORT_TIME, TDengineTableField.DEVICE_ID));
+        oldFields.removeIf(field -> StrUtil.equalsAny(field.getField(), TDengineTableField.REPORT_TIME, TDengineTableField.DEVICE_ID, TDengineTableField.FIELD_TS));
 
         // 新增字段
         List<TDengineTableField> addFields = newFields.stream()
