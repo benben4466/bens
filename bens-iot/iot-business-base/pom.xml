@@ -44,6 +44,13 @@
             <version>${revision}</version>
         </dependency>
 
+        <!-- 缓存模块-Redis -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>cache-sdk-redis</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
         <!-- 接口文档-Knife4j -->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>

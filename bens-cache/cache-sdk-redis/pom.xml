@@ -23,12 +23,6 @@
             <version>${revision}</version>
         </dependency>
 
-        <!-- Redis连接 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-
         <!-- Redis连接客户端 -->
         <dependency>
             <groupId>org.redisson</groupId>

@@ -35,4 +35,13 @@ public interface IotDevicePropertyService {
      */
     String getDeviceServerId(Long deviceId);
 
+    /**
+     * 更新设备关联的网关 serverId
+     * <p>异步</p>
+     *
+     * @param deviceId 设备ID
+     * @param serverId 网关 ServerId
+     */
+    void updateDeviceServerIdAsync(Long deviceId, String serverId);
+
 }

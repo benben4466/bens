@@ -8,6 +8,7 @@ import cn.ibenbeni.bens.iot.api.enums.thingmodel.IotDataSpecsDataTypeEnum;
 import cn.ibenbeni.bens.iot.api.enums.thingmodel.IotThingModelTypeEnum;
 import cn.ibenbeni.bens.iot.modular.base.entity.device.IotDeviceDO;
 import cn.ibenbeni.bens.iot.modular.base.entity.thingmodel.IotThingModelDO;
+import cn.ibenbeni.bens.iot.modular.base.mapper.redis.device.IotDeviceServerIdRedisDAO;
 import cn.ibenbeni.bens.iot.modular.base.mapper.tdengine.device.IotDevicePropertyMapper;
 import cn.ibenbeni.bens.iot.modular.base.pojo.model.thingmodel.dataType.ThingModelDateOrTextDataSpecs;
 import cn.ibenbeni.bens.iot.modular.base.service.product.IotProductService;
@@ -49,6 +50,9 @@ public class IotDevicePropertyServiceImpl implements IotDevicePropertyService {
 
     @Resource
     private IotDevicePropertyMapper devicePropertyMapper;
+
+    @Resource
+    private IotDeviceServerIdRedisDAO deviceServerIdRedisDAO;
 
     @Lazy
     @Resource
@@ -139,7 +143,12 @@ public class IotDevicePropertyServiceImpl implements IotDevicePropertyService {
 
     @Override
     public String getDeviceServerId(Long deviceId) {
-        return "";
+        return deviceServerIdRedisDAO.getServerId(deviceId);
+    }
+
+    @Override
+    public void updateDeviceServerIdAsync(Long deviceId, String serverId) {
+        deviceServerIdRedisDAO.updateServerId(deviceId, serverId);
     }
 
     // endregion

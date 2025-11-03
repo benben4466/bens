@@ -5,6 +5,7 @@ import cn.ibenbeni.bens.iot.api.enums.device.IotDeviceStateEnum;
 import cn.ibenbeni.bens.iot.modular.base.entity.device.IotDeviceDO;
 import cn.ibenbeni.bens.iot.modular.base.service.device.IotDeviceService;
 import cn.ibenbeni.bens.iot.modular.base.service.device.message.IotDeviceMessageService;
+import cn.ibenbeni.bens.iot.modular.base.service.device.property.IotDevicePropertyService;
 import cn.ibenbeni.bens.module.iot.core.enums.IotDeviceMessageMethodEnum;
 import cn.ibenbeni.bens.module.iot.core.messagebus.core.IotMessageBus;
 import cn.ibenbeni.bens.module.iot.core.messagebus.core.IotMessageSubscriber;
@@ -35,6 +36,9 @@ public class IotDeviceMessageSubscriber implements IotMessageSubscriber<IotDevic
     private IotDeviceService deviceService;
 
     @Resource
+    private IotDevicePropertyService devicePropertyService;
+
+    @Resource
     private IotDeviceMessageService deviceMessageService;
 
     @PostConstruct
@@ -63,6 +67,9 @@ public class IotDeviceMessageSubscriber implements IotMessageSubscriber<IotDevic
         // 指定租户执行
         TenantUtils.execute(message.getTenantId(), () -> {
             IotDeviceDO device = deviceService.validateDeviceExists(message.getDeviceId());
+
+            // 更新设备连接的网关服务ID
+            devicePropertyService.updateDeviceServerIdAsync(device.getDeviceId(), message.getServerId());
 
             // 强制设备上线
             forceDeviceOnline(message, device);
