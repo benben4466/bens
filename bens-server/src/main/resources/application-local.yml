@@ -24,3 +24,8 @@ spring:
     port: 6379
     database: 6
     # password:
+
+rocketmq:
+  name-server: 127.0.0.1:9876
+  producer:
+    group: ${spring.application.name}_PRODUCER # 生产者分组

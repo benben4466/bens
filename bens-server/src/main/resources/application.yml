@@ -60,7 +60,7 @@ bens:
     sender-type: local
   iot:
     message-bus:
-      type: local
+      type: rocketmq
     gateway:
       protocol:
         emqx:
