@@ -96,6 +96,7 @@ public class IotDeviceMessageServiceImpl implements IotDeviceMessageService {
             return;
         }
         try {
+            // 构建 ACK 消息，并且发送 ACK 消息
             IotDeviceMessage replyMessage = IotDeviceMessage.replyOf(message.getRequestId(), message.getMethod(), replyData,
                     serviceException != null ? serviceException.getErrorCode() : null,
                     serviceException != null ? serviceException.getUserTip() : null
