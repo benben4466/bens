@@ -66,16 +66,20 @@ public class IotDeviceMessageSubscriber implements IotMessageSubscriber<IotDevic
 
         // 指定租户执行
         TenantUtils.execute(message.getTenantId(), () -> {
-            IotDeviceDO device = deviceService.validateDeviceExists(message.getDeviceId());
+            try {
+                IotDeviceDO device = deviceService.validateDeviceExists(message.getDeviceId());
 
-            // 更新设备连接的网关服务ID
-            devicePropertyService.updateDeviceServerIdAsync(device.getDeviceId(), message.getServerId());
+                // 更新设备连接的网关服务ID
+                devicePropertyService.updateDeviceServerIdAsync(device.getDeviceId(), message.getServerId());
 
-            // 强制设备上线
-            forceDeviceOnline(message, device);
+                // 强制设备上线
+                forceDeviceOnline(message, device);
 
-            // 处理消息
-            deviceMessageService.handleUpstreamDeviceMessage(message, device);
+                // 处理消息
+                deviceMessageService.handleUpstreamDeviceMessage(message, device);
+            } catch (Exception ex) {
+                log.error("[onMessage][消息处理错误][消息: {}][错误原因: {}]", message, ex.getMessage(), ex);
+            }
         });
     }
 

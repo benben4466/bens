@@ -38,7 +38,7 @@ public class IotEmqxDownstreamHandler {
      */
     public void handle(IotDeviceMessage message) {
         // 1.获取设备信息
-        IotDeviceRespDTO deviceInfo = deviceCommonApi.getDevice(message.getDeviceId());
+        IotDeviceRespDTO deviceInfo = deviceCommonApi.getDeviceFromCache(message.getDeviceId());
         if (deviceInfo == null) {
             log.error("[handle][设备信息({})不存在]", message.getDeviceId());
             return;
