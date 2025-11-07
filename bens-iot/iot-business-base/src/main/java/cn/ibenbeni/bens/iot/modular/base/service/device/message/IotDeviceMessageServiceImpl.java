@@ -90,7 +90,7 @@ public class IotDeviceMessageServiceImpl implements IotDeviceMessageService {
         createDeviceMessageLog(message);
 
         // 非回复消息，或者禁用回复消息，或者无服务编号，则不回复消息
-        if (!IotDeviceMessageUtils.isReplyMessage(message)
+        if (IotDeviceMessageUtils.isReplyMessage(message)
                 || IotDeviceMessageMethodEnum.isReplyDisabled(message.getMethod())
                 || StrUtil.isEmpty(message.getServerId())) {
             return;
