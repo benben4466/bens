@@ -120,6 +120,12 @@ public class IotDeviceServiceImpl implements IotDeviceService {
         return deviceMapper.selectById(deviceId);
     }
 
+    @TenantIgnore
+    @Override
+    public IotDeviceDO getDeviceFromCache(Long deviceId) {
+        return deviceMapper.selectById(deviceId);
+    }
+
     @TenantIgnore // 忽略租户信息
     @Override
     public IotDeviceDO getDevice(String productKey, String deviceSn) {

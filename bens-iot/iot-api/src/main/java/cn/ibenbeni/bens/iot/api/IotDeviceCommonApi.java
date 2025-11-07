@@ -10,11 +10,12 @@ public interface IotDeviceCommonApi {
 
     /**
      * 获取设备信息
+     * <p>注意：该方法会忽略租户条件。调用时，确认不会出现跨租户数据错误</p>
      *
      * @param deviceId 设备ID
      * @return 设备信息
      */
-    IotDeviceRespDTO getDevice(Long deviceId);
+    IotDeviceRespDTO getDeviceFromCache(Long deviceId);
 
     /**
      * 获取设备信息

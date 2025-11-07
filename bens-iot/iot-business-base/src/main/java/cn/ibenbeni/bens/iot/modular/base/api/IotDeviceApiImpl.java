@@ -27,8 +27,8 @@ public class IotDeviceApiImpl implements IotDeviceCommonApi {
     private IotDeviceService deviceService;
 
     @Override
-    public IotDeviceRespDTO getDevice(Long deviceId) {
-        return BeanUtil.toBean(deviceService.getDevice(deviceId), IotDeviceRespDTO.class);
+    public IotDeviceRespDTO getDeviceFromCache(Long deviceId) {
+        return BeanUtil.toBean(deviceService.getDeviceFromCache(deviceId), IotDeviceRespDTO.class);
     }
 
     @Override
