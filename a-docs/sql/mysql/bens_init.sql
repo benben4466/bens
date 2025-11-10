@@ -589,3 +589,22 @@ CREATE TABLE `iot_thing_model`
     `del_flag`     char(1)        NOT NULL DEFAULT 'N' COMMENT '删除标记',
     PRIMARY KEY (`model_id`)
 ) COMMENT = '物模型';
+
+DROP TABLE IF EXISTS `iot_scene_rule`;
+CREATE TABLE `iot_scene_rule`
+(
+    `id`           bigint       NOT NULL AUTO_INCREMENT COMMENT '场景联动规则ID',
+    `name`         varchar(128) NOT NULL COMMENT '场景联动规则名称',
+    `status_flag`  tinyint      NOT NULL DEFAULT 1 COMMENT '场景联动规则状态(1=启用;2=禁用;)',
+    `triggers`     json         NOT NULL COMMENT '触发器数组',
+    `actions`      json         NOT NULL COMMENT '执行器数组',
+    `description`  varchar(256) NULL     DEFAULT '' COMMENT '场景联动规则描述',
+    `version_flag` bigint       NULL     DEFAULT NULL COMMENT '乐观锁',
+    `create_time`  datetime     NULL     DEFAULT NULL COMMENT '创建时间',
+    `create_user`  bigint       NULL     DEFAULT NULL COMMENT '创建人',
+    `update_time`  datetime     NULL     DEFAULT NULL COMMENT '更新时间',
+    `update_user`  bigint       NULL     DEFAULT NULL COMMENT '更新人',
+    `del_flag`     char(1)      NOT NULL DEFAULT 'N' COMMENT '删除标记',
+    `tenant_id`    bigint       NULL     DEFAULT NULL COMMENT '租户编号',
+    PRIMARY KEY (`id`)
+) COMMENT = 'IoT场景联动规则';

@@ -111,6 +111,11 @@ public enum IotExceptionEnum implements AbstractExceptionEnum {
      */
     MSG_CODEC_NOT_EXISTED(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + IotConstants.IOT_MODULE_NAME + "508", "消息编解码器不存在"),
 
+    /**
+     * 场景联动不存在
+     */
+    RULE_SCENE_NOT_EXISTS(RuleConstants.USER_OPERATION_ERROR_TYPE_CODE + IotConstants.IOT_MODULE_NAME + "509", "场景联动不存在"),
+
     ;
 
     /**
