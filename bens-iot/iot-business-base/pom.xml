@@ -51,6 +51,12 @@
             <version>${revision}</version>
         </dependency>
 
+        <!-- Quartz -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-quartz</artifactId>
+        </dependency>
+
         <!-- 接口文档-Knife4j -->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>

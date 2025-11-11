@@ -8,6 +8,8 @@ import cn.ibenbeni.bens.iot.modular.base.entity.rule.IotSceneRuleDO;
 import cn.ibenbeni.bens.iot.modular.base.mapper.mysql.rule.IotSceneRuleMapper;
 import cn.ibenbeni.bens.iot.modular.base.pojo.request.rule.IotSceneRulePageReq;
 import cn.ibenbeni.bens.iot.modular.base.pojo.request.rule.IotSceneRuleSaveReq;
+import cn.ibenbeni.bens.iot.modular.base.service.rule.timer.IotSceneRuleTimerHandler;
+import cn.ibenbeni.bens.rule.enums.StatusEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,9 @@ public class IotSceneRuleServiceImpl implements IotSceneRuleService {
     @Resource
     private IotSceneRuleMapper sceneRuleMapper;
 
+    @Resource
+    private IotSceneRuleTimerHandler timerHandler;
+
     // region 公共方法
 
     @Override
@@ -31,7 +36,8 @@ public class IotSceneRuleServiceImpl implements IotSceneRuleService {
         IotSceneRuleDO sceneRule = BeanUtil.toBean(saveReq, IotSceneRuleDO.class);
         sceneRuleMapper.insert(sceneRule);
 
-        // TODO [待写] 规则中有定时触发器，进行添加定时任务
+        // 注册定时触发器
+        timerHandler.registerTimerTriggers(sceneRule);
 
         return sceneRule.getId();
     }
@@ -43,7 +49,8 @@ public class IotSceneRuleServiceImpl implements IotSceneRuleService {
 
         sceneRuleMapper.deleteById(ruleId);
 
-        // TODO [待写] 删除定时触发器
+        // 删除定时触发器
+        timerHandler.unregisterTimerTriggers(ruleId);
     }
 
     @Override
@@ -54,7 +61,8 @@ public class IotSceneRuleServiceImpl implements IotSceneRuleService {
         IotSceneRuleDO updateDO = BeanUtil.toBean(updateReq, IotSceneRuleDO.class);
         sceneRuleMapper.updateById(updateDO);
 
-        // TODO [待写] 规则中有定时触发器，进行更新定时任务
+        // 更新定时触发器
+        timerHandler.updateTimerTriggers(updateDO);
     }
 
     @Override
@@ -69,7 +77,17 @@ public class IotSceneRuleServiceImpl implements IotSceneRuleService {
                 .build();
         sceneRuleMapper.updateById(updateDO);
 
-        // TODO [待写] 规则中有定时触发器，进行更新定时任务
+        // 根据规则状态，对定时任务进行处理
+        if (StatusEnum.isEnable(statusFlag)) {
+            // 启用时，获取完整的场景规则信息并注册定时触发器
+            IotSceneRuleDO sceneRule = sceneRuleMapper.selectById(ruleId);
+            if (sceneRule != null) {
+                timerHandler.registerTimerTriggers(sceneRule);
+            }
+        } else {
+            // 禁用时，暂停定时触发器
+            timerHandler.pauseTimerTriggers(ruleId);
+        }
     }
 
     @Override
@@ -80,6 +98,10 @@ public class IotSceneRuleServiceImpl implements IotSceneRuleService {
     @Override
     public PageResult<IotSceneRuleDO> pageSceneRule(IotSceneRulePageReq pageReq) {
         return sceneRuleMapper.pageSceneRule(pageReq);
+    }
+
+    @Override
+    public void executeSceneRuleByTimer(Long ruleId) {
     }
 
     // endregion
