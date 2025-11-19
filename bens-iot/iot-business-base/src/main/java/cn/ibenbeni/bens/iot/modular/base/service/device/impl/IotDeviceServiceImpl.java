@@ -29,9 +29,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * IOT设备-服务实现类
@@ -152,6 +150,11 @@ public class IotDeviceServiceImpl implements IotDeviceService {
         }
 
         return result;
+    }
+
+    @Override
+    public List<IotDeviceDO> listDeviceByProductId(Long productId) {
+        return deviceMapper.selectListByProductId(productId);
     }
 
     @Override

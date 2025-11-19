@@ -18,6 +18,11 @@ import java.math.BigDecimal;
 public class IotDeviceDO extends BaseBusinessEntity {
 
     /**
+     * 设备编号 - 全部设备
+     */
+    public static final Long DEVICE_ID_ALL = 0L;
+
+    /**
      * 设备ID
      */
     @TableId(value = "device_id", type = IdType.ASSIGN_ID)

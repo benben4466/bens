@@ -7,11 +7,19 @@ import cn.ibenbeni.bens.iot.modular.base.entity.rule.IotSceneRuleDO;
 import cn.ibenbeni.bens.iot.modular.base.pojo.request.rule.IotSceneRulePageReq;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * IOT-场景联动规则-Mapper
  */
 @Mapper
 public interface IotSceneRuleMapper extends BaseMapperX<IotSceneRuleDO> {
+
+    default List<IotSceneRuleDO> selectListByStatus(Integer statusFlag) {
+        return selectList(new LambdaQueryWrapperX<IotSceneRuleDO>()
+                .eqIfPresent(IotSceneRuleDO::getStatusFlag, statusFlag)
+        );
+    }
 
     default PageResult<IotSceneRuleDO> pageSceneRule(IotSceneRulePageReq pageReq) {
         return selectPage(pageReq, new LambdaQueryWrapperX<IotSceneRuleDO>()

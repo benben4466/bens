@@ -6,22 +6,29 @@ import cn.hutool.core.collection.ListUtil;
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
 import cn.ibenbeni.bens.iot.api.exception.IotException;
 import cn.ibenbeni.bens.iot.api.exception.enums.IotExceptionEnum;
+import cn.ibenbeni.bens.iot.modular.base.entity.device.IotDeviceDO;
+import cn.ibenbeni.bens.iot.modular.base.entity.product.IotProductDO;
 import cn.ibenbeni.bens.iot.modular.base.entity.rule.IotSceneRuleDO;
 import cn.ibenbeni.bens.iot.modular.base.enums.rule.IotSceneRuleTriggerTypeEnum;
 import cn.ibenbeni.bens.iot.modular.base.mapper.mysql.rule.IotSceneRuleMapper;
 import cn.ibenbeni.bens.iot.modular.base.pojo.request.rule.IotSceneRulePageReq;
 import cn.ibenbeni.bens.iot.modular.base.pojo.request.rule.IotSceneRuleSaveReq;
+import cn.ibenbeni.bens.iot.modular.base.service.device.IotDeviceService;
+import cn.ibenbeni.bens.iot.modular.base.service.product.IotProductService;
 import cn.ibenbeni.bens.iot.modular.base.service.rule.action.IotSceneRuleAction;
 import cn.ibenbeni.bens.iot.modular.base.service.rule.timer.IotSceneRuleTimerHandler;
 import cn.ibenbeni.bens.module.iot.core.mq.message.IotDeviceMessage;
 import cn.ibenbeni.bens.rule.enums.StatusEnum;
 import cn.ibenbeni.bens.rule.util.CollectionUtils;
+import cn.ibenbeni.bens.tenant.api.annotation.TenantIgnore;
 import cn.ibenbeni.bens.tenant.api.util.TenantUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * IOT-场景联动规则-服务实现类
@@ -41,6 +48,12 @@ public class IotSceneRuleServiceImpl implements IotSceneRuleService {
 
     @Resource
     private IotSceneRuleTimerHandler timerHandler;
+
+    @Resource
+    private IotProductService productService;
+
+    @Resource
+    private IotDeviceService deviceService;
 
     // region 公共方法
 
@@ -109,9 +122,62 @@ public class IotSceneRuleServiceImpl implements IotSceneRuleService {
         return sceneRuleMapper.selectById(ruleId);
     }
 
+    @TenantIgnore // 忽略多租户条件；
+    @Override
+    public List<IotSceneRuleDO> listSceneRuleByProductIdAndDeviceIdFromCache(Long productId, Long deviceId) {
+        // 获取启用的场景联动规则
+        List<IotSceneRuleDO> enableRules = sceneRuleMapper.selectListByStatus(StatusEnum.ENABLE.getCode());
+
+        return CollectionUtils.filterList(enableRules, rule -> {
+            // 忽略没有触发器的场景联动规则
+            if (CollUtil.isEmpty(rule.getTriggers())) {
+                return false;
+            }
+
+            for (IotSceneRuleDO.Trigger trigger : rule.getTriggers()) {
+                try {
+                    // 校验触发器信息
+                    if (trigger.getProductId() == null || trigger.getDeviceId() == null) {
+                        return false;
+                    }
+
+                    // 校验是否为产品下所有设备
+                    if (trigger.getProductId().equals(productId) && IotDeviceDO.DEVICE_ID_ALL.equals(trigger.getDeviceId())) {
+                        return true;
+                    }
+
+                    // 校验是否为指定设备
+                    return Objects.equals(trigger.getProductId(), productId) && Objects.equals(trigger.getDeviceId(), deviceId);
+                } catch (Exception ex) {
+                    log.warn("[getSceneRuleListByProductIdAndDeviceIdFromCache][产品({}) 设备({}) 匹配触发器异常]", productId, deviceId, ex);
+                    return false;
+                }
+            }
+
+            return true;
+        });
+    }
+
     @Override
     public PageResult<IotSceneRuleDO> pageSceneRule(IotSceneRulePageReq pageReq) {
         return sceneRuleMapper.pageSceneRule(pageReq);
+    }
+
+    @Override
+    public void executeSceneRuleByDevice(IotDeviceMessage message) {
+        // 获取设备信息
+        IotDeviceDO device = deviceService.getDeviceFromCache(message.getDeviceId());
+        // 使用设备创建者的租户执行
+        TenantUtils.execute(device.getTenantId(), () -> {
+            // 1.获取设备的场景联动规则
+            List<IotSceneRuleDO> sceneRules = listMatchedSceneRuleByDeviceMessage(message);
+            if (CollUtil.isEmpty(sceneRules)) {
+                return;
+            }
+
+            // 2.执行场景联动规则
+            executeSceneRuleAction(message, sceneRules);
+        });
     }
 
     @Override
@@ -183,6 +249,35 @@ public class IotSceneRuleServiceImpl implements IotSceneRuleService {
                 });
             });
         });
+    }
+
+    /**
+     * 根据设备消息-获取匹配场景联动规则
+     *
+     * @param deviceMessage 设备消息
+     * @return 匹配场景联动规则
+     */
+    private List<IotSceneRuleDO> listMatchedSceneRuleByDeviceMessage(IotDeviceMessage deviceMessage) {
+        // 获取设备和产品信息
+        IotDeviceDO device = deviceService.getDeviceFromCache(deviceMessage.getDeviceId());
+        if (device == null) {
+            log.warn("[getMatchedSceneRuleListByMessage][设备({}) 不存在]", deviceMessage.getDeviceId());
+            return Collections.emptyList();
+        }
+        IotProductDO product = productService.getProductFromCache(device.getProductId());
+        if (product == null) {
+            log.warn("[getMatchedSceneRuleListByMessage][产品({}) 不存在]", device.getProductId());
+            return Collections.emptyList();
+        }
+
+        // 获取场景联动规则【获取到集合是跟产品/设备相关的，但是否触发器其余条件，未筛选】
+        List<IotSceneRuleDO> sceneRules = listSceneRuleByProductIdAndDeviceIdFromCache(product.getProductId(), device.getDeviceId());
+        if (CollUtil.isEmpty(sceneRules)) {
+            return Collections.emptyList();
+        }
+
+        // 现在只筛选了和该设备相关的场景联动规则，但是触发器条件筛选
+        return sceneRules;
     }
 
     // endregion

@@ -8,6 +8,7 @@ import cn.ibenbeni.bens.iot.modular.base.pojo.request.device.IotDevicePageReq;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -30,6 +31,10 @@ public interface IotDeviceMapper extends BaseMapperX<IotDeviceDO> {
 
     default long selectCountByProductId(Long productId) {
         return selectCount(IotDeviceDO::getProductId, productId);
+    }
+
+    default List<IotDeviceDO> selectListByProductId(Long productId) {
+        return selectList(IotDeviceDO::getProductId, productId);
     }
 
     /**

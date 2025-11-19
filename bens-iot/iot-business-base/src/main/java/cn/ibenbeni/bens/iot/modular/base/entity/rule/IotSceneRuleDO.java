@@ -197,7 +197,7 @@ public class IotSceneRuleDO extends BaseBusinessEntity {
         /**
          * 操作符
          */
-        private String operator;
+        private String identifier;
 
         /**
          * 参数

@@ -58,10 +58,19 @@ public interface IotProductService {
      * 获取产品详情
      * <p>注意：该方法会忽略租户条件。调用时，确认不会出现跨租户数据错误</p>
      *
+     * @param productId 产品ID
+     * @return 产品详情
+     */
+    IotProductDO getProductFromCache(Long productId);
+
+    /**
+     * 获取产品详情
+     * <p>注意：该方法会忽略租户条件。调用时，确认不会出现跨租户数据错误</p>
+     *
      * @param productKey 产品Key
      * @return 产品详情
      */
-    IotProductDO getProduct(String productKey);
+    IotProductDO getProductFromCache(String productKey);
 
     /**
      * 获取产品分页列表

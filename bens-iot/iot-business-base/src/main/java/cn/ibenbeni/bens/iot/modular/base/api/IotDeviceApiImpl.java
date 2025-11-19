@@ -33,7 +33,7 @@ public class IotDeviceApiImpl implements IotDeviceCommonApi {
 
     @Override
     public IotDeviceRespDTO getDevice(String productKey, String deviceSn) {
-        IotProductDO product = productService.getProduct(productKey);
+        IotProductDO product = productService.getProductFromCache(productKey);
         IotDeviceRespDTO respDTO = BeanUtil.toBean(deviceService.getDevice(productKey, deviceSn), IotDeviceRespDTO.class);
         respDTO.setDataFormat(product.getDataFormat());
         return respDTO;

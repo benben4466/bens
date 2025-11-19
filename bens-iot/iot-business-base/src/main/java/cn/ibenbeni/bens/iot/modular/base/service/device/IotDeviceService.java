@@ -7,6 +7,7 @@ import cn.ibenbeni.bens.iot.modular.base.pojo.request.device.IotDevicePageReq;
 import cn.ibenbeni.bens.iot.modular.base.pojo.request.device.IotDeviceSaveReq;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -93,6 +94,14 @@ public interface IotDeviceService {
      * @return key=产品ID, value=产品下设备数量;
      */
     Map<Long, Long> getDeviceCountByProductId(Set<Long> productIdSet);
+
+    /**
+     * 获取产品下的设备列表
+     *
+     * @param productId 产品ID
+     * @return 产品下的设备列表
+     */
+    List<IotDeviceDO> listDeviceByProductId(Long productId);
 
     /**
      * 获取设备信息分页列表

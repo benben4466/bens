@@ -85,6 +85,7 @@ public class IotRocketMQMessageBus implements IotMessageBus {
 
         // 2.缓存消费者
         topicConsumers.add(consumer);
+        log.info("[IotRocketMQMessageBus-Register][topic({}/{}) 注册消费者({})成功]", subscriber.getTopic(), subscriber.getGroup(), subscriber.getClass().getName());
     }
 
     /**

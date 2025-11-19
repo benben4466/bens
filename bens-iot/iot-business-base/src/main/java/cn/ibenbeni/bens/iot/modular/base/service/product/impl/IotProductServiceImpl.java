@@ -127,7 +127,13 @@ public class IotProductServiceImpl implements IotProductService {
 
     @TenantIgnore // 忽略多租户条件
     @Override
-    public IotProductDO getProduct(String productKey) {
+    public IotProductDO getProductFromCache(Long productId) {
+        return productMapper.selectById(productId);
+    }
+
+    @TenantIgnore // 忽略多租户条件
+    @Override
+    public IotProductDO getProductFromCache(String productKey) {
         return productMapper.selectByKey(productKey);
     }
 
