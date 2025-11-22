@@ -18,6 +18,7 @@ import cn.ibenbeni.bens.iot.modular.base.service.product.IotProductService;
 import cn.ibenbeni.bens.iot.modular.base.service.rule.action.IotSceneRuleAction;
 import cn.ibenbeni.bens.iot.modular.base.service.rule.timer.IotSceneRuleTimerHandler;
 import cn.ibenbeni.bens.module.iot.core.mq.message.IotDeviceMessage;
+import cn.ibenbeni.bens.module.iot.core.util.IotDeviceMessageUtils;
 import cn.ibenbeni.bens.rule.enums.StatusEnum;
 import cn.ibenbeni.bens.rule.util.CollectionUtils;
 import cn.ibenbeni.bens.tenant.api.annotation.TenantIgnore;
@@ -165,6 +166,12 @@ public class IotSceneRuleServiceImpl implements IotSceneRuleService {
 
     @Override
     public void executeSceneRuleByDevice(IotDeviceMessage message) {
+        // 只处理上行消息
+        if (!IotDeviceMessageUtils.isUpstreamMessage(message)) {
+            log.error("[onMessage][message({}) 非上行消息，不进行处理]", message);
+            return;
+        }
+
         // 获取设备信息
         IotDeviceDO device = deviceService.getDeviceFromCache(message.getDeviceId());
         // 使用设备创建者的租户执行
