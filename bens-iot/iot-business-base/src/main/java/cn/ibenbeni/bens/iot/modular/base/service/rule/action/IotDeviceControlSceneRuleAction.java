@@ -126,8 +126,7 @@ public class IotDeviceControlSceneRuleAction implements IotSceneRuleAction {
 
     private IotDeviceMessage buildPropertySetMessage(IotSceneRuleDO.Action actionConfig) {
         try {
-            Object params = MapUtil.of("properties", MapUtil.of(actionConfig.getIdentifier(), actionConfig.getParams()));
-            return IotDeviceMessage.requestOf(IotDeviceMessageMethodEnum.PROPERTY_SET.getMethod(), params);
+            return IotDeviceMessage.requestOf(IotDeviceMessageMethodEnum.PROPERTY_SET.getMethod(), actionConfig.getParams());
         } catch (Exception ex) {
             log.error("[buildPropertySetMessage][构建属性设置消息异常]", ex);
             return null;
