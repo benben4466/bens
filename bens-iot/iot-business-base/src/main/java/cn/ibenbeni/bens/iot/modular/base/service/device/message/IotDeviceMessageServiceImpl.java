@@ -193,7 +193,7 @@ public class IotDeviceMessageServiceImpl implements IotDeviceMessageService {
      * @param message 设备消息
      * @param device  设备
      */
-        private void appendDeviceMessage(IotDeviceMessage message, IotDeviceDO device) {
+    private void appendDeviceMessage(IotDeviceMessage message, IotDeviceDO device) {
         if (StrUtil.isBlank(message.getMsgId())) {
             message.setMsgId(IotDeviceMessageUtils.generateMsgId()); // 填充消息ID
         }
