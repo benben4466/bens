@@ -97,7 +97,7 @@ public class IotDeviceMessageServiceImpl implements IotDeviceMessageService {
         }
         try {
             // 构建 ACK 消息，并且发送 ACK 消息
-            IotDeviceMessage replyMessage = IotDeviceMessage.replyOf(message.getRequestId(), message.getMethod(), replyData,
+            IotDeviceMessage replyMessage = IotDeviceMessage.replyOf(message.getMsgId(), message.getRequestId(), message.getMethod(), message.getParams(), replyData,
                     serviceException != null ? serviceException.getErrorCode() : null,
                     serviceException != null ? serviceException.getUserTip() : null
             );
@@ -193,8 +193,10 @@ public class IotDeviceMessageServiceImpl implements IotDeviceMessageService {
      * @param message 设备消息
      * @param device  设备
      */
-    private void appendDeviceMessage(IotDeviceMessage message, IotDeviceDO device) {
-        message.setMsgId(IotDeviceMessageUtils.generateMsgId()); // 填充消息ID
+        private void appendDeviceMessage(IotDeviceMessage message, IotDeviceDO device) {
+        if (StrUtil.isBlank(message.getMsgId())) {
+            message.setMsgId(IotDeviceMessageUtils.generateMsgId()); // 填充消息ID
+        }
         message.setReportTime(TimestampUtils.curUtcMillis()); // 填充上报时间
         message.setDeviceId(device.getDeviceId()); // 填充设备ID
         message.setTenantId(device.getTenantId()); // 填充租户ID

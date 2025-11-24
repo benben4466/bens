@@ -1,6 +1,7 @@
 package cn.ibenbeni.bens.module.iot.core.mq.message;
 
 import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.ibenbeni.bens.iot.api.enums.device.IotDeviceStateEnum;
 import cn.ibenbeni.bens.module.iot.core.enums.IotDeviceMessageMethodEnum;
 import cn.ibenbeni.bens.module.iot.core.util.IotDeviceMessageUtils;
@@ -106,7 +107,7 @@ public class IotDeviceMessage {
     }
 
     public static IotDeviceMessage requestOf(String requestId, String method, Object params) {
-        return of(requestId, method, params, null, null, null);
+        return of(null, requestId, method, params, null, null, null);
     }
 
     public static IotDeviceMessage replyOf(String requestId, String method, Object data, String code, String msg) {
@@ -115,12 +116,25 @@ public class IotDeviceMessage {
             msg = RuleConstants.SUCCESS_MESSAGE;
         }
 
-        return of(requestId, method, null, data, code, msg);
+        return of(null, requestId, method, null, data, code, msg);
     }
 
-    public static IotDeviceMessage of(String requestId, String method, Object params, Object data, String code, String msg) {
+    public static IotDeviceMessage replyOf(String msgId, String requestId, String method, Object params, Object data, String code, String msg) {
+        if (code == null) {
+            code = RuleConstants.SUCCESS_CODE;
+            msg = RuleConstants.SUCCESS_MESSAGE;
+        }
+
+        return of(msgId, requestId, method, params, data, code, msg);
+    }
+
+    public static IotDeviceMessage of(String msgId, String requestId, String method, Object params, Object data, String code, String msg) {
+        if (StrUtil.isBlank(msgId)) {
+            msgId = IotDeviceMessageUtils.generateMsgId();
+        }
+
         return IotDeviceMessage.builder()
-                .msgId(IotDeviceMessageUtils.generateMsgId())
+                .msgId(msgId)
                 .reportTime(TimestampUtils.curUtcMillis())
                 .requestId(requestId)
                 .method(method)
