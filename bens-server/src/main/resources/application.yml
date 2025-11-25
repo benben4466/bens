@@ -40,6 +40,9 @@ mybatis-plus:
       logic-delete-field: del_flag
       logic-delete-value: Y
       logic-not-delete-value: N
+    sequence:
+      datacenter-id: 0
+      worker-id: 0
 
 # Sa-Token权限认证框架
 sa-token:
