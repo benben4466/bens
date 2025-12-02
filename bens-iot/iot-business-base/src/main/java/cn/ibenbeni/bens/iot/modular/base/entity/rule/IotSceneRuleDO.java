@@ -155,6 +155,11 @@ public class IotSceneRuleDO extends BaseBusinessEntity {
         private Long deviceId;
 
         /**
+         * 物模型标识符
+         */
+        private String identifier;
+
+        /**
          * 操作符
          * <p>枚举：{@link IotSceneRuleConditionOperatorEnum}</p>
          */
