@@ -53,4 +53,8 @@ public enum IotSceneRuleConditionTypeEnum implements ReadableEnum<IotSceneRuleCo
         return ARRAYS;
     }
 
+    public static IotSceneRuleConditionTypeEnum typeOf(Integer type) {
+        return ArrayUtil.firstMatch(item -> item.getType().equals(type), values());
+    }
+
 }

@@ -1,5 +1,6 @@
 package cn.ibenbeni.bens.iot.modular.base.enums.rule;
 
+import cn.hutool.core.util.ArrayUtil;
 import cn.ibenbeni.bens.module.iot.core.enums.IotDeviceMessageMethodEnum;
 import cn.ibenbeni.bens.rule.base.ReadableEnum;
 import lombok.Getter;
@@ -73,6 +74,10 @@ public enum IotSceneRuleTriggerTypeEnum implements ReadableEnum<IotSceneRuleTrig
     @Override
     public Object[] compareValueArray() {
         return ARRAYS;
+    }
+
+    public static IotSceneRuleTriggerTypeEnum typeOf(Integer type) {
+        return ArrayUtil.firstMatch(item -> item.getType().equals(type), values());
     }
 
 }

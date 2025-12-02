@@ -91,4 +91,8 @@ public enum IotSceneRuleConditionOperatorEnum implements ReadableEnum<IotSceneRu
         return ARRAYS;
     }
 
+    public static IotSceneRuleConditionOperatorEnum operatorOf(String operator) {
+        return ArrayUtil.firstMatch(item -> item.getOperator().equals(operator), values());
+    }
+
 }

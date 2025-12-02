@@ -16,6 +16,7 @@ import cn.ibenbeni.bens.iot.modular.base.pojo.request.rule.IotSceneRuleSaveReq;
 import cn.ibenbeni.bens.iot.modular.base.service.device.IotDeviceService;
 import cn.ibenbeni.bens.iot.modular.base.service.product.IotProductService;
 import cn.ibenbeni.bens.iot.modular.base.service.rule.action.IotSceneRuleAction;
+import cn.ibenbeni.bens.iot.modular.base.service.rule.matcher.IotSceneRuleMatcherManager;
 import cn.ibenbeni.bens.iot.modular.base.service.rule.timer.IotSceneRuleTimerHandler;
 import cn.ibenbeni.bens.module.iot.core.mq.message.IotDeviceMessage;
 import cn.ibenbeni.bens.module.iot.core.util.IotDeviceMessageUtils;
@@ -49,6 +50,9 @@ public class IotSceneRuleServiceImpl implements IotSceneRuleService {
 
     @Resource
     private IotSceneRuleTimerHandler timerHandler;
+
+    @Resource
+    private IotSceneRuleMatcherManager sceneRuleMatcherManager;
 
     @Resource
     private IotProductService productService;
@@ -268,25 +272,122 @@ public class IotSceneRuleServiceImpl implements IotSceneRuleService {
         // 获取设备和产品信息
         IotDeviceDO device = deviceService.getDeviceFromCache(deviceMessage.getDeviceId());
         if (device == null) {
-            log.warn("[getMatchedSceneRuleListByMessage][设备({}) 不存在]", deviceMessage.getDeviceId());
+            log.warn("[listMatchedSceneRuleByDeviceMessage][设备({}) 不存在]", deviceMessage.getDeviceId());
             return Collections.emptyList();
         }
         IotProductDO product = productService.getProductFromCache(device.getProductId());
         if (product == null) {
-            log.warn("[getMatchedSceneRuleListByMessage][产品({}) 不存在]", device.getProductId());
+            log.warn("[listMatchedSceneRuleByDeviceMessage][产品({}) 不存在]", device.getProductId());
             return Collections.emptyList();
         }
 
         // 获取场景联动规则【获取到集合是跟产品/设备相关的，但是否触发器其余条件，未筛选】
+        // 获取【产品/设备】相关的场景联动规则，但未筛选是否符合触发条件的场景联动规则
         List<IotSceneRuleDO> sceneRules = listSceneRuleByProductIdAndDeviceIdFromCache(product.getProductId(), device.getDeviceId());
         if (CollUtil.isEmpty(sceneRules)) {
             return Collections.emptyList();
         }
 
         // 现在只筛选了和该设备相关的场景联动规则，但是触发器条件筛选
-        return sceneRules;
+        return CollectionUtils.filterList(sceneRules, sceneRule -> matchSceneRuleTriggers(deviceMessage, sceneRule));
     }
 
     // endregion
+
+    /**
+     * 设备消息与场景联动规则触发器是否匹配
+     *
+     * @param message   设备消息
+     * @param sceneRule 场景联动规则
+     * @return 是否匹配；true-匹配；false-不匹配；
+     */
+    private boolean matchSceneRuleTriggers(IotDeviceMessage message, IotSceneRuleDO sceneRule) {
+        if (CollUtil.isEmpty(sceneRule.getTriggers())) {
+            log.debug("[matchSceneRuleTriggers][场景联动规则({}/{}) 未配置触发器]", sceneRule.getId(), sceneRule.getName());
+            return false;
+        }
+
+        // 遍历触发器
+        for (IotSceneRuleDO.Trigger trigger : sceneRule.getTriggers()) {
+            if (matchSingleTrigger(message, trigger, sceneRule)) {
+                log.info("[matchSceneRuleTriggers][消息匹配到场景规则的触发器, 消息: {}, 场景规则触发器基础信息: {}/{}, 触发器类型: {}]", message, sceneRule.getId(), sceneRule.getName(), trigger.getType());
+                return true;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * 设备消息与场景联动规则触发器（单个）是否匹配
+     *
+     * @param message 设备消息
+     * @param trigger 触发器
+     * @return 是否匹配；true-匹配；false-不匹配；
+     */
+    private boolean matchSingleTrigger(IotDeviceMessage message, IotSceneRuleDO.Trigger trigger, IotSceneRuleDO sceneRule) {
+        try {
+            return sceneRuleMatcherManager.isMatched(message, trigger) && matchConditionGroupTrigger(message, trigger, sceneRule);
+        } catch (Exception ex) {
+            log.error("[matchSingleTrigger][触发器匹配异常 消息: {}, 触发器类型: {}, 原因: {}]", message, trigger.getType(), ex.getMessage(), ex);
+            return false;
+        }
+    }
+
+    /**
+     * 设备消息与场景联动规则触发器（条件组）是否匹配
+     *
+     * @param message   设备消息
+     * @param trigger   条件分组触发器
+     * @param sceneRule 场景联动规则（用于日志）
+     */
+    private boolean matchConditionGroupTrigger(IotDeviceMessage message, IotSceneRuleDO.Trigger trigger, IotSceneRuleDO sceneRule) {
+        // 若没有条件分组，默认匹配成功
+        if (CollUtil.isEmpty(trigger.getConditionGroups())) {
+            return true;
+        }
+
+        // 遍历条件分组
+        for (List<IotSceneRuleDO.TriggerCondition> conditionGroup : trigger.getConditionGroups()) {
+            if (CollUtil.isEmpty(conditionGroup)) {
+                continue;
+            }
+
+            // 是否全部匹配
+            boolean isAllMatch = true;
+            for (IotSceneRuleDO.TriggerCondition condition : conditionGroup) {
+                if (!matchSingleTriggerCondition(message, condition, trigger, sceneRule)) {
+                    isAllMatch = false;
+                    break;
+                }
+            }
+
+            // 当前分组的所有条件都匹配，则整个条件触发器匹配成功
+            if (isAllMatch) {
+                return true;
+            }
+        }
+
+        // 没有匹配成功的条件分组，则触发器匹配失败
+        return false;
+    }
+
+    /**
+     * 设备消息与场景联动规则条件触发器（单个条件）是否匹配
+     *
+     * @param message          设备消息
+     * @param triggerCondition 条件触发器
+     * @param trigger          触发器（仅用于日志）
+     * @param sceneRule        场景联动规则（仅用于日志）
+     * @return 是否匹配；true-匹配；false-不匹配；
+     */
+    private boolean matchSingleTriggerCondition(IotDeviceMessage message, IotSceneRuleDO.TriggerCondition triggerCondition, IotSceneRuleDO.Trigger trigger, IotSceneRuleDO sceneRule) {
+        try {
+            return sceneRuleMatcherManager.isConditionMatched(message, triggerCondition);
+        } catch (Exception ex) {
+            log.error("[matchSingleTriggerCondition][场景规则条件触发器匹配失败, 场景规则基础信息: {}/{}, 触发器: {}]", sceneRule.getId(), sceneRule.getName(), trigger);
+            return false;
+        }
+    }
 
 }
