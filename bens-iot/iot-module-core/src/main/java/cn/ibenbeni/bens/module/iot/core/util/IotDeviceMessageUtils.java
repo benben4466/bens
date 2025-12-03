@@ -3,6 +3,7 @@ package cn.ibenbeni.bens.module.iot.core.util;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.system.SystemUtil;
 import cn.ibenbeni.bens.module.iot.core.enums.IotDeviceMessageMethodEnum;
@@ -89,6 +90,28 @@ public class IotDeviceMessageUtils {
      */
     public static String buildMessageBusGatewayDeviceMessageTopic(String serverId) {
         return String.format(IotDeviceMessage.MESSAGE_BUS_GATEWAY_DEVICE_MESSAGE_TOPIC, serverId);
+    }
+
+    /**
+     * 获取标识符的值
+     *
+     * @param message    设备消息
+     * @param identifier 标识符
+     * @return 标识符值
+     */
+    @SuppressWarnings("unchecked")
+    public static Object extractPropertyValue(IotDeviceMessage message, String identifier) {
+        if (ObjectUtil.hasEmpty(message, message.getParams(), identifier)) {
+            return null;
+        }
+
+        Object params = message.getParams();
+        if (!(params instanceof Map)) {
+            return params;
+        }
+
+        Map<String, Object> paramsMap = (Map<String, Object>) params;
+        return paramsMap.get(identifier);
     }
 
 }

@@ -109,7 +109,12 @@ public class IotSceneRuleDO extends BaseBusinessEntity {
 
         /**
          * 参数
-         * <p>若有多个值，则使用 "," 分割，如：1,2,3</p>
+         * <p>若有多个值，则 JSON 数组（String）</p>
+         * <p>
+         * 示例：
+         * 1.单个值：90
+         * 2.多个值：[90, 100]
+         * </p>
          */
         private String param;
 
