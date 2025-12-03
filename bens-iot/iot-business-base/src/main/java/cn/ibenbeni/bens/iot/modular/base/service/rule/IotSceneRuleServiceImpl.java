@@ -315,7 +315,8 @@ public class IotSceneRuleServiceImpl implements IotSceneRuleService {
             }
         }
 
-        return true;
+        // 未匹配到触发器，则返回 false
+        return false;
     }
 
     /**
