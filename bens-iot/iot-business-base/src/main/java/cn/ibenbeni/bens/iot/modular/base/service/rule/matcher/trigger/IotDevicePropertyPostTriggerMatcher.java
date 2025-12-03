@@ -39,13 +39,6 @@ public class IotDevicePropertyPostTriggerMatcher implements IotSceneRuleTriggerM
             return false;
         }
 
-        // 获取消息的属性标识符
-        String msgIdentifier = IotDeviceMessageUtils.getIdentifier(message);
-        if (StrUtil.isBlank(msgIdentifier) || !msgIdentifier.equals(trigger.getIdentifier())) {
-            log.error("[matches][消息: {}, 触发器: {}, 原因: 属性标识符不匹配, 触发器标识符: {}, 消息标识符: {}]", message, trigger, trigger.getIdentifier(), msgIdentifier);
-            return false;
-        }
-
         // 获取消息的属性值
         Object propertyValue = IotDeviceMessageUtils.extractPropertyValue(message, trigger.getIdentifier());
 

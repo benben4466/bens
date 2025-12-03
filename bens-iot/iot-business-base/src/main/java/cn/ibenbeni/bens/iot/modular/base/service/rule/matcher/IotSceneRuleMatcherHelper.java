@@ -78,7 +78,7 @@ public class IotSceneRuleMatcherHelper {
         // 设置原值
         variableMap.put(IotSceneRuleConditionOperatorEnum.SPRING_EXPRESSION_SOURCE, String.valueOf(sourceValue));
 
-        if (StrUtil.isBlank(paramValue)) {
+        if (StrUtil.isNotBlank(paramValue)) {
             if (JSONUtil.isTypeJSONArray(paramValue)) {
                 // 说明是多值
                 List<String> values = JSONUtil.toList(paramValue, String.class);
