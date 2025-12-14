@@ -1,6 +1,5 @@
 package cn.ibenbeni.bens.iot.modular.base.service.rule.matcher.trigger;
 
-import cn.hutool.core.util.StrUtil;
 import cn.ibenbeni.bens.iot.modular.base.entity.rule.IotSceneRuleDO;
 import cn.ibenbeni.bens.iot.modular.base.enums.rule.IotSceneRuleTriggerTypeEnum;
 import cn.ibenbeni.bens.iot.modular.base.service.rule.matcher.IotSceneRuleMatcherHelper;

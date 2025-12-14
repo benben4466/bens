@@ -106,4 +106,15 @@ public class IotSceneRuleMatcherHelper {
         }
     }
 
+    /**
+     * 检查标识符是否匹配
+     *
+     * @param expectedIdentifier 期望标识符
+     * @param actualIdentifier   实际标识符
+     * @return 是否匹配
+     */
+    public static boolean isIdentifierMatched(String expectedIdentifier, String actualIdentifier) {
+        return StrUtil.isNotBlank(expectedIdentifier) && expectedIdentifier.equals(actualIdentifier);
+    }
+
 }
