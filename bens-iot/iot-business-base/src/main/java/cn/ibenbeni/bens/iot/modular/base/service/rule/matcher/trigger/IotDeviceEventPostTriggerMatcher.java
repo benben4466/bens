@@ -46,7 +46,7 @@ public class IotDeviceEventPostTriggerMatcher implements IotSceneRuleTriggerMatc
 
         // 消息的属性标识符
         String msgIdentifier = IotDeviceMessageUtils.getIdentifier(message);
-        if (IotSceneRuleMatcherHelper.isIdentifierMatched(trigger.getIdentifier(), msgIdentifier)) {
+        if (!IotSceneRuleMatcherHelper.isIdentifierMatched(trigger.getIdentifier(), msgIdentifier)) {
             log.error("[matches][消息: {}, 触发器: {}, 原因: 消息的属性标识符不匹配]", message, trigger);
             return false;
         }
@@ -74,7 +74,7 @@ public class IotDeviceEventPostTriggerMatcher implements IotSceneRuleTriggerMatc
         }
 
         log.info("[matches][匹配触发器成功][消息: {}, 触发器: {}]", message, trigger);
-        return false;
+        return true;
     }
 
     @Override
