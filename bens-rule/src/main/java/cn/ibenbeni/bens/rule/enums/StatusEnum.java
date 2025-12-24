@@ -54,6 +54,10 @@ public enum StatusEnum implements ReadableEnum<StatusEnum> {
         return null;
     }
 
+    public static boolean isEnable(Integer status) {
+        return ObjUtil.equal(ENABLE.code, status);
+    }
+
     public static boolean isDisable(Integer code) {
         return ObjUtil.equals(DISABLE.code, code);
     }

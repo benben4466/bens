@@ -5,7 +5,7 @@ import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
 import cn.ibenbeni.bens.iot.api.exception.IotException;
 import cn.ibenbeni.bens.iot.api.exception.enums.IotExceptionEnum;
 import cn.ibenbeni.bens.iot.modular.base.entity.product.IotProductCategoryDO;
-import cn.ibenbeni.bens.iot.modular.base.mapper.product.IotProductCategoryMapper;
+import cn.ibenbeni.bens.iot.modular.base.mapper.mysql.product.IotProductCategoryMapper;
 import cn.ibenbeni.bens.iot.modular.base.pojo.request.product.IotProductCategoryPageReq;
 import cn.ibenbeni.bens.iot.modular.base.pojo.request.product.IotProductCategorySaveReq;
 import cn.ibenbeni.bens.iot.modular.base.service.product.IotProductCategoryService;

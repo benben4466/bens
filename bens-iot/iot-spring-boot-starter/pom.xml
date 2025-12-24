@@ -22,6 +22,20 @@
             <artifactId>iot-business-base</artifactId>
             <version>${revision}</version>
         </dependency>
+
+        <!-- IOT-SDK-核心模块 -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>iot-module-core</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- IOT-SDK-网关模块 -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>iot-module-gateway</artifactId>
+            <version>${revision}</version>
+        </dependency>
     </dependencies>
 
 </project>

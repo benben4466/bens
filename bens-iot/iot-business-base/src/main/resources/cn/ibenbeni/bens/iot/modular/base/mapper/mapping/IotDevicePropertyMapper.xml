@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ibenbeni.bens.iot.modular.base.mapper.tdengine.device.IotDevicePropertyMapper">
+
+    <update id="createProductPropertySTable">
+        CREATE STABLE product_property_${productId} (
+            ts TIMESTAMP,
+            report_time TIMESTAMP,
+            <foreach collection="fields" item="field" separator=",">
+                ${field.field} ${field.type}
+                <if test="field.length != null and field.length > 0">
+                    (${field.length})
+                </if>
+            </foreach>
+        )
+        TAGS (
+            device_id BIGINT
+        )
+    </update>
+
+    <insert id="insert">
+        INSERT INTO device_property_${device.deviceId}
+        USING product_property_${device.productId}
+        TAGS (${device.deviceId})
+        (ts, report_time,
+            <foreach item="key" collection="properties.keys" separator=",">
+                ${@cn.hutool.core.util.StrUtil@toUnderlineCase(key)}
+            </foreach>
+        )
+        VALUES
+        (NOW, ${reportTime},
+            <foreach item="value" collection="properties.values" separator=",">
+                #{value}
+            </foreach>
+        )
+    </insert>
+    
+    <update id="alterProductPropertySTableAddField">
+        ALTER STABLE product_property_${productId}
+        ADD COLUMN ${field.field} ${field.type}
+        <if test="field.length != null and field.length > 0">
+            (${field.length})
+        </if>
+    </update>
+
+    <update id="alterProductPropertySTableDropField">
+        ALTER STABLE product_property_${productId}
+        DROP COLUMN ${field.field}
+    </update>
+
+    <update id="alterProductPropertySTableModifyField">
+        ALTER STABLE product_property_${productId}
+        MODIFY COLUMN ${field.field} ${field.type}
+        <if test="field.length != null and field.length > 0">
+            (${field.length})
+        </if>
+    </update>
+
+    <select id="getProductPropertySTableFieldList" resultType="cn.ibenbeni.bens.iot.api.core.tdengine.TDengineTableField">
+        DESCRIBE product_property_${productId}
+    </select>
+
+</mapper>

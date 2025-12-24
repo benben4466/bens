@@ -8,7 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDateTime;
 
 @Data
-@Schema(description = "管理后台 - IoT 产品分类 Response VO")
+@Schema(description = "管理后台 - IoT 产品分类响应")
 public class IotProductCategoryResp {
 
     @Schema(description = "产品分类ID", example = "10")

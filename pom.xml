@@ -80,11 +80,18 @@
         <bizlog-sdk.version>3.0.6</bizlog-sdk.version>
         <springdoc.version>1.8.0</springdoc.version>
         <knife4j.version>4.5.0</knife4j.version>
+        <redisson.version>3.23.5</redisson.version>
+        <sa-token.version>1.43.0</sa-token.version>
+        <!-- 消息队列 -->
+        <rocketmq-spring.version>2.3.4</rocketmq-spring.version>
+        <!-- 通信相关 -->
+        <vertx.version>4.4.8</vertx.version>
+        <netty.version>4.2.4.Final</netty.version>
+        <!-- DB 相关 -->
         <mybatis-plus.version>3.5.9</mybatis-plus.version>
         <dynamic-datasource.version>4.3.1</dynamic-datasource.version>
         <mybatis-plus-join.version>1.4.13</mybatis-plus-join.version>
-        <redisson.version>3.18.1</redisson.version>
-        <sa-token.version>1.43.0</sa-token.version>
+        <taos.version>3.7.3</taos.version>
     </properties>
 
     <dependencyManagement>
@@ -93,6 +100,15 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
                 <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Netty版本管理 -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-bom</artifactId>
+                <version>${netty.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -207,6 +223,12 @@
                 <groupId>org.redisson</groupId>
                 <artifactId>redisson-spring-boot-starter</artifactId>
                 <version>${redisson.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-actuator</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <!-- 动态数据源 -->
@@ -214,6 +236,13 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
                 <version>${dynamic-datasource.version}</version>
+            </dependency>
+
+            <!-- TDengine 驱动 -->
+            <dependency>
+                <groupId>com.taosdata.jdbc</groupId>
+                <artifactId>taos-jdbcdriver</artifactId>
+                <version>${taos.version}</version>
             </dependency>
 
             <!-- Sa-Token-权限认证框架 -->
@@ -227,6 +256,33 @@
                 <groupId>cn.dev33</groupId>
                 <artifactId>sa-token-redis-template</artifactId>
                 <version>${sa-token.version}</version>
+            </dependency>
+
+            <!-- 消息队列相关 -->
+            <dependency>
+                <groupId>org.apache.rocketmq</groupId>
+                <artifactId>rocketmq-spring-boot-starter</artifactId>
+                <version>${rocketmq-spring.version}</version>
+            </dependency>
+
+            <!-- Vert.x -->
+            <!-- Vert.x 核心基础模块 -->
+            <dependency>
+                <groupId>io.vertx</groupId>
+                <artifactId>vertx-core</artifactId>
+                <version>${vertx.version}</version>
+            </dependency>
+            <!-- Vert.x Web模块 -->
+            <dependency>
+                <groupId>io.vertx</groupId>
+                <artifactId>vertx-web</artifactId>
+                <version>${vertx.version}</version>
+            </dependency>
+            <!-- Vert.x 的 MQTT 协议实现模块-->
+            <dependency>
+                <groupId>io.vertx</groupId>
+                <artifactId>vertx-mqtt</artifactId>
+                <version>${vertx.version}</version>
             </dependency>
 
         </dependencies>
@@ -252,8 +308,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>

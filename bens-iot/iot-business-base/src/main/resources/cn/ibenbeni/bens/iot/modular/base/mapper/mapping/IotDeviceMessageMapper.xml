@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ibenbeni.bens.iot.modular.base.mapper.tdengine.device.IotDeviceMessageMapper">
+
+    <insert id="insert">
+        INSERT INTO device_message_${deviceId} (
+            ts, msg_id, report_time, tenant_id, server_id,upstream, reply,
+            identifier, request_id, method,params, data, code, msg
+        )
+        USING device_message
+        TAGS (#{deviceId})
+        VALUES (
+            NOW, #{msgId}, #{reportTime}, #{tenantId},  #{serverId},#{upstream},
+            #{reply}, #{identifier}, #{requestId}, #{method},
+            #{params}, #{data}, #{code}, #{msg}
+        )
+    </insert>
+
+    <update id="createSTable">
+        CREATE STABLE IF NOT EXISTS device_message (
+            ts TIMESTAMP,
+            msg_id NCHAR(50),
+            report_time TIMESTAMP,
+            tenant_id BIGINT,
+            server_id NCHAR(50),
+            upstream BOOL,
+            reply BOOL,
+            identifier NCHAR(100),
+            request_id NCHAR(50),
+            method NCHAR(100),
+            params NCHAR(2048),
+            data NCHAR(2048),
+            code INT,
+            msg NCHAR(256)
+        ) TAGS (
+            device_id BIGINT
+        )
+    </update>
+
+    <select id="showSTable" resultType="String">
+        SHOW STABLES LIKE 'device_message'
+    </select>
+
+    <select id="selectPage" resultType="cn.ibenbeni.bens.iot.modular.base.entity.device.IotDeviceMessageDO">
+        SELECT ts,msg_id,report_time,tenant_id,server_id,upstream,reply,
+               identifier,request_id,method,params,data,code,msg
+        from device_message_${pageReq.deviceId}
+        <where>
+            <if test="pageReq.method != null and pageReq.method != ''">
+                AND method = #{pageReq.method}
+            </if>
+            <if test="pageReq.upstream != null">
+                AND upstream = #{pageReq.upstream}
+            </if>
+            <if test="pageReq.reply != null">
+                AND reply = #{pageReq.reply}
+            </if>
+            <if test="pageReq.identifier != null and pageReq.identifier != ''">
+                AND identifier = #{pageReq.identifier}
+            </if>
+            <if test="qStartTs != -1 and qEndTs != -1">
+                AND ts &gt;= #{qStartTs}
+                AND ts &lt;= #{qEndTs}
+            </if>
+        </where>
+        ORDER BY ts DESC
+    </select>
+
+</mapper>

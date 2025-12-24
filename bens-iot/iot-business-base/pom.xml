@@ -23,6 +23,13 @@
             <version>${revision}</version>
         </dependency>
 
+        <!-- IOT-SDK-核心模块 -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>iot-module-core</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
         <!-- 资源模块-API -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
@@ -35,6 +42,19 @@
             <groupId>cn.ibenbeni</groupId>
             <artifactId>db-sdk-mp</artifactId>
             <version>${revision}</version>
+        </dependency>
+
+        <!-- 缓存模块-Redis -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>cache-sdk-redis</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- Quartz -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-quartz</artifactId>
         </dependency>
 
         <!-- 接口文档-Knife4j -->

@@ -16,12 +16,12 @@ public enum YesOrNotEnum implements ReadableEnum<YesOrNotEnum> {
     /**
      * 是
      */
-    Y("Y", "是", true),
+    Y("Y", "是", true, 1),
 
     /**
      * 否
      */
-    N("N", "否", false);
+    N("N", "否", false, 0);
 
     /**
      * 使用@EnumValue注解，标记mybatis-plus保存到库中使用code值
@@ -37,12 +37,15 @@ public enum YesOrNotEnum implements ReadableEnum<YesOrNotEnum> {
     // @JsonValue
     private final Boolean boolFlag;
 
+    private final Integer intFlag;
+
     public static final String[] ARRAYS = Arrays.stream(values()).map(YesOrNotEnum::getCode).toArray(String[]::new);
 
-    YesOrNotEnum(String code, String message, Boolean boolFlag) {
+    YesOrNotEnum(String code, String message, Boolean boolFlag, Integer intFlag) {
         this.code = code;
         this.message = message;
         this.boolFlag = boolFlag;
+        this.intFlag = intFlag;
     }
 
     /**
