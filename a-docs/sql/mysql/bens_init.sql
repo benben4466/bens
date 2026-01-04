@@ -608,3 +608,49 @@ CREATE TABLE `iot_scene_rule`
     `tenant_id`    bigint       NULL     DEFAULT NULL COMMENT '租户编号',
     PRIMARY KEY (`id`)
 ) COMMENT = 'IoT场景联动规则';
+
+DROP TABLE IF EXISTS `message_template`;
+CREATE TABLE `message_template`
+(
+    `template_id`      bigint       NOT NULL COMMENT '模板消息ID',
+    `template_code`    varchar(255) NOT NULL COMMENT '模板消息编码',
+    `template_name`    varchar(255) NOT NULL COMMENT '模板名称',
+    `template_status`  tinyint      NOT NULL DEFAULT 10 COMMENT '模板状态',
+    `biz_type`         varchar(255) NULL     DEFAULT NULL COMMENT '业务类型',
+    `support_channels` json         NULL     DEFAULT NULL COMMENT '支持渠道列表',
+    `audit_status`     tinyint      NOT NULL DEFAULT 10 COMMENT '审核状态',
+    `audit_time`       datetime     NULL     DEFAULT NULL COMMENT '审核时间',
+    `audit_user_id`    bigint       NULL     DEFAULT NULL COMMENT '审核人',
+    `audit_comment`    varchar(255) NULL     DEFAULT NULL COMMENT '审核意见',
+    `version_flag`     bigint       NULL     DEFAULT NULL COMMENT '乐观锁',
+    `create_time`      datetime     NULL     DEFAULT NULL COMMENT '创建时间',
+    `create_user`      bigint       NULL     DEFAULT NULL COMMENT '创建人',
+    `update_time`      datetime     NULL     DEFAULT NULL COMMENT '更新时间',
+    `update_user`      bigint       NULL     DEFAULT NULL COMMENT '更新人',
+    `del_flag`         char(1)      NOT NULL DEFAULT 'N' COMMENT '删除标记',
+    `tenant_id`        bigint       NULL     DEFAULT NULL COMMENT '租户编号',
+    PRIMARY KEY (`template_id`),
+    UNIQUE KEY `idx_template_code` (`template_code`),
+    KEY `idx_business_type` (`biz_type`)
+) COMMENT = '消息模板';
+
+DROP TABLE IF EXISTS `message_template_content`;
+CREATE TABLE `message_template_content`
+(
+    `id`               bigint       NOT NULL COMMENT 'ID',
+    `template_id`      bigint       NOT NULL COMMENT '模板消息ID',
+    `channel_type`     tinyint      NOT NULL COMMENT '渠道类型',
+    `title`            varchar(255) NULL     DEFAULT NULL COMMENT '标题(部分渠道需要)',
+    `template_content` varchar(255) NULL     DEFAULT NULL COMMENT '模板内容',
+    `params_config`    json         NULL     DEFAULT NULL COMMENT '参数配置',
+    `channel_config`   json         NULL     DEFAULT NULL COMMENT '渠道特定配置',
+    `version_flag`     bigint       NULL     DEFAULT NULL COMMENT '乐观锁',
+    `create_time`      datetime     NULL     DEFAULT NULL COMMENT '创建时间',
+    `create_user`      bigint       NULL     DEFAULT NULL COMMENT '创建人',
+    `update_time`      datetime     NULL     DEFAULT NULL COMMENT '更新时间',
+    `update_user`      bigint       NULL     DEFAULT NULL COMMENT '更新人',
+    `del_flag`         char(1)      NOT NULL DEFAULT 'N' COMMENT '删除标记',
+    `tenant_id`        bigint       NULL     DEFAULT NULL COMMENT '租户编号',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `idx_template_channel` (`template_id`, `channel_type`)
+) COMMENT = '消息模板内容表(按渠道存储)';

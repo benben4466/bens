@@ -31,6 +31,24 @@ public enum MessageCenterExceptionEnum implements AbstractExceptionEnum {
      */
     NOTIFY_SEND_TEMPLATE_PARAM_MISS(RuleConstants.BUSINESS_ERROR_TYPE_CODE + MessageCenterConstants.MESSAGE_CENTER_EXCEPTION_STEP_CODE + "51", "模板参数({})缺失"),
 
+    // region 消息模板
+    /**
+     * 消息模板不存在
+     */
+    TEMPLATE_NOT_EXIST(RuleConstants.BUSINESS_ERROR_TYPE_CODE + MessageCenterConstants.MESSAGE_CENTER_EXCEPTION_STEP_CODE + "60", "消息模板不存在"),
+    /**
+     * 消息模板编码重复
+     */
+    TEMPLATE_CODE_DUPLICATE(RuleConstants.BUSINESS_ERROR_TYPE_CODE + MessageCenterConstants.MESSAGE_CENTER_EXCEPTION_STEP_CODE + "61", "消息模板编码已存在"),
+    /**
+     * 消息模板内容不存在
+     */
+    TEMPLATE_CONTENT_NOT_EXIST(RuleConstants.BUSINESS_ERROR_TYPE_CODE + MessageCenterConstants.MESSAGE_CENTER_EXCEPTION_STEP_CODE + "62", "消息模板内容不存在"),
+    /**
+     * 消息模板内容重复（模板ID与渠道类型唯一）
+     */
+    TEMPLATE_CONTENT_DUPLICATE(RuleConstants.BUSINESS_ERROR_TYPE_CODE + MessageCenterConstants.MESSAGE_CENTER_EXCEPTION_STEP_CODE + "63", "同一模板下该渠道类型的内容已存在"),
+    // endregion
 
     // endregion
 
