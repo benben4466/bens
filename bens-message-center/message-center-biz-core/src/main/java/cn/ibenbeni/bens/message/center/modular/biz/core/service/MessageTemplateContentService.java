@@ -11,11 +11,17 @@ public interface MessageTemplateContentService {
 
     Long create(MessageTemplateContentSaveReq req);
 
+    void createBatch(List<MessageTemplateContentSaveReq> reqList);
+
     void updateById(MessageTemplateContentSaveReq req);
 
     void deleteById(Long id);
 
     void deleteByIds(Set<Long> ids);
+
+    void deleteByTemplateId(Long templateId);
+
+    void deleteByTemplateIds(Set<Long> templateIds);
 
     MessageTemplateContentDO getById(Long id);
 

@@ -11,6 +11,7 @@ import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import cn.ibenbeni.bens.message.center.api.exception.MessageCenterException;
 import cn.ibenbeni.bens.message.center.api.exception.enums.MessageCenterExceptionEnum;
 import cn.ibenbeni.bens.message.center.modular.biz.core.service.MessageTemplateContentService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -37,6 +38,20 @@ public class MessageTemplateContentServiceImpl implements MessageTemplateContent
     }
 
     @Override
+    @DSTransactional(rollbackFor = Exception.class)
+    public void createBatch(List<MessageTemplateContentSaveReq> reqList) {
+        if (reqList == null || reqList.isEmpty()) {
+            return;
+        }
+        reqList.forEach(req -> {
+            validateTemplateExists(req.getTemplateId());
+            validateUnique(req.getTemplateId(), req.getChannelType(), null);
+            MessageTemplateContentDO entity = BeanUtil.toBean(req, MessageTemplateContentDO.class);
+            messageTemplateContentMapper.insert(entity);
+        });
+    }
+
+    @Override
     public void updateById(MessageTemplateContentSaveReq req) {
         validateExists(req.getId());
         validateTemplateExists(req.getTemplateId());
@@ -59,6 +74,24 @@ public class MessageTemplateContentServiceImpl implements MessageTemplateContent
         }
         ids.forEach(this::validateExists);
         messageTemplateContentMapper.deleteBatchIds(ids);
+    }
+
+    @Override
+    public void deleteByTemplateId(Long templateId) {
+        if (templateId == null) {
+            return;
+        }
+        messageTemplateContentMapper.delete(new LambdaQueryWrapper<MessageTemplateContentDO>()
+                .eq(MessageTemplateContentDO::getTemplateId, templateId));
+    }
+
+    @Override
+    public void deleteByTemplateIds(Set<Long> templateIds) {
+        if (templateIds == null || templateIds.isEmpty()) {
+            return;
+        }
+        messageTemplateContentMapper.delete(new LambdaQueryWrapper<MessageTemplateContentDO>()
+                .in(MessageTemplateContentDO::getTemplateId, templateIds));
     }
 
     @Override

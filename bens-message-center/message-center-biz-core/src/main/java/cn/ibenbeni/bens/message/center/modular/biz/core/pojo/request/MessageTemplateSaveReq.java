@@ -45,5 +45,8 @@ public class MessageTemplateSaveReq {
 
     @Schema(description = "审核意见")
     private String auditComment;
+
+    @Schema(description = "模板内容列表")
+    private List<MessageTemplateContentSaveReq> contentList;
 }
 

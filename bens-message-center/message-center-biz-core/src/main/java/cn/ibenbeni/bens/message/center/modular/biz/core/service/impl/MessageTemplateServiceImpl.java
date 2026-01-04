@@ -9,6 +9,7 @@ import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import cn.ibenbeni.bens.message.center.api.exception.MessageCenterException;
 import cn.ibenbeni.bens.message.center.api.exception.enums.MessageCenterExceptionEnum;
 import cn.ibenbeni.bens.message.center.modular.biz.core.mapper.MessageTemplateMapper;
+import cn.ibenbeni.bens.message.center.modular.biz.core.service.MessageTemplateContentService;
 import cn.ibenbeni.bens.message.center.modular.biz.core.service.MessageTemplateService;
 import org.springframework.stereotype.Service;
 
@@ -22,25 +23,48 @@ public class MessageTemplateServiceImpl implements MessageTemplateService {
     @Resource
     private MessageTemplateMapper messageTemplateMapper;
 
+    @Resource
+    private MessageTemplateContentService messageTemplateContentService;
+
     @Override
+    @DSTransactional(rollbackFor = Exception.class)
     public Long create(MessageTemplateSaveReq req) {
         validateCodeDuplicate(null, req.getTemplateCode());
         MessageTemplateDO entity = BeanUtil.toBean(req, MessageTemplateDO.class);
         messageTemplateMapper.insert(entity);
+
+        // 创建模板内容
+        if (req.getContentList() != null && !req.getContentList().isEmpty()) {
+            req.getContentList().forEach(contentReq -> contentReq.setTemplateId(entity.getTemplateId()));
+            messageTemplateContentService.createBatch(req.getContentList());
+        }
+        
         return entity.getTemplateId();
     }
 
     @Override
+    @DSTransactional(rollbackFor = Exception.class)
     public void updateById(MessageTemplateSaveReq req) {
         validateExists(req.getTemplateId());
         validateCodeDuplicate(req.getTemplateId(), req.getTemplateCode());
         MessageTemplateDO entity = BeanUtil.toBean(req, MessageTemplateDO.class);
         messageTemplateMapper.updateById(entity);
+        
+        // 更新模板内容（先删后增）
+        if (req.getContentList() != null) {
+            messageTemplateContentService.deleteByTemplateId(req.getTemplateId());
+            if (!req.getContentList().isEmpty()) {
+                req.getContentList().forEach(contentReq -> contentReq.setTemplateId(entity.getTemplateId()));
+                messageTemplateContentService.createBatch(req.getContentList());
+            }
+        }
     }
 
     @Override
+    @DSTransactional(rollbackFor = Exception.class)
     public void deleteById(Long id) {
         validateExists(id);
+        messageTemplateContentService.deleteByTemplateId(id);
         messageTemplateMapper.deleteById(id);
     }
 
@@ -51,6 +75,7 @@ public class MessageTemplateServiceImpl implements MessageTemplateService {
             return;
         }
         ids.forEach(this::validateExists);
+        messageTemplateContentService.deleteByTemplateIds(ids);
         messageTemplateMapper.deleteBatchIds(ids);
     }
 
