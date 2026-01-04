@@ -11,6 +11,7 @@ import cn.ibenbeni.bens.message.center.modular.biz.core.service.MessageTemplateS
 import cn.ibenbeni.bens.resource.api.annotation.DeleteResource;
 import cn.ibenbeni.bens.resource.api.annotation.GetResource;
 import cn.ibenbeni.bens.resource.api.annotation.PostResource;
+import cn.ibenbeni.bens.resource.api.annotation.PutResource;
 import cn.ibenbeni.bens.rule.pojo.response.ResponseData;
 import cn.ibenbeni.bens.rule.pojo.response.SuccessResponseData;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,13 +31,13 @@ public class MessageTemplateController {
     private MessageTemplateService messageTemplateService;
 
     @Operation(summary = "创建消息模板")
-    @PostResource(path = "/system/message-template/create")
+    @PostResource(path = "/msg-center/message-template/create")
     public ResponseData<Long> create(@RequestBody @Valid MessageTemplateSaveReq req) {
         return new SuccessResponseData<>(messageTemplateService.create(req));
     }
 
     @Operation(summary = "修改消息模板")
-    @PostResource(path = "/system/message-template/update")
+    @PutResource(path = "/msg-center/message-template/update")
     public ResponseData<Boolean> update(@RequestBody @Valid MessageTemplateSaveReq req) {
         messageTemplateService.updateById(req);
         return new SuccessResponseData<>(true);
@@ -44,7 +45,7 @@ public class MessageTemplateController {
 
     @Operation(summary = "删除消息模板")
     @Parameter(name = "id", description = "模板ID", required = true, example = "10")
-    @DeleteResource(path = "/system/message-template/delete")
+    @DeleteResource(path = "/msg-center/message-template/delete")
     public ResponseData<Boolean> delete(@RequestParam("id") Long id) {
         messageTemplateService.deleteById(id);
         return new SuccessResponseData<>(true);
@@ -52,7 +53,7 @@ public class MessageTemplateController {
 
     @Operation(summary = "批量删除消息模板")
     @Parameter(name = "ids", description = "模板ID集合", required = true)
-    @DeleteResource(path = "/system/message-template/delete-list")
+    @DeleteResource(path = "/msg-center/message-template/delete-list")
     public ResponseData<Boolean> deleteList(@RequestParam("ids") Set<Long> ids) {
         messageTemplateService.deleteByIds(ids);
         return new SuccessResponseData<>(true);
@@ -60,14 +61,14 @@ public class MessageTemplateController {
 
     @Operation(summary = "获取消息模板")
     @Parameter(name = "id", description = "模板ID", required = true, example = "10")
-    @GetResource(path = "/system/message-template/get")
+    @GetResource(path = "/msg-center/message-template/get")
     public ResponseData<MessageTemplateResp> get(@RequestParam("id") Long id) {
         MessageTemplateDO entity = messageTemplateService.getById(id);
         return new SuccessResponseData<>(BeanUtil.toBean(entity, MessageTemplateResp.class));
     }
 
     @Operation(summary = "获取消息模板分页列表")
-    @GetResource(path = "/system/message-template/page")
+    @GetResource(path = "/msg-center/message-template/page")
     public ResponseData<PageResult<MessageTemplateResp>> page(@Valid MessageTemplatePageReq req) {
         PageResult<MessageTemplateDO> page = messageTemplateService.page(req);
         return new SuccessResponseData<>(DbUtil.toBean(page, MessageTemplateResp.class));

@@ -11,6 +11,7 @@ import cn.ibenbeni.bens.message.center.modular.biz.core.service.MessageTemplateC
 import cn.ibenbeni.bens.resource.api.annotation.DeleteResource;
 import cn.ibenbeni.bens.resource.api.annotation.GetResource;
 import cn.ibenbeni.bens.resource.api.annotation.PostResource;
+import cn.ibenbeni.bens.resource.api.annotation.PutResource;
 import cn.ibenbeni.bens.rule.pojo.response.ResponseData;
 import cn.ibenbeni.bens.rule.pojo.response.SuccessResponseData;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,13 +32,13 @@ public class MessageTemplateContentController {
     private MessageTemplateContentService messageTemplateContentService;
 
     @Operation(summary = "创建消息模板内容")
-    @PostResource(path = "/system/message-template-content/create")
+    @PostResource(path = "/msg-center/message-template-content/create")
     public ResponseData<Long> create(@RequestBody @Valid MessageTemplateContentSaveReq req) {
         return new SuccessResponseData<>(messageTemplateContentService.create(req));
     }
 
     @Operation(summary = "修改消息模板内容")
-    @PostResource(path = "/system/message-template-content/update")
+    @PutResource(path = "/msg-center/message-template-content/update")
     public ResponseData<Boolean> update(@RequestBody @Valid MessageTemplateContentSaveReq req) {
         messageTemplateContentService.updateById(req);
         return new SuccessResponseData<>(true);
@@ -45,7 +46,7 @@ public class MessageTemplateContentController {
 
     @Operation(summary = "删除消息模板内容")
     @Parameter(name = "id", description = "ID", required = true, example = "10")
-    @DeleteResource(path = "/system/message-template-content/delete")
+    @DeleteResource(path = "/msg-center/message-template-content/delete")
     public ResponseData<Boolean> delete(@RequestParam("id") Long id) {
         messageTemplateContentService.deleteById(id);
         return new SuccessResponseData<>(true);
@@ -53,7 +54,7 @@ public class MessageTemplateContentController {
 
     @Operation(summary = "批量删除消息模板内容")
     @Parameter(name = "ids", description = "ID集合", required = true)
-    @DeleteResource(path = "/system/message-template-content/delete-list")
+    @DeleteResource(path = "/msg-center/message-template-content/delete-list")
     public ResponseData<Boolean> deleteList(@RequestParam("ids") Set<Long> ids) {
         messageTemplateContentService.deleteByIds(ids);
         return new SuccessResponseData<>(true);
@@ -61,14 +62,14 @@ public class MessageTemplateContentController {
 
     @Operation(summary = "获取消息模板内容")
     @Parameter(name = "id", description = "ID", required = true, example = "10")
-    @GetResource(path = "/system/message-template-content/get")
+    @GetResource(path = "/msg-center/message-template-content/get")
     public ResponseData<MessageTemplateContentResp> get(@RequestParam("id") Long id) {
         MessageTemplateContentDO entity = messageTemplateContentService.getById(id);
         return new SuccessResponseData<>(BeanUtil.toBean(entity, MessageTemplateContentResp.class));
     }
 
     @Operation(summary = "获取消息模板内容分页列表")
-    @GetResource(path = "/system/message-template-content/page")
+    @GetResource(path = "/msg-center/message-template-content/page")
     public ResponseData<PageResult<MessageTemplateContentResp>> page(@Valid MessageTemplateContentPageReq req) {
         PageResult<MessageTemplateContentDO> page = messageTemplateContentService.page(req);
         return new SuccessResponseData<>(DbUtil.toBean(page, MessageTemplateContentResp.class));
@@ -76,7 +77,7 @@ public class MessageTemplateContentController {
 
     @Operation(summary = "按模板ID获取内容列表")
     @Parameter(name = "templateId", description = "模板ID", required = true, example = "10")
-    @GetResource(path = "/system/message-template-content/list-by-template")
+    @GetResource(path = "/msg-center/message-template-content/list-by-template")
     public ResponseData<List<MessageTemplateContentResp>> listByTemplate(@RequestParam("templateId") Long templateId) {
         List<MessageTemplateContentDO> list = messageTemplateContentService.listByTemplateId(templateId);
         return new SuccessResponseData<>(BeanUtil.copyToList(list, MessageTemplateContentResp.class));
