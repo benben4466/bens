@@ -653,3 +653,52 @@ CREATE TABLE `message_template_content`
     `tenant_id`        bigint       NULL     DEFAULT NULL COMMENT '租户编号',
     PRIMARY KEY (`id`)
 ) COMMENT = '消息模板内容表(按渠道存储)';
+
+DROP TABLE IF EXISTS `message_channel_config`;
+CREATE TABLE `message_channel_config`
+(
+    `config_id`      bigint       NOT NULL COMMENT '配置ID',
+    `channel_type`   tinyint      NOT NULL COMMENT '渠道类型',
+    `channel_name`   varchar(64)  NOT NULL COMMENT '渠道名称',
+    `channel_code`   varchar(255) NOT NULL COMMENT '渠道编码',
+    `account_config` json         NOT NULL COMMENT '账户配置',
+    `status_flag`    tinyint      NOT NULL DEFAULT 1 COMMENT '状态(StatusEnum)',
+    `remark`         varchar(255) NULL     DEFAULT NULL COMMENT '备注',
+    `version_flag`   bigint       NULL     DEFAULT NULL COMMENT '乐观锁',
+    `create_time`    datetime     NULL     DEFAULT NULL COMMENT '创建时间',
+    `create_user`    bigint       NULL     DEFAULT NULL COMMENT '创建人',
+    `update_time`    datetime     NULL     DEFAULT NULL COMMENT '更新时间',
+    `update_user`    bigint       NULL     DEFAULT NULL COMMENT '更新人',
+    `del_flag`       char(1)      NOT NULL DEFAULT 'N' COMMENT '删除标记',
+    `tenant_id`      bigint       NULL     DEFAULT NULL COMMENT '租户编号',
+    PRIMARY KEY (`config_id`),
+    UNIQUE KEY `idx_channel_code` (`channel_code`)
+) COMMENT = '消息渠道配置表';
+
+DROP TABLE IF EXISTS `message_send_record`;
+CREATE TABLE `message_send_record`
+(
+    `record_id`      bigint       NOT NULL COMMENT '发送记录ID',
+    `template_id`    bigint       NOT NULL COMMENT '关联模板ID',
+    `template_code`  varchar(255) NOT NULL COMMENT '模板编码',
+    `channel_type`   tinyint      NOT NULL COMMENT '渠道类型',
+    `biz_type`       varchar(64)  NULL     DEFAULT NULL COMMENT '业务类型',
+    `biz_id`         varchar(64)  NULL     DEFAULT NULL COMMENT '业务关联ID',
+    `recipient`      json         NOT NULL COMMENT '接收者',
+    `recipient_type` tinyint      NOT NULL COMMENT '接收人类型(MsgRecipientTypeEnum)',
+    `msg_title`      varchar(255) NULL     DEFAULT NULL COMMENT '发送时的标题',
+    `msg_variables`  json         NULL     DEFAULT NULL COMMENT '模板参数变量',
+    `send_status`    tinyint      NOT NULL DEFAULT 0 COMMENT '发送状态(MsgSendStatusEnum)',
+    `fail_reason`    varchar(512) NULL     DEFAULT NULL COMMENT '失败原因',
+    `retry_count`    int          NOT NULL DEFAULT 0 COMMENT '重试次数',
+    `send_time`      datetime     NULL     DEFAULT NULL COMMENT '实际发送时间',
+    `response_data`  json         NULL     DEFAULT NULL COMMENT '第三方渠道返回的完整报文',
+    `version_flag`   bigint       NULL     DEFAULT NULL COMMENT '乐观锁',
+    `create_time`    datetime     NULL     DEFAULT NULL COMMENT '创建时间',
+    `create_user`    bigint       NULL     DEFAULT NULL COMMENT '创建人',
+    `update_time`    datetime     NULL     DEFAULT NULL COMMENT '更新时间',
+    `update_user`    bigint       NULL     DEFAULT NULL COMMENT '更新人',
+    `del_flag`       char(1)      NOT NULL DEFAULT 'N' COMMENT '删除标记',
+    `tenant_id`      bigint       NULL     DEFAULT NULL COMMENT '租户编号',
+    PRIMARY KEY (`record_id`)
+) COMMENT = '消息发送记录表';

@@ -1,4 +1,4 @@
-package cn.ibenbeni.bens.message.center.api.enums.channel;
+package cn.ibenbeni.bens.message.center.api.enums.core;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

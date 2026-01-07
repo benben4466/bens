@@ -4,6 +4,8 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.ibenbeni.bens.rule.base.ReadableEnum;
+import com.baomidou.mybatisplus.annotation.EnumValue;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 import java.util.Arrays;
@@ -29,8 +31,8 @@ public enum StatusEnum implements ReadableEnum<StatusEnum> {
 
     public static final Integer[] ARRAYS = Arrays.stream(values()).map(StatusEnum::getCode).toArray(Integer[]::new);
 
-    // @EnumValue
-    // @JsonValue
+    @JsonValue // 存数据库用
+    @EnumValue // 返回 JSON 用
     private final Integer code;
 
     private final String message;
