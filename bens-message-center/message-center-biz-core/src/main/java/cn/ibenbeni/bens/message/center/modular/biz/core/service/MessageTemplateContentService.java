@@ -27,6 +27,8 @@ public interface MessageTemplateContentService {
 
     List<MessageTemplateContentDO> listByTemplateId(Long templateId);
 
+    List<MessageTemplateContentDO> listByTemplateIds(Set<Long> templateIds);
+
     PageResult<MessageTemplateContentDO> page(MessageTemplateContentPageReq req);
 
 }

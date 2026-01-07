@@ -12,6 +12,7 @@ import cn.ibenbeni.bens.message.center.api.exception.MessageCenterException;
 import cn.ibenbeni.bens.message.center.api.exception.enums.MessageCenterExceptionEnum;
 import cn.ibenbeni.bens.message.center.modular.biz.core.service.MessageTemplateContentService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -25,6 +26,7 @@ public class MessageTemplateContentServiceImpl implements MessageTemplateContent
     @Resource
     private MessageTemplateContentMapper messageTemplateContentMapper;
 
+    @Lazy
     @Resource
     private MessageTemplateService messageTemplateService;
 
@@ -102,6 +104,11 @@ public class MessageTemplateContentServiceImpl implements MessageTemplateContent
     @Override
     public List<MessageTemplateContentDO> listByTemplateId(Long templateId) {
         return messageTemplateContentMapper.listByTemplateId(templateId);
+    }
+
+    @Override
+    public List<MessageTemplateContentDO> listByTemplateIds(Set<Long> templateIds) {
+        return messageTemplateContentMapper.listByTemplateIds(templateIds);
     }
 
     @Override

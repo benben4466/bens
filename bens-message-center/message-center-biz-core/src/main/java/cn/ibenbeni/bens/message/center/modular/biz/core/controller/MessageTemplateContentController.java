@@ -31,50 +31,6 @@ public class MessageTemplateContentController {
     @Resource
     private MessageTemplateContentService messageTemplateContentService;
 
-    @Operation(summary = "创建消息模板内容")
-    @PostResource(path = "/msg-center/message-template-content/create")
-    public ResponseData<Long> create(@RequestBody @Valid MessageTemplateContentSaveReq req) {
-        return new SuccessResponseData<>(messageTemplateContentService.create(req));
-    }
-
-    @Operation(summary = "修改消息模板内容")
-    @PutResource(path = "/msg-center/message-template-content/update")
-    public ResponseData<Boolean> update(@RequestBody @Valid MessageTemplateContentSaveReq req) {
-        messageTemplateContentService.updateById(req);
-        return new SuccessResponseData<>(true);
-    }
-
-    @Operation(summary = "删除消息模板内容")
-    @Parameter(name = "id", description = "ID", required = true, example = "10")
-    @DeleteResource(path = "/msg-center/message-template-content/delete")
-    public ResponseData<Boolean> delete(@RequestParam("id") Long id) {
-        messageTemplateContentService.deleteById(id);
-        return new SuccessResponseData<>(true);
-    }
-
-    @Operation(summary = "批量删除消息模板内容")
-    @Parameter(name = "ids", description = "ID集合", required = true)
-    @DeleteResource(path = "/msg-center/message-template-content/delete-list")
-    public ResponseData<Boolean> deleteList(@RequestParam("ids") Set<Long> ids) {
-        messageTemplateContentService.deleteByIds(ids);
-        return new SuccessResponseData<>(true);
-    }
-
-    @Operation(summary = "获取消息模板内容")
-    @Parameter(name = "id", description = "ID", required = true, example = "10")
-    @GetResource(path = "/msg-center/message-template-content/get")
-    public ResponseData<MessageTemplateContentResp> get(@RequestParam("id") Long id) {
-        MessageTemplateContentDO entity = messageTemplateContentService.getById(id);
-        return new SuccessResponseData<>(BeanUtil.toBean(entity, MessageTemplateContentResp.class));
-    }
-
-    @Operation(summary = "获取消息模板内容分页列表")
-    @GetResource(path = "/msg-center/message-template-content/page")
-    public ResponseData<PageResult<MessageTemplateContentResp>> page(@Valid MessageTemplateContentPageReq req) {
-        PageResult<MessageTemplateContentDO> page = messageTemplateContentService.page(req);
-        return new SuccessResponseData<>(DbUtil.toBean(page, MessageTemplateContentResp.class));
-    }
-
     @Operation(summary = "按模板ID获取内容列表")
     @Parameter(name = "templateId", description = "模板ID", required = true, example = "10")
     @GetResource(path = "/msg-center/message-template-content/list-by-template")

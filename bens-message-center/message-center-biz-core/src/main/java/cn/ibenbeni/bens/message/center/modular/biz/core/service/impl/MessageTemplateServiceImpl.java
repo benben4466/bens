@@ -14,8 +14,12 @@ import cn.ibenbeni.bens.message.center.modular.biz.core.service.MessageTemplateS
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import cn.ibenbeni.bens.message.center.modular.biz.core.entity.MessageTemplateContentDO;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class MessageTemplateServiceImpl implements MessageTemplateService {
@@ -81,7 +85,11 @@ public class MessageTemplateServiceImpl implements MessageTemplateService {
 
     @Override
     public MessageTemplateDO getById(Long id) {
-        return messageTemplateMapper.selectById(id);
+        MessageTemplateDO entity = messageTemplateMapper.selectById(id);
+        if (entity != null) {
+            entity.setContentList(messageTemplateContentService.listByTemplateId(id));
+        }
+        return entity;
     }
 
     @Override
@@ -91,7 +99,21 @@ public class MessageTemplateServiceImpl implements MessageTemplateService {
 
     @Override
     public PageResult<MessageTemplateDO> page(MessageTemplatePageReq req) {
-        return messageTemplateMapper.page(req);
+        PageResult<MessageTemplateDO> page = messageTemplateMapper.page(req);
+        if (page.getRows() != null && !page.getRows().isEmpty()) {
+            Set<Long> templateIds = page.getRows().stream()
+                    .map(MessageTemplateDO::getTemplateId)
+                    .collect(Collectors.toSet());
+            
+            if (!templateIds.isEmpty()) {
+                List<MessageTemplateContentDO> contentList = messageTemplateContentService.listByTemplateIds(templateIds);
+                Map<Long, List<MessageTemplateContentDO>> contentMap = contentList.stream()
+                        .collect(Collectors.groupingBy(MessageTemplateContentDO::getTemplateId));
+                
+                page.getRows().forEach(row -> row.setContentList(contentMap.get(row.getTemplateId())));
+            }
+        }
+        return page;
     }
 
     private void validateExists(Long id) {

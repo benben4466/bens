@@ -7,6 +7,7 @@ import cn.ibenbeni.bens.message.center.modular.biz.core.entity.MessageTemplateCo
 import cn.ibenbeni.bens.message.center.modular.biz.core.pojo.request.MessageTemplateContentPageReq;
 
 import java.util.List;
+import java.util.Set;
 
 public interface MessageTemplateContentMapper extends BaseMapperX<MessageTemplateContentDO> {
 
@@ -20,6 +21,13 @@ public interface MessageTemplateContentMapper extends BaseMapperX<MessageTemplat
     default List<MessageTemplateContentDO> listByTemplateId(Long templateId) {
         return selectList(new LambdaQueryWrapperX<MessageTemplateContentDO>()
                 .eq(MessageTemplateContentDO::getTemplateId, templateId)
+                .orderByDesc(MessageTemplateContentDO::getCreateTime)
+        );
+    }
+
+    default List<MessageTemplateContentDO> listByTemplateIds(Set<Long> templateIds) {
+        return selectList(new LambdaQueryWrapperX<MessageTemplateContentDO>()
+                .inIfPresent(MessageTemplateContentDO::getTemplateId, templateIds)
                 .orderByDesc(MessageTemplateContentDO::getCreateTime)
         );
     }

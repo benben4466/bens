@@ -651,6 +651,5 @@ CREATE TABLE `message_template_content`
     `update_user`      bigint       NULL     DEFAULT NULL COMMENT '更新人',
     `del_flag`         char(1)      NOT NULL DEFAULT 'N' COMMENT '删除标记',
     `tenant_id`        bigint       NULL     DEFAULT NULL COMMENT '租户编号',
-    PRIMARY KEY (`id`),
-    UNIQUE KEY `idx_template_channel` (`template_id`, `channel_type`)
+    PRIMARY KEY (`id`)
 ) COMMENT = '消息模板内容表(按渠道存储)';

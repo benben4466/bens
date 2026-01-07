@@ -50,5 +50,12 @@ public class MessageTemplateDO extends BaseBusinessEntity {
 
     @TableField(value = "tenant_id", fill = FieldFill.INSERT)
     private Long tenantId;
+
+    /**
+     * 消息模板内容表
+     */
+    @TableField(exist = false)
+    private List<MessageTemplateContentDO> contentList;
+
 }
 

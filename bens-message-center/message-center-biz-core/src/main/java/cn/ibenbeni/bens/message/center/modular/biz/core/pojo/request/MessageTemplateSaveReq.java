@@ -1,5 +1,7 @@
 package cn.ibenbeni.bens.message.center.modular.biz.core.pojo.request;
 
+import cn.ibenbeni.bens.rule.util.DateUtils;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -37,6 +39,7 @@ public class MessageTemplateSaveReq {
     @Schema(description = "审核状态", example = "10")
     private Integer auditStatus;
 
+    @JsonFormat(pattern = DateUtils.FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND)
     @Schema(description = "审核时间")
     private LocalDateTime auditTime;
 
