@@ -12,32 +12,59 @@ import lombok.EqualsAndHashCode;
 
 import java.util.Map;
 
+/**
+ * 消息模板内容实体
+ */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName(value = "message_template_content", autoResultMap = true)
 public class MessageTemplateContentDO extends BaseBusinessEntity {
 
+    /**
+     * 主键ID
+     */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
+    /**
+     * 模板ID
+     */
     @TableField("template_id")
     private Long templateId;
 
+    /**
+     * 渠道类型
+     */
     @TableField("channel_type")
     private Integer channelType;
 
+    /**
+     * 标题
+     */
     @TableField("title")
     private String title;
 
+    /**
+     * 模板内容
+     */
     @TableField("template_content")
     private String templateContent;
 
+    /**
+     * 参数配置
+     */
     @TableField(value = "params_config", typeHandler = JacksonTypeHandler.class)
     private Map<String, Object> paramsConfig;
 
+    /**
+     * 渠道特定配置
+     */
     @TableField(value = "channel_config", typeHandler = JacksonTypeHandler.class)
     private Map<String, Object> channelConfig;
 
+    /**
+     * 租户ID
+     */
     @TableField(value = "tenant_id", fill = FieldFill.INSERT)
     private Long tenantId;
 }
