@@ -688,7 +688,7 @@ CREATE TABLE `message_send_record`
     `recipient_type` tinyint      NOT NULL COMMENT '接收人类型(MsgRecipientTypeEnum)',
     `msg_title`      varchar(255) NULL     DEFAULT NULL COMMENT '发送时的标题',
     `msg_variables`  json         NULL     DEFAULT NULL COMMENT '模板参数变量',
-    `send_status`    tinyint      NOT NULL DEFAULT 0 COMMENT '发送状态(MsgSendStatusEnum)',
+    `send_status`    tinyint      NOT NULL DEFAULT 10 COMMENT '发送状态(MsgSendStatusEnum)',
     `fail_type`      int          NULL     DEFAULT NULL COMMENT '失败类型',
     `fail_reason`    varchar(512) NULL     DEFAULT NULL COMMENT '失败原因',
     `retry_count`    int          NOT NULL DEFAULT 0 COMMENT '重试次数',
