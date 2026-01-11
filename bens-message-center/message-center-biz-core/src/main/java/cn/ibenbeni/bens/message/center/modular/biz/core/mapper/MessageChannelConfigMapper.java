@@ -11,6 +11,7 @@ public interface MessageChannelConfigMapper extends BaseMapperX<MessageChannelCo
     default PageResult<MessageChannelConfigDO> page(MessageChannelConfigPageReq req) {
         return selectPage(req, new LambdaQueryWrapperX<MessageChannelConfigDO>()
                 .likeIfPresent(MessageChannelConfigDO::getChannelCode, req.getChannelCode())
+                .likeIfPresent(MessageChannelConfigDO::getChannelName, req.getChannelName())
                 .eqIfPresent(MessageChannelConfigDO::getChannelType, req.getChannelType())
                 .eqIfPresent(MessageChannelConfigDO::getStatusFlag, req.getStatusFlag())
                 .orderByDesc(MessageChannelConfigDO::getCreateTime)

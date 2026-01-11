@@ -34,6 +34,12 @@ public class MessageChannelConfigDO extends BaseBusinessEntity {
     private String channelCode;
 
     /**
+     * 渠道名称
+     */
+    @TableField("channel_name")
+    private String channelName;
+
+    /**
      * 渠道类型
      */
     @TableField("channel_type")

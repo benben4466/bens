@@ -48,9 +48,11 @@
 ## 消息渠道配置表
 消息渠道配置表(message_channel_config)的渠道编码(channel_code)编码规则
 ~~~tex
-channel_code: [渠道类型(TYPE)].[供应商(supplier)]_[用途/环境(SCENE)]  TYPE_SUPPLIER_SCENE
+channel_code: [渠道类型(TYPE)].[供应商(supplier)]_[用途/环境(SCENE)]  TYPE.SUPPLIER.DOMAIN.SCENE.VERSION
 TYPE(一级分类): 表示通信方式(如 SMS, MAIL, WECHAT)
 SUPPLIER(二级分类): 表示服务提供商(如 ALIYUN, TENCENT)
-SCENE(三级分类 - 可选): 当同一个供应商有多个账号或用途时使用(如 OTP, MKT); 可参考[消息模板编码规则]的编码各项示例中场景的枚举。
+DOMAIN(三级分类): 标识业务域(USER, PAY)
+SCENE(三级分类 - 可选): 当同一个供应商有多个账号或用途时使用(如 ORDER, RECHARGE); 可参考[消息模板编码规则]的编码各项示例中场景的枚举。
+VERSION(四级分类 - 可选): 版本。
 ~~~
 

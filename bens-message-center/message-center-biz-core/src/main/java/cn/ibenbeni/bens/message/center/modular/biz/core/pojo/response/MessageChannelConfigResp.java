@@ -17,6 +17,9 @@ public class MessageChannelConfigResp {
     @Schema(description = "渠道编码")
     private String channelCode;
 
+    @Schema(description = "渠道名称")
+    private String channelName;
+
     @Schema(description = "渠道类型")
     private Integer channelType;
 

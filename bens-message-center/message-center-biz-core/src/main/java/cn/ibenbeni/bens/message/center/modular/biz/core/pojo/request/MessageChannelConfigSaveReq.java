@@ -19,6 +19,10 @@ public class MessageChannelConfigSaveReq {
     @Schema(description = "渠道编码")
     private String channelCode;
 
+    @NotBlank(message = "渠道名称不能为空")
+    @Schema(description = "渠道名称")
+    private String channelName;
+
     @NotNull(message = "渠道类型不能为空")
     @Schema(description = "渠道类型")
     private Integer channelType;

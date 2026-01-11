@@ -639,7 +639,7 @@ CREATE TABLE `message_template_content`
 (
     `id`               bigint       NOT NULL COMMENT 'ID',
     `template_id`      bigint       NOT NULL COMMENT '模板消息ID',
-    `channel_type`     tinyint      NOT NULL COMMENT '渠道类型',
+    `channel_type`     tinyint      NOT NULL COMMENT '渠道类型(MsgPushChannelTypeEnum)',
     `title`            varchar(255) NULL     DEFAULT NULL COMMENT '标题(部分渠道需要)',
     `template_content` varchar(255) NULL     DEFAULT NULL COMMENT '模板内容',
     `params_config`    json         NULL     DEFAULT NULL COMMENT '参数配置',
@@ -658,10 +658,10 @@ DROP TABLE IF EXISTS `message_channel_config`;
 CREATE TABLE `message_channel_config`
 (
     `config_id`      bigint       NOT NULL COMMENT '配置ID',
-    `channel_type`   tinyint      NOT NULL COMMENT '渠道类型',
+    `channel_type`   tinyint      NOT NULL COMMENT '渠道类型(MsgPushChannelTypeEnum)',
     `channel_name`   varchar(64)  NOT NULL COMMENT '渠道名称',
     `channel_code`   varchar(255) NOT NULL COMMENT '渠道编码',
-    `account_config` json         NOT NULL COMMENT '账户配置',
+    `account_config` json         NULL     DEFAULT NULL COMMENT '账户配置',
     `status_flag`    tinyint      NOT NULL DEFAULT 1 COMMENT '状态(StatusEnum)',
     `remark`         varchar(255) NULL     DEFAULT NULL COMMENT '备注',
     `version_flag`   bigint       NULL     DEFAULT NULL COMMENT '乐观锁',
