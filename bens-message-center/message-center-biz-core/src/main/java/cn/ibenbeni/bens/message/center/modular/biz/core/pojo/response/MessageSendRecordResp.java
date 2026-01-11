@@ -1,6 +1,7 @@
 package cn.ibenbeni.bens.message.center.modular.biz.core.pojo.response;
 
 import cn.ibenbeni.bens.message.center.api.enums.core.MsgRecipientTypeEnum;
+import cn.ibenbeni.bens.message.center.api.enums.core.MsgSendFailTypeEnum;
 import cn.ibenbeni.bens.message.center.api.enums.core.MsgSendStatusEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -47,6 +48,9 @@ public class MessageSendRecordResp {
 
     @Schema(description = "重试次数")
     private Integer retryCount;
+
+    @Schema(description = "失败原因类型")
+    private MsgSendFailTypeEnum failType;
 
     @Schema(description = "失败原因")
     private String failReason;

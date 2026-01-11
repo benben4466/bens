@@ -18,6 +18,7 @@ public interface MessageSendRecordMapper extends BaseMapperX<MessageSendRecordDO
                 .eqIfPresent(MessageSendRecordDO::getBizId, req.getBizId())
                 .eqIfPresent(MessageSendRecordDO::getChannelType, req.getChannelType())
                 .eqIfPresent(MessageSendRecordDO::getSendStatus, req.getSendStatus())
+                .eqIfPresent(MessageSendRecordDO::getFailType, req.getFailType())
                 .betweenIfPresent(MessageSendRecordDO::getSendTime, req.getSendTime() != null ? req.getSendTime().toArray() : null)
                 .orderByDesc(MessageSendRecordDO::getSendTime)
         );

@@ -2,6 +2,7 @@ package cn.ibenbeni.bens.message.center.modular.biz.core.entity;
 
 import cn.ibenbeni.bens.db.api.pojo.entity.BaseBusinessEntity;
 import cn.ibenbeni.bens.message.center.api.enums.core.MsgRecipientTypeEnum;
+import cn.ibenbeni.bens.message.center.api.enums.core.MsgSendFailTypeEnum;
 import cn.ibenbeni.bens.message.center.api.enums.core.MsgSendStatusEnum;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -100,6 +101,12 @@ public class MessageSendRecordDO extends BaseBusinessEntity {
      */
     @TableField("retry_count")
     private Integer retryCount;
+
+    /**
+     * 失败原因类型
+     */
+    @TableField("fail_type")
+    private MsgSendFailTypeEnum failType;
 
     /**
      * 失败原因
