@@ -14,7 +14,9 @@ import cn.ibenbeni.bens.message.center.modular.biz.core.service.MessageTemplateS
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+
 import cn.ibenbeni.bens.message.center.modular.biz.core.entity.MessageTemplateContentDO;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -42,7 +44,7 @@ public class MessageTemplateServiceImpl implements MessageTemplateService {
             req.getContentList().forEach(contentReq -> contentReq.setTemplateId(entity.getTemplateId()));
             messageTemplateContentService.createBatch(req.getContentList());
         }
-        
+
         return entity.getTemplateId();
     }
 
@@ -53,7 +55,7 @@ public class MessageTemplateServiceImpl implements MessageTemplateService {
         validateCodeDuplicate(req.getTemplateId(), req.getTemplateCode());
         MessageTemplateDO entity = BeanUtil.toBean(req, MessageTemplateDO.class);
         messageTemplateMapper.updateById(entity);
-        
+
         // 更新模板内容（先删后增）
         if (req.getContentList() != null) {
             messageTemplateContentService.deleteByTemplateId(req.getTemplateId());
@@ -104,16 +106,22 @@ public class MessageTemplateServiceImpl implements MessageTemplateService {
             Set<Long> templateIds = page.getRows().stream()
                     .map(MessageTemplateDO::getTemplateId)
                     .collect(Collectors.toSet());
-            
+
             if (!templateIds.isEmpty()) {
                 List<MessageTemplateContentDO> contentList = messageTemplateContentService.listByTemplateIds(templateIds);
                 Map<Long, List<MessageTemplateContentDO>> contentMap = contentList.stream()
                         .collect(Collectors.groupingBy(MessageTemplateContentDO::getTemplateId));
-                
+
                 page.getRows().forEach(row -> row.setContentList(contentMap.get(row.getTemplateId())));
             }
         }
         return page;
+    }
+
+    @Override
+    public boolean checkExists(Long templateId, String templateCode, Integer channelType) {
+        Long count = messageTemplateMapper.selectCountByTemplateAndChannel(templateId, templateCode, channelType);
+        return count != null && count > 0;
     }
 
     private void validateExists(Long id) {

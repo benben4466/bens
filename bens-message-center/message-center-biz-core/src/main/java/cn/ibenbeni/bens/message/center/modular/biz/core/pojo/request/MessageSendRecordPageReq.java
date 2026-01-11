@@ -17,6 +17,12 @@ public class MessageSendRecordPageReq extends PageParam {
     @Schema(description = "模板编码")
     private String templateCode;
 
+    @Schema(description = "业务类型")
+    private String bizType;
+
+    @Schema(description = "业务关联ID")
+    private String bizId;
+
     @Schema(description = "渠道类型")
     private Integer channelType;
 

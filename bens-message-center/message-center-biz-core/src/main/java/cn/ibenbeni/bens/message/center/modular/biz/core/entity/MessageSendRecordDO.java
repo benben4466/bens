@@ -30,6 +30,12 @@ public class MessageSendRecordDO extends BaseBusinessEntity {
     private Long recordId;
 
     /**
+     * 关联模板ID
+     */
+    @TableField("template_id")
+    private Long templateId;
+
+    /**
      * 模板编码
      */
     @TableField("template_code")
@@ -38,8 +44,32 @@ public class MessageSendRecordDO extends BaseBusinessEntity {
     /**
      * 模板内容
      */
-    @TableField("template_content")
+    @TableField(exist = false)
     private String templateContent;
+
+    /**
+     * 业务类型
+     */
+    @TableField("biz_type")
+    private String bizType;
+
+    /**
+     * 业务关联ID
+     */
+    @TableField("biz_id")
+    private String bizId;
+
+    /**
+     * 发送时的标题
+     */
+    @TableField("msg_title")
+    private String msgTitle;
+
+    /**
+     * 模板参数变量
+     */
+    @TableField(value = "msg_variables", typeHandler = JacksonTypeHandler.class)
+    private Map<String, Object> msgVariables;
 
     /**
      * 渠道类型
@@ -64,6 +94,12 @@ public class MessageSendRecordDO extends BaseBusinessEntity {
      */
     @TableField("send_status")
     private MsgSendStatusEnum sendStatus;
+
+    /**
+     * 重试次数
+     */
+    @TableField("retry_count")
+    private Integer retryCount;
 
     /**
      * 失败原因
