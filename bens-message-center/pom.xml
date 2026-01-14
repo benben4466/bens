@@ -24,6 +24,10 @@
         <module>message-center-business-notice</module>
         <!-- 消息中心模块-站内信 -->
         <module>message-center-business-notify</module>
+        <!-- 消息中心模块-消息接入层 -->
+        <module>message-center-access-layer</module>
+        <!-- 消息中心模块-消息处理层 -->
+        <module>message-center-handler</module>
         <!-- 消息中心模块-Starter -->
         <module>message-center-spring-boot-starter</module>
     </modules>

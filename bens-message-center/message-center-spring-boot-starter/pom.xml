@@ -37,6 +37,21 @@
             <artifactId>message-center-business-notify</artifactId>
             <version>${revision}</version>
         </dependency>
+
+        <!-- 消息中心模块-消息接入层 -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>message-center-access-layer</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- 消息中心模块-消息处理层 -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>message-center-handler</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
     </dependencies>
 
 </project>
