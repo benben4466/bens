@@ -1,24 +1,29 @@
 package cn.ibenbeni.bens.message.center.modular.biz.core.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
 import cn.ibenbeni.bens.message.center.modular.biz.core.entity.MessageTemplateContentDO;
 import cn.ibenbeni.bens.message.center.modular.biz.core.mapper.MessageTemplateContentMapper;
 import cn.ibenbeni.bens.message.center.modular.biz.core.pojo.request.MessageTemplateContentPageReq;
 import cn.ibenbeni.bens.message.center.modular.biz.core.pojo.request.MessageTemplateContentSaveReq;
+import cn.ibenbeni.bens.message.center.modular.biz.core.pojo.request.MessageTemplateChannelRelSaveReq;
+import cn.ibenbeni.bens.message.center.modular.biz.core.service.MessageTemplateChannelRelService;
+import cn.ibenbeni.bens.message.center.modular.biz.core.service.MessageTemplateContentService;
 import cn.ibenbeni.bens.message.center.modular.biz.core.service.MessageTemplateService;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import cn.ibenbeni.bens.message.center.api.exception.MessageCenterException;
 import cn.ibenbeni.bens.message.center.api.exception.enums.MessageCenterExceptionEnum;
-import cn.ibenbeni.bens.message.center.modular.biz.core.service.MessageTemplateContentService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class MessageTemplateContentServiceImpl implements MessageTemplateContentService {
@@ -30,12 +35,28 @@ public class MessageTemplateContentServiceImpl implements MessageTemplateContent
     @Resource
     private MessageTemplateService messageTemplateService;
 
+    @Resource
+    private MessageTemplateChannelRelService messageTemplateChannelRelService;
+
     @Override
     public Long create(MessageTemplateContentSaveReq req) {
         validateTemplateExists(req.getTemplateId());
         validateUnique(req.getTemplateId(), req.getChannelType(), null);
         MessageTemplateContentDO entity = BeanUtil.toBean(req, MessageTemplateContentDO.class);
         messageTemplateContentMapper.insert(entity);
+        
+        // 保存渠道配置关联关系
+        if (CollUtil.isNotEmpty(req.getChannelConfigIds())) {
+            List<MessageTemplateChannelRelSaveReq> relReqList = new ArrayList<>();
+            req.getChannelConfigIds().forEach(channelConfigId -> {
+                MessageTemplateChannelRelSaveReq relReq = new MessageTemplateChannelRelSaveReq();
+                relReq.setTemplateContentId(entity.getId());
+                relReq.setChannelConfigId(channelConfigId);
+                relReqList.add(relReq);
+            });
+            messageTemplateChannelRelService.createBatch(relReqList);
+        }
+        
         return entity.getId();
     }
 
@@ -50,21 +71,39 @@ public class MessageTemplateContentServiceImpl implements MessageTemplateContent
             validateUnique(req.getTemplateId(), req.getChannelType(), null);
             MessageTemplateContentDO entity = BeanUtil.toBean(req, MessageTemplateContentDO.class);
             messageTemplateContentMapper.insert(entity);
+
+            // 保存渠道配置关联关系
+            if (CollUtil.isNotEmpty(req.getChannelConfigIds())) {
+                List<MessageTemplateChannelRelSaveReq> relReqList = new ArrayList<>();
+                req.getChannelConfigIds().forEach(channelConfigId -> {
+                    MessageTemplateChannelRelSaveReq relReq = new MessageTemplateChannelRelSaveReq();
+                    relReq.setTemplateContentId(entity.getId());
+                    relReq.setChannelConfigId(channelConfigId);
+                    relReqList.add(relReq);
+                });
+                messageTemplateChannelRelService.createBatch(relReqList);
+            }
         });
     }
 
     @Override
+    @DSTransactional(rollbackFor = Exception.class)
     public void updateById(MessageTemplateContentSaveReq req) {
         validateExists(req.getId());
         validateTemplateExists(req.getTemplateId());
         validateUnique(req.getTemplateId(), req.getChannelType(), req.getId());
         MessageTemplateContentDO entity = BeanUtil.toBean(req, MessageTemplateContentDO.class);
         messageTemplateContentMapper.updateById(entity);
+
+        // 更新渠道配置关联关系
+        messageTemplateChannelRelService.updateRel(entity.getId(), req.getChannelConfigIds());
     }
 
     @Override
+    @DSTransactional(rollbackFor = Exception.class)
     public void deleteById(Long id) {
         validateExists(id);
+        messageTemplateChannelRelService.deleteByTemplateContentId(id);
         messageTemplateContentMapper.deleteById(id);
     }
 
@@ -75,22 +114,37 @@ public class MessageTemplateContentServiceImpl implements MessageTemplateContent
             return;
         }
         ids.forEach(this::validateExists);
-        messageTemplateContentMapper.deleteBatchIds(ids);
+        messageTemplateChannelRelService.deleteByTemplateContentIds(ids);
+        messageTemplateContentMapper.deleteByIds(ids);
     }
 
     @Override
+    @DSTransactional(rollbackFor = Exception.class)
     public void deleteByTemplateId(Long templateId) {
         if (templateId == null) {
             return;
+        }
+        // 先查出所有内容ID
+        List<MessageTemplateContentDO> contentList = messageTemplateContentMapper.listByTemplateId(templateId);
+        if (CollUtil.isNotEmpty(contentList)) {
+            Set<Long> contentIds = contentList.stream().map(MessageTemplateContentDO::getId).collect(Collectors.toSet());
+            messageTemplateChannelRelService.deleteByTemplateContentIds(contentIds);
         }
         messageTemplateContentMapper.delete(new LambdaQueryWrapper<MessageTemplateContentDO>()
                 .eq(MessageTemplateContentDO::getTemplateId, templateId));
     }
 
     @Override
+    @DSTransactional(rollbackFor = Exception.class)
     public void deleteByTemplateIds(Set<Long> templateIds) {
         if (templateIds == null || templateIds.isEmpty()) {
             return;
+        }
+        // 先查出所有内容ID
+        List<MessageTemplateContentDO> contentList = messageTemplateContentMapper.listByTemplateIds(templateIds);
+        if (CollUtil.isNotEmpty(contentList)) {
+            Set<Long> contentIds = contentList.stream().map(MessageTemplateContentDO::getId).collect(Collectors.toSet());
+            messageTemplateChannelRelService.deleteByTemplateContentIds(contentIds);
         }
         messageTemplateContentMapper.delete(new LambdaQueryWrapper<MessageTemplateContentDO>()
                 .in(MessageTemplateContentDO::getTemplateId, templateIds));

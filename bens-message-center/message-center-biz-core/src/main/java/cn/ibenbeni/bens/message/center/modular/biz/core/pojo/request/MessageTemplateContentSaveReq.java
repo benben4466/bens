@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import java.util.Map;
+import java.util.Set;
 
 @Data
 @Schema(description = "管理后台 - 消息模板内容创建/修改入参")
@@ -32,5 +33,9 @@ public class MessageTemplateContentSaveReq {
 
     @Schema(description = "渠道特定配置")
     private Map<String, Object> channelConfig;
+
+    @Schema(description = "渠道配置ID集合")
+    private Set<Long> channelConfigIds;
+
 }
 

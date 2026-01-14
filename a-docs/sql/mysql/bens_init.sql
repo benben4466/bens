@@ -675,6 +675,22 @@ CREATE TABLE `message_channel_config`
     UNIQUE KEY `idx_channel_code` (`channel_code`)
 ) COMMENT = '消息渠道配置表';
 
+DROP TABLE IF EXISTS `message_template_channel_rel`;
+CREATE TABLE `message_template_channel_rel`
+(
+    `id`                  bigint   NOT NULL COMMENT '主键',
+    `template_content_id` bigint   NOT NULL COMMENT '消息模板内容ID',
+    `channel_config_id`   bigint   NOT NULL COMMENT '渠道配置ID',
+    `version_flag`        bigint   NULL     DEFAULT NULL COMMENT '乐观锁',
+    `create_time`         datetime NULL     DEFAULT NULL COMMENT '创建时间',
+    `create_user`         bigint   NULL     DEFAULT NULL COMMENT '创建人',
+    `update_time`         datetime NULL     DEFAULT NULL COMMENT '更新时间',
+    `update_user`         bigint   NULL     DEFAULT NULL COMMENT '更新人',
+    `del_flag`            char(1)  NOT NULL DEFAULT 'N' COMMENT '删除标记',
+    `tenant_id`           bigint   NULL     DEFAULT NULL COMMENT '租户编号',
+    PRIMARY KEY (`id`)
+) COMMENT = '消息模板内容与渠道配置关系表';
+
 DROP TABLE IF EXISTS `message_send_record`;
 CREATE TABLE `message_send_record`
 (
