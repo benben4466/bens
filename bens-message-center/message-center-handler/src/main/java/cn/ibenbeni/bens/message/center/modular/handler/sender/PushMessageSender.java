@@ -1,8 +1,8 @@
-package cn.ibenbeni.bens.message.center.handler.sender;
+package cn.ibenbeni.bens.message.center.modular.handler.sender;
 
 import cn.ibenbeni.bens.message.center.api.enums.core.MsgPushChannelTypeEnum;
-import cn.ibenbeni.bens.message.center.handler.model.MessageHandleContext;
-import cn.ibenbeni.bens.message.center.handler.model.SendResult;
+import cn.ibenbeni.bens.message.center.modular.handler.model.MessageHandleContext;
+import cn.ibenbeni.bens.message.center.modular.handler.model.SendResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

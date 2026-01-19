@@ -1,4 +1,4 @@
-package cn.ibenbeni.bens.message.center.handler.config;
+package cn.ibenbeni.bens.message.center.modular.handler.config;
 
 import cn.ibenbeni.bens.message.center.common.config.MessageCenterProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

@@ -1,9 +1,9 @@
-package cn.ibenbeni.bens.message.center.handler.sender;
+package cn.ibenbeni.bens.message.center.modular.handler.sender;
 
 import cn.ibenbeni.bens.message.center.api.enums.core.MsgPushChannelTypeEnum;
-import cn.ibenbeni.bens.message.center.handler.extension.MessageChannelExtension;
-import cn.ibenbeni.bens.message.center.handler.model.MessageHandleContext;
-import cn.ibenbeni.bens.message.center.handler.model.SendResult;
+import cn.ibenbeni.bens.message.center.modular.handler.extension.MessageChannelExtension;
+import cn.ibenbeni.bens.message.center.modular.handler.model.MessageHandleContext;
+import cn.ibenbeni.bens.message.center.modular.handler.model.SendResult;
 
 /**
  * 渠道发送器接口

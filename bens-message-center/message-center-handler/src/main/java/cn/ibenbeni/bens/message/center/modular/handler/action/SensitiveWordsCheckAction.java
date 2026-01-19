@@ -1,6 +1,6 @@
-package cn.ibenbeni.bens.message.center.handler.action;
+package cn.ibenbeni.bens.message.center.modular.handler.action;
 
-import cn.ibenbeni.bens.message.center.handler.model.MessageHandleContext;
+import cn.ibenbeni.bens.message.center.modular.handler.model.MessageHandleContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

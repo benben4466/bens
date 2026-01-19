@@ -1,4 +1,4 @@
-package cn.ibenbeni.bens.message.center.handler.extension;
+package cn.ibenbeni.bens.message.center.modular.handler.extension;
 
 import cn.ibenbeni.bens.message.center.api.enums.core.MsgPushChannelTypeEnum;
 import lombok.extern.slf4j.Slf4j;

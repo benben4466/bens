@@ -1,8 +1,8 @@
-package cn.ibenbeni.bens.message.center.handler.extension;
+package cn.ibenbeni.bens.message.center.modular.handler.extension;
 
 import cn.ibenbeni.bens.message.center.api.enums.core.MsgPushChannelTypeEnum;
-import cn.ibenbeni.bens.message.center.handler.model.MessageHandleContext;
-import cn.ibenbeni.bens.message.center.handler.model.SendResult;
+import cn.ibenbeni.bens.message.center.modular.handler.model.MessageHandleContext;
+import cn.ibenbeni.bens.message.center.modular.handler.model.SendResult;
 
 import java.util.Map;
 

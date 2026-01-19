@@ -1,4 +1,4 @@
-package cn.ibenbeni.bens.message.center.handler.service;
+package cn.ibenbeni.bens.message.center.modular.handler.service;
 
 import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageQueuePayload;
 

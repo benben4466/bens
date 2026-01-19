@@ -1,7 +1,7 @@
-package cn.ibenbeni.bens.message.center.handler.consumer;
+package cn.ibenbeni.bens.message.center.modular.handler.consumer;
 
 import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageQueuePayload;
-import cn.ibenbeni.bens.message.center.handler.service.MessageHandlerService;
+import cn.ibenbeni.bens.message.center.modular.handler.service.MessageHandlerService;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;

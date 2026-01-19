@@ -1,4 +1,4 @@
-package cn.ibenbeni.bens.message.center.handler.idempotent;
+package cn.ibenbeni.bens.message.center.modular.handler.idempotent;
 
 import cn.ibenbeni.bens.message.center.common.config.MessageCenterProperties;
 import lombok.extern.slf4j.Slf4j;

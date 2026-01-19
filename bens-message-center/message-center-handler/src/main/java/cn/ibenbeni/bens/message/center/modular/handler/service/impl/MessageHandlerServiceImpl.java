@@ -1,13 +1,13 @@
-package cn.ibenbeni.bens.message.center.handler.service.impl;
+package cn.ibenbeni.bens.message.center.modular.handler.service.impl;
 
 import cn.ibenbeni.bens.message.center.api.MessageSendRecordApi;
 import cn.ibenbeni.bens.message.center.api.enums.core.MsgSendStatusEnum;
 import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageQueuePayload;
 import cn.ibenbeni.bens.message.center.common.chain.ChainProcessor;
-import cn.ibenbeni.bens.message.center.handler.action.MessageHandleAction;
-import cn.ibenbeni.bens.message.center.handler.idempotent.MessageIdempotentChecker;
-import cn.ibenbeni.bens.message.center.handler.model.MessageHandleContext;
-import cn.ibenbeni.bens.message.center.handler.service.MessageHandlerService;
+import cn.ibenbeni.bens.message.center.modular.handler.action.MessageHandleAction;
+import cn.ibenbeni.bens.message.center.modular.handler.idempotent.MessageIdempotentChecker;
+import cn.ibenbeni.bens.message.center.modular.handler.model.MessageHandleContext;
+import cn.ibenbeni.bens.message.center.modular.handler.service.MessageHandlerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

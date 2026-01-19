@@ -1,4 +1,4 @@
-package cn.ibenbeni.bens.message.center.handler.model;
+package cn.ibenbeni.bens.message.center.modular.handler.model;
 
 import cn.ibenbeni.bens.message.center.api.enums.core.MsgSendFailTypeEnum;
 import cn.ibenbeni.bens.message.center.common.chain.BaseChainContext;
