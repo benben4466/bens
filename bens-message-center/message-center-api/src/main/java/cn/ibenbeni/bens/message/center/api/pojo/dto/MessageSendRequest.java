@@ -1,5 +1,6 @@
 package cn.ibenbeni.bens.message.center.api.pojo.dto;
 
+import cn.ibenbeni.bens.message.center.api.enums.core.MsgRecipientTypeEnum;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
@@ -38,6 +39,7 @@ public class MessageSendRequest implements Serializable {
 
     /**
      * 接收者类型
+     * <p>枚举：{@link MsgRecipientTypeEnum}</p>
      */
     private Integer recipientType;
 
