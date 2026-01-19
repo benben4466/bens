@@ -42,8 +42,7 @@ public class MessageHandlerServiceImpl implements MessageHandlerService {
 
     @Override
     public boolean handleMessage(MessageQueuePayload payload) {
-        log.info("[MessageHandlerServiceImpl][开始处理消息][recordId: {}, channelType: {}]",
-                payload.getRecordId(), payload.getChannelType());
+        log.info("[MessageHandlerServiceImpl][开始处理消息][recordId: {}, channelType: {}]", payload.getRecordId(), payload.getChannelType());
 
         // 幂等性检查
         if (idempotentChecker != null) {
@@ -73,15 +72,14 @@ public class MessageHandlerServiceImpl implements MessageHandlerService {
                         context.getFailType(),
                         context.getFailReason()
                 );
-                log.error("[MessageHandlerServiceImpl][消息处理失败][recordId: {}, failReason: {}]",
-                        context.getRecordId(), context.getFailReason());
+                log.error("[MessageHandlerServiceImpl][消息处理失败][recordId: {}, failReason: {}]", context.getRecordId(), context.getFailReason());
                 return false;
             }
 
-        } catch (Exception e) {
-            log.error("[MessageHandlerServiceImpl][消息处理异常][recordId: {}]", payload.getRecordId(), e);
+        } catch (Exception ex) {
+            log.error("[MessageHandlerServiceImpl][消息处理异常][recordId: {}]", payload.getRecordId(), ex);
             try {
-                messageSendRecordApi.updateRecordFailed(payload.getRecordId(), null, e.getMessage());
+                messageSendRecordApi.updateRecordFailed(payload.getRecordId(), null, ex.getMessage());
             } catch (Exception updateEx) {
                 log.error("[MessageHandlerServiceImpl][更新记录状态失败]", updateEx);
             }

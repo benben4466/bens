@@ -78,12 +78,10 @@ public class MessageQueuePublishAction implements MessageSendAction {
                 String destination = topic + ":" + channelType;
                 rocketMQTemplate.convertAndSend(destination, JSON.toJSONString(payload));
 
-                log.info("[MessageQueuePublishAction][消息投递成功][recordId: {}, channelType: {}, destination: {}]",
-                        recordId, channelType, destination);
+                log.info("[MessageQueuePublishAction][消息投递成功][recordId: {}, channelType: {}, destination: {}]", recordId, channelType, destination);
 
-            } catch (Exception e) {
-                log.error("[MessageQueuePublishAction][消息投递失败][recordId: {}, channelType: {}]",
-                        recordId, channelType, e);
+            } catch (Exception ex) {
+                log.error("[MessageQueuePublishAction][消息投递失败][recordId: {}, channelType: {}]", recordId, channelType, ex);
                 throw new MessageCenterException(MessageCenterExceptionEnum.MESSAGE_QUEUE_SEND_FAIL);
             }
         }
@@ -95,4 +93,5 @@ public class MessageQueuePublishAction implements MessageSendAction {
     public int getOrder() {
         return 400;
     }
+
 }

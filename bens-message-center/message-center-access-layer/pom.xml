@@ -46,6 +46,14 @@
             <artifactId>validator-api</artifactId>
             <version>${revision}</version>
         </dependency>
+
+        <!-- 租户模块 -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>tenant-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
     </dependencies>
 
 </project>

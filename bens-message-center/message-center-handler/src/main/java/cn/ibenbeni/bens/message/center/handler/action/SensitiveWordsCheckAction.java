@@ -61,4 +61,5 @@ public class SensitiveWordsCheckAction implements MessageHandleAction {
         // 2. 接入阿里云/腾讯云内容安全服务
         return true;
     }
+
 }

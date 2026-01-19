@@ -37,8 +37,7 @@ public class MessageChannelManager {
                                     MessageChannelExtension::getSupportedChannel,
                                     Function.identity(),
                                     (existing, replacement) -> {
-                                        log.warn("[MessageChannelManager][渠道冲突，保留第一个][channel: {}]",
-                                                existing.getSupportedChannel());
+                                        log.warn("[MessageChannelManager][渠道冲突，保留第一个][channel: {}]", existing.getSupportedChannel());
                                         return existing;
                                     }
                             ))

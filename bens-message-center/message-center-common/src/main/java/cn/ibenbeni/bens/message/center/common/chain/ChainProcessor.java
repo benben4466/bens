@@ -1,5 +1,6 @@
 package cn.ibenbeni.bens.message.center.common.chain;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.List;
  * @author bens
  */
 @Slf4j
+@Getter
 public class ChainProcessor<T extends ChainContext> {
 
     /**
@@ -44,7 +46,8 @@ public class ChainProcessor<T extends ChainContext> {
                     chainName,
                     this.actions.stream()
                             .map(a -> a.getClass().getSimpleName() + "(" + a.getOrder() + ")")
-                            .toArray());
+                            .toArray()
+            );
         }
     }
 
@@ -64,51 +67,22 @@ public class ChainProcessor<T extends ChainContext> {
         for (ChainAction<T> action : actions) {
             // 检查是否中断
             if (context.isInterrupted()) {
-                log.warn("[ChainProcessor][{}][责任链中断][当前Action: {}, 错误信息: {}]",
-                        chainName,
-                        action.getClass().getSimpleName(),
-                        context.getErrorMessage());
+                log.warn("[ChainProcessor][{}][责任链中断][当前Action: {}, 错误信息: {}]", chainName, action.getClass().getSimpleName(), context.getErrorMessage());
                 break;
             }
 
-            log.debug("[ChainProcessor][{}][执行Action][Action: {}, Order: {}]",
-                    chainName,
-                    action.getClass().getSimpleName(),
-                    action.getOrder());
+            log.debug("[ChainProcessor][{}][执行Action][Action: {}, Order: {}]", chainName, action.getClass().getSimpleName(), action.getOrder());
 
             try {
                 action.execute(context);
-            } catch (Exception e) {
-                log.error("[ChainProcessor][{}][Action执行异常][Action: {}]",
-                        chainName,
-                        action.getClass().getSimpleName(),
-                        e);
-                context.interrupt("Action执行异常: " + e.getMessage());
+            } catch (Exception ex) {
+                log.error("[ChainProcessor][{}][Action执行异常][Action: {}]", chainName, action.getClass().getSimpleName(), ex);
+                context.interrupt("Action执行异常: " + ex.getMessage());
                 break;
             }
         }
 
-        log.debug("[ChainProcessor][{}][责任链执行完成][是否中断: {}]",
-                chainName,
-                context.isInterrupted());
-    }
-
-    /**
-     * 获取 Action 列表
-     *
-     * @return Action 列表
-     */
-    public List<ChainAction<T>> getActions() {
-        return actions;
-    }
-
-    /**
-     * 获取责任链名称
-     *
-     * @return 责任链名称
-     */
-    public String getChainName() {
-        return chainName;
+        log.debug("[ChainProcessor][{}][责任链执行完成][是否中断: {}]", chainName, context.isInterrupted());
     }
 
 }

@@ -46,9 +46,10 @@ public class MessageConsumer implements RocketMQListener<String> {
                 log.warn("[MessageConsumer][消息处理失败，可能触发重试][recordId: {}]", payload.getRecordId());
             }
 
-        } catch (Exception e) {
-            log.error("[MessageConsumer][消息处理异常]", e);
-            throw new RuntimeException("消息处理失败", e);
+        } catch (Exception ex) {
+            log.error("[MessageConsumer][消息处理异常]", ex);
+            throw new RuntimeException("消息处理失败", ex);
         }
     }
+
 }

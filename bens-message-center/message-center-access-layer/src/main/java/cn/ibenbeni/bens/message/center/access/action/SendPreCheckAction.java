@@ -64,8 +64,7 @@ public class SendPreCheckAction implements MessageSendAction {
         context.setTemplate(template);
         context.setChannels(channels);
 
-        log.info("[SendPreCheckAction][前置校验通过][templateCode: {}, channels: {}]",
-                context.getTemplateCode(), channels);
+        log.info("[SendPreCheckAction][前置校验通过][templateCode: {}, channels: {}]", context.getTemplateCode(), channels);
     }
 
     @Override

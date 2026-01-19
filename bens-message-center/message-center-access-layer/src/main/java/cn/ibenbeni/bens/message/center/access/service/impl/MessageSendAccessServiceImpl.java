@@ -8,6 +8,7 @@ import cn.ibenbeni.bens.message.center.api.exception.MessageCenterException;
 import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageSendRequest;
 import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageSendResponse;
 import cn.ibenbeni.bens.message.center.common.chain.ChainProcessor;
+import cn.ibenbeni.bens.tenant.api.context.TenantContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -78,7 +79,12 @@ public class MessageSendAccessServiceImpl implements MessageSendAccessService, M
         context.setRecipientType(request.getRecipientType());
         context.setRecipient(request.getRecipient());
         context.setChannels(request.getChannels());
-        // 租户ID可以从当前线程上下文获取，这里暂时不处理
+        try {
+            // 填充租户 ID
+            context.setTenantId(TenantContextHolder.getRequiredTenantId());
+        } catch (Exception ex) {
+        }
         return context;
     }
+
 }

@@ -30,8 +30,7 @@ public class EmailMessageSender implements MessageChannelSender {
 
     @Override
     public SendResult send(MessageHandleContext context) {
-        log.info("[EmailMessageSender][开始发送邮件][recordId: {}, recipient: {}]",
-                context.getRecordId(), context.getRecipient());
+        log.info("[EmailMessageSender][开始发送邮件][recordId: {}, recipient: {}]", context.getRecordId(), context.getRecipient());
 
         try {
             // 获取接收者邮箱
@@ -50,7 +49,7 @@ public class EmailMessageSender implements MessageChannelSender {
             } catch (Exception e) {
                 log.debug("[EmailMessageSender][获取SMS4J邮件配置失败]", e);
             }
-            
+
             if (smsBlend == null) {
                 log.warn("[EmailMessageSender][SMS4J邮件配置未找到，使用模拟发送]");
                 // 模拟发送成功
@@ -60,18 +59,16 @@ public class EmailMessageSender implements MessageChannelSender {
             SmsResponse response = smsBlend.sendMessage(email, context.getMessageContent());
 
             if (response.isSuccess()) {
-                log.info("[EmailMessageSender][邮件发送成功][recordId: {}, email: {}]",
-                        context.getRecordId(), email);
+                log.info("[EmailMessageSender][邮件发送成功][recordId: {}, email: {}]", context.getRecordId(), email);
                 return SendResult.success(String.valueOf(System.currentTimeMillis()), "邮件发送成功");
             } else {
-                log.error("[EmailMessageSender][邮件发送失败][recordId: {}, error: {}]",
-                        context.getRecordId(), response.getData());
+                log.error("[EmailMessageSender][邮件发送失败][recordId: {}, error: {}]", context.getRecordId(), response.getData());
                 return SendResult.fail("SEND_FAILED", String.valueOf(response.getData()));
             }
 
-        } catch (Exception e) {
-            log.error("[EmailMessageSender][邮件发送异常][recordId: {}]", context.getRecordId(), e);
-            return SendResult.fail("SEND_ERROR", e.getMessage());
+        } catch (Exception ex) {
+            log.error("[EmailMessageSender][邮件发送异常][recordId: {}]", context.getRecordId(), ex);
+            return SendResult.fail("SEND_ERROR", ex.getMessage());
         }
     }
 

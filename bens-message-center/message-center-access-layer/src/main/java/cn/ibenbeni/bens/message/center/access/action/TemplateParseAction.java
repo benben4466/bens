@@ -78,7 +78,7 @@ public class TemplateParseAction implements MessageSendAction {
         if (params == null || params.isEmpty()) {
             return template;
         }
-        // 使用 Hutool 的 StrUtil.format 进行变量替换
+
         return StrUtil.format(template, params);
     }
 

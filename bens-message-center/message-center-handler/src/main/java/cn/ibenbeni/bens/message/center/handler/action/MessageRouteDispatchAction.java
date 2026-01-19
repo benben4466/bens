@@ -24,8 +24,7 @@ public class MessageRouteDispatchAction implements MessageHandleAction {
 
     @Override
     public void execute(MessageHandleContext context) {
-        log.info("[MessageRouteDispatchAction][开始路由分发][recordId: {}, channelType: {}]",
-                context.getRecordId(), context.getChannelType());
+        log.info("[MessageRouteDispatchAction][开始路由分发][recordId: {}, channelType: {}]", context.getRecordId(), context.getChannelType());
 
         // 转换渠道类型
         MsgPushChannelTypeEnum channelType;
