@@ -84,4 +84,12 @@ public interface MessageTemplateChannelRelService {
      */
     PageResult<MessageTemplateChannelRelDO> page(MessageTemplateChannelRelPageReq req);
 
+    /**
+     * 根据模板内容ID获取关联关系列表
+     *
+     * @param templateContentId 模板内容ID
+     * @return 关联关系列表
+     */
+    List<MessageTemplateChannelRelDO> listByTemplateContentId(Long templateContentId);
+
 }

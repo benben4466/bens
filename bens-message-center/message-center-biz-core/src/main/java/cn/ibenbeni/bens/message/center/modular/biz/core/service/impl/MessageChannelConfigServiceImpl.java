@@ -1,6 +1,7 @@
 package cn.ibenbeni.bens.message.center.modular.biz.core.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
 import cn.ibenbeni.bens.message.center.api.exception.MessageCenterException;
 import cn.ibenbeni.bens.message.center.api.exception.enums.MessageCenterExceptionEnum;
@@ -9,11 +10,14 @@ import cn.ibenbeni.bens.message.center.modular.biz.core.mapper.MessageChannelCon
 import cn.ibenbeni.bens.message.center.modular.biz.core.pojo.request.MessageChannelConfigPageReq;
 import cn.ibenbeni.bens.message.center.modular.biz.core.pojo.request.MessageChannelConfigSaveReq;
 import cn.ibenbeni.bens.message.center.modular.biz.core.service.MessageChannelConfigService;
+import cn.ibenbeni.bens.rule.enums.StatusEnum;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -65,20 +69,32 @@ public class MessageChannelConfigServiceImpl implements MessageChannelConfigServ
         return messageChannelConfigMapper.page(req);
     }
 
+    @Override
+    public MessageChannelConfigDO getByChannelType(Integer channelType) {
+        return messageChannelConfigMapper.selectOne(new LambdaQueryWrapper<MessageChannelConfigDO>()
+                .eq(MessageChannelConfigDO::getChannelType, channelType)
+                .eq(MessageChannelConfigDO::getStatusFlag, StatusEnum.ENABLE)
+                .last("LIMIT 1"));
+    }
+
+    @Override
+    public List<MessageChannelConfigDO> listAvailableByChannelType(Integer channelType) {
+        return messageChannelConfigMapper.selectList(new LambdaQueryWrapper<MessageChannelConfigDO>()
+                .eq(MessageChannelConfigDO::getChannelType, channelType)
+                .eq(MessageChannelConfigDO::getStatusFlag, StatusEnum.ENABLE));
+    }
+
+    @Override
+    public List<MessageChannelConfigDO> listByIds(Set<Long> configIds) {
+        if (CollUtil.isEmpty(configIds)) {
+            return Collections.emptyList();
+        }
+        return messageChannelConfigMapper.selectBatchIds(configIds);
+    }
+
     private void validateExists(Long id) {
         if (id == null || messageChannelConfigMapper.selectById(id) == null) {
-            // 这里可能需要新的异常枚举，暂时复用通用异常或抛出运行时异常，或者假设有类似的枚举
-            // 假设 MessageCenterExceptionEnum 中有 CONFIG_NOT_EXIST，如果没有，可能需要新增。
-            // 为了安全起见，先用 RuntimeException 或者检查 Enum 是否有 CONFIG 相关
-            // 检查之前的文件内容，并没有 CONFIG 相关的枚举。我应该新增一个，但为了避免修改 api 模块导致其他问题，
-            // 这里先抛出一个通用的 MessageCenterException，如果有 CONFIG_NOT_EXIST 就用，没有就临时用别的。
-            // 稳妥起见，我先不抛特定枚举，或者创建一个新的 ExceptionEnum。
-            // 之前的任务中有“扩展 MessageCenterExceptionEnum 新增模板相关枚举”，这里我可能需要新增 CONFIG 相关。
-            // 但用户没说要改 ExceptionEnum。
-            // 我先抛出一个 MessageCenterException，message 用字符串。
-             throw new MessageCenterException(MessageCenterExceptionEnum.TEMPLATE_NOT_EXIST); // 暂时借用，或者新建
-             // 实际上应该去 MessageCenterExceptionEnum 看看有没有适合的，或者加一个。
-             // 我决定加两个枚举值：CHANNEL_CONFIG_NOT_EXIST, CHANNEL_CODE_DUPLICATE
+            throw new MessageCenterException(MessageCenterExceptionEnum.CHANNEL_CONFIG_NOT_EXIST);
         }
     }
 
@@ -86,7 +102,7 @@ public class MessageChannelConfigServiceImpl implements MessageChannelConfigServ
         MessageChannelConfigDO exists = messageChannelConfigMapper.selectOne(new LambdaQueryWrapper<MessageChannelConfigDO>()
                 .eq(MessageChannelConfigDO::getChannelCode, code));
         if (exists != null && !Objects.equals(exists.getConfigId(), id)) {
-             throw new MessageCenterException(MessageCenterExceptionEnum.TEMPLATE_CODE_DUPLICATE); // 暂时借用
+            throw new MessageCenterException(MessageCenterExceptionEnum.TEMPLATE_CODE_DUPLICATE);
         }
     }
 }

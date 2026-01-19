@@ -91,5 +91,14 @@ public interface MessageTemplateContentService {
      */
     PageResult<MessageTemplateContentDO> page(MessageTemplateContentPageReq req);
 
+    /**
+     * 根据模板ID和渠道类型查询内容
+     *
+     * @param templateId  模板ID
+     * @param channelType 渠道类型
+     * @return 模板内容
+     */
+    MessageTemplateContentDO getByTemplateIdAndChannelType(Long templateId, Integer channelType);
+
 }
 

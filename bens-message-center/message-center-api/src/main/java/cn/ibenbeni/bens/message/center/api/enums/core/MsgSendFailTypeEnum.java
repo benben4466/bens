@@ -13,6 +13,11 @@ import lombok.Getter;
 public enum MsgSendFailTypeEnum {
 
     MSG_TEMPLATE_NOT_EXIST(0, "消息模板/渠道不存在"),
+    CHANNEL_NOT_SUPPORT(1, "不支持的渠道类型"),
+    CHANNEL_NOT_AVAILABLE(2, "渠道不可用"),
+    CHANNEL_SEND_FAIL(3, "渠道发送失败"),
+    SENSITIVE_WORD_DETECTED(4, "包含敏感词"),
+    SYSTEM_ERROR(5, "系统错误"),
 
     ;
 

@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 
 @Slf4j
 @Service
@@ -37,6 +38,7 @@ public class MessageSendRecordServiceImpl implements MessageSendRecordService {
 
         // 填充默认值
         saveDO.setSendStatus(MsgSendStatusEnum.PENDING); // 待发送
+        saveDO.setRetryCount(0);
 
         messageSendRecordMapper.insert(saveDO);
         return saveDO.getRecordId();
@@ -50,6 +52,45 @@ public class MessageSendRecordServiceImpl implements MessageSendRecordService {
     @Override
     public PageResult<MessageSendRecordDO> page(MessageSendRecordPageReq req) {
         return messageSendRecordMapper.page(req);
+    }
+
+    @Override
+    public void updateRecordStatus(Long recordId, MsgSendStatusEnum status, String responseData) {
+        MessageSendRecordDO record = messageSendRecordMapper.selectById(recordId);
+        if (record == null) {
+            log.error("[updateRecordStatus][记录不存在][recordId: {}]", recordId);
+            return;
+        }
+        record.setSendStatus(status);
+        record.setResponseData(responseData);
+        if (MsgSendStatusEnum.SUCCESS.equals(status)) {
+            record.setSendTime(LocalDateTime.now());
+        }
+        messageSendRecordMapper.updateById(record);
+    }
+
+    @Override
+    public void updateRecordFailed(Long recordId, MsgSendFailTypeEnum failType, String failReason) {
+        MessageSendRecordDO record = messageSendRecordMapper.selectById(recordId);
+        if (record == null) {
+            log.error("[updateRecordFailed][记录不存在][recordId: {}]", recordId);
+            return;
+        }
+        record.setSendStatus(MsgSendStatusEnum.FAILED);
+        record.setFailType(failType);
+        record.setFailReason(failReason);
+        messageSendRecordMapper.updateById(record);
+    }
+
+    @Override
+    public void increaseRetryCount(Long recordId) {
+        MessageSendRecordDO record = messageSendRecordMapper.selectById(recordId);
+        if (record == null) {
+            log.error("[increaseRetryCount][记录不存在][recordId: {}]", recordId);
+            return;
+        }
+        record.setRetryCount(record.getRetryCount() == null ? 1 : record.getRetryCount() + 1);
+        messageSendRecordMapper.updateById(record);
     }
 
 }

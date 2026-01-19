@@ -13,10 +13,37 @@
     <description>消息中心-消息接入层</description>
 
     <dependencies>
+        <!-- 消息中心-通用组件 -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>message-center-common</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
         <!-- 消息中心-API -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
             <artifactId>message-center-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- RocketMQ -->
+        <dependency>
+            <groupId>org.apache.rocketmq</groupId>
+            <artifactId>rocketmq-spring-boot-starter</artifactId>
+            <version>${rocketmq-spring.version}</version>
+        </dependency>
+
+        <!-- Spring Boot -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <!-- 校验模块 -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>validator-api</artifactId>
             <version>${revision}</version>
         </dependency>
     </dependencies>

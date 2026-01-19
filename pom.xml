@@ -92,6 +92,8 @@
         <dynamic-datasource.version>4.3.1</dynamic-datasource.version>
         <mybatis-plus-join.version>1.4.13</mybatis-plus-join.version>
         <taos.version>3.7.3</taos.version>
+        <!-- SMS4J -->
+        <sms4j.version>3.3.5</sms4j.version>
     </properties>
 
     <dependencyManagement>
@@ -263,6 +265,13 @@
                 <groupId>org.apache.rocketmq</groupId>
                 <artifactId>rocketmq-spring-boot-starter</artifactId>
                 <version>${rocketmq-spring.version}</version>
+            </dependency>
+
+            <!-- SMS4J -->
+            <dependency>
+                <groupId>org.dromara.sms4j</groupId>
+                <artifactId>sms4j-spring-boot-starter</artifactId>
+                <version>${sms4j.version}</version>
             </dependency>
 
             <!-- Vert.x -->

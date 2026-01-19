@@ -117,6 +117,15 @@ public class MessageTemplateChannelRelServiceImpl implements MessageTemplateChan
         return messageTemplateChannelRelMapper.page(req);
     }
 
+    @Override
+    public List<MessageTemplateChannelRelDO> listByTemplateContentId(Long templateContentId) {
+        if (templateContentId == null) {
+            return new ArrayList<>();
+        }
+        return messageTemplateChannelRelMapper.selectList(new LambdaQueryWrapper<MessageTemplateChannelRelDO>()
+                .eq(MessageTemplateChannelRelDO::getTemplateContentId, templateContentId));
+    }
+
     private void validateExists(Long id) {
         if (id == null || messageTemplateChannelRelMapper.selectById(id) == null) {
             // 这里可能需要新增一个特定的异常枚举，暂时使用通用异常或者复用

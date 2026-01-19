@@ -170,6 +170,11 @@ public class MessageTemplateContentServiceImpl implements MessageTemplateContent
         return messageTemplateContentMapper.page(req);
     }
 
+    @Override
+    public MessageTemplateContentDO getByTemplateIdAndChannelType(Long templateId, Integer channelType) {
+        return messageTemplateContentMapper.selectByTemplateIdAndChannelType(templateId, channelType);
+    }
+
     private void validateTemplateExists(Long templateId) {
         if (templateId == null || messageTemplateService.getById(templateId) == null) {
             throw new MessageCenterException(MessageCenterExceptionEnum.TEMPLATE_NOT_EXIST);
