@@ -9,6 +9,7 @@ import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageSendRequest;
 import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageSendResponse;
 import cn.ibenbeni.bens.message.center.common.chain.ChainProcessor;
 import cn.ibenbeni.bens.tenant.api.context.TenantContextHolder;
+import cn.ibenbeni.bens.tenant.api.util.TenantUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +48,12 @@ public class MessageSendAccessServiceImpl implements MessageSendAccessService, M
             MessageSendContext context = buildContext(request);
 
             // 2. 执行责任链
-            chainProcessor.execute(context);
+            // 若是系统发送，则忽略租户上下文执行（避免 MyBatis 拦截器自动拼接 tenant_id）
+            if (Boolean.TRUE.equals(request.getIsSysSend())) {
+                TenantUtils.executeIgnore(() -> chainProcessor.execute(context));
+            } else {
+                chainProcessor.execute(context);
+            }
 
             // 3. 检查是否中断
             if (context.isInterrupted()) {
@@ -79,10 +85,11 @@ public class MessageSendAccessServiceImpl implements MessageSendAccessService, M
         context.setRecipientType(request.getRecipientType());
         context.setRecipient(request.getRecipient());
         context.setChannels(request.getChannels());
-        try {
+
+        // 系统发送不用填充租户 ID
+        if (!Boolean.TRUE.equals(request.getIsSysSend())) {
             // 填充租户 ID
             context.setTenantId(TenantContextHolder.getRequiredTenantId());
-        } catch (Exception ex) {
         }
         return context;
     }

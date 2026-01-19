@@ -55,4 +55,11 @@ public class MessageSendRequest implements Serializable {
      */
     private List<Integer> channels;
 
+    /**
+     * 是否系统发送
+     * <p>若为 true，则不用</p>
+     * <p>注意：此参数不能暴露给用户</p>
+     */
+    private Boolean isSysSend;
+
 }
