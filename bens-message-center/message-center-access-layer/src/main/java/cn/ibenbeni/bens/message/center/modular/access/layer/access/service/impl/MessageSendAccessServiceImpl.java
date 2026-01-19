@@ -1,8 +1,8 @@
-package cn.ibenbeni.bens.message.center.access.service.impl;
+package cn.ibenbeni.bens.message.center.modular.access.layer.access.service.impl;
 
-import cn.ibenbeni.bens.message.center.access.action.MessageSendAction;
-import cn.ibenbeni.bens.message.center.access.model.MessageSendContext;
-import cn.ibenbeni.bens.message.center.access.service.MessageSendAccessService;
+import cn.ibenbeni.bens.message.center.modular.access.layer.access.action.MessageSendAction;
+import cn.ibenbeni.bens.message.center.modular.access.layer.access.model.MessageSendContext;
+import cn.ibenbeni.bens.message.center.modular.access.layer.access.service.MessageSendAccessService;
 import cn.ibenbeni.bens.message.center.api.MessageSendApi;
 import cn.ibenbeni.bens.message.center.api.exception.MessageCenterException;
 import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageSendRequest;

@@ -1,4 +1,4 @@
-package cn.ibenbeni.bens.message.center.access.service;
+package cn.ibenbeni.bens.message.center.modular.access.layer.access.service;
 
 import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageSendRequest;
 import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageSendResponse;

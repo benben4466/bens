@@ -1,9 +1,9 @@
-package cn.ibenbeni.bens.message.center.access.action;
+package cn.ibenbeni.bens.message.center.modular.access.layer.access.action;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.ibenbeni.bens.message.center.access.model.MessageSendContext;
+import cn.ibenbeni.bens.message.center.modular.access.layer.access.model.MessageSendContext;
 import cn.ibenbeni.bens.message.center.api.MessageTemplateApi;
 import cn.ibenbeni.bens.message.center.api.exception.MessageCenterException;
 import cn.ibenbeni.bens.message.center.api.exception.enums.MessageCenterExceptionEnum;

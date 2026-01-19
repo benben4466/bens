@@ -1,7 +1,7 @@
-package cn.ibenbeni.bens.message.center.access.action;
+package cn.ibenbeni.bens.message.center.modular.access.layer.access.action;
 
 import cn.hutool.core.util.StrUtil;
-import cn.ibenbeni.bens.message.center.access.model.MessageSendContext;
+import cn.ibenbeni.bens.message.center.modular.access.layer.access.model.MessageSendContext;
 import cn.ibenbeni.bens.message.center.api.MessageTemplateApi;
 import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageTemplateContentDTO;
 import lombok.extern.slf4j.Slf4j;

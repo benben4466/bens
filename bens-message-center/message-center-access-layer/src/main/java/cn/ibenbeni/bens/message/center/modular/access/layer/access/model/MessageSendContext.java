@@ -1,4 +1,4 @@
-package cn.ibenbeni.bens.message.center.access.model;
+package cn.ibenbeni.bens.message.center.modular.access.layer.access.model;
 
 import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageTemplateDTO;
 import cn.ibenbeni.bens.message.center.common.chain.BaseChainContext;

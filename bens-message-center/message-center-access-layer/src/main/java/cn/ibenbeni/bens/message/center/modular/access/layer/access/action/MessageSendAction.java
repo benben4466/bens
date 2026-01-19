@@ -1,6 +1,6 @@
-package cn.ibenbeni.bens.message.center.access.action;
+package cn.ibenbeni.bens.message.center.modular.access.layer.access.action;
 
-import cn.ibenbeni.bens.message.center.access.model.MessageSendContext;
+import cn.ibenbeni.bens.message.center.modular.access.layer.access.model.MessageSendContext;
 import cn.ibenbeni.bens.message.center.common.chain.ChainAction;
 
 /**
