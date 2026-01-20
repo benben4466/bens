@@ -32,6 +32,9 @@ build/
 ### VS Code ###
 .vscode/
 
+### Trae ###
+.trae/
+
+
 ### ignore file ###
 .flattened-pom.xml
-!/.trae/
