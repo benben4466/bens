@@ -13,12 +13,12 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 
 /**
- * 消息队列投递 Action (接入层 -> 拆分层)
+ * 消息发送任务投递 Action (接入层 -> 拆分层)
  * 职责: 将任务信息投递到拆分队列
  */
 @Slf4j
 @Component
-public class MessageQueuePublishAction implements MessageSendAction {
+public class MessageSendTaskPublishAction implements MessageSendAction {
 
     @Resource
     private RocketMQTemplate rocketMQTemplate;
@@ -28,11 +28,11 @@ public class MessageQueuePublishAction implements MessageSendAction {
 
     @Override
     public void execute(MessageSendContext context) {
-        log.info("[MessageQueuePublishAction][开始投递任务到拆分队列][taskId: {}]", context.getTaskId());
+        log.info("[MessageSendTaskPublishAction][开始投递任务到拆分队列][taskId: {}]", context.getTaskId());
 
         // 校验 TaskID 是否存在
         if (context.getTaskId() == null) {
-            log.error("[MessageQueuePublishAction][任务ID为空，无法投递]");
+            log.error("[MessageSendTaskPublishAction][任务ID为空，无法投递]");
             context.interrupt("任务ID为空");
             return;
         }
@@ -53,10 +53,10 @@ public class MessageQueuePublishAction implements MessageSendAction {
             // 投递到拆分队列
             rocketMQTemplate.convertAndSend(splitTopic, JSON.toJSONString(payload));
 
-            log.info("[MessageQueuePublishAction][投递拆分任务成功][taskId: {}]", context.getTaskId());
+            log.info("[MessageSendTaskPublishAction][投递拆分任务成功][taskId: {}]", context.getTaskId());
 
         } catch (Exception ex) {
-            log.error("[MessageQueuePublishAction][投递拆分任务失败][taskId: {}]", context.getTaskId(), ex);
+            log.error("[MessageSendTaskPublishAction][投递拆分任务失败][taskId: {}]", context.getTaskId(), ex);
             throw new MessageCenterException(MessageCenterExceptionEnum.MESSAGE_QUEUE_SEND_FAIL);
         }
     }
