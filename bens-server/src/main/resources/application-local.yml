@@ -29,3 +29,47 @@ rocketmq:
   name-server: 127.0.0.1:9876
   producer:
     group: ${spring.application.name}_PRODUCER # 生产者分组
+
+
+bens:
+  message-center:
+    # MQ 队列配置
+    queue:
+      topic: MESSAGE_CENTER_SEND_TOPIC  # 发送队列 Topic，默认为 MESSAGE_CENTER_SEND_TOPIC
+      consumer-threads: 4               # 消费者线程数，默认为 4
+      max-retry: 3                      # 最大重试次数，默认为 3
+      timeout: 30000                    # 超时时间（毫秒），默认为 30000
+    # 渠道配置
+    channels:
+      # 邮件渠道
+      email:
+        enabled: false                  # 是否启用，默认为 false
+        supplier: MAIL                  # 供应商标识，默认为 MAIL
+        timeout: 30000                  # 超时时间（毫秒），默认为 30000
+        qps: 100.0                      # QPS 限制，默认为 100.0
+      # 短信渠道
+      sms:
+        enabled: false                  # 是否启用，默认为 false
+        supplier: aliyun                # 供应商标识，默认为 aliyun
+        timeout: 10000                  # 超时时间（毫秒），默认为 10000
+        qps: 50.0                       # QPS 限制，默认为 50.0
+      # 推送渠道 (App Push)
+      push:
+        enabled: false                  # 是否启用，默认为 false
+        supplier: jpush                 # 供应商标识，默认为 jpush
+        timeout: 10000                  # 超时时间（毫秒），默认为 10000
+        qps: 1000.0                     # QPS 限制，默认为 1000.0
+      # 站内信渠道
+      letter:
+        enabled: true                   # 是否启用，默认为 true
+        qps: 500.0                      # QPS 限制，默认为 500.0
+    # 敏感词配置
+    sensitive:
+      enabled: true                     # 是否启用敏感词过滤，默认为 true
+      provider: local                   # 实现提供者，默认为 local
+      timeout: 5000                     # 检查超时时间（毫秒），默认为 5000
+    # 幂等性配置
+    idempotent:
+      enabled: true                     # 是否启用幂等检查，默认为 true
+      key-prefix: "msg:idempotent:"     # Redis Key 前缀，默认为 msg:idempotent:
+      expire-seconds: 3600              # 过期时间（秒），默认为 3600
