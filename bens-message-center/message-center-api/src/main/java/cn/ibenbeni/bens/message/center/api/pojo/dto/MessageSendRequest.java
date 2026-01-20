@@ -28,11 +28,6 @@ public class MessageSendRequest implements Serializable {
     private Map<String, Object> templateParams;
 
     /**
-     * 业务ID
-     */
-    private String bizId;
-
-    /**
      * 接收者类型
      * <p>枚举：{@link MsgRecipientTypeEnum}</p>
      */

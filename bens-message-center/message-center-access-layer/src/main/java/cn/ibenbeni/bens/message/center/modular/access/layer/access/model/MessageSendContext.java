@@ -30,6 +30,7 @@ public class MessageSendContext extends BaseChainContext {
 
     /**
      * 业务ID
+     * <p>回执ID</p>
      */
     private String bizId;
 

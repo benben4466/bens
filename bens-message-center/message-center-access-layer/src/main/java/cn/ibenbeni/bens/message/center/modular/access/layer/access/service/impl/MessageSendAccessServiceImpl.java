@@ -1,5 +1,6 @@
 package cn.ibenbeni.bens.message.center.modular.access.layer.access.service.impl;
 
+import cn.ibenbeni.bens.message.center.common.util.MessageUniqueIdUtils;
 import cn.ibenbeni.bens.message.center.modular.access.layer.access.action.MessageSendAction;
 import cn.ibenbeni.bens.message.center.modular.access.layer.access.model.MessageSendContext;
 import cn.ibenbeni.bens.message.center.modular.access.layer.access.service.MessageSendAccessService;
@@ -80,7 +81,7 @@ public class MessageSendAccessServiceImpl implements MessageSendAccessService, M
         MessageSendContext context = new MessageSendContext();
         context.setTemplateCode(request.getTemplateCode());
         context.setTemplateParams(request.getTemplateParams());
-        context.setBizId(request.getBizId());
+        context.setBizId(MessageUniqueIdUtils.generateBizId()); // bizId 纯数字
         context.setRecipientType(request.getRecipientType());
         context.setRecipient(request.getRecipient());
         context.setChannels(request.getChannels());
