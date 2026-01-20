@@ -1,8 +1,9 @@
 package cn.ibenbeni.bens.message.center.modular.execute.service.impl;
 
-import cn.ibenbeni.bens.message.center.api.MessageSendRecordApi;
-import cn.ibenbeni.bens.message.center.api.enums.core.MsgSendStatusEnum;
+import cn.ibenbeni.bens.message.center.api.MessageSendDetailApi;
+import cn.ibenbeni.bens.message.center.api.enums.core.MessageDetailStatusEnum;
 import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageQueuePayload;
+import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageSendDetailDTO;
 import cn.ibenbeni.bens.message.center.common.chain.ChainProcessor;
 import cn.ibenbeni.bens.message.center.modular.execute.action.MessageHandleAction;
 import cn.ibenbeni.bens.message.center.modular.execute.idempotent.MessageIdempotentChecker;
@@ -24,7 +25,7 @@ public class MessageHandlerServiceImpl implements MessageHandlerService {
     private List<MessageHandleAction> actions;
 
     @Resource
-    private MessageSendRecordApi messageSendRecordApi;
+    private MessageSendDetailApi messageSendDetailApi;
 
     @Autowired(required = false)
     private MessageIdempotentChecker idempotentChecker;
@@ -59,19 +60,25 @@ public class MessageHandlerServiceImpl implements MessageHandlerService {
             chainProcessor.execute(context);
 
             if (context.isSuccess()) {
-                messageSendRecordApi.updateRecordStatus(
-                        context.getRecordId(),
-                        MsgSendStatusEnum.SUCCESS,
-                        context.getResponseData()
-                );
+                // 更新 Detail 状态
+                MessageSendDetailDTO detail = new MessageSendDetailDTO();
+                detail.setId(context.getRecordId());
+                detail.setSendStatus(MessageDetailStatusEnum.SUCCESS);
+                detail.setOutSerialNumber(String.valueOf(context.getResponseData())); // 假设 ResponseData 是 SerialNum
+                detail.setFinishTime(new java.util.Date());
+                messageSendDetailApi.updateDetail(detail);
+
                 log.info("[MessageHandlerServiceImpl][消息处理成功][recordId: {}]", context.getRecordId());
                 return true;
             } else {
-                messageSendRecordApi.updateRecordFailed(
-                        context.getRecordId(),
-                        context.getFailType(),
-                        context.getFailReason()
-                );
+                // 更新 Detail 失败
+                MessageSendDetailDTO detail = new MessageSendDetailDTO();
+                detail.setId(context.getRecordId());
+                detail.setSendStatus(MessageDetailStatusEnum.FAIL);
+                detail.setOutResp(context.getFailReason());
+                detail.setFinishTime(new java.util.Date());
+                messageSendDetailApi.updateDetail(detail);
+
                 log.error("[MessageHandlerServiceImpl][消息处理失败][recordId: {}, failReason: {}]", context.getRecordId(), context.getFailReason());
                 return false;
             }
@@ -79,7 +86,11 @@ public class MessageHandlerServiceImpl implements MessageHandlerService {
         } catch (Exception ex) {
             log.error("[MessageHandlerServiceImpl][消息处理异常][recordId: {}]", payload.getRecordId(), ex);
             try {
-                messageSendRecordApi.updateRecordFailed(payload.getRecordId(), null, ex.getMessage());
+                MessageSendDetailDTO detail = new MessageSendDetailDTO();
+                detail.setId(payload.getRecordId());
+                detail.setSendStatus(MessageDetailStatusEnum.FAIL);
+                detail.setOutResp(ex.getMessage());
+                messageSendDetailApi.updateDetail(detail);
             } catch (Exception updateEx) {
                 log.error("[MessageHandlerServiceImpl][更新记录状态失败]", updateEx);
             }

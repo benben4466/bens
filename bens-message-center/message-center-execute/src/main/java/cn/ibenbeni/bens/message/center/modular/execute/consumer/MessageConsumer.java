@@ -17,8 +17,8 @@ import javax.annotation.Resource;
 @Slf4j
 @Component
 @RocketMQMessageListener(
-        topic = "${bens.message-center.send.topic:MESSAGE_CENTER_SEND_TOPIC}",
-        consumerGroup = "${bens.message-center.send.consumer-group:MESSAGE_CENTER_SEND_CONSUMER_GROUP}",
+        topic = "${bens.message-center.execute.topic:MESSAGE_CENTER_EXECUTE_TOPIC}",
+        consumerGroup = "${bens.message-center.execute.consumer-group:MESSAGE_CENTER_EXECUTE_CONSUMER_GROUP}",
         selectorExpression = "*"
 )
 public class MessageConsumer implements RocketMQListener<String> {

@@ -1,9 +1,9 @@
 package cn.ibenbeni.bens.message.center.modular.access.layer.access.action;
 
-import cn.ibenbeni.bens.message.center.modular.access.layer.access.model.MessageSendContext;
 import cn.ibenbeni.bens.message.center.api.exception.MessageCenterException;
 import cn.ibenbeni.bens.message.center.api.exception.enums.MessageCenterExceptionEnum;
-import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageQueuePayload;
+import cn.ibenbeni.bens.message.center.api.pojo.dto.TaskSplitPayload;
+import cn.ibenbeni.bens.message.center.modular.access.layer.access.model.MessageSendContext;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
@@ -11,12 +11,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.Map;
 
 /**
- * 消息队列投递 Action
- * 职责: 将已创建记录的消息投递到 RocketMQ 队列
+ * 消息队列投递 Action (接入层 -> 拆分层)
+ * 职责: 将任务信息投递到拆分队列
  */
 @Slf4j
 @Component
@@ -25,68 +23,43 @@ public class MessageQueuePublishAction implements MessageSendAction {
     @Resource
     private RocketMQTemplate rocketMQTemplate;
 
-    @Value("${bens.message-center.send.topic:MESSAGE_CENTER_SEND_TOPIC}")
-    private String topic;
+    @Value("${bens.message-center.split.topic:MESSAGE_CENTER_SPLIT_TOPIC}")
+    private String splitTopic;
 
     @Override
     public void execute(MessageSendContext context) {
-        log.info("[MessageQueuePublishAction][开始投递消息到MQ][templateCode: {}]", context.getTemplateCode());
+        log.info("[MessageQueuePublishAction][开始投递任务到拆分队列][taskId: {}]", context.getTaskId());
 
-        List<Long> recordIds = context.getRecordIds();
-        Map<Integer, MessageSendContext.ParsedContent> parsedContents = context.getParsedContents();
-
-        // 确保记录已创建
-        if (recordIds.isEmpty()) {
-            log.error("[MessageQueuePublishAction][发送记录为空，无法投递]");
-            context.interrupt("发送记录为空");
+        // 校验 TaskID 是否存在
+        if (context.getTaskId() == null) {
+            log.error("[MessageQueuePublishAction][任务ID为空，无法投递]");
+            context.interrupt("任务ID为空");
             return;
         }
 
-        int index = 0;
-        // 遍历每个渠道的解析内容，投递MQ
-        for (Map.Entry<Integer, MessageSendContext.ParsedContent> entry : parsedContents.entrySet()) {
-            Integer channelType = entry.getKey();
-            MessageSendContext.ParsedContent parsedContent = entry.getValue();
+        try {
+            // 构建拆分任务 Payload
+            TaskSplitPayload payload = new TaskSplitPayload();
+            payload.setTaskId(context.getTaskId());
+            payload.setTemplateCode(context.getTemplateCode());
+            payload.setTemplate(context.getTemplate());
+            payload.setBizType(context.getBizType());
+            payload.setBizId(context.getBizId());
+            payload.setRecipientType(context.getRecipientType());
+            payload.setRecipient(context.getRecipient());
+            payload.setChannels(context.getChannels());
+            payload.setTemplateParams(context.getTemplateParams());
+            payload.setTenantId(context.getTenantId());
 
-            if (index >= recordIds.size()) {
-                log.error("[MessageQueuePublishAction][记录ID与渠道数量不匹配]");
-                break;
-            }
+            // 投递到拆分队列
+            rocketMQTemplate.convertAndSend(splitTopic, JSON.toJSONString(payload));
 
-            Long recordId = recordIds.get(index++);
+            log.info("[MessageQueuePublishAction][投递拆分任务成功][taskId: {}]", context.getTaskId());
 
-            try {
-                // 构建MQ消息体
-                MessageQueuePayload payload = new MessageQueuePayload();
-                payload.setRecordId(recordId);
-                payload.setTemplateCode(context.getTemplateCode());
-                payload.setTemplateId(context.getTemplate().getTemplateId());
-                payload.setBizType(context.getBizType());
-                payload.setBizId(context.getBizId());
-                payload.setChannelType(channelType);
-                payload.setRecipient(context.getRecipient());
-                payload.setRecipientType(context.getRecipientType());
-                payload.setMessageTitle(parsedContent.getTitle());
-                payload.setMessageContent(parsedContent.getContent());
-                payload.setMsgVariables(context.getTemplateParams());
-                payload.setChannelConfig(parsedContent.getChannelConfig());
-                payload.setRetryCount(0);
-                payload.setSendTime(System.currentTimeMillis());
-                payload.setTenantId(context.getTenantId());
-
-                // 投递到MQ
-                String destination = topic + ":" + channelType;
-                rocketMQTemplate.convertAndSend(destination, JSON.toJSONString(payload));
-
-                log.info("[MessageQueuePublishAction][消息投递成功][recordId: {}, channelType: {}, destination: {}]", recordId, channelType, destination);
-
-            } catch (Exception ex) {
-                log.error("[MessageQueuePublishAction][消息投递失败][recordId: {}, channelType: {}]", recordId, channelType, ex);
-                throw new MessageCenterException(MessageCenterExceptionEnum.MESSAGE_QUEUE_SEND_FAIL);
-            }
+        } catch (Exception ex) {
+            log.error("[MessageQueuePublishAction][投递拆分任务失败][taskId: {}]", context.getTaskId(), ex);
+            throw new MessageCenterException(MessageCenterExceptionEnum.MESSAGE_QUEUE_SEND_FAIL);
         }
-
-        log.info("[MessageQueuePublishAction][消息投递完成][投递数量: {}]", index);
     }
 
     @Override

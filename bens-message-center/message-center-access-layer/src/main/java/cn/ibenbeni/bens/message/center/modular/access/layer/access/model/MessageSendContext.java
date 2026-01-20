@@ -70,6 +70,11 @@ public class MessageSendContext extends BaseChainContext {
     private List<Long> recordIds = new ArrayList<>();
 
     /**
+     * 发送任务ID (Batch ID)
+     */
+    private Long taskId;
+
+    /**
      * 解析后的内容
      */
     @Data

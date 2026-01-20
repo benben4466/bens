@@ -24,38 +24,26 @@ public class TemplateParseAction implements MessageSendAction {
 
     @Override
     public void execute(MessageSendContext context) {
-        log.info("[TemplateParseAction][开始解析模板][templateCode: {}]", context.getTemplateCode());
-
+        log.info("[TemplateParseAction][开始检查模板][templateCode: {}]", context.getTemplateCode());
+        // 两阶段拆分模式下，接入层仅做基础校验，变量解析下沉到拆分层或执行层
+        // 这里可以保留对模板是否存在、渠道是否配置的校验，但跳过具体的 parseTemplate
+        
         List<Integer> channels = context.getChannels();
         Long templateId = context.getTemplate().getTemplateId();
-        Map<String, Object> params = context.getTemplateParams();
-
-        // 遍历每个渠道，获取模板内容并进行变量替换
+        
+        // 遍历渠道校验
         for (Integer channelType : channels) {
             MessageTemplateContentDTO contentDTO = messageTemplateApi.getContentByTemplateAndChannel(templateId, channelType);
             if (contentDTO == null) {
-                log.warn("[TemplateParseAction][渠道({})无模板内容配置，跳过]", channelType);
-                continue;
+                 log.warn("[TemplateParseAction][渠道({})无模板内容配置，跳过]", channelType);
+                 // 是否需要中断？根据业务决定，这里暂时跳过，如果所有渠道都没配置，可能需要报错
+                 continue;
             }
-
-            // 解析标题
-            String parsedTitle = parseTemplate(contentDTO.getTitle(), params);
-            // 解析内容
-            String parsedContent = parseTemplate(contentDTO.getTemplateContent(), params);
-
-            // 存储解析结果
-            MessageSendContext.ParsedContent parsed = new MessageSendContext.ParsedContent();
-            parsed.setChannelType(channelType);
-            parsed.setTitle(parsedTitle);
-            parsed.setContent(parsedContent);
-            parsed.setChannelConfig(contentDTO.getChannelConfig());
-
-            context.getParsedContents().put(channelType, parsed);
-
-            log.info("[TemplateParseAction][渠道({})模板解析完成][title: {}]", channelType, parsedTitle);
+            // 可以在此将 contentDTO 放入 Context，供 TaskCreate 或 Splitter 使用（如果需要）
+            // 目前 Splitter 会重新查库或从 Payload 拿，这里仅做 Check
         }
 
-        log.info("[TemplateParseAction][模板解析完成][解析渠道数: {}]", context.getParsedContents().size());
+        log.info("[TemplateParseAction][模板检查完成]");
     }
 
     @Override
