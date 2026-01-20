@@ -108,7 +108,6 @@ public class MessageHandlerServiceImpl implements MessageHandlerService {
         context.setMessageContent(payload.getMessageContent());
         context.setRecipient(payload.getRecipient());
         context.setRecipientType(payload.getRecipientType());
-        context.setBizType(payload.getBizType());
         context.setBizId(payload.getBizId());
         context.setChannelConfig(payload.getChannelConfig());
         context.setMsgVariables(payload.getMsgVariables());

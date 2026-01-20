@@ -30,11 +30,6 @@ public class TaskSplitPayload implements Serializable {
     private MessageTemplateDTO template;
 
     /**
-     * 业务类型
-     */
-    private String bizType;
-
-    /**
      * 业务ID
      */
     private String bizId;

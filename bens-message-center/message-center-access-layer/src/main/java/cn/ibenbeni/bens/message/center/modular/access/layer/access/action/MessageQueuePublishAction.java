@@ -43,7 +43,6 @@ public class MessageQueuePublishAction implements MessageSendAction {
             payload.setTaskId(context.getTaskId());
             payload.setTemplateCode(context.getTemplateCode());
             payload.setTemplate(context.getTemplate());
-            payload.setBizType(context.getBizType());
             payload.setBizId(context.getBizId());
             payload.setRecipientType(context.getRecipientType());
             payload.setRecipient(context.getRecipient());

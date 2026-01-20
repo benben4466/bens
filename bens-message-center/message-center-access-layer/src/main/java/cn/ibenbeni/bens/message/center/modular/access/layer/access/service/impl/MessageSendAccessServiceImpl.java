@@ -80,7 +80,6 @@ public class MessageSendAccessServiceImpl implements MessageSendAccessService, M
         MessageSendContext context = new MessageSendContext();
         context.setTemplateCode(request.getTemplateCode());
         context.setTemplateParams(request.getTemplateParams());
-        context.setBizType(request.getBizType());
         context.setBizId(request.getBizId());
         context.setRecipientType(request.getRecipientType());
         context.setRecipient(request.getRecipient());

@@ -29,11 +29,6 @@ public class MessageSendContext extends BaseChainContext {
     private Map<String, Object> templateParams;
 
     /**
-     * 业务类型
-     */
-    private String bizType;
-
-    /**
      * 业务ID
      */
     private String bizId;

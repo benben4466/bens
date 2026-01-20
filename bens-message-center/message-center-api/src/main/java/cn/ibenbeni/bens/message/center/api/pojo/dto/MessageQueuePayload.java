@@ -29,11 +29,6 @@ public class MessageQueuePayload implements Serializable {
     private Long templateId;
 
     /**
-     * 业务类型
-     */
-    private String bizType;
-
-    /**
      * 业务ID
      */
     private String bizId;

@@ -55,11 +55,6 @@ public class MessageHandleContext extends BaseChainContext {
     private Integer recipientType;
 
     /**
-     * 业务类型
-     */
-    private String bizType;
-
-    /**
      * 业务ID
      */
     private String bizId;
