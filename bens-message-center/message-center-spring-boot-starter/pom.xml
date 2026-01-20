@@ -45,6 +45,13 @@
             <version>${revision}</version>
         </dependency>
 
+        <!-- 消息中心模块-消息处理层 -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>message-center-handler</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
         <!-- 消息中心模块-消息执行层 -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
