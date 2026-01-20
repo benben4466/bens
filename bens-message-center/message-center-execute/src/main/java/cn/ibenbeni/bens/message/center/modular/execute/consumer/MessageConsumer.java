@@ -1,6 +1,7 @@
 package cn.ibenbeni.bens.message.center.modular.execute.consumer;
 
 import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageQueuePayload;
+import cn.ibenbeni.bens.message.center.common.constants.mq.MessageCenterMqTopicConstants;
 import cn.ibenbeni.bens.message.center.modular.execute.service.MessageHandlerService;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
@@ -17,8 +18,8 @@ import javax.annotation.Resource;
 @Slf4j
 @Component
 @RocketMQMessageListener(
-        topic = "${bens.message-center.execute.topic:MESSAGE_CENTER_EXECUTE_TOPIC}",
-        consumerGroup = "${bens.message-center.execute.consumer-group:MESSAGE_CENTER_EXECUTE_CONSUMER_GROUP}",
+        topic = MessageCenterMqTopicConstants.EXECUTE_TOPIC,
+        consumerGroup = MessageCenterMqTopicConstants.EXECUTE_CONSUMER_GROUP,
         selectorExpression = "*"
 )
 public class MessageConsumer implements RocketMQListener<String> {

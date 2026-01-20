@@ -11,12 +11,12 @@ import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageQueuePayload;
 import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageSendDetailDTO;
 import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageSendTaskDTO;
 import cn.ibenbeni.bens.message.center.api.pojo.dto.TaskSplitPayload;
+import cn.ibenbeni.bens.message.center.common.constants.mq.MessageCenterMqTopicConstants;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -31,16 +31,13 @@ import java.util.Map;
 @Slf4j
 @Component
 @RocketMQMessageListener(
-        topic = "${bens.message-center.split.topic:MESSAGE_CENTER_SPLIT_TOPIC}",
-        consumerGroup = "${bens.message-center.split.group:MESSAGE_CENTER_SPLIT_GROUP}"
+        topic = MessageCenterMqTopicConstants.SPLIT_TOPIC,
+        consumerGroup = MessageCenterMqTopicConstants.SPLIT_CONSUMER_GROUP
 )
 public class TaskSplitConsumer implements RocketMQListener<String> {
 
     // 批量插入大小
     private static final int BATCH_SIZE = 1000;
-
-    @Value("${bens.message-center.execute.topic:MESSAGE_CENTER_EXECUTE_TOPIC}")
-    private String executeTopic;
 
     @Resource
     private RocketMQTemplate rocketMQTemplate;
@@ -173,7 +170,7 @@ public class TaskSplitConsumer implements RocketMQListener<String> {
             executePayload.setMsgVariables(detail.getMsgVariables());
             executePayload.setTenantId(detail.getTenantId());
 
-            String destination = executeTopic + ":" + detail.getChannelType().getType();
+            String destination = MessageCenterMqTopicConstants.EXECUTE_TOPIC + ":" + detail.getChannelType().getType();
             rocketMQTemplate.convertAndSend(destination, JSON.toJSONString(executePayload));
         }
     }

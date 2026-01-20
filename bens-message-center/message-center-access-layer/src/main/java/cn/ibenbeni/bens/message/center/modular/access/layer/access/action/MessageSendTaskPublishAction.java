@@ -3,11 +3,11 @@ package cn.ibenbeni.bens.message.center.modular.access.layer.access.action;
 import cn.ibenbeni.bens.message.center.api.exception.MessageCenterException;
 import cn.ibenbeni.bens.message.center.api.exception.enums.MessageCenterExceptionEnum;
 import cn.ibenbeni.bens.message.center.api.pojo.dto.TaskSplitPayload;
+import cn.ibenbeni.bens.message.center.common.constants.mq.MessageCenterMqTopicConstants;
 import cn.ibenbeni.bens.message.center.modular.access.layer.access.model.MessageSendContext;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -22,9 +22,6 @@ public class MessageSendTaskPublishAction implements MessageSendAction {
 
     @Resource
     private RocketMQTemplate rocketMQTemplate;
-
-    @Value("${bens.message-center.split.topic:MESSAGE_CENTER_SPLIT_TOPIC}")
-    private String splitTopic;
 
     @Override
     public void execute(MessageSendContext context) {
@@ -51,7 +48,7 @@ public class MessageSendTaskPublishAction implements MessageSendAction {
             payload.setTenantId(context.getTenantId());
 
             // 投递到拆分队列
-            rocketMQTemplate.convertAndSend(splitTopic, JSON.toJSONString(payload));
+            rocketMQTemplate.convertAndSend(MessageCenterMqTopicConstants.SPLIT_TOPIC, JSON.toJSONString(payload));
 
             log.info("[MessageSendTaskPublishAction][投递拆分任务成功][taskId: {}]", context.getTaskId());
 
