@@ -18,6 +18,8 @@ public enum MsgSendFailTypeEnum {
     CHANNEL_SEND_FAIL(3, "渠道发送失败"),
     SENSITIVE_WORD_DETECTED(4, "包含敏感词"),
     SYSTEM_ERROR(5, "系统错误"),
+    TEMPLATE_NOT_FOUND(6, "未找到模板内容"),
+    TEMPLATE_PARSE_FAIL(7, "模板解析失败"),
 
     ;
 

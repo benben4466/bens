@@ -765,3 +765,18 @@ CREATE TABLE `message_send_detail`
     PRIMARY KEY (`id`)
 ) COMMENT ='消息发送执行明细表';
 
+CREATE TABLE `message_send_content_snapshot`
+(
+    `id`             bigint       NOT NULL COMMENT 'ID',
+    `send_detail_id` bigint       NOT NULL COMMENT '消息发送执行明细ID',
+    `send_title`     varchar(255) NULL     DEFAULT NULL COMMENT '发送标题',
+    `send_main_body` text         NULL     DEFAULT NULL COMMENT '发送内容正文',
+    `version_flag`   bigint       NULL     DEFAULT NULL COMMENT '乐观锁',
+    `create_time`    datetime     NULL     DEFAULT NULL COMMENT '创建时间',
+    `create_user`    bigint       NULL     DEFAULT NULL COMMENT '创建人',
+    `update_time`    datetime     NULL     DEFAULT NULL COMMENT '更新时间',
+    `update_user`    bigint       NULL     DEFAULT NULL COMMENT '更新人',
+    `del_flag`       char(1)      NOT NULL DEFAULT 'N' COMMENT '删除标记',
+    `tenant_id`      bigint       NULL     DEFAULT NULL COMMENT '租户编号',
+    PRIMARY KEY (`id`)
+) COMMENT ='消息发送内容快照表';
