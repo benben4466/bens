@@ -3,6 +3,7 @@ package cn.ibenbeni.bens.message.center.modular.access.layer.access.action;
 import cn.ibenbeni.bens.message.center.api.MessageSendTaskApi;
 import cn.ibenbeni.bens.message.center.api.enums.core.MessageTaskStatusEnum;
 import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageSendTaskDTO;
+import cn.ibenbeni.bens.message.center.common.constants.chain.MessageCenterChainOrderConstants;
 import cn.ibenbeni.bens.message.center.modular.access.layer.access.model.MessageSendContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -31,7 +32,7 @@ public class MessageSendTaskCreateAction implements MessageSendAction {
         task.setTemplateCode(context.getTemplateCode());
         task.setTaskStatus(MessageTaskStatusEnum.WAITING_SPLIT);
         task.setTenantId(context.getTenantId());
-        
+
         // 预估用户数（如果 recipient 中包含列表，可以在此统计；暂置为 0 由拆分层更新）
         task.setTotalUserCount(0L);
         task.setTotalMsgCount(0L);
@@ -47,7 +48,7 @@ public class MessageSendTaskCreateAction implements MessageSendAction {
 
     @Override
     public int getOrder() {
-        return 300; // 在 Parse(200) 之后，Publish(400) 之前
+        return MessageCenterChainOrderConstants.AccessLayer.TASK_CREATE;
     }
 
 }

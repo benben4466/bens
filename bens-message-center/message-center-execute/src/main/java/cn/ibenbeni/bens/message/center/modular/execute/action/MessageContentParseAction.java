@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.ibenbeni.bens.message.center.api.MessageTemplateApi;
 import cn.ibenbeni.bens.message.center.api.enums.core.MsgSendFailTypeEnum;
 import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageTemplateContentDTO;
+import cn.ibenbeni.bens.message.center.common.constants.chain.MessageCenterChainOrderConstants;
 import cn.ibenbeni.bens.message.center.modular.execute.model.MessageHandleContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -82,7 +83,7 @@ public class MessageContentParseAction implements MessageHandleAction {
 
     @Override
     public int getOrder() {
-        return 100;
+        return MessageCenterChainOrderConstants.ExecuteLayer.CONTENT_PARSE;
     }
 
 }

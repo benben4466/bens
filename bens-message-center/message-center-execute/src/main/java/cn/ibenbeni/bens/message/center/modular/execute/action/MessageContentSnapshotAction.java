@@ -2,6 +2,7 @@ package cn.ibenbeni.bens.message.center.modular.execute.action;
 
 import cn.ibenbeni.bens.message.center.api.MessageSendContentSnapshotApi;
 import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageSendContentSnapshotDTO;
+import cn.ibenbeni.bens.message.center.common.constants.chain.MessageCenterChainOrderConstants;
 import cn.ibenbeni.bens.message.center.modular.execute.model.MessageHandleContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -47,7 +48,7 @@ public class MessageContentSnapshotAction implements MessageHandleAction {
 
     @Override
     public int getOrder() {
-        return 150;
+        return MessageCenterChainOrderConstants.ExecuteLayer.CONTENT_SNAPSHOT;
     }
 
 }

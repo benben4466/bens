@@ -2,6 +2,7 @@ package cn.ibenbeni.bens.message.center.modular.execute.action;
 
 import cn.ibenbeni.bens.message.center.api.enums.core.MsgPushChannelTypeEnum;
 import cn.ibenbeni.bens.message.center.api.enums.core.MsgSendFailTypeEnum;
+import cn.ibenbeni.bens.message.center.common.constants.chain.MessageCenterChainOrderConstants;
 import cn.ibenbeni.bens.message.center.modular.execute.extension.MessageChannelExtension;
 import cn.ibenbeni.bens.message.center.modular.execute.extension.MessageChannelManager;
 import cn.ibenbeni.bens.message.center.modular.execute.model.MessageHandleContext;
@@ -87,6 +88,7 @@ public class MessageRouteDispatchAction implements MessageHandleAction {
 
     @Override
     public int getOrder() {
-        return 200;
+        return MessageCenterChainOrderConstants.ExecuteLayer.ROUTE_DISPATCH;
     }
+
 }
