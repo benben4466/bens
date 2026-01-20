@@ -45,10 +45,10 @@
             <version>${revision}</version>
         </dependency>
 
-        <!-- 消息中心模块-消息处理层 -->
+        <!-- 消息中心模块-消息执行层 -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
-            <artifactId>message-center-handler</artifactId>
+            <artifactId>message-center-execute</artifactId>
             <version>${revision}</version>
         </dependency>
 
