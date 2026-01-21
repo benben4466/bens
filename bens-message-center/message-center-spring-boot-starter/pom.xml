@@ -20,21 +20,7 @@
         <!-- 消息中心-核心业务 -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>
-            <artifactId>message-center-biz-core</artifactId>
-            <version>${revision}</version>
-        </dependency>
-
-        <!-- 消息中心-通知 -->
-        <dependency>
-            <groupId>cn.ibenbeni</groupId>
-            <artifactId>message-center-business-notice</artifactId>
-            <version>${revision}</version>
-        </dependency>
-
-        <!-- 消息中心-站内信 -->
-        <dependency>
-            <groupId>cn.ibenbeni</groupId>
-            <artifactId>message-center-business-notify</artifactId>
+            <artifactId>message-center-biz</artifactId>
             <version>${revision}</version>
         </dependency>
 
