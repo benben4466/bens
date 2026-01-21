@@ -42,6 +42,9 @@ public class MessageContentParseAction implements MessageHandleAction {
                 return;
             }
 
+            // 填充模板内容ID
+            context.setTemplateContentId(contentDTO.getId());
+
             // 2. 解析标题和正文
             String title = parseTemplate(contentDTO.getTitle(), context.getMsgVariables());
             String content = parseTemplate(contentDTO.getTemplateContent(), context.getMsgVariables());

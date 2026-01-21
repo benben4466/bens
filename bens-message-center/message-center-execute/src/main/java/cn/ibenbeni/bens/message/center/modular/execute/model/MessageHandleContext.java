@@ -30,6 +30,11 @@ public class MessageHandleContext extends BaseChainContext {
     private Long templateId;
 
     /**
+     * 模板内容ID
+     */
+    private Long templateContentId;
+
+    /**
      * 渠道类型
      */
     private Integer channelType;
