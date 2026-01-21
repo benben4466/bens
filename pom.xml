@@ -57,6 +57,8 @@
         <module>bens-websocket</module>
         <!-- IOT模块 -->
         <module>bens-iot</module>
+        <!-- 公共基础模块 -->
+        <module>bens-common</module>
     </modules>
 
     <properties>

@@ -1,10 +1,10 @@
 package cn.ibenbeni.bens.message.center.modular.execute.service.impl;
 
+import cn.ibenbeni.bens.common.chain.core.ChainProcessor;
 import cn.ibenbeni.bens.message.center.api.MessageSendDetailApi;
 import cn.ibenbeni.bens.message.center.api.enums.core.MessageDetailStatusEnum;
 import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageQueuePayload;
 import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageSendDetailDTO;
-import cn.ibenbeni.bens.message.center.common.chain.ChainProcessor;
 import cn.ibenbeni.bens.message.center.modular.execute.action.MessageHandleAction;
 import cn.ibenbeni.bens.message.center.modular.execute.idempotent.MessageIdempotentChecker;
 import cn.ibenbeni.bens.message.center.modular.execute.model.MessageHandleContext;

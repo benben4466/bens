@@ -1,7 +1,7 @@
 package cn.ibenbeni.bens.message.center.modular.execute.model;
 
+import cn.ibenbeni.bens.common.chain.core.BaseChainContext;
 import cn.ibenbeni.bens.message.center.api.enums.core.MsgSendFailTypeEnum;
-import cn.ibenbeni.bens.message.center.common.chain.BaseChainContext;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

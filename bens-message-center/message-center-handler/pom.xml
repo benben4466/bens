@@ -13,6 +13,14 @@
     <description>消息中心-消息处理层</description>
 
     <dependencies>
+
+        <!-- 公共模块-责任链 -->
+        <dependency>
+            <groupId>cn.ibenbeni</groupId>
+            <artifactId>common-chain</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
         <!-- 消息中心-通用组件 -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>

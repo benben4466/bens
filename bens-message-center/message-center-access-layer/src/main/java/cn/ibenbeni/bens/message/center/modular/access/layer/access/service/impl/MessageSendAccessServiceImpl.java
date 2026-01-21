@@ -1,5 +1,6 @@
 package cn.ibenbeni.bens.message.center.modular.access.layer.access.service.impl;
 
+import cn.ibenbeni.bens.common.chain.core.ChainProcessor;
 import cn.ibenbeni.bens.message.center.common.util.MessageUniqueIdUtils;
 import cn.ibenbeni.bens.message.center.modular.access.layer.access.action.MessageSendAction;
 import cn.ibenbeni.bens.message.center.modular.access.layer.access.model.MessageSendContext;
@@ -8,9 +9,7 @@ import cn.ibenbeni.bens.message.center.api.MessageSendApi;
 import cn.ibenbeni.bens.message.center.api.exception.MessageCenterException;
 import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageSendRequest;
 import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageSendResponse;
-import cn.ibenbeni.bens.message.center.common.chain.ChainProcessor;
 import cn.ibenbeni.bens.tenant.api.context.TenantContextHolder;
-import cn.ibenbeni.bens.tenant.api.util.TenantUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

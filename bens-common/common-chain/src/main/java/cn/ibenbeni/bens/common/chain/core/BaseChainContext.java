@@ -1,4 +1,4 @@
-package cn.ibenbeni.bens.message.center.common.chain;
+package cn.ibenbeni.bens.common.chain.core;
 
 import lombok.Data;
 

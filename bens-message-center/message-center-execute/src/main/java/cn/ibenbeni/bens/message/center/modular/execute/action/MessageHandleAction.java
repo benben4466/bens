@@ -1,6 +1,6 @@
 package cn.ibenbeni.bens.message.center.modular.execute.action;
 
-import cn.ibenbeni.bens.message.center.common.chain.ChainAction;
+import cn.ibenbeni.bens.common.chain.core.ChainAction;
 import cn.ibenbeni.bens.message.center.modular.execute.model.MessageHandleContext;
 
 /**
