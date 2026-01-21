@@ -31,7 +31,10 @@ public enum MessageCenterExceptionEnum implements AbstractExceptionEnum {
      */
     NOTIFY_SEND_TEMPLATE_PARAM_MISS(RuleConstants.BUSINESS_ERROR_TYPE_CODE + MessageCenterConstants.MESSAGE_CENTER_EXCEPTION_STEP_CODE + "51", "模板参数({})缺失"),
 
+    // endregion
+
     // region 消息模板
+
     /**
      * 消息模板不存在
      */
@@ -107,6 +110,16 @@ public enum MessageCenterExceptionEnum implements AbstractExceptionEnum {
     SEND_RECORD_NOT_EXIST(RuleConstants.BUSINESS_ERROR_TYPE_CODE + MessageCenterConstants.MESSAGE_CENTER_EXCEPTION_STEP_CODE + "83", "发送记录不存在"),
 
     // endregion
+
+    // region 参数
+
+    TENANT_ID_EMPTY(RuleConstants.BUSINESS_ERROR_TYPE_CODE + MessageCenterConstants.MESSAGE_CENTER_EXCEPTION_STEP_CODE + "90", "租户ID为空"),
+
+    // endregion
+
+    // region MQ 参数
+
+    MQ_MESSAGE_BLANK(RuleConstants.BUSINESS_ERROR_TYPE_CODE + MessageCenterConstants.MESSAGE_CENTER_EXCEPTION_STEP_CODE + "120", "MQ消息为空"),
 
     // endregion
 

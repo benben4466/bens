@@ -43,7 +43,7 @@ bens:
     channels:
       # 邮件渠道
       email:
-        enabled: false                  # 是否启用，默认为 false
+        enabled: true                  # 是否启用，默认为 false
         supplier: MAIL                  # 供应商标识，默认为 MAIL
         timeout: 30000                  # 超时时间（毫秒），默认为 30000
         qps: 100.0                      # QPS 限制，默认为 100.0

@@ -60,8 +60,7 @@ public class MessageRouteDispatchAction implements MessageHandleAction {
 
         // 3. 执行发送
         try {
-            log.debug("[MessageRouteDispatchAction][调用渠道发送][channel: {}, extension: {}]",
-                    channelType, channelExtension.getClass().getSimpleName());
+            log.debug("[MessageRouteDispatchAction][调用渠道发送][channel: {}, extension: {}]", channelType, channelExtension.getClass().getSimpleName());
 
             SendResult result = channelExtension.send(context);
 

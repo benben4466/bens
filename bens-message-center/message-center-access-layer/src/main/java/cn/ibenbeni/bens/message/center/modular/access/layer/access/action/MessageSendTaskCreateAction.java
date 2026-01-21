@@ -25,8 +25,10 @@ public class MessageSendTaskCreateAction implements MessageSendAction {
     public void execute(MessageSendContext context) {
         log.info("[MessageSendTaskCreateAction][开始创建发送任务][templateCode: {}]", context.getTemplateCode());
 
+        // TODO [优化] 构建任务对象可使用单独方法
         // 构建任务对象
         MessageSendTaskDTO task = new MessageSendTaskDTO();
+        // TODO [暂用]
         task.setTaskCode(context.getBizId()); // 暂用 bizId 作为 taskCode，也可生成 UUID
         task.setTemplateId(context.getTemplate().getTemplateId());
         task.setTemplateCode(context.getTemplateCode());

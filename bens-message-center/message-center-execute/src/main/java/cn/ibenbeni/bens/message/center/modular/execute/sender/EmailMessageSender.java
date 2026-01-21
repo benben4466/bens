@@ -35,6 +35,7 @@ public class EmailMessageSender implements MessageChannelSender {
         try {
             // 获取接收者邮箱
             Map<String, Object> recipient = context.getRecipient();
+            // TODO [优化] 接收人类型
             String email = (String) recipient.get("email");
 
             if (email == null || email.isEmpty()) {

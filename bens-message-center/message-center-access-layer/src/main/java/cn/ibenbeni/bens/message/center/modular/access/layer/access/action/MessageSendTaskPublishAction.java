@@ -36,6 +36,7 @@ public class MessageSendTaskPublishAction implements MessageSendAction {
         }
 
         try {
+            // TODO [优化] 构建拆分任务可单独形成方法
             // 构建拆分任务 Payload
             TaskSplitPayload payload = new TaskSplitPayload();
             payload.setTaskId(context.getTaskId());

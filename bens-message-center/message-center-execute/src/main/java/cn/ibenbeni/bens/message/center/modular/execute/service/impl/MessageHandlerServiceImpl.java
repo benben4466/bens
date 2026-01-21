@@ -9,6 +9,8 @@ import cn.ibenbeni.bens.message.center.modular.execute.action.MessageHandleActio
 import cn.ibenbeni.bens.message.center.modular.execute.idempotent.MessageIdempotentChecker;
 import cn.ibenbeni.bens.message.center.modular.execute.model.MessageHandleContext;
 import cn.ibenbeni.bens.message.center.modular.execute.service.MessageHandlerService;
+import cn.ibenbeni.bens.tenant.api.context.TenantContextHolder;
+import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,6 +46,12 @@ public class MessageHandlerServiceImpl implements MessageHandlerService {
     @Override
     public boolean handleMessage(MessageQueuePayload payload) {
         log.info("[MessageHandlerServiceImpl][开始处理消息][recordId: {}, channelType: {}]", payload.getRecordId(), payload.getChannelType());
+
+        if (payload.getTenantId() == null) {
+            log.error("[handleMessage][忽略处理][租户ID为空][载荷: {}]", JSON.toJSONString(payload));
+            return true;
+        }
+        TenantContextHolder.setTenantId(payload.getTenantId()); // 设置租户ID
 
         // 幂等性检查
         if (idempotentChecker != null) {

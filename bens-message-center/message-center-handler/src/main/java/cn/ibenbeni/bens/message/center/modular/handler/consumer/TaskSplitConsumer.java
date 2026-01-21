@@ -2,6 +2,7 @@ package cn.ibenbeni.bens.message.center.modular.handler.consumer;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.ibenbeni.bens.message.center.api.MessageSendDetailApi;
 import cn.ibenbeni.bens.message.center.api.MessageSendTaskApi;
 import cn.ibenbeni.bens.message.center.api.enums.core.MessageDetailStatusEnum;
@@ -12,6 +13,7 @@ import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageSendDetailDTO;
 import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageSendTaskDTO;
 import cn.ibenbeni.bens.message.center.api.pojo.dto.TaskSplitPayload;
 import cn.ibenbeni.bens.message.center.common.constants.mq.MessageCenterMqTopicConstants;
+import cn.ibenbeni.bens.tenant.api.context.TenantContextHolder;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
@@ -51,15 +53,14 @@ public class TaskSplitConsumer implements RocketMQListener<String> {
     @Override
     public void onMessage(String message) {
         log.info("[TaskSplitConsumer][收到拆分任务][msg: {}]", message);
-        TaskSplitPayload payload = JSON.parseObject(message, TaskSplitPayload.class);
-
-        if (payload == null || payload.getTaskId() == null) {
-            log.error("[TaskSplitConsumer][消息体为空或TaskId缺失]");
+        TaskSplitPayload payload = preCheck(message);
+        if (payload == null) {
             return;
         }
+        TenantContextHolder.setTenantId(payload.getTenantId()); // 设置租户ID
 
         Long taskId = payload.getTaskId();
-        
+
         // 1. 幂等/状态检查
         MessageSendTaskDTO task = messageSendTaskApi.getTaskById(taskId);
         if (task == null) {
@@ -93,18 +94,18 @@ public class TaskSplitConsumer implements RocketMQListener<String> {
                     // 变量解析下沉到 Execute 层，这里只存原始参数，或者在这里做通用解析
                     // 假设变量针对 User 是相同的 (除了 User 本身属性)，或者 Payload 里带了用户特定参数
                     // 这里简化为：所有用户使用相同参数
-                    
+
                     MessageSendDetailDTO detail = new MessageSendDetailDTO();
                     detail.setTaskId(taskId);
                     detail.setTargetUser(user);
-                    
+
                     MsgPushChannelTypeEnum channelEnum = MsgPushChannelTypeEnum.fromCode(channelType);
                     detail.setChannelType(channelEnum);
-                    
+
                     detail.setMsgVariables(payload.getTemplateParams());
                     detail.setSendStatus(MessageDetailStatusEnum.PENDING);
                     detail.setTenantId(payload.getTenantId());
-                    
+
                     batchDetails.add(detail);
                     totalMsgCount++;
 
@@ -163,10 +164,11 @@ public class TaskSplitConsumer implements RocketMQListener<String> {
             executePayload.setTemplateCode(originPayload.getTemplateCode());
             executePayload.setTemplateId(originPayload.getTemplate().getTemplateId());
             executePayload.setChannelType(detail.getChannelType().getType());
-            
+
             // 简单起见，Execute 层可能只需要 ID，然后查库？或者尽可能带数据减少查库
             // 这里带上必要数据
-            executePayload.setRecipient(MapUtil.of("target", detail.getTargetUser()));
+            // TODO [优化] 接收人类型
+            executePayload.setRecipient(MapUtil.of("email", detail.getTargetUser()));
             executePayload.setMsgVariables(detail.getMsgVariables());
             executePayload.setTenantId(detail.getTenantId());
 
@@ -174,4 +176,30 @@ public class TaskSplitConsumer implements RocketMQListener<String> {
             rocketMQTemplate.convertAndSend(destination, JSON.toJSONString(executePayload));
         }
     }
+
+    /**
+     * 前置校验
+     *
+     * @param message MQ消息字符串
+     * @return 任务拆分载荷
+     */
+    private TaskSplitPayload preCheck(String message) {
+        if (StrUtil.isBlank(message)) {
+            log.error("[TaskSplitConsumer][忽略处理][MQ消息为空]");
+            return null;
+        }
+
+        TaskSplitPayload payload = JSON.parseObject(message, TaskSplitPayload.class);
+        if (payload == null || payload.getTaskId() == null) {
+            log.error("[TaskSplitConsumer][忽略处理][消息体为空或TaskId缺失]");
+            return null;
+        }
+        if (payload.getTenantId() == null) {
+            log.error("[TaskSplitConsumer][忽略处理][租户ID缺失][业务ID: {}, 任务ID: {}, 载荷: {}]", payload.getBizId(), payload.getTaskId(), JSON.toJSONString(payload));
+            return null;
+        }
+
+        return payload;
+    }
+
 }

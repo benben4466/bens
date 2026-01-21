@@ -42,19 +42,17 @@ public class MessageIdempotentChecker {
 
         try {
             // Boolean success = stringRedisTemplate.opsForValue().setIfAbsent(key, "1", config.getExpireSeconds(), TimeUnit.SECONDS);
-            Boolean success = false;
+            Boolean success = true;
 
             boolean result = Boolean.TRUE.equals(success);
 
             if (!result) {
-                log.info("[MessageIdempotentChecker][幂等拦截][recordId: {}, channelType: {}]",
-                        recordId, channelType);
+                log.info("[MessageIdempotentChecker][幂等拦截][recordId: {}, channelType: {}]", recordId, channelType);
             }
 
             return result;
-
-        } catch (Exception e) {
-            log.error("[MessageIdempotentChecker][幂等检查异常，允许通过][recordId: {}]", recordId, e);
+        } catch (Exception ex) {
+            log.error("[MessageIdempotentChecker][幂等检查异常，允许通过][recordId: {}]", recordId, ex);
             // 异常时放行，避免阻塞正常流程
             return true;
         }

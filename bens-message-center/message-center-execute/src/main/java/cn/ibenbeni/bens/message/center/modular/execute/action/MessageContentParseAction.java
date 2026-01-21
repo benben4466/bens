@@ -35,8 +35,7 @@ public class MessageContentParseAction implements MessageHandleAction {
             );
 
             if (contentDTO == null) {
-                log.error("[MessageContentParseAction][未找到模板内容配置][templateId: {}, channelType: {}]", 
-                        context.getTemplateId(), context.getChannelType());
+                log.error("[MessageContentParseAction][未找到模板内容配置][templateId: {}, channelType: {}]", context.getTemplateId(), context.getChannelType());
                 context.setSuccess(false);
                 context.setFailType(MsgSendFailTypeEnum.TEMPLATE_NOT_FOUND); // 或配置缺失
                 context.setFailReason("未找到对应渠道的模板内容配置");
@@ -62,12 +61,11 @@ public class MessageContentParseAction implements MessageHandleAction {
             }
 
             log.info("[MessageContentParseAction][解析完成]");
-
-        } catch (Exception e) {
-            log.error("[MessageContentParseAction][解析异常]", e);
+        } catch (Exception ex) {
+            log.error("[MessageContentParseAction][解析异常]", ex);
             context.setSuccess(false);
             context.setFailType(MsgSendFailTypeEnum.TEMPLATE_PARSE_FAIL);
-            context.setFailReason("模板解析异常: " + e.getMessage());
+            context.setFailReason("模板解析异常: " + ex.getMessage());
         }
     }
 
