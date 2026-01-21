@@ -21,13 +21,6 @@
             <version>${revision}</version>
         </dependency>
 
-        <!-- 消息中心-通用组件 -->
-        <dependency>
-            <groupId>cn.ibenbeni</groupId>
-            <artifactId>message-center-common</artifactId>
-            <version>${revision}</version>
-        </dependency>
-
         <!-- 消息中心-API -->
         <dependency>
             <groupId>cn.ibenbeni</groupId>

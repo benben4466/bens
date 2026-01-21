@@ -1,6 +1,6 @@
 package cn.ibenbeni.bens.message.center.modular.execute.idempotent;
 
-import cn.ibenbeni.bens.message.center.common.config.MessageCenterProperties;
+import cn.ibenbeni.bens.message.center.api.config.MessageCenterProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;

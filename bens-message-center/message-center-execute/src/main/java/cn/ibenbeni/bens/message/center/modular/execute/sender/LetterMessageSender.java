@@ -1,7 +1,7 @@
 package cn.ibenbeni.bens.message.center.modular.execute.sender;
 
 import cn.ibenbeni.bens.message.center.api.enums.core.MsgPushChannelTypeEnum;
-import cn.ibenbeni.bens.message.center.common.config.MessageCenterProperties;
+import cn.ibenbeni.bens.message.center.api.config.MessageCenterProperties;
 import cn.ibenbeni.bens.message.center.modular.execute.model.MessageHandleContext;
 import cn.ibenbeni.bens.message.center.modular.execute.model.SendResult;
 import lombok.extern.slf4j.Slf4j;

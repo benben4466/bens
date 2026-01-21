@@ -1,4 +1,4 @@
-package cn.ibenbeni.bens.message.center.common.config;
+package cn.ibenbeni.bens.message.center.api.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

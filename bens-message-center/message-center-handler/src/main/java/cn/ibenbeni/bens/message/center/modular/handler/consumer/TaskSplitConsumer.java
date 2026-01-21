@@ -12,7 +12,7 @@ import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageQueuePayload;
 import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageSendDetailDTO;
 import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageSendTaskDTO;
 import cn.ibenbeni.bens.message.center.api.pojo.dto.TaskSplitPayload;
-import cn.ibenbeni.bens.message.center.common.constants.mq.MessageCenterMqTopicConstants;
+import cn.ibenbeni.bens.message.center.api.constants.mq.MessageCenterMqTopicConstants;
 import cn.ibenbeni.bens.tenant.api.context.TenantContextHolder;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;

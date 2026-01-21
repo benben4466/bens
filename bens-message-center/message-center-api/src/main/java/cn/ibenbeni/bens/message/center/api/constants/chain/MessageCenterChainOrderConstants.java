@@ -1,4 +1,4 @@
-package cn.ibenbeni.bens.message.center.common.constants.chain;
+package cn.ibenbeni.bens.message.center.api.constants.chain;
 
 /**
  * 消息中心-责任链属性

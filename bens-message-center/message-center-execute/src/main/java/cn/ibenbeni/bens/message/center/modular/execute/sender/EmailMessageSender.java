@@ -8,7 +8,7 @@ import cn.ibenbeni.bens.message.center.api.core.model.channelconfig.EmailMessage
 import cn.ibenbeni.bens.message.center.api.enums.core.MsgPushChannelTypeEnum;
 import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageChannelConfigDTO;
 import cn.ibenbeni.bens.message.center.api.util.ChannelConfigUtils;
-import cn.ibenbeni.bens.message.center.common.config.MessageCenterProperties;
+import cn.ibenbeni.bens.message.center.api.config.MessageCenterProperties;
 import cn.ibenbeni.bens.message.center.modular.execute.model.MessageHandleContext;
 import cn.ibenbeni.bens.message.center.modular.execute.model.SendResult;
 import com.alibaba.fastjson.JSON;

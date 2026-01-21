@@ -1,4 +1,4 @@
-package cn.ibenbeni.bens.message.center.common.util;
+package cn.ibenbeni.bens.message.center.api.util;
 
 import cn.hutool.core.util.IdUtil;
 

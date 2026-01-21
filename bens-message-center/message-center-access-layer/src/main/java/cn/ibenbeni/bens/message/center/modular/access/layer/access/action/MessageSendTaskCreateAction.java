@@ -3,7 +3,7 @@ package cn.ibenbeni.bens.message.center.modular.access.layer.access.action;
 import cn.ibenbeni.bens.message.center.api.MessageSendTaskApi;
 import cn.ibenbeni.bens.message.center.api.enums.core.MessageTaskStatusEnum;
 import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageSendTaskDTO;
-import cn.ibenbeni.bens.message.center.common.constants.chain.MessageCenterChainOrderConstants;
+import cn.ibenbeni.bens.message.center.api.constants.chain.MessageCenterChainOrderConstants;
 import cn.ibenbeni.bens.message.center.modular.access.layer.access.model.MessageSendContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package cn.ibenbeni.bens.message.center.common.constants.mq;
+package cn.ibenbeni.bens.message.center.api.constants.mq;
 
 /**
  * 消息中心-MQ 主题常量类

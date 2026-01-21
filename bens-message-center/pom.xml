@@ -16,8 +16,6 @@
     <description>消息中心模块</description>
 
     <modules>
-        <!-- 消息中心-通用组件 -->
-        <module>message-center-common</module>
         <!-- 消息中心-API -->
         <module>message-center-api</module>
         <!-- 消息中心模块-消息中心核心业务 -->
