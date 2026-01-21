@@ -642,8 +642,6 @@ CREATE TABLE `message_template_content`
     `channel_type`     tinyint      NOT NULL COMMENT '渠道类型(MsgPushChannelTypeEnum)',
     `title`            varchar(255) NULL     DEFAULT NULL COMMENT '标题(部分渠道需要)',
     `template_content` varchar(255) NULL     DEFAULT NULL COMMENT '模板内容',
-    `params_config`    json         NULL     DEFAULT NULL COMMENT '参数配置',
-    `channel_config`   json         NULL     DEFAULT NULL COMMENT '渠道特定配置',
     `version_flag`     bigint       NULL     DEFAULT NULL COMMENT '乐观锁',
     `create_time`      datetime     NULL     DEFAULT NULL COMMENT '创建时间',
     `create_user`      bigint       NULL     DEFAULT NULL COMMENT '创建人',

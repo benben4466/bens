@@ -28,12 +28,6 @@ public class MessageTemplateContentSaveReq {
     @Schema(description = "模板内容")
     private String templateContent;
 
-    @Schema(description = "参数配置")
-    private Map<String, Object> paramsConfig;
-
-    @Schema(description = "渠道特定配置")
-    private Map<String, Object> channelConfig;
-
     @Schema(description = "渠道配置ID集合")
     private Set<Long> channelConfigIds;
 

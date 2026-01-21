@@ -51,18 +51,6 @@ public class MessageTemplateContentDO extends BaseBusinessEntity {
     private String templateContent;
 
     /**
-     * 参数配置
-     */
-    @TableField(value = "params_config", typeHandler = JacksonTypeHandler.class)
-    private Map<String, Object> paramsConfig;
-
-    /**
-     * 渠道特定配置
-     */
-    @TableField(value = "channel_config", typeHandler = JacksonTypeHandler.class)
-    private Map<String, Object> channelConfig;
-
-    /**
      * 租户ID
      */
     @TableField(value = "tenant_id", fill = FieldFill.INSERT)
