@@ -1,10 +1,12 @@
 package cn.ibenbeni.bens.message.center.modular.execute.action;
 
+import cn.ibenbeni.bens.message.center.common.config.MessageCenterProperties;
 import cn.ibenbeni.bens.message.center.common.constants.chain.MessageCenterChainOrderConstants;
 import cn.ibenbeni.bens.message.center.modular.execute.model.MessageHandleContext;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * 敏感词检查 Action
@@ -14,15 +16,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class SensitiveWordsCheckAction implements MessageHandleAction {
 
-    @Value("${bens.message-center.sensitive-words.enabled:true}")
-    private boolean enabled;
-
-    @Value("${bens.message-center.sensitive-words.mode:REPLACE}")
-    private String mode;
+    @Resource
+    private MessageCenterProperties properties;
 
     @Override
     public void execute(MessageHandleContext context) {
-        if (!enabled) {
+        if (!properties.getSensitive().isEnabled()) {
             log.debug("[SensitiveWordsCheckAction][敏感词检测已禁用]");
             return;
         }

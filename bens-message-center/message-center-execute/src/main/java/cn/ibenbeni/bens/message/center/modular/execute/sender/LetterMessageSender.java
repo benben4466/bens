@@ -1,12 +1,13 @@
 package cn.ibenbeni.bens.message.center.modular.execute.sender;
 
 import cn.ibenbeni.bens.message.center.api.enums.core.MsgPushChannelTypeEnum;
+import cn.ibenbeni.bens.message.center.common.config.MessageCenterProperties;
 import cn.ibenbeni.bens.message.center.modular.execute.model.MessageHandleContext;
 import cn.ibenbeni.bens.message.center.modular.execute.model.SendResult;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.Map;
 
 /**
@@ -17,8 +18,8 @@ import java.util.Map;
 @Component
 public class LetterMessageSender implements MessageChannelSender {
 
-    @Value("${bens.message-center.channels.letter.enabled:true}")
-    private boolean enabled;
+    @Resource
+    private MessageCenterProperties properties;
 
     @Override
     public MsgPushChannelTypeEnum getSupportedChannel() {
@@ -65,6 +66,7 @@ public class LetterMessageSender implements MessageChannelSender {
 
     @Override
     public boolean isAvailable() {
-        return enabled;
+        return properties.getChannels().getLetter().isEnabled();
     }
+
 }

@@ -8,6 +8,7 @@ import cn.ibenbeni.bens.message.center.api.core.model.channelconfig.EmailMessage
 import cn.ibenbeni.bens.message.center.api.enums.core.MsgPushChannelTypeEnum;
 import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageChannelConfigDTO;
 import cn.ibenbeni.bens.message.center.api.util.ChannelConfigUtils;
+import cn.ibenbeni.bens.message.center.common.config.MessageCenterProperties;
 import cn.ibenbeni.bens.message.center.modular.execute.model.MessageHandleContext;
 import cn.ibenbeni.bens.message.center.modular.execute.model.SendResult;
 import com.alibaba.fastjson.JSON;
@@ -16,7 +17,6 @@ import org.dromara.email.api.MailClient;
 import org.dromara.email.comm.config.MailSmtpConfig;
 import org.dromara.email.comm.entity.MailMessage;
 import org.dromara.email.core.factory.MailFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -34,8 +34,8 @@ import java.util.stream.Collectors;
 @Component
 public class EmailMessageSender implements MessageChannelSender {
 
-    @Value("${bens.message-center.channels.email.enabled:false}")
-    private boolean enabled;
+    @Resource
+    private MessageCenterProperties properties;
 
     @Resource
     private MessageChannelConfigApi channelConfigApi;
@@ -128,7 +128,7 @@ public class EmailMessageSender implements MessageChannelSender {
 
     @Override
     public boolean isAvailable() {
-        return enabled;
+        return properties.getChannels().getEmail().isEnabled();
     }
 
     /**
