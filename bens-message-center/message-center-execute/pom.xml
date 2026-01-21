@@ -41,10 +41,16 @@
             <version>${rocketmq-spring.version}</version>
         </dependency>
 
-        <!-- SMS4J (用于邮件发送) -->
+        <!-- SMS4J-短信 -->
         <dependency>
             <groupId>org.dromara.sms4j</groupId>
             <artifactId>sms4j-spring-boot-starter</artifactId>
+            <version>${sms4j.version}</version>
+        </dependency>
+        <!-- SMS4J-邮件发送 -->
+        <dependency>
+            <groupId>org.dromara.sms4j</groupId>
+            <artifactId>sms4j-Email-core</artifactId>
             <version>${sms4j.version}</version>
         </dependency>
 
