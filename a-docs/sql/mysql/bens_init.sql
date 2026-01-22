@@ -713,7 +713,7 @@ CREATE TABLE `message_send_detail`
 (
     `id`                bigint       NOT NULL COMMENT 'ID',
     `task_id`           bigint       NOT NULL COMMENT '父任务ID',
-    `target_user`       varchar(64)  NOT NULL COMMENT '接收者标识(手机号/邮箱/OpenID)',
+    `recipient_account` varchar(64)  NOT NULL COMMENT '接收者标识(手机号/邮箱/OpenID)',
     `channel_type`      tinyint      NOT NULL COMMENT '渠道类型(MsgPushChannelTypeEnum)',
     `msg_variables`     json         NULL     DEFAULT NULL COMMENT '模板参数变量',
     `send_status`       int          NOT NULL DEFAULT 0 COMMENT '发送状态(0=PENDING(待处理);10=SUCCESS(成功);20=FAIL(失败);)',

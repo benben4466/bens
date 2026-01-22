@@ -29,7 +29,7 @@ public class MessageSendDetailDTO implements Serializable {
     /**
      * 接收者标识(手机号/邮箱/OpenID)
      */
-    private String targetUser;
+    private String recipientAccount;
 
     /**
      * 渠道类型

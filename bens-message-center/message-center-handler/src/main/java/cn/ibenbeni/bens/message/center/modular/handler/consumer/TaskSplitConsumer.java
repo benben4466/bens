@@ -97,7 +97,7 @@ public class TaskSplitConsumer implements RocketMQListener<String> {
 
                     MessageSendDetailDTO detail = new MessageSendDetailDTO();
                     detail.setTaskId(taskId);
-                    detail.setTargetUser(user);
+                    detail.setRecipientAccount(user);
 
                     MsgPushChannelTypeEnum channelEnum = MsgPushChannelTypeEnum.fromCode(channelType);
                     detail.setChannelType(channelEnum);
@@ -168,7 +168,7 @@ public class TaskSplitConsumer implements RocketMQListener<String> {
             // 简单起见，Execute 层可能只需要 ID，然后查库？或者尽可能带数据减少查库
             // 这里带上必要数据
             // TODO [优化] 接收人类型
-            executePayload.setRecipient(MapUtil.of("email", detail.getTargetUser()));
+            executePayload.setRecipient(MapUtil.of("email", detail.getRecipientAccount()));
             executePayload.setMsgVariables(detail.getMsgVariables());
             executePayload.setTenantId(detail.getTenantId());
 

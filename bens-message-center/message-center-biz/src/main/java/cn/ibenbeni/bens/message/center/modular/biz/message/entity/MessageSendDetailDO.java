@@ -34,8 +34,8 @@ public class MessageSendDetailDO extends BaseBusinessEntity {
     /**
      * 接收者标识(手机号/邮箱/OpenID)
      */
-    @TableField("target_user")
-    private String targetUser;
+    @TableField("recipient_account")
+    private String recipientAccount;
 
     /**
      * 渠道类型
