@@ -172,6 +172,7 @@ public class TaskSplitConsumer implements RocketMQListener<String> {
             executePayload.setMsgVariables(detail.getMsgVariables());
             executePayload.setTenantId(detail.getTenantId());
 
+            // TODO [优化] 形成方法，不要直接拼接
             String destination = MessageCenterMqTopicConstants.EXECUTE_TOPIC + ":" + detail.getChannelType().getType();
             rocketMQTemplate.convertAndSend(destination, JSON.toJSONString(executePayload));
         }

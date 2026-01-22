@@ -49,6 +49,7 @@ public class MessageSendTaskPublishAction implements MessageSendAction {
             payload.setTemplateParams(context.getTemplateParams());
             payload.setTenantId(context.getTenantId());
 
+            // TODO [优化] convertAndSend 方法执行失败时，不会有任何回调和异常抛出
             // 投递到拆分队列
             rocketMQTemplate.convertAndSend(MessageCenterMqTopicConstants.SPLIT_TOPIC, JSON.toJSONString(payload));
 
