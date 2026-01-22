@@ -1,6 +1,6 @@
 package cn.ibenbeni.bens.message.center.api;
 
-import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageSendDetailDTO;
+import cn.ibenbeni.bens.message.center.api.domian.dto.MessageSendDetailDTO;
 
 import java.util.List;
 

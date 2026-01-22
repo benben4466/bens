@@ -1,6 +1,6 @@
 package cn.ibenbeni.bens.message.center.api;
 
-import cn.ibenbeni.bens.message.center.api.pojo.dto.NotifySendSingleToUserReqDTO;
+import cn.ibenbeni.bens.message.center.api.domian.dto.NotifySendSingleToUserReqDTO;
 
 import javax.validation.Valid;
 

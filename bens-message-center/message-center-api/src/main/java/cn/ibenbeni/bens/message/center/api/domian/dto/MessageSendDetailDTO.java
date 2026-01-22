@@ -1,4 +1,4 @@
-package cn.ibenbeni.bens.message.center.api.pojo.dto;
+package cn.ibenbeni.bens.message.center.api.domian.dto;
 
 import cn.ibenbeni.bens.message.center.api.enums.core.MessageDetailStatusEnum;
 import cn.ibenbeni.bens.message.center.api.enums.core.MsgPushChannelTypeEnum;

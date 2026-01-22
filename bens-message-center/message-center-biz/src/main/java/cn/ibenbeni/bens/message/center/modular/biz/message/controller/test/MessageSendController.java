@@ -1,8 +1,8 @@
 package cn.ibenbeni.bens.message.center.modular.biz.message.controller.test;
 
 import cn.ibenbeni.bens.message.center.api.MessageSendApi;
-import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageSendRequest;
-import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageSendResponse;
+import cn.ibenbeni.bens.message.center.api.domian.dto.MessageSendRequest;
+import cn.ibenbeni.bens.message.center.api.domian.dto.MessageSendResponse;
 import cn.ibenbeni.bens.resource.api.annotation.PostResource;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

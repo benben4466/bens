@@ -1,6 +1,6 @@
 package cn.ibenbeni.bens.message.center.api;
 
-import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageSendContentSnapshotDTO;
+import cn.ibenbeni.bens.message.center.api.domian.dto.MessageSendContentSnapshotDTO;
 
 /**
  * 消息发送内容快照 API

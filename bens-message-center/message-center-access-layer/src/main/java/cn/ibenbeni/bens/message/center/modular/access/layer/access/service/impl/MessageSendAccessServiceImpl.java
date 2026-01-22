@@ -7,8 +7,8 @@ import cn.ibenbeni.bens.message.center.modular.access.layer.access.model.Message
 import cn.ibenbeni.bens.message.center.modular.access.layer.access.service.MessageSendAccessService;
 import cn.ibenbeni.bens.message.center.api.MessageSendApi;
 import cn.ibenbeni.bens.message.center.api.exception.MessageCenterException;
-import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageSendRequest;
-import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageSendResponse;
+import cn.ibenbeni.bens.message.center.api.domian.dto.MessageSendRequest;
+import cn.ibenbeni.bens.message.center.api.domian.dto.MessageSendResponse;
 import cn.ibenbeni.bens.tenant.api.context.TenantContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

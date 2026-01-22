@@ -3,7 +3,7 @@ package cn.ibenbeni.bens.message.center.modular.execute.action;
 import cn.hutool.core.util.StrUtil;
 import cn.ibenbeni.bens.message.center.api.MessageTemplateApi;
 import cn.ibenbeni.bens.message.center.api.enums.core.MsgSendFailTypeEnum;
-import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageTemplateContentDTO;
+import cn.ibenbeni.bens.message.center.api.domian.dto.MessageTemplateContentDTO;
 import cn.ibenbeni.bens.message.center.api.constants.chain.MessageCenterChainOrderConstants;
 import cn.ibenbeni.bens.message.center.modular.execute.model.MessageHandleContext;
 import lombok.extern.slf4j.Slf4j;

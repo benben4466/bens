@@ -2,7 +2,7 @@ package cn.ibenbeni.bens.message.center.modular.biz.message.api;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.ibenbeni.bens.message.center.api.MessageSendDetailApi;
-import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageSendDetailDTO;
+import cn.ibenbeni.bens.message.center.api.domian.dto.MessageSendDetailDTO;
 import cn.ibenbeni.bens.message.center.modular.biz.message.entity.MessageSendDetailDO;
 import cn.ibenbeni.bens.message.center.modular.biz.message.service.MessageSendDetailService;
 import org.springframework.stereotype.Service;

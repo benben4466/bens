@@ -1,7 +1,7 @@
 package cn.ibenbeni.bens.message.center.modular.execute.action;
 
 import cn.ibenbeni.bens.message.center.api.MessageSendContentSnapshotApi;
-import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageSendContentSnapshotDTO;
+import cn.ibenbeni.bens.message.center.api.domian.dto.MessageSendContentSnapshotDTO;
 import cn.ibenbeni.bens.message.center.api.constants.chain.MessageCenterChainOrderConstants;
 import cn.ibenbeni.bens.message.center.modular.execute.model.MessageHandleContext;
 import lombok.extern.slf4j.Slf4j;

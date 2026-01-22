@@ -1,6 +1,6 @@
 package cn.ibenbeni.bens.message.center.modular.execute.service;
 
-import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageQueuePayload;
+import cn.ibenbeni.bens.message.center.api.domian.dto.MessageQueuePayload;
 
 /**
  * 消息处理层服务接口

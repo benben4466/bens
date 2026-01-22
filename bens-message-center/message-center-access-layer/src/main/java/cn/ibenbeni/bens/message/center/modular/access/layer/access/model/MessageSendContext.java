@@ -1,7 +1,7 @@
 package cn.ibenbeni.bens.message.center.modular.access.layer.access.model;
 
 import cn.ibenbeni.bens.common.chain.core.BaseChainContext;
-import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageTemplateDTO;
+import cn.ibenbeni.bens.message.center.api.domian.dto.MessageTemplateDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

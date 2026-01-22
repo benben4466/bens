@@ -7,7 +7,7 @@ import cn.ibenbeni.bens.message.center.modular.access.layer.access.model.Message
 import cn.ibenbeni.bens.message.center.api.MessageTemplateApi;
 import cn.ibenbeni.bens.message.center.api.exception.MessageCenterException;
 import cn.ibenbeni.bens.message.center.api.exception.enums.MessageCenterExceptionEnum;
-import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageTemplateDTO;
+import cn.ibenbeni.bens.message.center.api.domian.dto.MessageTemplateDTO;
 import cn.ibenbeni.bens.message.center.api.constants.chain.MessageCenterChainOrderConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

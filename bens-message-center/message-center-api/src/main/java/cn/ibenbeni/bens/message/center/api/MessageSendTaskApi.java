@@ -1,6 +1,6 @@
 package cn.ibenbeni.bens.message.center.api;
 
-import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageSendTaskDTO;
+import cn.ibenbeni.bens.message.center.api.domian.dto.MessageSendTaskDTO;
 
 /**
  * 消息发送任务 API

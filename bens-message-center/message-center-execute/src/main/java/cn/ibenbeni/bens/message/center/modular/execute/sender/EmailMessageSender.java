@@ -6,7 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.ibenbeni.bens.message.center.api.MessageChannelConfigApi;
 import cn.ibenbeni.bens.message.center.api.core.model.channelconfig.EmailMessageChannelConfigSpecs;
 import cn.ibenbeni.bens.message.center.api.enums.core.MsgPushChannelTypeEnum;
-import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageChannelConfigDTO;
+import cn.ibenbeni.bens.message.center.api.domian.dto.MessageChannelConfigDTO;
 import cn.ibenbeni.bens.message.center.api.util.ChannelConfigUtils;
 import cn.ibenbeni.bens.message.center.api.config.MessageCenterProperties;
 import cn.ibenbeni.bens.message.center.modular.execute.model.MessageHandleContext;

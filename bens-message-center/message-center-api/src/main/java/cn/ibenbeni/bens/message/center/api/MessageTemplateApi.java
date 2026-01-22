@@ -1,7 +1,7 @@
 package cn.ibenbeni.bens.message.center.api;
 
-import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageTemplateContentDTO;
-import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageTemplateDTO;
+import cn.ibenbeni.bens.message.center.api.domian.dto.MessageTemplateContentDTO;
+import cn.ibenbeni.bens.message.center.api.domian.dto.MessageTemplateDTO;
 
 import java.util.List;
 

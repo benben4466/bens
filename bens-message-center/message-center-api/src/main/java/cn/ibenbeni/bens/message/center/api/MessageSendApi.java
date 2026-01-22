@@ -1,7 +1,7 @@
 package cn.ibenbeni.bens.message.center.api;
 
-import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageSendRequest;
-import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageSendResponse;
+import cn.ibenbeni.bens.message.center.api.domian.dto.MessageSendRequest;
+import cn.ibenbeni.bens.message.center.api.domian.dto.MessageSendResponse;
 
 import javax.validation.Valid;
 

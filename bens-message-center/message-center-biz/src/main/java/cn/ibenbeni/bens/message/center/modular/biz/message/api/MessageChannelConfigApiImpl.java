@@ -2,7 +2,7 @@ package cn.ibenbeni.bens.message.center.modular.biz.message.api;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.ibenbeni.bens.message.center.api.MessageChannelConfigApi;
-import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageChannelConfigDTO;
+import cn.ibenbeni.bens.message.center.api.domian.dto.MessageChannelConfigDTO;
 import cn.ibenbeni.bens.message.center.modular.biz.message.entity.MessageChannelConfigDO;
 import cn.ibenbeni.bens.message.center.modular.biz.message.entity.MessageTemplateChannelRelDO;
 import cn.ibenbeni.bens.message.center.modular.biz.message.service.MessageChannelConfigService;

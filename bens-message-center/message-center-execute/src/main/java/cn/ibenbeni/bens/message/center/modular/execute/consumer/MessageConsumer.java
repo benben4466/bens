@@ -1,6 +1,6 @@
 package cn.ibenbeni.bens.message.center.modular.execute.consumer;
 
-import cn.ibenbeni.bens.message.center.api.pojo.dto.MessageQueuePayload;
+import cn.ibenbeni.bens.message.center.api.domian.dto.MessageQueuePayload;
 import cn.ibenbeni.bens.message.center.api.constants.mq.MessageCenterMqTopicConstants;
 import cn.ibenbeni.bens.message.center.modular.execute.service.MessageHandlerService;
 import com.alibaba.fastjson.JSON;

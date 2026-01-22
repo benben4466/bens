@@ -2,7 +2,7 @@ package cn.ibenbeni.bens.message.center.modular.access.layer.access.action;
 
 import cn.ibenbeni.bens.message.center.api.exception.MessageCenterException;
 import cn.ibenbeni.bens.message.center.api.exception.enums.MessageCenterExceptionEnum;
-import cn.ibenbeni.bens.message.center.api.pojo.dto.TaskSplitPayload;
+import cn.ibenbeni.bens.message.center.api.domian.dto.TaskSplitPayload;
 import cn.ibenbeni.bens.message.center.api.constants.chain.MessageCenterChainOrderConstants;
 import cn.ibenbeni.bens.message.center.api.constants.mq.MessageCenterMqTopicConstants;
 import cn.ibenbeni.bens.message.center.modular.access.layer.access.model.MessageSendContext;

@@ -1,4 +1,4 @@
-package cn.ibenbeni.bens.message.center.api.pojo.dto;
+package cn.ibenbeni.bens.message.center.api.domian.dto;
 
 import lombok.Data;
 
