@@ -3,7 +3,7 @@ package cn.ibenbeni.bens.message.center.modular.access.layer.access.service.impl
 import cn.ibenbeni.bens.common.chain.core.ChainProcessor;
 import cn.ibenbeni.bens.message.center.api.util.MessageUniqueIdUtils;
 import cn.ibenbeni.bens.message.center.modular.access.layer.access.action.MessageSendAction;
-import cn.ibenbeni.bens.message.center.modular.access.layer.access.model.MessageSendContext;
+import cn.ibenbeni.bens.message.center.modular.access.layer.access.model.UserSendMessageContext;
 import cn.ibenbeni.bens.message.center.modular.access.layer.access.service.MessageSendAccessService;
 import cn.ibenbeni.bens.message.center.api.MessageSendApi;
 import cn.ibenbeni.bens.message.center.api.exception.MessageCenterException;
@@ -31,7 +31,7 @@ public class MessageSendAccessServiceImpl implements MessageSendAccessService, M
     /**
      * 责任链处理器
      */
-    private ChainProcessor<MessageSendContext> chainProcessor;
+    private ChainProcessor<UserSendMessageContext> chainProcessor;
 
     @PostConstruct
     public void init() {
@@ -45,7 +45,7 @@ public class MessageSendAccessServiceImpl implements MessageSendAccessService, M
 
         try {
             // 1. 构建上下文
-            MessageSendContext context = buildContext(request);
+            UserSendMessageContext context = buildContext(request);
 
             // 2. 执行责任链
             chainProcessor.execute(context);
@@ -70,8 +70,8 @@ public class MessageSendAccessServiceImpl implements MessageSendAccessService, M
     /**
      * 构建消息发送上下文
      */
-    private MessageSendContext buildContext(MessageSendRequest request) {
-        MessageSendContext context = new MessageSendContext();
+    private UserSendMessageContext buildContext(MessageSendRequest request) {
+        UserSendMessageContext context = new UserSendMessageContext();
         context.setTemplateCode(request.getTemplateCode());
         context.setTemplateParams(request.getTemplateParams());
         context.setBizId(MessageUniqueIdUtils.generateBizId()); // bizId 纯数字

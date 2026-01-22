@@ -3,7 +3,7 @@ package cn.ibenbeni.bens.message.center.modular.access.layer.access.action;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.ibenbeni.bens.message.center.modular.access.layer.access.model.MessageSendContext;
+import cn.ibenbeni.bens.message.center.modular.access.layer.access.model.UserSendMessageContext;
 import cn.ibenbeni.bens.message.center.api.MessageTemplateApi;
 import cn.ibenbeni.bens.message.center.api.exception.MessageCenterException;
 import cn.ibenbeni.bens.message.center.api.exception.enums.MessageCenterExceptionEnum;
@@ -27,7 +27,7 @@ public class SendPreCheckAction implements MessageSendAction {
     private MessageTemplateApi messageTemplateApi;
 
     @Override
-    public void execute(MessageSendContext context) {
+    public void execute(UserSendMessageContext context) {
         log.info("[SendPreCheckAction][开始执行前置校验][templateCode: {}]", context.getTemplateCode());
 
         // 1. 校验模板编码不为空

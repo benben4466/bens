@@ -11,12 +11,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 消息发送上下文
+ * 用户发送消息上下文
  * 贯穿接入层 Action 链的核心数据载体
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class MessageSendContext extends BaseChainContext {
+public class UserSendMessageContext extends BaseChainContext {
 
     /**
      * 模板编码

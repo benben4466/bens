@@ -5,7 +5,7 @@ import cn.ibenbeni.bens.message.center.api.exception.enums.MessageCenterExceptio
 import cn.ibenbeni.bens.message.center.api.domian.dto.TaskSplitPayload;
 import cn.ibenbeni.bens.message.center.api.constants.chain.MessageCenterChainOrderConstants;
 import cn.ibenbeni.bens.message.center.api.constants.mq.MessageCenterMqTopicConstants;
-import cn.ibenbeni.bens.message.center.modular.access.layer.access.model.MessageSendContext;
+import cn.ibenbeni.bens.message.center.modular.access.layer.access.model.UserSendMessageContext;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
@@ -25,7 +25,7 @@ public class MessageSendTaskPublishAction implements MessageSendAction {
     private RocketMQTemplate rocketMQTemplate;
 
     @Override
-    public void execute(MessageSendContext context) {
+    public void execute(UserSendMessageContext context) {
         log.info("[MessageSendTaskPublishAction][开始投递任务到拆分队列][taskId: {}]", context.getTaskId());
 
         // 校验 TaskID 是否存在

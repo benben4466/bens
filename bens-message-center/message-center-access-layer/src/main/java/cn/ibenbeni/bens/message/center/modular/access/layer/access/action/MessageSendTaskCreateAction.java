@@ -4,7 +4,7 @@ import cn.ibenbeni.bens.message.center.api.MessageSendTaskApi;
 import cn.ibenbeni.bens.message.center.api.enums.core.MessageTaskStatusEnum;
 import cn.ibenbeni.bens.message.center.api.domian.dto.MessageSendTaskDTO;
 import cn.ibenbeni.bens.message.center.api.constants.chain.MessageCenterChainOrderConstants;
-import cn.ibenbeni.bens.message.center.modular.access.layer.access.model.MessageSendContext;
+import cn.ibenbeni.bens.message.center.modular.access.layer.access.model.UserSendMessageContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +22,7 @@ public class MessageSendTaskCreateAction implements MessageSendAction {
     private MessageSendTaskApi messageSendTaskApi;
 
     @Override
-    public void execute(MessageSendContext context) {
+    public void execute(UserSendMessageContext context) {
         log.info("[MessageSendTaskCreateAction][开始创建发送任务][templateCode: {}]", context.getTemplateCode());
 
         // TODO [优化] 构建任务对象可使用单独方法
