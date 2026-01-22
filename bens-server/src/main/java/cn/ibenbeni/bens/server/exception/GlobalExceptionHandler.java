@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
     /**
      * 统一处理业务异常
      */
-    @ExceptionHandler(ServiceException.class)
+    //@ExceptionHandler(ServiceException.class)
     public ErrorResponseData<?> serviceExceptionHandler(ServiceException ex) {
         log.error("业务异常: {}", JSON.toJSONString(ex));
         return renderJson(ex.getErrorCode(), ex.getUserTip(), ex);
