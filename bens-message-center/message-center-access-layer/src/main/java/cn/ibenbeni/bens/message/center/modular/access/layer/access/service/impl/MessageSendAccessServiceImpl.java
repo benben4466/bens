@@ -57,14 +57,13 @@ public class MessageSendAccessServiceImpl implements MessageSendAccessService, M
 
             // 4. 返回成功结果
             log.info("[MessageSendAccessServiceImpl][消息发送成功][recordIds: {}]", context.getRecordIds());
-            return MessageSendResponse.success(context.getRecordIds());
-
-        } catch (MessageCenterException e) {
-            log.error("[MessageSendAccessServiceImpl][消息发送失败][业务异常]", e);
-            return MessageSendResponse.fail(e.getUserTip());
-        } catch (Exception e) {
-            log.error("[MessageSendAccessServiceImpl][消息发送失败][系统异常]", e);
-            return MessageSendResponse.fail("消息发送失败：" + e.getMessage());
+            return MessageSendResponse.success(context.getBizId());
+        } catch (MessageCenterException mEx) {
+            log.error("[MessageSendAccessServiceImpl][消息发送失败][业务异常]", mEx);
+            return MessageSendResponse.fail(mEx.getUserTip());
+        } catch (Exception ex) {
+            log.error("[MessageSendAccessServiceImpl][消息发送失败][系统异常]", ex);
+            return MessageSendResponse.fail("消息发送失败：" + ex.getMessage());
         }
     }
 

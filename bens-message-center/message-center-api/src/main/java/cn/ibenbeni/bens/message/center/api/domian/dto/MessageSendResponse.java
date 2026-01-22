@@ -1,9 +1,9 @@
 package cn.ibenbeni.bens.message.center.api.domian.dto;
 
+import cn.ibenbeni.bens.rule.constants.RuleConstants;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * 消息发送响应
@@ -16,7 +16,7 @@ public class MessageSendResponse implements Serializable {
     /**
      * 是否成功投递
      */
-    private Boolean success;
+    private String code;
 
     /**
      * 消息
@@ -24,18 +24,19 @@ public class MessageSendResponse implements Serializable {
     private String message;
 
     /**
-     * 发送记录ID列表（每个渠道一条记录）
+     * 业务ID
+     * <p>回执ID</p>
      */
-    private List<Long> recordIds;
+    private String bizId;
 
     /**
      * 创建成功响应
      */
-    public static MessageSendResponse success(List<Long> recordIds) {
+    public static MessageSendResponse success(String bizId) {
         MessageSendResponse response = new MessageSendResponse();
-        response.setSuccess(true);
+        response.setCode(RuleConstants.SUCCESS_CODE);
         response.setMessage("消息投递成功");
-        response.setRecordIds(recordIds);
+        response.setBizId(bizId);
         return response;
     }
 
@@ -44,7 +45,7 @@ public class MessageSendResponse implements Serializable {
      */
     public static MessageSendResponse fail(String message) {
         MessageSendResponse response = new MessageSendResponse();
-        response.setSuccess(false);
+        response.setCode(RuleConstants.SUCCESS_CODE);
         response.setMessage(message);
         return response;
     }
