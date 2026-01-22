@@ -118,11 +118,11 @@
         </dependency>
 
         <!-- IOT模块-Starter -->
-        <dependency>
-            <groupId>cn.ibenbeni</groupId>
-            <artifactId>iot-spring-boot-starter</artifactId>
-            <version>${revision}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>cn.ibenbeni</groupId>-->
+<!--            <artifactId>iot-spring-boot-starter</artifactId>-->
+<!--            <version>${revision}</version>-->
+<!--        </dependency>-->
 
         <!-- 可选库-start -->
 
