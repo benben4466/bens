@@ -1,5 +1,6 @@
 package cn.ibenbeni.bens.message.center.api.domian.dto;
 
+import cn.ibenbeni.bens.message.center.api.domian.message.SendMessageExtraInfo;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -36,5 +37,10 @@ public class MessageSendContentSnapshotDTO implements Serializable {
      * 租户编号
      */
     private Long tenantId;
+
+    /**
+     * 发送扩展信息
+     */
+    private SendMessageExtraInfo sendExtraInfo;
 
 }

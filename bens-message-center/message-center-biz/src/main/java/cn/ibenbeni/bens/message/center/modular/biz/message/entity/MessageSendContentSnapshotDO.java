@@ -1,10 +1,12 @@
 package cn.ibenbeni.bens.message.center.modular.biz.message.entity;
 
 import cn.ibenbeni.bens.db.api.pojo.entity.BaseBusinessEntity;
+import cn.ibenbeni.bens.message.center.api.domian.message.SendMessageExtraInfo;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -13,7 +15,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("message_send_content_snapshot")
+@TableName(value = "message_send_content_snapshot", autoResultMap = true)
 public class MessageSendContentSnapshotDO extends BaseBusinessEntity {
 
     /**
@@ -45,5 +47,11 @@ public class MessageSendContentSnapshotDO extends BaseBusinessEntity {
      */
     @TableField("tenant_id")
     private Long tenantId;
+
+    /**
+     * 发送扩展信息
+     */
+    @TableField(value = "send_extra_info", typeHandler = JacksonTypeHandler.class)
+    private SendMessageExtraInfo sendExtraInfo;
 
 }
