@@ -25,7 +25,7 @@ public class MessageRouteDispatchAction implements MessageHandleAction {
 
     @Override
     public void execute(MessageHandleContext context) {
-        log.info("[MessageRouteDispatchAction][开始路由分发][recordId: {}, channelType: {}]", context.getRecordId(), context.getChannelType());
+        log.info("[MessageRouteDispatchAction][开始路由分发][业务ID: {}, channelType: {}]", context.getBizId(), context.getChannelType());
 
         // 转换渠道类型
         MsgPushChannelTypeEnum channelType;
@@ -67,21 +67,19 @@ public class MessageRouteDispatchAction implements MessageHandleAction {
             if (result.isSuccess()) {
                 context.setSuccess(true);
                 context.setResponseData(result.getResponseData());
-                log.info("[MessageRouteDispatchAction][发送成功][recordId: {}, channelMsgId: {}]",
-                        context.getRecordId(), result.getChannelMsgId());
+                log.info("[MessageRouteDispatchAction][发送成功][业务ID: {}, channelMsgId: {}]", context.getBizId(), result.getChannelMsgId());
             } else {
                 context.setSuccess(false);
                 context.setFailType(MsgSendFailTypeEnum.CHANNEL_SEND_FAIL);
                 context.setFailReason(result.getErrorMessage());
-                log.error("[MessageRouteDispatchAction][发送失败][recordId: {}, error: {}]",
-                        context.getRecordId(), result.getErrorMessage());
+                log.error("[MessageRouteDispatchAction][发送失败][业务ID: {}, error: {}]", context.getBizId(), result.getErrorMessage());
             }
 
-        } catch (Exception e) {
-            log.error("[MessageRouteDispatchAction][发送异常][recordId: {}]", context.getRecordId(), e);
+        } catch (Exception ex) {
+            log.error("[MessageRouteDispatchAction][发送异常][业务ID: {}]", context.getBizId(), ex);
             context.setSuccess(false);
             context.setFailType(MsgSendFailTypeEnum.CHANNEL_SEND_FAIL);
-            context.setFailReason("发送异常: " + e.getMessage());
+            context.setFailReason("发送异常: " + ex.getMessage());
         }
     }
 

@@ -1,5 +1,6 @@
 package cn.ibenbeni.bens.message.center.api.domian.dto;
 
+import cn.ibenbeni.bens.message.center.api.domian.recipient.AbstractRecipientInfo;
 import cn.ibenbeni.bens.message.center.api.enums.core.MsgRecipientTypeEnum;
 import lombok.Data;
 
@@ -28,21 +29,8 @@ public class MessageSendRequest implements Serializable {
     private Map<String, Object> templateParams;
 
     /**
-     * 接收者类型
-     * <p>枚举：{@link MsgRecipientTypeEnum}</p>
-     */
-    private Integer recipientType;
-
-    /**
      * 接收者信息
-     * 可包含: userId, phone, email, deviceToken 等
      */
-    private Map<String, Object> recipient;
-
-    /**
-     * 指定渠道列表（可选）
-     * 为空则使用模板配置的渠道
-     */
-    private List<Integer> channels;
+    private List<AbstractRecipientInfo> recipientInfos;
 
 }

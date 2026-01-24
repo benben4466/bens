@@ -27,36 +27,28 @@ public class MessageSendTaskPublishAction implements MessageSendAction {
     @Override
     public void execute(UserSendMessageContext context) {
         log.info("[MessageSendTaskPublishAction][开始投递任务到拆分队列][taskId: {}]", context.getTaskId());
+        if (context.getInterrupted()) {
+            log.error("[execute][忽略执行][责任连已中断执行][入参: {}]", JSON.toJSONString(context));
+            return;
+        }
 
         // 校验 TaskID 是否存在
         if (context.getTaskId() == null) {
-            log.error("[MessageSendTaskPublishAction][任务ID为空，无法投递]");
+            log.error("[execute][忽略执行][任务ID为空，无法投递][入参: {}]", JSON.toJSONString(context));
             context.interrupt("任务ID为空");
             return;
         }
 
         try {
-            // TODO [优化] 构建拆分任务可单独形成方法
             // 构建拆分任务 Payload
-            TaskSplitPayload payload = new TaskSplitPayload();
-            payload.setTaskId(context.getTaskId());
-            payload.setTemplateCode(context.getTemplateCode());
-            payload.setTemplate(context.getTemplate());
-            payload.setBizId(context.getBizId());
-            payload.setRecipientType(context.getRecipientType());
-            payload.setRecipient(context.getRecipient());
-            payload.setChannels(context.getChannels());
-            payload.setTemplateParams(context.getTemplateParams());
-            payload.setTenantId(context.getTenantId());
+            TaskSplitPayload payload = buildTaskSplitPayload(context);
 
             // TODO [优化] convertAndSend 方法执行失败时，不会有任何回调和异常抛出
             // 投递到拆分队列
             rocketMQTemplate.convertAndSend(MessageCenterMqTopicConstants.SPLIT_TOPIC, JSON.toJSONString(payload));
-
-            log.info("[MessageSendTaskPublishAction][投递拆分任务成功][taskId: {}]", context.getTaskId());
-
+            log.info("[execute][投递拆分任务成功][taskId: {}, 任务拆分载荷: {}]", context.getTaskId(), JSON.toJSONString(payload));
         } catch (Exception ex) {
-            log.error("[MessageSendTaskPublishAction][投递拆分任务失败][taskId: {}]", context.getTaskId(), ex);
+            log.error("[execute][投递拆分任务失败][taskId: {}]", context.getTaskId(), ex);
             throw new MessageCenterException(MessageCenterExceptionEnum.MESSAGE_QUEUE_SEND_FAIL);
         }
     }
@@ -64,6 +56,18 @@ public class MessageSendTaskPublishAction implements MessageSendAction {
     @Override
     public int getOrder() {
         return MessageCenterChainOrderConstants.AccessLayer.TASK_PUBLISH;
+    }
+
+    private TaskSplitPayload buildTaskSplitPayload(UserSendMessageContext context) {
+        return TaskSplitPayload.builder()
+                .bizId(context.getBizId())
+                .taskId(context.getTaskId())
+                .templateCode(context.getTemplateCode())
+                .templateParams(context.getTemplateParams())
+                .template(context.getTemplate())
+                .recipientInfos(context.getRecipientInfos())
+                .tenantId(context.getTenantId())
+                .build();
     }
 
 }

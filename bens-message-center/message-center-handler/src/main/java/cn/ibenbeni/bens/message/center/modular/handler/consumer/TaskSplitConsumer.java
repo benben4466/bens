@@ -1,18 +1,19 @@
 package cn.ibenbeni.bens.message.center.modular.handler.consumer;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.ibenbeni.bens.common.core.serialization.JacksonUtils;
 import cn.ibenbeni.bens.message.center.api.MessageSendDetailApi;
 import cn.ibenbeni.bens.message.center.api.MessageSendTaskApi;
+import cn.ibenbeni.bens.message.center.api.domian.recipient.AbstractRecipientInfo;
 import cn.ibenbeni.bens.message.center.api.enums.core.MessageDetailStatusEnum;
 import cn.ibenbeni.bens.message.center.api.enums.core.MessageTaskStatusEnum;
-import cn.ibenbeni.bens.message.center.api.enums.core.MsgPushChannelTypeEnum;
 import cn.ibenbeni.bens.message.center.api.domian.dto.MessageQueuePayload;
 import cn.ibenbeni.bens.message.center.api.domian.dto.MessageSendDetailDTO;
 import cn.ibenbeni.bens.message.center.api.domian.dto.MessageSendTaskDTO;
 import cn.ibenbeni.bens.message.center.api.domian.dto.TaskSplitPayload;
 import cn.ibenbeni.bens.message.center.api.constants.mq.MessageCenterMqTopicConstants;
+import cn.ibenbeni.bens.message.center.api.enums.core.MsgPushChannelTypeEnum;
 import cn.ibenbeni.bens.tenant.api.context.TenantContextHolder;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +25,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 任务拆分消费者 (Splitter)
@@ -57,58 +57,38 @@ public class TaskSplitConsumer implements RocketMQListener<String> {
         if (payload == null) {
             return;
         }
-        TenantContextHolder.setTenantId(payload.getTenantId()); // 设置租户ID
 
-        Long taskId = payload.getTaskId();
+        TenantContextHolder.setTenantId(payload.getTenantId()); // 设置租户 ID
 
-        // 1. 幂等/状态检查
-        MessageSendTaskDTO task = messageSendTaskApi.getTaskById(taskId);
-        if (task == null) {
-            log.error("[TaskSplitConsumer][任务不存在][taskId: {}]", taskId);
-            return;
-        }
-        if (task.getTaskStatus() != MessageTaskStatusEnum.WAITING_SPLIT) {
-            log.warn("[TaskSplitConsumer][任务状态不是待拆分，跳过][taskId: {}, status: {}]", taskId, task.getTaskStatus());
+        // 检查消息发送任务
+        if (!checkMessageSendTask(payload.getTaskId())) {
             return;
         }
 
+        MessageSendTaskDTO updateSendTaskDTO = MessageSendTaskDTO.builder()
+                .taskId(payload.getTaskId())
+                .taskStatus(MessageTaskStatusEnum.PROCESSING)
+                .build();
         try {
             // 更新状态为处理中
-            task.setTaskStatus(MessageTaskStatusEnum.PROCESSING);
-            messageSendTaskApi.updateTask(task);
+            updateSendTaskDTO.setTaskStatus(MessageTaskStatusEnum.PROCESSING);
+            messageSendTaskApi.updateTask(updateSendTaskDTO);
 
-            // 2. 解析逻辑 (确定用户列表和渠道列表)
-            List<String> targetUsers = getTargetUsers(payload);
-            List<Integer> channels = payload.getChannels();
-            if (CollUtil.isEmpty(channels)) {
-                // 如果 Payload 没传，从模板配置查 (通常 Access 层已填充，这里兜底)
-                // 简化处理：假设 channels 必传或已在 Payload 中
-            }
-
-            // 3. 拆分与落库 (双重循环: 用户 x 渠道)
+            // 2. 拆分与落库
             List<MessageSendDetailDTO> batchDetails = new ArrayList<>();
             long totalMsgCount = 0;
+            long totalUserCount = 0;
 
-            for (String user : targetUsers) {
-                for (Integer channelType : channels) {
-                    // 变量解析下沉到 Execute 层，这里只存原始参数，或者在这里做通用解析
-                    // 假设变量针对 User 是相同的 (除了 User 本身属性)，或者 Payload 里带了用户特定参数
-                    // 这里简化为：所有用户使用相同参数
+            for (AbstractRecipientInfo info : payload.getRecipientInfos()) {
+                if (info.getChannelType() == null || CollUtil.isEmpty(info.getIdentifiers())) {
+                    continue;
+                }
 
-                    MessageSendDetailDTO detail = new MessageSendDetailDTO();
-                    detail.setTaskId(taskId);
-                    detail.setRecipientAccount(user);
-
-                    MsgPushChannelTypeEnum channelEnum = MsgPushChannelTypeEnum.fromCode(channelType);
-                    detail.setChannelType(channelEnum);
-
-                    detail.setMsgVariables(payload.getTemplateParams());
-                    detail.setSendStatus(MessageDetailStatusEnum.PENDING);
-                    detail.setTenantId(payload.getTenantId());
-
+                for (String identifier : info.getIdentifiers()) {
+                    MessageSendDetailDTO detail = buildMessageSendDetail(payload, MsgPushChannelTypeEnum.fromCode(info.getChannelType()), identifier);
                     batchDetails.add(detail);
                     totalMsgCount++;
-
+                    totalUserCount++;
                     // 分批落库
                     if (batchDetails.size() >= BATCH_SIZE) {
                         flushBatch(batchDetails, payload);
@@ -116,6 +96,7 @@ public class TaskSplitConsumer implements RocketMQListener<String> {
                     }
                 }
             }
+
             // 冲刷剩余
             if (!batchDetails.isEmpty()) {
                 flushBatch(batchDetails, payload);
@@ -123,33 +104,17 @@ public class TaskSplitConsumer implements RocketMQListener<String> {
             }
 
             // 4. 更新主任务统计信息和完成状态
-            task.setTotalUserCount((long) targetUsers.size());
-            task.setTotalMsgCount(totalMsgCount);
-            messageSendTaskApi.updateTask(task);
+            updateSendTaskDTO.setTotalUserCount(totalUserCount);
+            updateSendTaskDTO.setTotalMsgCount(totalMsgCount);
+            messageSendTaskApi.updateTask(updateSendTaskDTO);
 
-            log.info("[TaskSplitConsumer][任务拆分完成][taskId: {}, totalMsg: {}]", taskId, totalMsgCount);
-
-        } catch (Exception e) {
-            log.error("[TaskSplitConsumer][任务拆分失败][taskId: {}]", taskId, e);
-            task.setTaskStatus(MessageTaskStatusEnum.PARTIAL_FAIL);
-            messageSendTaskApi.updateTask(task);
-            throw e;
+            log.info("[TaskSplitConsumer][任务拆分完成][taskId: {}, totalMsg: {}]", payload.getTaskId(), totalMsgCount);
+        } catch (Exception ex) {
+            log.error("[TaskSplitConsumer][任务拆分失败][taskId: {}]", payload.getTaskId(), ex);
+            updateSendTaskDTO.setTaskStatus(MessageTaskStatusEnum.PARTIAL_FAIL);
+            messageSendTaskApi.updateTask(updateSendTaskDTO);
+            throw ex;
         }
-    }
-
-    private List<String> getTargetUsers(TaskSplitPayload payload) {
-        List<String> users = new ArrayList<>();
-        Map<String, Object> recipient = payload.getRecipient();
-        if (recipient != null) {
-            if (recipient.containsKey("userId")) {
-                users.add(String.valueOf(recipient.get("userId")));
-            } else if (recipient.containsKey("phone")) {
-                users.add(String.valueOf(recipient.get("phone")));
-            } else if (recipient.containsKey("email")) {
-                users.add(String.valueOf(recipient.get("email")));
-            }
-        }
-        return users;
     }
 
     private void flushBatch(List<MessageSendDetailDTO> details, TaskSplitPayload originPayload) {
@@ -158,20 +123,7 @@ public class TaskSplitConsumer implements RocketMQListener<String> {
 
         // 2. 分发 MQ (Execute)
         for (MessageSendDetailDTO detail : details) {
-            MessageQueuePayload executePayload = new MessageQueuePayload();
-            executePayload.setRecordId(detail.getId());
-            executePayload.setBizId(originPayload.getBizId());
-            executePayload.setTemplateCode(originPayload.getTemplateCode());
-            executePayload.setTemplateId(originPayload.getTemplate().getTemplateId());
-            executePayload.setChannelType(detail.getChannelType().getType());
-
-            // 简单起见，Execute 层可能只需要 ID，然后查库？或者尽可能带数据减少查库
-            // 这里带上必要数据
-            // TODO [优化] 接收人类型
-            executePayload.setRecipient(MapUtil.of("email", detail.getRecipientAccount()));
-            executePayload.setMsgVariables(detail.getMsgVariables());
-            executePayload.setTenantId(detail.getTenantId());
-
+            MessageQueuePayload executePayload = buildMessageQueuePayload(originPayload, detail);
             // TODO [优化] 形成方法，不要直接拼接
             String destination = MessageCenterMqTopicConstants.EXECUTE_TOPIC + ":" + detail.getChannelType().getType();
             rocketMQTemplate.convertAndSend(destination, JSON.toJSONString(executePayload));
@@ -190,7 +142,7 @@ public class TaskSplitConsumer implements RocketMQListener<String> {
             return null;
         }
 
-        TaskSplitPayload payload = JSON.parseObject(message, TaskSplitPayload.class);
+        TaskSplitPayload payload = JacksonUtils.parseObject(message, TaskSplitPayload.class);
         if (payload == null || payload.getTaskId() == null) {
             log.error("[TaskSplitConsumer][忽略处理][消息体为空或TaskId缺失]");
             return null;
@@ -199,8 +151,64 @@ public class TaskSplitConsumer implements RocketMQListener<String> {
             log.error("[TaskSplitConsumer][忽略处理][租户ID缺失][业务ID: {}, 任务ID: {}, 载荷: {}]", payload.getBizId(), payload.getTaskId(), JSON.toJSONString(payload));
             return null;
         }
+        if (CollUtil.isEmpty(payload.getRecipientInfos())) {
+            log.error("[TaskSplitConsumer][忽略处理][接收者信息缺失][业务ID: {}, 任务ID: {}, 载荷: {}]", payload.getBizId(), payload.getTaskId(), JSON.toJSONString(payload));
+            return null;
+        }
 
         return payload;
+    }
+
+    /**
+     * 检查消息发送任务
+     *
+     * @param taskId 消息发送任务 ID
+     * @return true=通过；false=不通过；
+     */
+    private boolean checkMessageSendTask(Long taskId) {
+        // 检查任务状态
+        MessageSendTaskDTO task = messageSendTaskApi.getTaskById(taskId);
+        if (task == null) {
+            log.error("[TaskSplitConsumer][忽略处理][任务不存在][taskId: {}]", taskId);
+            return false;
+        }
+        if (task.getTaskStatus() != MessageTaskStatusEnum.WAITING_SPLIT) {
+            log.warn("[TaskSplitConsumer][忽略处理][任务状态不是待拆分,跳过][taskId: {}, status: {}]", taskId, task.getTaskStatus());
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * 构建消息发送明细
+     *
+     * @param payload     任务拆分载荷
+     * @param channelType 渠道类型
+     * @param identifier  标识值。如手机号、邮箱等
+     * @return 消息发送明细 DTO
+     */
+    private MessageSendDetailDTO buildMessageSendDetail(TaskSplitPayload payload, MsgPushChannelTypeEnum channelType, String identifier) {
+        return MessageSendDetailDTO.builder()
+                .taskId(payload.getTaskId())
+                .channelType(channelType)
+                .recipientIdentifier(identifier)
+                .msgVariables(payload.getTemplateParams())
+                .sendStatus(MessageDetailStatusEnum.PENDING)
+                .tenantId(payload.getTenantId())
+                .build();
+    }
+
+    private MessageQueuePayload buildMessageQueuePayload(TaskSplitPayload originPayload, MessageSendDetailDTO sendDetail) {
+        // TODO [优化] recipientInfos 是否应该填充 channelType 对应的 recipientInfo
+        return MessageQueuePayload.builder()
+                .bizId(originPayload.getBizId())
+                .templateCode(originPayload.getTemplateCode())
+                .channelType(sendDetail.getChannelType().getType())
+                .recipientInfos(originPayload.getRecipientInfos())
+                .msgVariables(sendDetail.getMsgVariables())
+                .tenantId(originPayload.getTenantId())
+                .build();
     }
 
 }

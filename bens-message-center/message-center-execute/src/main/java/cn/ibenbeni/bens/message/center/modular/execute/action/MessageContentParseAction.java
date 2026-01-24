@@ -25,43 +25,32 @@ public class MessageContentParseAction implements MessageHandleAction {
 
     @Override
     public void execute(MessageHandleContext context) {
-        log.info("[MessageContentParseAction][开始解析消息内容][recordId: {}, templateId: {}]", context.getRecordId(), context.getTemplateId());
+        log.info("[MessageContentParseAction][开始解析消息内容][业务ID: {}, 模板编码: {}]", context.getBizId(), context.getTemplateCode());
 
         try {
+            // TODO [优化] 此方法是否 应该被写进 MessageTemplateCententApi 中
             // 1. 获取模板内容配置
-            MessageTemplateContentDTO contentDTO = messageTemplateApi.getContentByTemplateAndChannel(
-                    context.getTemplateId(),
-                    context.getChannelType()
-            );
+            MessageTemplateContentDTO contentDTO = messageTemplateApi.getContentByTemplateCodeAndChannel(context.getTemplateCode(), context.getChannelType());
 
             if (contentDTO == null) {
-                log.error("[MessageContentParseAction][未找到模板内容配置][templateId: {}, channelType: {}]", context.getTemplateId(), context.getChannelType());
+                log.error("[MessageContentParseAction][未找到模板内容配置][业务ID: {}, 消息模板编码:{}, channelType: {}]", context.getBizId(), context.getTemplateCode(), context.getChannelType());
                 context.setSuccess(false);
                 context.setFailType(MsgSendFailTypeEnum.TEMPLATE_NOT_FOUND); // 或配置缺失
                 context.setFailReason("未找到对应渠道的模板内容配置");
                 return;
             }
 
-            // 填充模板内容ID
+            // 填充模板内容 ID
             context.setTemplateContentId(contentDTO.getId());
 
             // 2. 解析标题和正文
             String title = parseTemplate(contentDTO.getTitle(), context.getMsgVariables());
             String content = parseTemplate(contentDTO.getTemplateContent(), context.getMsgVariables());
 
+            // TODO [问题] 填充解析标题和正文
             // 3. 填充到上下文
-            context.setMessageTitle(title);
-            context.setMessageContent(content);
-            
-            // 将渠道特定配置也合并或设置到上下文，供后续 Dispatch 使用
-            if (contentDTO.getChannelConfig() != null) {
-                // 如果 payload 中没有特定配置，则使用模板配置
-                if (context.getChannelConfig() == null) {
-                    context.setChannelConfig(contentDTO.getChannelConfig());
-                } else {
-                    // 合并? 暂以 payload 为准
-                }
-            }
+            // context.setMessageTitle(title);
+            // context.setMessageContent(content);
 
             log.info("[MessageContentParseAction][解析完成]");
         } catch (Exception ex) {

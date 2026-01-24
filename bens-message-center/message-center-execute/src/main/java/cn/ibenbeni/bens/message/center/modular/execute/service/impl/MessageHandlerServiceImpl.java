@@ -45,7 +45,7 @@ public class MessageHandlerServiceImpl implements MessageHandlerService {
 
     @Override
     public boolean handleMessage(MessageQueuePayload payload) {
-        log.info("[MessageHandlerServiceImpl][开始处理消息][recordId: {}, channelType: {}]", payload.getRecordId(), payload.getChannelType());
+        log.info("[MessageHandlerServiceImpl][开始处理消息][业务ID: {}, channelType: {}]", payload.getBizId(), payload.getChannelType());
 
         if (payload.getTenantId() == null) {
             log.error("[handleMessage][忽略处理][租户ID为空][载荷: {}]", JSON.toJSONString(payload));
@@ -55,8 +55,9 @@ public class MessageHandlerServiceImpl implements MessageHandlerService {
 
         // 幂等性检查
         if (idempotentChecker != null) {
-            if (!idempotentChecker.tryAcquire(payload.getRecordId(), payload.getChannelType())) {
-                log.info("[MessageHandlerServiceImpl][幂等拦截，跳过处理][recordId: {}]", payload.getRecordId());
+            // TODO [优化] MessageQueuePayload 增加任务ID
+            if (!idempotentChecker.tryAcquire(null, payload.getChannelType())) {
+                log.info("[MessageHandlerServiceImpl][幂等拦截，跳过处理][业务ID: {}]", payload.getBizId());
                 return true; // 返回true，避免MQ重试
             }
         }
@@ -68,34 +69,35 @@ public class MessageHandlerServiceImpl implements MessageHandlerService {
             chainProcessor.execute(context);
 
             if (context.isSuccess()) {
+                // TODO [问题] 填充消息发送明细
                 // 更新 Detail 状态
                 MessageSendDetailDTO detail = new MessageSendDetailDTO();
-                detail.setId(context.getRecordId());
                 detail.setSendStatus(MessageDetailStatusEnum.SUCCESS);
                 detail.setOutSerialNumber(String.valueOf(context.getResponseData())); // 假设 ResponseData 是 SerialNum
                 detail.setFinishTime(new java.util.Date());
                 messageSendDetailApi.updateDetail(detail);
 
-                log.info("[MessageHandlerServiceImpl][消息处理成功][recordId: {}]", context.getRecordId());
+                log.info("[MessageHandlerServiceImpl][消息处理成功][业务ID: {}]", context.getBizId());
                 return true;
             } else {
+                // TODO [问题] 填充消息发送明细
                 // 更新 Detail 失败
                 MessageSendDetailDTO detail = new MessageSendDetailDTO();
-                detail.setId(context.getRecordId());
                 detail.setSendStatus(MessageDetailStatusEnum.FAIL);
                 detail.setOutResp(context.getFailReason());
                 detail.setFinishTime(new java.util.Date());
                 messageSendDetailApi.updateDetail(detail);
 
-                log.error("[MessageHandlerServiceImpl][消息处理失败][recordId: {}, failReason: {}]", context.getRecordId(), context.getFailReason());
+                log.error("[MessageHandlerServiceImpl][消息处理失败][业务ID: {}, failReason: {}]", context.getBizId(), context.getFailReason());
                 return false;
             }
 
         } catch (Exception ex) {
-            log.error("[MessageHandlerServiceImpl][消息处理异常][recordId: {}]", payload.getRecordId(), ex);
+            log.error("[MessageHandlerServiceImpl][消息处理异常][业务ID: {}]", payload.getBizId(), ex);
             try {
                 MessageSendDetailDTO detail = new MessageSendDetailDTO();
-                detail.setId(payload.getRecordId());
+                // TODO [优化] 去掉记录ID
+                detail.setId(null);
                 detail.setSendStatus(MessageDetailStatusEnum.FAIL);
                 detail.setOutResp(ex.getMessage());
                 messageSendDetailApi.updateDetail(detail);
@@ -108,19 +110,13 @@ public class MessageHandlerServiceImpl implements MessageHandlerService {
 
     private MessageHandleContext buildContext(MessageQueuePayload payload) {
         MessageHandleContext context = new MessageHandleContext();
-        context.setRecordId(payload.getRecordId());
-        context.setTemplateCode(payload.getTemplateCode());
-        context.setTemplateId(payload.getTemplateId());
-        context.setChannelType(payload.getChannelType());
-        context.setMessageTitle(payload.getMessageTitle());
-        context.setMessageContent(payload.getMessageContent());
-        context.setRecipient(payload.getRecipient());
-        context.setRecipientType(payload.getRecipientType());
         context.setBizId(payload.getBizId());
-        context.setChannelConfig(payload.getChannelConfig());
+        context.setChannelType(payload.getChannelType());
+        context.setTemplateCode(payload.getTemplateCode());
         context.setMsgVariables(payload.getMsgVariables());
-        context.setRetryCount(payload.getRetryCount());
+        context.setRecipientInfos(payload.getRecipientInfos());
         context.setTenantId(payload.getTenantId());
         return context;
     }
+
 }

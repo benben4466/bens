@@ -33,5 +33,13 @@ public interface MessageTemplateService {
      */
     boolean checkExists(Long templateId, String templateCode, Integer channelType);
 
+    /**
+     * 检查模板是否支持渠道
+     *
+     * @param channelTypes 渠道类型集合
+     * @return true=支持；false=不支持；
+     */
+    boolean isSupportChannel(String templateCode, Set<Integer> channelTypes);
+
 }
 

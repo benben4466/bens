@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -48,8 +49,8 @@ public class MessageTemplateApiImpl implements MessageTemplateApi {
     }
 
     @Override
-    public MessageTemplateContentDTO getContentByTemplateAndChannel(Long templateId, Integer channelType) {
-        MessageTemplateContentDO entity = messageTemplateContentService.getByTemplateIdAndChannelType(templateId, channelType);
+    public MessageTemplateContentDTO getContentByTemplateCodeAndChannel(String templateCode, Integer channelType) {
+        MessageTemplateContentDO entity = messageTemplateContentService.getByTemplateCodeAndChannelType(templateCode, channelType);
         if (entity == null) {
             return null;
         }
@@ -68,20 +69,26 @@ public class MessageTemplateApiImpl implements MessageTemplateApi {
     }
 
     @Override
-    public boolean checkTemplateAvailable(String templateCode) {
+    public MessageTemplateDTO checkTemplateAvailable(String templateCode) {
         MessageTemplateDO entity = messageTemplateService.getByCode(templateCode);
         if (entity == null) {
-            return false;
+            return null;
         }
         // 检查模板状态是否已上线
         if (!MsgTemplateStatusEnum.ONLINE.getStatus().equals(entity.getTemplateStatus())) {
-            return false;
+            return null;
         }
         // 检查审核状态是否通过
         if (!MsgTemplateAuditStatusEnum.APPROVED.getStatus().equals(entity.getAuditStatus())) {
-            return false;
+            return null;
         }
-        return true;
+
+        return convertToDTO(entity);
+    }
+
+    @Override
+    public boolean isSupportChannel(String templateCode, Set<Integer> channelTypes) {
+        return messageTemplateService.isSupportChannel(templateCode, channelTypes);
     }
 
     private MessageTemplateDTO convertToDTO(MessageTemplateDO entity) {

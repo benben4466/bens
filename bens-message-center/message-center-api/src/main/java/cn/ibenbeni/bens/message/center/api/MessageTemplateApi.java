@@ -4,6 +4,7 @@ import cn.ibenbeni.bens.message.center.api.domian.dto.MessageTemplateContentDTO;
 import cn.ibenbeni.bens.message.center.api.domian.dto.MessageTemplateDTO;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 消息模板查询 API 接口
@@ -27,13 +28,13 @@ public interface MessageTemplateApi {
     MessageTemplateDTO getById(Long templateId);
 
     /**
-     * 查询指定模板和渠道的内容配置
+     * 根据模板编码和渠道类型查询内容配置
      *
-     * @param templateId  模板ID
-     * @param channelType 渠道类型
+     * @param templateCode 模板编码
+     * @param channelType  渠道类型
      * @return 模板内容
      */
-    MessageTemplateContentDTO getContentByTemplateAndChannel(Long templateId, Integer channelType);
+    MessageTemplateContentDTO getContentByTemplateCodeAndChannel(String templateCode, Integer channelType);
 
     /**
      * 查询模板的所有渠道内容配置
@@ -49,6 +50,14 @@ public interface MessageTemplateApi {
      * @param templateCode 模板编码
      * @return 是否可用
      */
-    boolean checkTemplateAvailable(String templateCode);
+    MessageTemplateDTO checkTemplateAvailable(String templateCode);
+
+    /**
+     * 检查模板是否支持渠道
+     *
+     * @param channelTypes 渠道类型集合
+     * @return true=支持；false=不支持；
+     */
+    boolean isSupportChannel(String templateCode, Set<Integer> channelTypes);
 
 }

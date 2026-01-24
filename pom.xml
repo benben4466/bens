@@ -84,6 +84,7 @@
         <knife4j.version>4.5.0</knife4j.version>
         <redisson.version>3.23.5</redisson.version>
         <sa-token.version>1.43.0</sa-token.version>
+        <jackson.version>2.13.4.20221013</jackson.version>
         <!-- 消息队列 -->
         <rocketmq-spring.version>2.3.4</rocketmq-spring.version>
         <!-- 通信相关 -->
@@ -122,6 +123,15 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-bom</artifactId>
                 <version>${mybatis-plus.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Jackson 版本管理 -->
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

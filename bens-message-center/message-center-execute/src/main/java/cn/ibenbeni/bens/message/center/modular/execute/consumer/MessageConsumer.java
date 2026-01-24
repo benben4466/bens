@@ -1,9 +1,9 @@
 package cn.ibenbeni.bens.message.center.modular.execute.consumer;
 
+import cn.ibenbeni.bens.common.core.serialization.JacksonUtils;
 import cn.ibenbeni.bens.message.center.api.domian.dto.MessageQueuePayload;
 import cn.ibenbeni.bens.message.center.api.constants.mq.MessageCenterMqTopicConstants;
 import cn.ibenbeni.bens.message.center.modular.execute.service.MessageHandlerService;
-import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
@@ -33,9 +33,9 @@ public class MessageConsumer implements RocketMQListener<String> {
 
         try {
             // 1. 反序列化消息
-            MessageQueuePayload payload = JSON.parseObject(message, MessageQueuePayload.class);
+            MessageQueuePayload payload = JacksonUtils.parseObject(message, MessageQueuePayload.class);
 
-            if (payload == null || payload.getRecordId() == null) {
+            if (payload == null) {
                 log.error("[MessageConsumer][消息格式错误][message: {}]", message);
                 return;
             }
@@ -44,7 +44,7 @@ public class MessageConsumer implements RocketMQListener<String> {
             boolean success = messageHandlerService.handleMessage(payload);
 
             if (!success) {
-                log.warn("[MessageConsumer][消息处理失败，可能触发重试][recordId: {}]", payload.getRecordId());
+                log.warn("[MessageConsumer][消息处理失败，可能触发重试][业务ID: {}]", payload.getBizId());
             }
 
         } catch (Exception ex) {

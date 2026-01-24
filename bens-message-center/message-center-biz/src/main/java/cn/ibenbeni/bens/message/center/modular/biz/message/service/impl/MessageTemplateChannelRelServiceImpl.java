@@ -56,7 +56,7 @@ public class MessageTemplateChannelRelServiceImpl implements MessageTemplateChan
 
     @Override
     @DSTransactional(rollbackFor = Exception.class)
-    public void updateRel(Long templateContentId, Set<Long> channelConfigIds) {
+    public void updateRel(Long templateId, Long templateContentId, Set<Long> channelConfigIds) {
         // 1. 删除旧关联
         deleteByTemplateContentId(templateContentId);
 
@@ -65,6 +65,7 @@ public class MessageTemplateChannelRelServiceImpl implements MessageTemplateChan
             List<MessageTemplateChannelRelSaveReq> reqList = new ArrayList<>();
             for (Long channelConfigId : channelConfigIds) {
                 MessageTemplateChannelRelSaveReq req = new MessageTemplateChannelRelSaveReq();
+                req.setTemplateId(templateId);
                 req.setTemplateContentId(templateContentId);
                 req.setChannelConfigId(channelConfigId);
                 reqList.add(req);

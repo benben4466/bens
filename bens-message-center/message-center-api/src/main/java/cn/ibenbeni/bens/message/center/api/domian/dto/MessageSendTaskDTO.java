@@ -1,7 +1,10 @@
 package cn.ibenbeni.bens.message.center.api.domian.dto;
 
 import cn.ibenbeni.bens.message.center.api.enums.core.MessageTaskStatusEnum;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -9,6 +12,9 @@ import java.io.Serializable;
  * 消息发送任务 DTO
  */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class MessageSendTaskDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -22,11 +28,6 @@ public class MessageSendTaskDTO implements Serializable {
      * 任务编码
      */
     private String taskCode;
-
-    /**
-     * 消息模板ID
-     */
-    private Long templateId;
 
     /**
      * 消息模板编码

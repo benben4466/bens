@@ -1,32 +1,25 @@
 package cn.ibenbeni.bens.message.center.api.domian.dto;
 
+import cn.ibenbeni.bens.message.center.api.domian.recipient.AbstractRecipientInfo;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 /**
  * RocketMQ 消息体
  */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class MessageQueuePayload implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    /**
-     * 发送记录ID
-     */
-    private Long recordId;
-
-    /**
-     * 模板编码
-     */
-    private String templateCode;
-
-    /**
-     * 模板ID
-     */
-    private Long templateId;
 
     /**
      * 业务ID
@@ -39,24 +32,9 @@ public class MessageQueuePayload implements Serializable {
     private Integer channelType;
 
     /**
-     * 接收者信息
+     * 模板编码
      */
-    private Map<String, Object> recipient;
-
-    /**
-     * 接收者类型
-     */
-    private Integer recipientType;
-
-    /**
-     * 消息标题（已解析）
-     */
-    private String messageTitle;
-
-    /**
-     * 消息内容（已解析）
-     */
-    private String messageContent;
+    private String templateCode;
 
     /**
      * 原始模板变量
@@ -64,19 +42,9 @@ public class MessageQueuePayload implements Serializable {
     private Map<String, Object> msgVariables;
 
     /**
-     * 渠道配置
+     * 接收者信息
      */
-    private Map<String, Object> channelConfig;
-
-    /**
-     * 重试次数
-     */
-    private Integer retryCount;
-
-    /**
-     * 发送时间戳
-     */
-    private Long sendTime;
+    private List<AbstractRecipientInfo> recipientInfos;
 
     /**
      * 租户ID

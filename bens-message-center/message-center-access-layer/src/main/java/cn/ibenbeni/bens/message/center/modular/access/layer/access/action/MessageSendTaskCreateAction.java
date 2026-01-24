@@ -25,32 +25,30 @@ public class MessageSendTaskCreateAction implements MessageSendAction {
     public void execute(UserSendMessageContext context) {
         log.info("[MessageSendTaskCreateAction][开始创建发送任务][templateCode: {}]", context.getTemplateCode());
 
-        // TODO [优化] 构建任务对象可使用单独方法
-        // 构建任务对象
-        MessageSendTaskDTO task = new MessageSendTaskDTO();
-        // TODO [暂用]
-        task.setTaskCode(context.getBizId()); // 暂用 bizId 作为 taskCode，也可生成 UUID
-        task.setTemplateId(context.getTemplate().getTemplateId());
-        task.setTemplateCode(context.getTemplateCode());
-        task.setTaskStatus(MessageTaskStatusEnum.WAITING_SPLIT);
-        task.setTenantId(context.getTenantId());
-
-        // 预估用户数（如果 recipient 中包含列表，可以在此统计；暂置为 0 由拆分层更新）
-        task.setTotalUserCount(0L);
-        task.setTotalMsgCount(0L);
-
+        // 构建消息发送任务
+        MessageSendTaskDTO msgSendTask = buildMessageSendTask(context);
         // 保存入库
-        Long taskId = messageSendTaskApi.createTask(task);
+        Long taskId = messageSendTaskApi.createTask(msgSendTask);
 
         // 将 TaskID 注入上下文
         context.setTaskId(taskId);
-
         log.info("[MessageSendTaskCreateAction][任务创建成功][taskId: {}]", taskId);
     }
 
     @Override
     public int getOrder() {
         return MessageCenterChainOrderConstants.AccessLayer.TASK_CREATE;
+    }
+
+    private MessageSendTaskDTO buildMessageSendTask(UserSendMessageContext context) {
+        return MessageSendTaskDTO.builder()
+                .taskCode(context.getBizId()) // 暂用 bizId 作为 taskCode，也可生成 UUID
+                .templateCode(context.getTemplateCode())
+                .taskStatus(MessageTaskStatusEnum.WAITING_SPLIT)
+                .tenantId(context.getTenantId())
+                .totalUserCount(0L)
+                .totalMsgCount(0L)
+                .build();
     }
 
 }

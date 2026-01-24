@@ -28,12 +28,10 @@ public class LetterMessageSender implements MessageChannelSender {
 
     @Override
     public SendResult send(MessageHandleContext context) {
-        log.info("[LetterMessageSender][开始发送站内信][recordId: {}, recipient: {}]",
-                context.getRecordId(), context.getRecipient());
+        log.info("[LetterMessageSender][开始发送站内信][业务ID: {}]", context.getBizId());
 
         try {
-            Map<String, Object> recipient = context.getRecipient();
-            Object userIdObj = recipient.get("userId");
+            Object userIdObj = 1L;
 
             if (userIdObj == null) {
                 return SendResult.fail("RECIPIENT_EMPTY", "接收者用户ID为空");
@@ -53,14 +51,13 @@ public class LetterMessageSender implements MessageChannelSender {
             // 由于模块间解耦，通过 API 接口调用
             // TODO: 通过 NotifyMessageSendApi 发送站内信
 
-            log.info("[LetterMessageSender][站内信发送成功][recordId: {}, userId: {}, title: {}]",
-                    context.getRecordId(), userId, context.getMessageTitle());
+            log.info("[LetterMessageSender][站内信发送成功][业务ID: {}, userId: {}]", context.getBizId(), userId);
 
             return SendResult.success("letter-" + System.currentTimeMillis(), "站内信发送成功");
 
-        } catch (Exception e) {
-            log.error("[LetterMessageSender][站内信发送异常][recordId: {}]", context.getRecordId(), e);
-            return SendResult.fail("SEND_ERROR", e.getMessage());
+        } catch (Exception ex) {
+            log.error("[LetterMessageSender][站内信发送异常][业务ID: {}]", context.getBizId(), ex);
+            return SendResult.fail("SEND_ERROR", ex.getMessage());
         }
     }
 

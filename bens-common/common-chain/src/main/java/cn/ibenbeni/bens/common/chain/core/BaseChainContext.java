@@ -14,7 +14,7 @@ public abstract class BaseChainContext implements ChainContext {
     /**
      * 是否中断执行
      */
-    private boolean interrupted = false;
+    private Boolean interrupted = Boolean.FALSE;
 
     /**
      * 错误信息
@@ -25,5 +25,15 @@ public abstract class BaseChainContext implements ChainContext {
      * 租户ID
      */
     private Long tenantId;
+
+    @Override
+    public boolean isInterrupted() {
+        return this.interrupted;
+    }
+
+    @Override
+    public void setInterrupted(boolean interrupted) {
+        this.interrupted = interrupted;
+    }
 
 }

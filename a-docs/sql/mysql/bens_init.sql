@@ -677,6 +677,7 @@ DROP TABLE IF EXISTS `message_template_channel_rel`;
 CREATE TABLE `message_template_channel_rel`
 (
     `id`                  bigint   NOT NULL COMMENT '主键',
+    `template_id`         bigint   NOT NULL COMMENT '消息模板ID',
     `template_content_id` bigint   NOT NULL COMMENT '消息模板内容ID',
     `channel_config_id`   bigint   NOT NULL COMMENT '渠道配置ID',
     `version_flag`        bigint   NULL     DEFAULT NULL COMMENT '乐观锁',
@@ -693,7 +694,6 @@ CREATE TABLE `message_send_task`
 (
     `task_id`          bigint       NOT NULL COMMENT '任务ID',
     `task_code`        varchar(64)  NOT NULL COMMENT '任务编码',
-    `template_id`      bigint       NOT NULL COMMENT '消息模板ID',
     `template_code`    varchar(255) NOT NULL COMMENT '消息模板编码',
     `total_user_count` bigint                DEFAULT 0 COMMENT '目标用户总数',
     `total_msg_count`  bigint                DEFAULT 0 COMMENT '拆分后消息总数(用户数*渠道数)',
@@ -711,25 +711,25 @@ CREATE TABLE `message_send_task`
 
 CREATE TABLE `message_send_detail`
 (
-    `id`                bigint       NOT NULL COMMENT 'ID',
-    `task_id`           bigint       NOT NULL COMMENT '父任务ID',
-    `recipient_account` varchar(64)  NOT NULL COMMENT '接收者标识(手机号/邮箱/OpenID)',
-    `channel_type`      tinyint      NOT NULL COMMENT '渠道类型(MsgPushChannelTypeEnum)',
-    `msg_variables`     json         NULL     DEFAULT NULL COMMENT '模板参数变量',
-    `send_status`       int          NOT NULL DEFAULT 0 COMMENT '发送状态(0=PENDING(待处理);10=SUCCESS(成功);20=FAIL(失败);)',
-    `out_serial_number` varchar(255) NULL     DEFAULT NULL COMMENT '三方渠道返回唯一标识',
-    `out_resp`          varchar(255) NULL     DEFAULT NULL COMMENT '三方渠道返回错误信息',
-    `finish_time`       datetime              DEFAULT NULL COMMENT '实际发送完成时间',
-    `retry_count`       int                   DEFAULT 0 COMMENT '已重试次数',
-    `max_retry`         int                   DEFAULT 3 COMMENT '最大重试次数',
-    `next_retry_time`   datetime              DEFAULT NULL COMMENT '下次重试时间',
-    `version_flag`      bigint       NULL     DEFAULT NULL COMMENT '乐观锁',
-    `create_time`       datetime     NULL     DEFAULT NULL COMMENT '创建时间',
-    `create_user`       bigint       NULL     DEFAULT NULL COMMENT '创建人',
-    `update_time`       datetime     NULL     DEFAULT NULL COMMENT '更新时间',
-    `update_user`       bigint       NULL     DEFAULT NULL COMMENT '更新人',
-    `del_flag`          char(1)      NOT NULL DEFAULT 'N' COMMENT '删除标记',
-    `tenant_id`         bigint       NULL     DEFAULT NULL COMMENT '租户编号',
+    `id`                   bigint       NOT NULL COMMENT 'ID',
+    `task_id`              bigint       NOT NULL COMMENT '父任务ID',
+    `recipient_identifier` varchar(64)  NOT NULL COMMENT '接收者标识(手机号/邮箱/OpenID)',
+    `channel_type`         tinyint      NOT NULL COMMENT '渠道类型(MsgPushChannelTypeEnum)',
+    `msg_variables`        json         NULL     DEFAULT NULL COMMENT '模板参数变量',
+    `send_status`          int          NOT NULL DEFAULT 0 COMMENT '发送状态(0=PENDING(待处理);10=SUCCESS(成功);20=FAIL(失败);)',
+    `out_serial_number`    varchar(255) NULL     DEFAULT NULL COMMENT '三方渠道返回唯一标识',
+    `out_resp`             varchar(255) NULL     DEFAULT NULL COMMENT '三方渠道返回错误信息',
+    `finish_time`          datetime              DEFAULT NULL COMMENT '实际发送完成时间',
+    `retry_count`          int                   DEFAULT 0 COMMENT '已重试次数',
+    `max_retry`            int                   DEFAULT 3 COMMENT '最大重试次数',
+    `next_retry_time`      datetime              DEFAULT NULL COMMENT '下次重试时间',
+    `version_flag`         bigint       NULL     DEFAULT NULL COMMENT '乐观锁',
+    `create_time`          datetime     NULL     DEFAULT NULL COMMENT '创建时间',
+    `create_user`          bigint       NULL     DEFAULT NULL COMMENT '创建人',
+    `update_time`          datetime     NULL     DEFAULT NULL COMMENT '更新时间',
+    `update_user`          bigint       NULL     DEFAULT NULL COMMENT '更新人',
+    `del_flag`             char(1)      NOT NULL DEFAULT 'N' COMMENT '删除标记',
+    `tenant_id`            bigint       NULL     DEFAULT NULL COMMENT '租户编号',
     PRIMARY KEY (`id`)
 ) COMMENT ='消息发送执行明细表';
 

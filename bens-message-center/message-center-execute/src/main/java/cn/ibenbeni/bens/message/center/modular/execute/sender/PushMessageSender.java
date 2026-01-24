@@ -28,21 +28,19 @@ public class PushMessageSender implements MessageChannelSender {
 
     @Override
     public SendResult send(MessageHandleContext context) {
-        log.info("[PushMessageSender][开始发送推送][recordId: {}, recipient: {}]",
-                context.getRecordId(), context.getRecipient());
+        log.info("[PushMessageSender][开始发送推送][业务ID: {}]", context.getBizId());
 
         // 预留接口，当前记录日志并返回成功
         // TODO: 后续接入极光/友盟等推送服务
 
-        Map<String, Object> recipient = context.getRecipient();
-        String deviceToken = (String) recipient.get("deviceToken");
+        // Map<String, Object> recipient = context.getRecipient();
+        String deviceToken = "asdaq1eqwcas";
 
         if (deviceToken == null || deviceToken.isEmpty()) {
             return SendResult.fail("RECIPIENT_EMPTY", "设备Token为空");
         }
 
-        log.info("[PushMessageSender][推送发送（预留接口）][recordId: {}, deviceToken: {}, title: {}, content: {}]",
-                context.getRecordId(), deviceToken, context.getMessageTitle(), context.getMessageContent());
+        log.info("[PushMessageSender][推送发送（预留接口）][业务ID: {}, deviceToken: {}]", context.getBizId(), deviceToken);
 
         // 模拟发送成功
         return SendResult.success("push-mock-" + System.currentTimeMillis(), "推送发送成功（预留接口）");

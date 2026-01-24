@@ -56,7 +56,7 @@ public class MessageSendAccessServiceImpl implements MessageSendAccessService, M
             }
 
             // 4. 返回成功结果
-            log.info("[MessageSendAccessServiceImpl][消息发送成功][recordIds: {}]", context.getRecordIds());
+            log.info("[MessageSendAccessServiceImpl][消息发送成功][业务ID: {}]", context.getBizId());
             return MessageSendResponse.success(context.getBizId());
         } catch (MessageCenterException mEx) {
             log.error("[MessageSendAccessServiceImpl][消息发送失败][业务异常]", mEx);
@@ -72,12 +72,10 @@ public class MessageSendAccessServiceImpl implements MessageSendAccessService, M
      */
     private UserSendMessageContext buildContext(MessageSendRequest request) {
         UserSendMessageContext context = new UserSendMessageContext();
+        context.setBizId(MessageUniqueIdUtils.generateBizId()); // bizId 纯数字
         context.setTemplateCode(request.getTemplateCode());
         context.setTemplateParams(request.getTemplateParams());
-        context.setBizId(MessageUniqueIdUtils.generateBizId()); // bizId 纯数字
-        context.setRecipientType(request.getRecipientType());
-        context.setRecipient(request.getRecipient());
-        context.setChannels(request.getChannels());
+        context.setRecipientInfos(request.getRecipientInfos());
         context.setTenantId(TenantContextHolder.getRequiredTenantId());
         return context;
     }

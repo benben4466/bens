@@ -39,16 +39,6 @@ public class MessageTemplateContentDTO implements Serializable {
     private String templateContent;
 
     /**
-     * 参数配置
-     */
-    private Map<String, Object> paramsConfig;
-
-    /**
-     * 渠道特定配置
-     */
-    private Map<String, Object> channelConfig;
-
-    /**
      * 租户ID
      */
     private Long tenantId;

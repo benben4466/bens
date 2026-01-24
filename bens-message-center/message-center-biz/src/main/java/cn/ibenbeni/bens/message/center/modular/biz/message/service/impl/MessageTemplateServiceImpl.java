@@ -1,6 +1,7 @@
 package cn.ibenbeni.bens.message.center.modular.biz.message.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.ibenbeni.bens.db.api.pojo.page.PageResult;
 import cn.ibenbeni.bens.message.center.modular.biz.message.entity.MessageTemplateDO;
 import cn.ibenbeni.bens.message.center.modular.biz.message.pojo.request.MessageTemplatePageReq;
@@ -122,6 +123,12 @@ public class MessageTemplateServiceImpl implements MessageTemplateService {
     public boolean checkExists(Long templateId, String templateCode, Integer channelType) {
         Long count = messageTemplateMapper.selectCountByTemplateAndChannel(templateId, templateCode, channelType);
         return count != null && count > 0;
+    }
+
+    @Override
+    public boolean isSupportChannel(String templateCode, Set<Integer> channelTypes) {
+        List<Integer> supportChannels = messageTemplateMapper.selectSupportChannel(templateCode);
+        return CollUtil.containsAll(supportChannels, channelTypes);
     }
 
     private void validateExists(Long id) {

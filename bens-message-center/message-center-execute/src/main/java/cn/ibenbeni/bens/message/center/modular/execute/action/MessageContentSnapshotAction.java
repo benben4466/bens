@@ -25,24 +25,21 @@ public class MessageContentSnapshotAction implements MessageHandleAction {
         // 如果前面步骤失败（如解析失败），则不保存快照，或者保存错误信息？
         // 建议仅在解析成功后保存
         if (!context.isSuccess() && context.getFailType() != null) {
-            log.warn("[MessageContentSnapshotAction][前置步骤失败，跳过快照保存][recordId: {}]", context.getRecordId());
+            log.warn("[MessageContentSnapshotAction][前置步骤失败，跳过快照保存][业务ID: {}]", context.getBizId());
             return;
         }
 
         try {
+            // TODO [问题] 消息发送内容快照保存
             MessageSendContentSnapshotDTO snapshot = new MessageSendContentSnapshotDTO();
-            snapshot.setSendDetailId(context.getRecordId());
-            snapshot.setSendTitle(context.getMessageTitle());
-            snapshot.setSendMainBody(context.getMessageContent());
             snapshot.setTenantId(context.getTenantId());
-
             messageSendContentSnapshotApi.save(snapshot);
 
-            log.info("[MessageContentSnapshotAction][快照保存成功][recordId: {}]", context.getRecordId());
+            log.info("[MessageContentSnapshotAction][快照保存成功][业务ID: {}]", context.getBizId());
 
-        } catch (Exception e) {
+        } catch (Exception ex) {
             // 快照保存失败不应阻断发送流程，仅记录日志
-            log.error("[MessageContentSnapshotAction][快照保存失败][recordId: {}]", context.getRecordId(), e);
+            log.error("[MessageContentSnapshotAction][快照保存失败][业务ID: {}]", context.getBizId(), ex);
         }
     }
 

@@ -2,7 +2,10 @@ package cn.ibenbeni.bens.message.center.api.domian.dto;
 
 import cn.ibenbeni.bens.message.center.api.enums.core.MessageDetailStatusEnum;
 import cn.ibenbeni.bens.message.center.api.enums.core.MsgPushChannelTypeEnum;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -12,6 +15,9 @@ import java.util.Map;
  * 消息发送明细 DTO
  */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class MessageSendDetailDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -29,7 +35,7 @@ public class MessageSendDetailDTO implements Serializable {
     /**
      * 接收者标识(手机号/邮箱/OpenID)
      */
-    private String recipientAccount;
+    private String recipientIdentifier;
 
     /**
      * 渠道类型

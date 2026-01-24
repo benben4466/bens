@@ -27,12 +27,6 @@ public class MessageSendTaskDO extends BaseBusinessEntity {
     private String taskCode;
 
     /**
-     * 消息模板ID
-     */
-    @TableField("template_id")
-    private Long templateId;
-
-    /**
      * 消息模板编码
      */
     @TableField("template_code")

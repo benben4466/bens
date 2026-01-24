@@ -92,13 +92,13 @@ public interface MessageTemplateContentService {
     PageResult<MessageTemplateContentDO> page(MessageTemplateContentPageReq req);
 
     /**
-     * 根据模板ID和渠道类型查询内容
+     * 根据模板编码和渠道类型查询内容
      *
-     * @param templateId  模板ID
-     * @param channelType 渠道类型
+     * @param templateCode 模板编码
+     * @param channelType  渠道类型
      * @return 模板内容
      */
-    MessageTemplateContentDO getByTemplateIdAndChannelType(Long templateId, Integer channelType);
+    MessageTemplateContentDO getByTemplateCodeAndChannelType(String templateCode, Integer channelType);
 
 }
 

@@ -24,6 +24,12 @@ public class MessageTemplateChannelRelDO extends BaseBusinessEntity {
     private Long id;
 
     /**
+     * 消息模板ID
+     */
+    @TableField("template_id")
+    private Long templateId;
+
+    /**
      * 消息模板内容ID
      */
     @TableField("template_content_id")

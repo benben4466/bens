@@ -50,6 +50,7 @@ public class MessageTemplateContentServiceImpl implements MessageTemplateContent
             List<MessageTemplateChannelRelSaveReq> relReqList = new ArrayList<>();
             req.getChannelConfigIds().forEach(channelConfigId -> {
                 MessageTemplateChannelRelSaveReq relReq = new MessageTemplateChannelRelSaveReq();
+                relReq.setTemplateId(req.getTemplateId());
                 relReq.setTemplateContentId(entity.getId());
                 relReq.setChannelConfigId(channelConfigId);
                 relReqList.add(relReq);
@@ -77,6 +78,7 @@ public class MessageTemplateContentServiceImpl implements MessageTemplateContent
                 List<MessageTemplateChannelRelSaveReq> relReqList = new ArrayList<>();
                 req.getChannelConfigIds().forEach(channelConfigId -> {
                     MessageTemplateChannelRelSaveReq relReq = new MessageTemplateChannelRelSaveReq();
+                    relReq.setTemplateId(req.getTemplateId());
                     relReq.setTemplateContentId(entity.getId());
                     relReq.setChannelConfigId(channelConfigId);
                     relReqList.add(relReq);
@@ -96,7 +98,7 @@ public class MessageTemplateContentServiceImpl implements MessageTemplateContent
         messageTemplateContentMapper.updateById(entity);
 
         // 更新渠道配置关联关系
-        messageTemplateChannelRelService.updateRel(entity.getId(), req.getChannelConfigIds());
+        messageTemplateChannelRelService.updateRel(req.getTemplateId(), entity.getId(), req.getChannelConfigIds());
     }
 
     @Override
@@ -171,8 +173,8 @@ public class MessageTemplateContentServiceImpl implements MessageTemplateContent
     }
 
     @Override
-    public MessageTemplateContentDO getByTemplateIdAndChannelType(Long templateId, Integer channelType) {
-        return messageTemplateContentMapper.selectByTemplateIdAndChannelType(templateId, channelType);
+    public MessageTemplateContentDO getByTemplateCodeAndChannelType(String templateCode, Integer channelType) {
+        return messageTemplateContentMapper.selectByTemplateCodeAndChannelType(templateCode, channelType);
     }
 
     private void validateTemplateExists(Long templateId) {

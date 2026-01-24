@@ -12,6 +12,10 @@ public class MessageTemplateChannelRelSaveReq {
     @Schema(description = "主键ID")
     private Long id;
 
+    @NotNull(message = "消息模板ID不能为空")
+    @Schema(description = "消息模板ID")
+    private Long templateId;
+
     @NotNull(message = "消息模板内容ID不能为空")
     @Schema(description = "消息模板内容ID")
     private Long templateContentId;

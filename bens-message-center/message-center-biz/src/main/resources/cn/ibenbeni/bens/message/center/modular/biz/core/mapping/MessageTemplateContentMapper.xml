@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ibenbeni.bens.message.center.modular.biz.message.mapper.MessageTemplateContentMapper">
+
+    <select id="selectByTemplateCodeAndChannelType" resultType="cn.ibenbeni.bens.message.center.modular.biz.message.entity.MessageTemplateContentDO">
+        SELECT mtc.*
+        FROM message_template_content mtc
+            LEFT JOIN message_template mt ON mtc.template_id = mt.template_id
+        WHERE mtc.del_flag = 'N' AND mt.del_flag = 'N'
+          AND mt.template_code = #{templateCode}
+          AND mtc.channel_type = #{channelType}
+    </select>
+
+</mapper>

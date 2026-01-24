@@ -35,10 +35,11 @@ public interface MessageTemplateChannelRelService {
     /**
      * 更新模板内容的渠道关联（先删后增）
      *
+     * @param templateId        消息模板ID
      * @param templateContentId 模板内容ID
      * @param channelConfigIds  渠道配置ID集合
      */
-    void updateRel(Long templateContentId, Set<Long> channelConfigIds);
+    void updateRel(Long templateId, Long templateContentId, Set<Long> channelConfigIds);
 
     /**
      * 删除消息模板内容与渠道配置关系

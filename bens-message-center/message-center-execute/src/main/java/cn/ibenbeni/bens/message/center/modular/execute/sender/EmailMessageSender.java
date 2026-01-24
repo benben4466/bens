@@ -47,7 +47,7 @@ public class EmailMessageSender implements MessageChannelSender {
 
     @Override
     public SendResult send(MessageHandleContext context) {
-        log.info("[EmailMessageSender][开始发送邮件][recordId: {}, recipient: {}]", context.getRecordId(), context.getRecipient());
+        log.info("[EmailMessageSender][开始发送邮件][业务ID: {}]", context.getBizId());
 
         if (!preCheck(context)) {
             return SendResult.fail("SEND_PARAM_CHECK_ERROR", "参数校验失败");
@@ -81,9 +81,12 @@ public class EmailMessageSender implements MessageChannelSender {
 
         try {
             // 获取接收者邮箱
-            Map<String, Object> recipient = context.getRecipient();
+            // Map<String, Object> recipient = context.getRecipient();
             // TODO [优化] 接收人类型
-            String email = (String) recipient.get("email");
+            // String email = (String) recipient.get("email");
+
+            // TODO [问题] 暂时这样定义
+            String email = "ibenbeni@163.com";
 
             if (email == null || email.isEmpty()) {
                 return SendResult.fail("RECIPIENT_EMPTY", "接收者邮箱为空");
@@ -105,10 +108,11 @@ public class EmailMessageSender implements MessageChannelSender {
             ArrayList<String> recipientEmail = new ArrayList<>();
             recipientEmail.add(email);
 
+            // TODO [问题] 邮件内容
             MailMessage mailMessage = MailMessage.Builder()
                     .mailAddress(recipientEmail) // 收件人邮箱集合
-                    .title(context.getMessageTitle()) // 邮件标题
-                    .body(context.getMessageContent()) // 邮件正文
+                    .title("笨笨测试") // 邮件标题
+                    .body("欢迎来到笨笨科技") // 邮件正文
                     .build();
 
             try {
@@ -121,7 +125,7 @@ public class EmailMessageSender implements MessageChannelSender {
             // 默认发送成功
             return SendResult.success(String.valueOf(System.currentTimeMillis()), "邮件发送成功");
         } catch (Exception ex) {
-            log.error("[EmailMessageSender][邮件发送异常][recordId: {}]", context.getRecordId(), ex);
+            log.error("[EmailMessageSender][邮件发送异常][业务ID: {}]", context.getBizId(), ex);
             return SendResult.fail("SEND_ERROR", ex.getMessage());
         }
     }

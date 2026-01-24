@@ -20,4 +20,13 @@
         </if>
     </select>
 
+    <select id="selectSupportChannel" resultType="java.lang.Integer">
+        SELECT DISTINCT mcc.channel_type
+        FROM message_template mt
+                 JOIN message_template_channel_rel mtcr ON mt.template_id = mtcr.template_id
+                 JOIN message_channel_config mcc ON mtcr.channel_config_id = mcc.config_id
+        WHERE  mt.del_flag = 'N' AND mcc.del_flag = 'N' AND mtcr.del_flag = 'N'
+          AND mt.template_code = #{templateCode}
+    </select>
+
 </mapper>

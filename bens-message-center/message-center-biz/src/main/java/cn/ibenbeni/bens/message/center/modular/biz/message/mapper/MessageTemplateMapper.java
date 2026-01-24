@@ -7,6 +7,8 @@ import cn.ibenbeni.bens.message.center.modular.biz.message.entity.MessageTemplat
 import cn.ibenbeni.bens.message.center.modular.biz.message.pojo.request.MessageTemplatePageReq;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface MessageTemplateMapper extends BaseMapperX<MessageTemplateDO> {
 
     default MessageTemplateDO selectByCode(String code) {
@@ -36,5 +38,14 @@ public interface MessageTemplateMapper extends BaseMapperX<MessageTemplateDO> {
     Long selectCountByTemplateAndChannel(@Param("templateId") Long templateId,
                                          @Param("templateCode") String templateCode,
                                          @Param("channelType") Integer channelType);
+
+    /**
+     * 根据模板编号，查询支持的渠道类型
+     *
+     * @param templateCode 消息模板编码
+     * @return 支持的渠道类型
+     */
+    List<Integer> selectSupportChannel(@Param("templateCode") String templateCode);
+
 }
 

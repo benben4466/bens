@@ -76,14 +76,29 @@ public enum MessageCenterExceptionEnum implements AbstractExceptionEnum {
     RECIPIENT_INFO_MISS(RuleConstants.BUSINESS_ERROR_TYPE_CODE + MessageCenterConstants.MESSAGE_CENTER_EXCEPTION_STEP_CODE + "73", "接收者信息缺失"),
 
     /**
-     * 模板不支持该渠道
+     * 发送渠道存在模板不支持的渠道
      */
-    TEMPLATE_CHANNEL_NOT_SUPPORT(RuleConstants.BUSINESS_ERROR_TYPE_CODE + MessageCenterConstants.MESSAGE_CENTER_EXCEPTION_STEP_CODE + "74", "消息模板不支持该渠道类型"),
+    TEMPLATE_CHANNEL_NOT_SUPPORT(RuleConstants.BUSINESS_ERROR_TYPE_CODE + MessageCenterConstants.MESSAGE_CENTER_EXCEPTION_STEP_CODE + "74", "发送渠道存在模板不支持的渠道"),
 
     /**
      * 消息投递失败
      */
     MESSAGE_QUEUE_SEND_FAIL(RuleConstants.BUSINESS_ERROR_TYPE_CODE + MessageCenterConstants.MESSAGE_CENTER_EXCEPTION_STEP_CODE + "75", "消息投递失败"),
+
+    /**
+     * 渠道类型信息缺失
+     */
+    CHANNEL_TYPE_MISS(RuleConstants.BUSINESS_ERROR_TYPE_CODE + MessageCenterConstants.MESSAGE_CENTER_EXCEPTION_STEP_CODE + "76", "渠道类型信息缺失"),
+
+    /**
+     * 业务 ID 信息缺失
+     */
+    BIZ_ID_MISS(RuleConstants.BUSINESS_ERROR_TYPE_CODE + MessageCenterConstants.MESSAGE_CENTER_EXCEPTION_STEP_CODE + "77", "业务ID信息缺失"),
+
+    /**
+     * 租户 ID 信息缺失
+     */
+    TENANT_ID_MISS(RuleConstants.BUSINESS_ERROR_TYPE_CODE + MessageCenterConstants.MESSAGE_CENTER_EXCEPTION_STEP_CODE + "78", "租户ID信息缺失"),
 
     // endregion
 
