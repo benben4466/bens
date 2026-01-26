@@ -13,7 +13,7 @@ import java.util.Map;
 @Data
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "channelType", visible = true)
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = EmailAbstractRecipientInfo.class, name = "30")
+        @JsonSubTypes.Type(value = EmailRecipientInfo.class, name = "30")
 })
 public abstract class AbstractRecipientInfo {
 

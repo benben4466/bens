@@ -1,6 +1,7 @@
 package cn.ibenbeni.bens.message.center.modular.execute.model;
 
 import cn.ibenbeni.bens.common.chain.core.BaseChainContext;
+import cn.ibenbeni.bens.message.center.api.domian.core.ParsedChannelContent;
 import cn.ibenbeni.bens.message.center.api.domian.recipient.AbstractRecipientInfo;
 import cn.ibenbeni.bens.message.center.api.enums.core.MsgSendFailTypeEnum;
 import lombok.*;
@@ -18,20 +19,13 @@ import java.util.Map;
 @EqualsAndHashCode(callSuper = true)
 public class MessageHandleContext extends BaseChainContext {
 
+
+    // region 不允许修改
+
     /**
      * 业务ID
      */
     private String bizId;
-
-    /**
-     * 模板编码
-     */
-    private String templateCode;
-
-    /**
-     * 模板内容ID
-     */
-    private Long templateContentId;
 
     /**
      * 渠道类型
@@ -39,14 +33,36 @@ public class MessageHandleContext extends BaseChainContext {
     private Integer channelType;
 
     /**
-     * 接收者信息
+     * 模板编码
      */
-    private List<AbstractRecipientInfo> recipientInfos;
+    private String templateCode;
 
     /**
      * 原始模板变量
      */
     private Map<String, Object> msgVariables;
+
+    /**
+     * 接收者信息
+     */
+    private List<AbstractRecipientInfo> recipientInfos;
+
+    /**
+     * 消息发送明细
+     */
+    private Long msgSendDetailId;
+
+    // endregion
+
+    /**
+     * 模板内容ID
+     */
+    private Long templateContentId;
+
+    /**
+     * 已解析内容
+     */
+    private ParsedChannelContent parsedContent;
 
     /**
      * 重试次数

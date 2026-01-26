@@ -47,6 +47,11 @@ public class MessageQueuePayload implements Serializable {
     private List<AbstractRecipientInfo> recipientInfos;
 
     /**
+     * 消息发送明细
+     */
+    private Long msgSendDetailId;
+
+    /**
      * 租户ID
      */
     private Long tenantId;

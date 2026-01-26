@@ -5,6 +5,7 @@ import cn.hutool.core.text.StrPool;
 import cn.hutool.core.util.StrUtil;
 import cn.ibenbeni.bens.message.center.api.MessageChannelConfigApi;
 import cn.ibenbeni.bens.message.center.api.core.model.channelconfig.EmailMessageChannelConfigSpecs;
+import cn.ibenbeni.bens.message.center.api.domian.recipient.EmailRecipientInfo;
 import cn.ibenbeni.bens.message.center.api.enums.core.MsgPushChannelTypeEnum;
 import cn.ibenbeni.bens.message.center.api.domian.dto.MessageChannelConfigDTO;
 import cn.ibenbeni.bens.message.center.api.util.ChannelConfigUtils;
@@ -20,10 +21,7 @@ import org.dromara.email.core.factory.MailFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -80,18 +78,7 @@ public class EmailMessageSender implements MessageChannelSender {
         }
 
         try {
-            // 获取接收者邮箱
-            // Map<String, Object> recipient = context.getRecipient();
-            // TODO [优化] 接收人类型
-            // String email = (String) recipient.get("email");
-
-            // TODO [问题] 暂时这样定义
-            String email = "ibenbeni@163.com";
-
-            if (email == null || email.isEmpty()) {
-                return SendResult.fail("RECIPIENT_EMPTY", "接收者邮箱为空");
-            }
-
+            // 发送邮箱配置
             List<String> senderEmails = channelAccountConfigs.stream()
                     .map(EmailMessageChannelConfigSpecs::getSenderEmail)
                     .collect(Collectors.toList());
@@ -102,24 +89,40 @@ public class EmailMessageSender implements MessageChannelSender {
             if (CollUtil.isEmpty(mailClients)) {
                 return SendResult.fail("SEND_MAIL_EMPTY_ERROR", "邮箱客户端为空");
             }
-            MailClient mailClient = mailClients.get(0);
 
-            // 邮件消息
-            ArrayList<String> recipientEmail = new ArrayList<>();
-            recipientEmail.add(email);
+            List<EmailRecipientInfo> emailRecipientInfos = context.getRecipientInfos().stream()
+                    .filter(recipientInfo ->
+                            MsgPushChannelTypeEnum.EMAIL.getType().equals(recipientInfo.getChannelType()) // 渠道必须是邮件
+                                    && CollUtil.isNotEmpty(recipientInfo.getIdentifiers()) // 收件人不能为空
+                                    && recipientInfo instanceof EmailRecipientInfo
+                    )
+                    .map(EmailRecipientInfo.class::cast)
+                    .collect(Collectors.toList());
+            if (CollUtil.isEmpty(emailRecipientInfos)) {
+                return SendResult.fail("SEND_FAILED", "邮件接收者为空");
+            }
 
-            // TODO [问题] 邮件内容
-            MailMessage mailMessage = MailMessage.Builder()
-                    .mailAddress(recipientEmail) // 收件人邮箱集合
-                    .title("笨笨测试") // 邮件标题
-                    .body("欢迎来到笨笨科技") // 邮件正文
-                    .build();
+            for (EmailRecipientInfo recipientInfo : emailRecipientInfos) {
+                // 收件人邮箱
+                List<String> recipientEmails = recipientInfo.getIdentifiers();
+                if (CollUtil.isEmpty(recipientEmails)) {
+                    continue;
+                }
 
-            try {
-                mailClient.send(mailMessage);
-            } catch (Exception ex) {
-                log.error("[send][忽略处理][发送邮件失败][入参: {} ,失败原因: {}]", JSON.toJSONString(context), ex.getMessage(), ex);
-                return SendResult.fail("SEND_FAILED", "发送邮件失败");
+                MailClient mailClient = mailClients.get(0);
+
+                MailMessage mailMessage = MailMessage.Builder()
+                        .mailAddress(recipientEmails) // 收件人邮箱集合
+                        .title(context.getParsedContent().getTitle()) // 邮件标题
+                        .body(context.getParsedContent().getMainBodyContent()) // 邮件正文
+                        .build();
+
+                try {
+                    mailClient.send(mailMessage);
+                } catch (Exception ex) {
+                    log.error("[send][忽略处理][发送邮件失败][入参: {} ,失败原因: {}]", JSON.toJSONString(context), ex.getMessage(), ex);
+                    return SendResult.fail("SEND_FAILED", "发送邮件失败");
+                }
             }
 
             // 默认发送成功

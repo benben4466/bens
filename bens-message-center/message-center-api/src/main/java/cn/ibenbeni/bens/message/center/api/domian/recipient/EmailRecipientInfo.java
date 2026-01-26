@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class EmailAbstractRecipientInfo extends AbstractRecipientInfo {
+public class EmailRecipientInfo extends AbstractRecipientInfo {
 
     /**
      * 抄送者账号

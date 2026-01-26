@@ -1,7 +1,10 @@
 package cn.ibenbeni.bens.message.center.api.domian.dto;
 
 import cn.ibenbeni.bens.message.center.api.domian.message.SendMessageExtraInfo;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -9,6 +12,9 @@ import java.io.Serializable;
  * 消息发送内容快照 DTO
  */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class MessageSendContentSnapshotDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;

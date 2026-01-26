@@ -30,13 +30,9 @@ public class MessageContentSnapshotAction implements MessageHandleAction {
         }
 
         try {
-            // TODO [问题] 消息发送内容快照保存
-            MessageSendContentSnapshotDTO snapshot = new MessageSendContentSnapshotDTO();
-            snapshot.setTenantId(context.getTenantId());
-            messageSendContentSnapshotApi.save(snapshot);
+            saveMessageSendContentSnapshot(context);
 
             log.info("[MessageContentSnapshotAction][快照保存成功][业务ID: {}]", context.getBizId());
-
         } catch (Exception ex) {
             // 快照保存失败不应阻断发送流程，仅记录日志
             log.error("[MessageContentSnapshotAction][快照保存失败][业务ID: {}]", context.getBizId(), ex);
@@ -46,6 +42,15 @@ public class MessageContentSnapshotAction implements MessageHandleAction {
     @Override
     public int getOrder() {
         return MessageCenterChainOrderConstants.ExecuteLayer.CONTENT_SNAPSHOT;
+    }
+
+    private void saveMessageSendContentSnapshot(MessageHandleContext context) {
+        MessageSendContentSnapshotDTO contentSnapshot = MessageSendContentSnapshotDTO.builder()
+                .sendDetailId(context.getMsgSendDetailId())
+                .sendTitle(context.getParsedContent().getTitle())
+                .sendMainBody(context.getParsedContent().getMainBodyContent())
+                .build();
+        messageSendContentSnapshotApi.save(contentSnapshot);
     }
 
 }

@@ -207,6 +207,7 @@ public class TaskSplitConsumer implements RocketMQListener<String> {
                 .channelType(sendDetail.getChannelType().getType())
                 .recipientInfos(originPayload.getRecipientInfos())
                 .msgVariables(sendDetail.getMsgVariables())
+                .msgSendDetailId(sendDetail.getId())
                 .tenantId(originPayload.getTenantId())
                 .build();
     }

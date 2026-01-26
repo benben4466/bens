@@ -28,12 +28,15 @@ public class SensitiveWordsCheckAction implements MessageHandleAction {
 
         log.info("[SensitiveWordsCheckAction][开始敏感词检测][业务ID: {}]", context.getBizId());
 
+        if (context.getParsedContent() == null) {
+            log.warn("[execute][忽略处理][解析内容为空][业务ID: {}, 模板编码: {}]", context.getBizId(), context.getTemplateCode());
+            return;
+        }
+
         // 预留接口：当前默认通过
         // TODO: 后续可接入自定义敏感词库或第三方内容安全服务
-//        boolean passed = checkSensitiveWords(context.getMessageTitle())
-//                && checkSensitiveWords(context.getMessageContent());
-
-        boolean passed = true;
+        boolean passed = checkSensitiveWords(context.getParsedContent().getTitle())
+                && checkSensitiveWords(context.getParsedContent().getMainBodyContent());
 
         if (!passed) {
             log.warn("[SensitiveWordsCheckAction][敏感词检测不通过][业务ID: {}]", context.getBizId());

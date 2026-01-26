@@ -2,6 +2,7 @@ package cn.ibenbeni.bens.message.center.modular.execute.action;
 
 import cn.hutool.core.util.StrUtil;
 import cn.ibenbeni.bens.message.center.api.MessageTemplateApi;
+import cn.ibenbeni.bens.message.center.api.domian.core.ParsedChannelContent;
 import cn.ibenbeni.bens.message.center.api.enums.core.MsgSendFailTypeEnum;
 import cn.ibenbeni.bens.message.center.api.domian.dto.MessageTemplateContentDTO;
 import cn.ibenbeni.bens.message.center.api.constants.chain.MessageCenterChainOrderConstants;
@@ -43,14 +44,9 @@ public class MessageContentParseAction implements MessageHandleAction {
             // 填充模板内容 ID
             context.setTemplateContentId(contentDTO.getId());
 
-            // 2. 解析标题和正文
-            String title = parseTemplate(contentDTO.getTitle(), context.getMsgVariables());
-            String content = parseTemplate(contentDTO.getTemplateContent(), context.getMsgVariables());
-
-            // TODO [问题] 填充解析标题和正文
-            // 3. 填充到上下文
-            // context.setMessageTitle(title);
-            // context.setMessageContent(content);
+            // TODO 发送内容一致，是否可以缓存下来，不用每次都解析。同一渠道内容都一致，直接获取解析好的内容。
+            // 填充解析内容
+            context.setParsedContent(getParsedContent(contentDTO, context));
 
             log.info("[MessageContentParseAction][解析完成]");
         } catch (Exception ex) {
@@ -74,6 +70,23 @@ public class MessageContentParseAction implements MessageHandleAction {
     @Override
     public int getOrder() {
         return MessageCenterChainOrderConstants.ExecuteLayer.CONTENT_PARSE;
+    }
+
+    /**
+     * 获取解析内容
+     *
+     * @param content 消息模板内容
+     * @param context 上下文
+     * @return 解析内容
+     */
+    private ParsedChannelContent getParsedContent(MessageTemplateContentDTO content, MessageHandleContext context) {
+        String parsedTitle = parseTemplate(content.getTitle(), context.getMsgVariables());
+        String parsedContent = parseTemplate(content.getTemplateContent(), context.getMsgVariables());
+
+        return ParsedChannelContent.builder()
+                .title(parsedTitle)
+                .mainBodyContent(parsedContent)
+                .build();
     }
 
 }
